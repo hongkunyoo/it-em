@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Common Word -->
+    <string name="app_name">It:em</string>
+    
+    <!-- Common Sentence -->
+    <string name="internet_not_connected_message">Internet is unavailable. Please check network status.</string>
+
+</resources>
