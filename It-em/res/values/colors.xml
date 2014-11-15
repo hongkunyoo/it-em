@@ -4,5 +4,11 @@
     <!-- Common -->
     <color name="brand_color">#01b3c7</color>
     <color name="brand_color_dark">#1e5085</color>
+    <color name="accent_color">#1e5085</color>
+
+    <!-- Tab -->
+    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="activate_text_color">#FF666666</color>
+    <color name="deactivate_text_color">#FFCCCCCC</color>
 
 </resources>
