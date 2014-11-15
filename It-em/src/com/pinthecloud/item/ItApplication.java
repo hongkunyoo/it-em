@@ -60,7 +60,7 @@ public class ItApplication extends Application {
 	public static ItApplication getInstance(){
 		return app;
 	}
-	public static MobileServiceClient getmClient() {
+	public static MobileServiceClient getMobileClient() {
 		return mClient;
 	}
 	public UserHabitHelper getUserHabitHelper() {

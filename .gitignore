@@ -28,3 +28,5 @@ proguard/
 
 # Ignoring Mac OS file
 .DS_Store
+
+.classpath
