@@ -29,12 +29,14 @@ public class ItApplication extends Application {
 	// Analysis
 	private static UserHabitHelper userHabitHelper;
 
-
+	public ItApplication() {
+		app = this;
+	}
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		app = this;
-
+		
 		String AZURE_URL;
 		String AZURE_KEY;
 		if (GlobalVariable.DEBUG_MODE) {

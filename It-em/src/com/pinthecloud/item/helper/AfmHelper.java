@@ -1,4 +1,4 @@
-package com.pinthecloud.helper;
+package com.pinthecloud.item.helper;
 
 import java.util.List;
 
@@ -10,14 +10,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
-import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ItListCallback;
-import com.pinthecloud.model.AbstractFeedModel;
-import com.pinthecloud.model.Feed;
-import com.pinthecloud.model.Like;
+import com.pinthecloud.item.model.AbstractFeedModel;
+import com.pinthecloud.item.model.Feed;
 
 public class AfmHelper {
 	MobileServiceClient mClient;

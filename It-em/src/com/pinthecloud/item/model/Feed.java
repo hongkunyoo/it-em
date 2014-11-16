@@ -1,4 +1,4 @@
-package com.pinthecloud.model;
+package com.pinthecloud.item.model;
 
 import java.util.List;
 
