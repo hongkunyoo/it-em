@@ -16,7 +16,7 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.activity.ItemListActivity;
 
 public class LoginFragment extends ItFragment {
 
@@ -132,7 +132,7 @@ public class LoginFragment extends ItFragment {
 
 
 	private void goToNextActivity(){
-		Intent intent = new Intent(activity, ItemActivity.class);
+		Intent intent = new Intent(activity, ItemListActivity.class);
 		startActivity(intent);
 		activity.finish();
 	}
