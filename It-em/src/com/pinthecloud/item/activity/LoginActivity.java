@@ -13,7 +13,11 @@ public class LoginActivity extends ItActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_frame);
-
+		setFragment();
+	}
+	
+	
+	private void setFragment(){
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		LoginFragment fragment = new LoginFragment();

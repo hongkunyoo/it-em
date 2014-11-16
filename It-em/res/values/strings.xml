@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Id -->
+    <string name="facebook_app_id">383936855088677</string>
+
     <!-- Common Word -->
     <string name="app_name">It:em</string>
-    
+
     <!-- Common Sentence -->
     <string name="internet_not_connected_message">Internet is unavailable. Please check network status.</string>
 
+    <!-- Login -->
+    <string name="facebook_login">Login with facebook in a instant</string>
+
+    <!-- Item -->
+    <string-array name="item_tab_title_string_array">
+        <item>All</item>
+        <item>Rank</item>
+        <item>My</item>
+    </string-array>
+    <string name="app_settings">App Settings</string>
+    
 </resources>

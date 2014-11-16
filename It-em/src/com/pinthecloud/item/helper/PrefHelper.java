@@ -10,14 +10,14 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.exception.ItException;
 
 public class PrefHelper {
+
 	public static final String DEFAULT_STRING = "DEFAULT_STRING";
 	public static final int DEFAULT_INT = 0;
 	public static final boolean DEFAULT_BOOLEAN = false;
 	public static final float DEFAULT_FLOAT = 0;
-	
+
 	private SharedPreferences pref;
-	
-	
+
 	private static PrefHelper prefHelper = null;
 	public static PrefHelper getInstance() {
 		if (prefHelper == null) {
@@ -45,7 +45,7 @@ public class PrefHelper {
 			Log.e("ERROR", "No such instance" + obj.getClass());
 			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
 		}
-		
+
 	}
 	public String getString(String key){
 		return pref.getString(key, DEFAULT_STRING);
@@ -58,7 +58,7 @@ public class PrefHelper {
 	public boolean getBoolean(String key){
 		return pref.getBoolean(key, DEFAULT_BOOLEAN);
 	}
-	
+
 	public float getFloat(String key) {
 		return pref.getFloat(key, DEFAULT_FLOAT);
 	}

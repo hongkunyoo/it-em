@@ -18,39 +18,39 @@ import com.pinthecloud.item.model.AbstractFeedModel;
 import com.pinthecloud.item.model.Feed;
 
 public class AfmHelper {
-	MobileServiceClient mClient;
-//	private MobileServiceTable<Feed> feedTable;
-//	private MobileServiceTable<Like> likeTable;
-	
+
+	private MobileServiceClient mClient;
+	//	private MobileServiceTable<Feed> feedTable;
+	//	private MobileServiceTable<Like> likeTable;
+
 	public AfmHelper(Context context) {
 		mClient = ItApplication.getMobileClient();
 	}
-	
+
 	public<E extends AbstractFeedModel<E>> void listFeed(String refId, final ItListCallback<Feed> callback) {
 		if (refId == null || refId.equals("")) return;
-		
+
 		JsonObject jo = new JsonObject();
 		jo.addProperty("refId", refId);
-		
+
 		mClient.invokeApi("afm_list_feed", jo, new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement arg0, Exception arg1,
 					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-//				JsonElement json = arg0.getAsJsonArray();
-//				List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
-//				callback.onComplete(list);
+				//				JsonElement json = arg0.getAsJsonArray();
+				//				List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
+				//				callback.onComplete(list);
 			}
 		});
-    }
-	
+	}
+
 	public<E extends AbstractFeedModel<E>> void list(E obj, final ItListCallback<E> callback) {
 		String refId = obj.getRefId();
 		if (refId == null || refId.equals("")) return;
-		
+
 		mClient.invokeApi("afm_list", obj.toJson(), new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement arg0, Exception arg1,
 					ServiceFilterResponse arg2) {
@@ -60,12 +60,12 @@ public class AfmHelper {
 				callback.onCompleted(list, list.size());
 			}
 		});
-    }
-	
+	}
+
 	public <E extends AbstractFeedModel<E>> void add(final E obj, final ItEntityCallback<String> callback) {
-		
+
 		mClient.invokeApi("afm_add", obj.toJson(), new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement arg0, Exception arg1,
 					ServiceFilterResponse arg2) {
@@ -74,11 +74,11 @@ public class AfmHelper {
 			}
 		});
 	}
-	
+
 	public <E extends AbstractFeedModel<E>> void del(final E obj, final ItEntityCallback<Boolean> callback) {
-		
+
 		mClient.invokeApi("afm_delete", obj.toJson(), new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement arg0, Exception arg1,
 					ServiceFilterResponse arg2) {
@@ -87,11 +87,11 @@ public class AfmHelper {
 			}
 		});
 	}
-	
+
 	public <E extends AbstractFeedModel<E>> void get(final E obj, final ItEntityCallback<E> callback) {
-		
+
 		mClient.invokeApi("afm_get", obj.toJson(), new ApiJsonOperationCallback() {
-			
+
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onCompleted(JsonElement arg0, Exception arg1,
@@ -101,11 +101,11 @@ public class AfmHelper {
 			}
 		});
 	}
-	
+
 	public <E extends AbstractFeedModel<E>> void update(final E obj, final ItEntityCallback<Boolean> callback) {
-		
+
 		mClient.invokeApi("afm_update", obj.toJson(), new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement arg0, Exception arg1,
 					ServiceFilterResponse arg2) {
