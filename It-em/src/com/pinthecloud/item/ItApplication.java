@@ -13,8 +13,6 @@ import com.pinthecloud.item.analysis.UserHabitHelper;
 public class ItApplication extends Application {
 
 	// Windows Azure Mobile Service Keys
-
-
 	private final String AZURE_REAL_URL = "https://it-em.azure-mobile.net/";
 	private final String AZURE_REAL_KEY = "dGxfhLUwSWWtSiuoFKqHvQelJMPLZp89";
 	private final String AZURE_TEST_URL = "https://it-emtest.azure-mobile.net/";
@@ -68,7 +66,6 @@ public class ItApplication extends Application {
 	public UserHabitHelper getUserHabitHelper() {
 		return userHabitHelper;
 	}
-
 	
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);
