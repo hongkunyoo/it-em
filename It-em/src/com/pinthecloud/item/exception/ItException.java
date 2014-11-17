@@ -64,6 +64,7 @@ public class ItException extends RuntimeException {
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
 		DUPLICATED_NICK_NAME,
-		NO_SUCH_INSTANCE
+		NO_SUCH_INSTANCE,
+		NO_SUCH_PRIMATIVE
 	}
 }

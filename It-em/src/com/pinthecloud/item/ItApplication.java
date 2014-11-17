@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.pinthecloud.item.analysis.UserHabitHelper;
+import com.pinthecloud.item.helper.ObjectPrefHelper;
+import com.pinthecloud.item.helper.PrefHelper;
 
 public class ItApplication extends Application {
 
@@ -28,6 +30,8 @@ public class ItApplication extends Application {
 
 	// Analysis
 	private static UserHabitHelper userHabitHelper;
+	private static PrefHelper prefHelper;
+	private static ObjectPrefHelper objPrefHelper;
 
 	public ItApplication() {
 		app = this;
@@ -57,6 +61,8 @@ public class ItApplication extends Application {
 		}
 
 		userHabitHelper = new UserHabitHelper();
+		prefHelper = new PrefHelper(app);
+		objPrefHelper = new ObjectPrefHelper(app);
 	}
 
 	public static ItApplication getInstance(){
@@ -67,6 +73,15 @@ public class ItApplication extends Application {
 	}
 	public UserHabitHelper getUserHabitHelper() {
 		return userHabitHelper;
+	}
+	public PrefHelper getPrefHelper() {
+		if (prefHelper == null)
+			prefHelper = new PrefHelper(app);
+		return prefHelper;
+	}
+	public ObjectPrefHelper getObjPrefHelper() {
+		if (objPrefHelper == null) objPrefHelper = new ObjectPrefHelper(app);
+		return objPrefHelper;
 	}
 
 	
