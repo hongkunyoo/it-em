@@ -8,14 +8,14 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItemAllFragment;
-import com.pinthecloud.item.fragment.ItemMyFragment;
+import com.pinthecloud.item.fragment.MyFragment;
 import com.pinthecloud.item.fragment.ItemRankFragment;
 
 public class ItemPagerAdapter extends FragmentStatePagerAdapter {
 
 	private ItemAllFragment itemAllFragment;
 	private ItemRankFragment itemRankFragment;
-	private ItemMyFragment itemMyFragment;
+	private MyFragment itemMyFragment;
 	private String[] titles;
 
 
@@ -23,7 +23,7 @@ public class ItemPagerAdapter extends FragmentStatePagerAdapter {
 		super(fm);
 		itemAllFragment = new ItemAllFragment();
 		itemRankFragment = new ItemRankFragment();
-		itemMyFragment = new ItemMyFragment();
+		itemMyFragment = new MyFragment();
 		titles = context.getResources().getStringArray(R.array.item_tab_title_string_array);
 	}
 

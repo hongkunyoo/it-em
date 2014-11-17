@@ -28,9 +28,11 @@ public class ItApplication extends Application {
 
 	// Analysis
 	private static UserHabitHelper userHabitHelper;
+
+	// Helper
 	private static PrefHelper prefHelper;
 	private static ObjectPrefHelper objPrefHelper;
-
+	
 	public ItApplication() {
 		app = this;
 	}
@@ -55,7 +57,6 @@ public class ItApplication extends Application {
 					AZURE_KEY,
 					app);
 		} catch (MalformedURLException e) {
-			// Do nothing
 		}
 
 		userHabitHelper = new UserHabitHelper();
@@ -73,8 +74,7 @@ public class ItApplication extends Application {
 		return userHabitHelper;
 	}
 	public PrefHelper getPrefHelper() {
-		if (prefHelper == null)
-			prefHelper = new PrefHelper(app);
+		if (prefHelper == null) prefHelper = new PrefHelper(app);
 		return prefHelper;
 	}
 	public ObjectPrefHelper getObjPrefHelper() {

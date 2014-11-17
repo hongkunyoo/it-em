@@ -10,13 +10,17 @@ import com.pinthecloud.item.exception.ItException;
 
 public class PrefHelper {
 
+	// Default Vaule
 	public static final String DEFAULT_STRING = "DEFAULT_STRING";
 	public static final int DEFAULT_INT = 0;
 	public static final boolean DEFAULT_BOOLEAN = false;
 	public static final float DEFAULT_FLOAT = 0;
+	
+	// Key
+	public static final String MAIN_EXIT_TAB = "MAIN_EXIT_TAB";
 
+	
 	private SharedPreferences pref;
-
 	public PrefHelper(Context context){
 		this.pref = PreferenceManager.getDefaultSharedPreferences(context);
 	}
@@ -40,8 +44,8 @@ public class PrefHelper {
 //			Log.e("ERROR", "No such instance - key : " + key + " clasName : " +obj.getClass());
 //			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
 		}
-
 	}
+	
 	public Object get(String key, Class<?> clazz) {
 		String className = clazz.getName();
 		if (className.equals("java.lang.String") || className.equals("java.lang.Character")

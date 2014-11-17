@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
 
-public class AppSettingsFragment extends ItFragment {
+public class ItemCollectFragment extends ItFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_app_settings, container, false);
+		View view = inflater.inflate(R.layout.fragment_item_collect, container, false);
 		return view;
 	}
 }

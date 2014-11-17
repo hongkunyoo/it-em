@@ -9,22 +9,21 @@ import com.pinthecloud.item.activity.SplashActivity;
 // Naming convention : OOOOTest, e.g. HongkunTest
 public class ActivitySampleTest extends ActivityInstrumentationTestCase2<SplashActivity> {
 	
-	Activity activity;
-	
+	private Activity activity;
 	
 	public ActivitySampleTest() {
 		super(SplashActivity.class);
 	}
+	
 	public ActivitySampleTest(Class<SplashActivity> activityClass) {
 		super(activityClass);
-		// TODO Auto-generated constructor stub
 	}
+	
 	
 	// Do the setup things here.
 	// the setUp() method will be invoked for every test cases.
 	@Override
 	protected void setUp() throws Exception {
-		// TODO Auto-generated method stub
 		super.setUp();
 		
 		// you can get Activity from getActivity method, in this case it will be SplashActivity

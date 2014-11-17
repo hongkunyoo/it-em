@@ -65,6 +65,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private LinearLayout tabsContainer;
 	private ViewPager pager;
 
+	private int startTab = 0;
 	private int tabCount;
 
 	private int currentPosition = 0;
@@ -277,7 +278,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				TextView tab = (TextView) v;
 				tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
 				tab.setTypeface(tabTypeface, tabTypefaceStyle);
-				tab.setTextColor(tabSwitch && i != 0 ? tabDeactivateTextColor : tabTextColor);
+				tab.setTextColor(tabSwitch && i != startTab ? tabDeactivateTextColor : tabTextColor);
 
 				// setAllCaps() is only available from API 14, so the upper case is made manually if we are on a
 				// pre-ICS-build
@@ -290,7 +291,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				}
 			} else if (v instanceof ImageButton) {
 				ImageButton tab = (ImageButton) v;
-				tab.setSelected(tabSwitch && i == 0 ? true : false);
+				tab.setSelected(tabSwitch && i == startTab ? true : false);
 			}
 		}
 
@@ -417,6 +418,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	}
 
+	public void setStartTab(int startTab) {
+		this.startTab = startTab;
+	}
+	
 	public void setIndicatorColor(int indicatorColor) {
 		this.indicatorColor = indicatorColor;
 		invalidate();

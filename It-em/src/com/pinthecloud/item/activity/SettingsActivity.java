@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItemTabFragment;
+import com.pinthecloud.item.fragment.SettingsFragment;
 
-public class ItemListActivity extends ItActivity{
+public class SettingsActivity extends ItActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -17,18 +17,18 @@ public class ItemListActivity extends ItActivity{
 		setToolbar();
 		setFragment();
 	}
-	
-	
+
+
 	private void setToolbar(){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_toolbar);
-	    setSupportActionBar(toolbar);
+		setSupportActionBar(toolbar);
 	}
-	
-	
+
+
 	private void setFragment(){
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		ItemTabFragment fragment = new ItemTabFragment();
+		SettingsFragment fragment = new SettingsFragment();
 		fragmentTransaction.add(R.id.activity_container, fragment);
 		fragmentTransaction.commit();
 	}

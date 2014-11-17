@@ -20,12 +20,10 @@ public class HongkunActivityTest extends ActivityInstrumentationTestCase2<Splash
 	
 	public HongkunActivityTest(Class<SplashActivity> activityClass) {
 		super(activityClass);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	protected void setUp() throws Exception {
-		// TODO Auto-generated method stub
 		super.setUp();
 		
 		prefHelper = ItApplication.getInstance().getPrefHelper();

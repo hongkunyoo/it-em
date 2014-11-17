@@ -11,6 +11,7 @@ import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
+import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 
 public class ItFragment extends Fragment implements ExceptionManager.Handler {
@@ -18,11 +19,13 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 	protected ItApplication app;
 	protected ItActivity activity;
 	protected ItFragment thisFragment;
+	protected PrefHelper prefHelper;
 
 
 	public ItFragment(){
 		app = ItApplication.getInstance();
 		thisFragment = this;
+		prefHelper = app.getPrefHelper();
 	}
 
 

@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ItemPagerAdapter;
+import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
-public class ItemTabFragment extends ItFragment {
+public class MainTabFragment extends ItFragment {
 
 	private ViewPager viewPager;
 	private ItemPagerAdapter itemPagerAdapter;
@@ -22,7 +23,7 @@ public class ItemTabFragment extends ItFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_item_tab, container, false);
+		View view = inflater.inflate(R.layout.fragment_main_tab, container, false);
 		findComponent(view);
 		setTab();
 		return view;
@@ -36,14 +37,19 @@ public class ItemTabFragment extends ItFragment {
 
 
 	private void setTab(){
+		int startTab = prefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
+		
 		itemPagerAdapter = new ItemPagerAdapter(getFragmentManager(), activity);
 		viewPager.setAdapter(itemPagerAdapter);
+		viewPager.setCurrentItem(startTab);
 
+		tab.setStartTab(startTab);
 		tab.setViewPager(viewPager);
 		tab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
+				prefHelper.put(PrefHelper.MAIN_EXIT_TAB, position);
 			}
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
