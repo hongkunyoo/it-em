@@ -2,5 +2,5 @@ package com.pinthecloud.item.model;
 
 
 
-public class Reply extends AbstractFeedModel<Reply> {
+public class Reply extends AbstractItemModel<Reply> {
 }

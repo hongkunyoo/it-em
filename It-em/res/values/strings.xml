@@ -19,6 +19,9 @@
         <item>Rank</item>
         <item>My</item>
     </string-array>
+
     <string name="app_settings">App Settings</string>
-    
+    <string name="image">Image</string>
+    <string name="it">It</string>
+
 </resources>
