@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
 
-public class ProfileFragment extends ItFragment {
+public class ProfileSettingsFragment extends ItFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_profile, container, false);
+		View view = inflater.inflate(R.layout.fragment_profile_settings, container, false);
 		setHasOptionsMenu(true);
 		setActionBar();
 		return view;

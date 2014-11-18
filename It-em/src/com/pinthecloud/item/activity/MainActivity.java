@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.MainTabFragment;
+import com.pinthecloud.item.fragment.MainFragment;
 
 public class MainActivity extends ItActivity{
 
@@ -28,7 +28,7 @@ public class MainActivity extends ItActivity{
 	private void setFragment(){
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		MainTabFragment fragment = new MainTabFragment();
+		MainFragment fragment = new MainFragment();
 		fragmentTransaction.add(R.id.activity_container, fragment);
 		fragmentTransaction.commit();
 	}

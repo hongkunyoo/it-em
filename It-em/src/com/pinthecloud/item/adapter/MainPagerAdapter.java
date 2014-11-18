@@ -7,24 +7,24 @@ import android.content.Context;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItemAllFragment;
-import com.pinthecloud.item.fragment.MyFragment;
-import com.pinthecloud.item.fragment.ItemRankFragment;
+import com.pinthecloud.item.fragment.HomeFragment;
+import com.pinthecloud.item.fragment.MyPageFragment;
+import com.pinthecloud.item.fragment.HotFragment;
 
-public class ItemPagerAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
-	private ItemAllFragment itemAllFragment;
-	private ItemRankFragment itemRankFragment;
-	private MyFragment itemMyFragment;
+	private HomeFragment itemAllFragment;
+	private HotFragment itemRankFragment;
+	private MyPageFragment itemMyFragment;
 	private String[] titles;
 
 
-	public ItemPagerAdapter(FragmentManager fm, Context context) {
+	public MainPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
-		itemAllFragment = new ItemAllFragment();
-		itemRankFragment = new ItemRankFragment();
-		itemMyFragment = new MyFragment();
-		titles = context.getResources().getStringArray(R.array.item_tab_title_string_array);
+		itemAllFragment = new HomeFragment();
+		itemRankFragment = new HotFragment();
+		itemMyFragment = new MyPageFragment();
+		titles = context.getResources().getStringArray(R.array.main_tab_title_string_array);
 	}
 
 

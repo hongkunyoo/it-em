@@ -13,11 +13,15 @@
     <!-- Login -->
     <string name="facebook_login">Login with facebook in a instant</string>
 
-    <!-- Item -->
-    <string-array name="item_tab_title_string_array">
-        <item>All</item>
-        <item>Rank</item>
-        <item>My</item>
+    <!-- Main -->
+    <string-array name="main_tab_title_string_array">
+        <item>Home</item>
+        <item>Hot</item>
+        <item>MyPage</item>
+    </string-array>
+    <string-array name="my_page_tab_title_string_array">
+        <item>MyItem</item>
+        <item>ItItem</item>
     </string-array>
 
     <string name="settings">Settings</string>
@@ -27,7 +31,7 @@
     <!-- Upload -->
     <string name="upload">Upload</string>
     
-    <!-- Profile -->
+    <!-- Profile Settings -->
     <string name="profile">Profile</string>
 
 </resources>

@@ -9,37 +9,37 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.adapter.ItemMyGridAdapter;
+import com.pinthecloud.item.adapter.CollectItemGridAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class ItemMyFragment extends ItFragment {
+public class CollectItemFragment extends ItFragment {
 
-	private GridView itemMyGrid;
-	private ItemMyGridAdapter itemMyGridAdapter;
+	private GridView collectItemGrid;
+	private CollectItemGridAdapter collectItemGridAdapter;
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_item_my, container, false);
+		View view = inflater.inflate(R.layout.fragment_collect_item, container, false);
 		findComponent(view);
-		setItemMyGrid();
-		updateItemMyGrid();
+		setCollectItemGrid();
+		updateCollectItemGrid();
 		return view;
 	}
 
 
 	private void findComponent(View view){
-		itemMyGrid = (GridView)view.findViewById(R.id.item_my_frag_grid);
+		collectItemGrid = (GridView)view.findViewById(R.id.collect_item_frag_grid);
 	}
 
 
-	private void setItemMyGrid(){
-		itemMyGridAdapter = new ItemMyGridAdapter(activity, thisFragment);
-		itemMyGrid.setAdapter(itemMyGridAdapter);
+	private void setCollectItemGrid(){
+		collectItemGridAdapter = new CollectItemGridAdapter(activity, thisFragment);
+		collectItemGrid.setAdapter(collectItemGridAdapter);
 
-		itemMyGrid.setOnItemClickListener(new OnItemClickListener() {
+		collectItemGrid.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -49,11 +49,11 @@ public class ItemMyFragment extends ItFragment {
 	}
 
 
-	private void updateItemMyGrid() {
+	private void updateCollectItemGrid() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);
-			itemMyGridAdapter.add(item);
+			collectItemGridAdapter.add(item);
 		}
 	}
 }

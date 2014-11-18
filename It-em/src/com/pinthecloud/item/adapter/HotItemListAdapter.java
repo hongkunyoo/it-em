@@ -13,13 +13,13 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Item;
 
-public class ItemRankListAdapter extends ArrayAdapter<Item> implements StickyListHeadersAdapter {
+public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyListHeadersAdapter {
 
 	private Context context;
 	private ItFragment frag;
 
 
-	public ItemRankListAdapter(Context context, ItFragment frag) {
+	public HotItemListAdapter(Context context, ItFragment frag) {
 		super(context, 0);
 		this.context = context;
 		this.frag = frag;
@@ -33,8 +33,8 @@ public class ItemRankListAdapter extends ArrayAdapter<Item> implements StickyLis
 
 		public ViewHolder(View view) {
 			this.view = view;
-			this.image = (ImageView)view.findViewById(R.id.row_item_rank_list_image);
-			this.text = (TextView)view.findViewById(R.id.row_item_rank_list_text);
+			this.image = (ImageView)view.findViewById(R.id.row_hot_item_list_image);
+			this.text = (TextView)view.findViewById(R.id.row_hot_item_list_text);
 		}
 	}
 
@@ -56,7 +56,7 @@ public class ItemRankListAdapter extends ArrayAdapter<Item> implements StickyLis
 		View view = convertView;
 		if (view == null) {
 			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(R.layout.row_item_rank_list, parent, false);
+			view = inflater.inflate(R.layout.row_hot_item_list, parent, false);
 		}
 		return new ViewHolder(view);
 	}
@@ -73,7 +73,7 @@ public class ItemRankListAdapter extends ArrayAdapter<Item> implements StickyLis
 
 		public HeaderViewHolder(View view) {
 			this.view = view;
-			this.text = (TextView)view.findViewById(R.id.row_item_rank_list_header_text);
+			this.text = (TextView)view.findViewById(R.id.row_hot_item_list_header_text);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class ItemRankListAdapter extends ArrayAdapter<Item> implements StickyLis
 		View view = convertView;
 		if (view == null) {
 			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(R.layout.row_item_rank_list_header, parent, false);
+			view = inflater.inflate(R.layout.row_hot_item_list_header, parent, false);
 		}
 		return new HeaderViewHolder(view);
 	}

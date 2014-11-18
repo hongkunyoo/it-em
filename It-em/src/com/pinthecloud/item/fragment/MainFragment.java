@@ -8,22 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.adapter.ItemPagerAdapter;
+import com.pinthecloud.item.adapter.MainPagerAdapter;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
-public class MainTabFragment extends ItFragment {
+public class MainFragment extends ItFragment {
 
-	private ViewPager viewPager;
-	private ItemPagerAdapter itemPagerAdapter;
 	private PagerSlidingTabStrip tab;
+	private ViewPager viewPager;
+	private MainPagerAdapter mainPagerAdapter;
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_main_tab, container, false);
+		View view = inflater.inflate(R.layout.fragment_main, container, false);
 		findComponent(view);
 		setTab();
 		return view;
@@ -31,20 +31,20 @@ public class MainTabFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		viewPager = (ViewPager) view.findViewById(R.id.item_tab_frag_pager);
-		tab = (PagerSlidingTabStrip) view.findViewById(R.id.item_tab_frag_tab);
+		tab = (PagerSlidingTabStrip) view.findViewById(R.id.main_frag_tab);
+		viewPager = (ViewPager) view.findViewById(R.id.main_frag_pager);
 	}
 
 
 	private void setTab(){
 		int startTab = prefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
-		
-		itemPagerAdapter = new ItemPagerAdapter(getFragmentManager(), activity);
-		viewPager.setAdapter(itemPagerAdapter);
+
+		mainPagerAdapter = new MainPagerAdapter(getFragmentManager(), activity);
+		viewPager.setAdapter(mainPagerAdapter);
 		viewPager.setCurrentItem(startTab);
 
-		tab.setStartTab(startTab);
 		tab.setViewPager(viewPager);
+		tab.setStartTab(startTab);
 		tab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override

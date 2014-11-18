@@ -53,7 +53,7 @@
             android:label="@string/upload"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ProfileActivity"
+            android:name=".activity.ProfileSettingsActivity"
             android:label="@string/profile"
             android:screenOrientation="portrait" />
         <activity

@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ProfileFragment;
+import com.pinthecloud.item.fragment.ProfileSettingsFragment;
 
-public class ProfileActivity extends ItActivity {
+public class ProfileSettingsActivity extends ItActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class ProfileActivity extends ItActivity {
 	private void setFragment(){
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		ProfileFragment fragment = new ProfileFragment();
+		ProfileSettingsFragment fragment = new ProfileSettingsFragment();
 		fragmentTransaction.add(R.id.activity_container, fragment);
 		fragmentTransaction.commit();
 	}
