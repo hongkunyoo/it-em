@@ -42,12 +42,10 @@ public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyList
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = onCreateViewHolder(convertView, parent);
-
 		Item item = getItem(position);
 		if (item != null) {
 			onBindViewHolder(viewHolder, item);
 		}
-
 		return viewHolder.view;
 	}
 
@@ -81,12 +79,10 @@ public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyList
 	@Override 
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
 		HeaderViewHolder viewHolder = onCreateHeaderViewHolder(convertView, parent);
-
 		Item item = getItem(position);
 		if (item != null) {
 			onBindHeaderViewHolder(viewHolder, item);
 		}
-
 		return viewHolder.view;
 	}
 

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -46,10 +48,34 @@ public class CollectItemFragment extends ItFragment {
 					int position, long id) {
 			}
 		});
+
+		collectItemGrid.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				if (firstVisibleItem + visibleItemCount >= totalItemCount-9) {
+					addNextCollectItemGrid();
+				}
+			}
+		});
 	}
 
 
 	private void updateCollectItemGrid() {
+		for(int i=0 ; i<5 ; i++){
+			Item item = new Item();
+			item.setContent(""+i);
+			collectItemGridAdapter.add(item);
+		}
+	}
+	
+	
+	private void addNextCollectItemGrid() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);

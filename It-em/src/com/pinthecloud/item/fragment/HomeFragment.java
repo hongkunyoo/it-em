@@ -58,8 +58,8 @@ public class HomeFragment extends ItFragment {
 			}
 		});
 	}
-	
-	
+
+
 	private void setHomeItemList(){
 		homeItemList.setHasFixedSize(true);
 
@@ -69,6 +69,20 @@ public class HomeFragment extends ItFragment {
 		itemList = Lists.newArrayList();
 		homeItemListAdapter = new HomeItemListAdapter(thisFragment, itemList);
 		homeItemList.setAdapter(homeItemListAdapter);
+
+		homeItemList.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				int lastVisibleItem = ((LinearLayoutManager) homeItemListLayoutManager).findLastVisibleItemPosition();
+				int totalItemCount = homeItemListAdapter.getItemCount();
+
+				if (lastVisibleItem >= totalItemCount - 5) {
+					addNextHomeItemList();
+				}
+			}
+		});
 	}
 
 
@@ -79,6 +93,16 @@ public class HomeFragment extends ItFragment {
 			itemList.add(item);
 		}
 		progressBar.setVisibility(View.GONE);
+		homeItemListAdapter.notifyDataSetChanged();
+	}
+
+
+	private void addNextHomeItemList() {
+		for(int i=0 ; i<5 ; i++){
+			Item item = new Item();
+			item.setContent(""+i);
+			itemList.add(item);
+		}
 		homeItemListAdapter.notifyDataSetChanged();
 	}
 }

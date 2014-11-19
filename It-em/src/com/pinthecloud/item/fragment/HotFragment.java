@@ -1,12 +1,15 @@
 package com.pinthecloud.item.fragment;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
@@ -54,9 +57,13 @@ public class HotFragment extends ItFragment {
 			}
 		});
 	}
-	
-	
+
+
+	@SuppressLint("InflateParams")
 	private void setHotItemList(){
+		final View footer = activity.getLayoutInflater().inflate(R.layout.row_home_item_list_footer, null);
+		hotItemList.addFooterView(footer);
+		
 		hotItemListAdapter = new HotItemListAdapter(activity, thisFragment);
 		hotItemList.setAdapter(hotItemListAdapter);
 
@@ -65,6 +72,21 @@ public class HotFragment extends ItFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+			}
+		});
+
+		hotItemList.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				if (firstVisibleItem + visibleItemCount >= totalItemCount-5) {
+					addNextHotItemList();
+				}
 			}
 		});
 	}
@@ -77,5 +99,14 @@ public class HotFragment extends ItFragment {
 			hotItemListAdapter.add(item);
 		}
 		progressBar.setVisibility(View.GONE);
+	}
+
+
+	private void addNextHotItemList() {
+		for(int i=0 ; i<5 ; i++){
+			Item item = new Item();
+			item.setContent(""+i);
+			hotItemListAdapter.add(item);
+		}
 	}
 }

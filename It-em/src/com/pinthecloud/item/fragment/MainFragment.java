@@ -40,11 +40,12 @@ public class MainFragment extends ItFragment {
 		int startTab = prefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
 
 		mainPagerAdapter = new MainPagerAdapter(getFragmentManager(), activity);
+		viewPager.setOffscreenPageLimit(mainPagerAdapter.getCount());
 		viewPager.setAdapter(mainPagerAdapter);
 		viewPager.setCurrentItem(startTab);
 
-		tab.setViewPager(viewPager);
 		tab.setStartTab(startTab);
+		tab.setViewPager(viewPager);
 		tab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override

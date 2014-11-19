@@ -280,14 +280,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				tab.setTypeface(tabTypeface, tabTypefaceStyle);
 				tab.setTextColor(tabSwitch && i != startTab ? tabDeactivateTextColor : tabTextColor);
 
-				// setAllCaps() is only available from API 14, so the upper case is made manually if we are on a
-				// pre-ICS-build
 				if (textAllCaps) {
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-						tab.setAllCaps(true);
-					} else {
-						tab.setText(tab.getText().toString().toUpperCase(locale));
-					}
+					tab.setAllCaps(true);
 				}
 			} else if (v instanceof ImageButton) {
 				ImageButton tab = (ImageButton) v;
@@ -421,7 +415,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	public void setStartTab(int startTab) {
 		this.startTab = startTab;
 	}
-	
+
 	public void setIndicatorColor(int indicatorColor) {
 		this.indicatorColor = indicatorColor;
 		invalidate();
