@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" 
+    tools:ignore="TypographyDashes">
+
+    <string name="ga_logLevel">verbose</string>
+    <bool name="ga_autoActivityTracking">true</bool>
+    
+    <screenName name="com.pinthecloud.item.fragment.SplashFragment" />
+    
+    <string name="ga_trackingId">UA-53944359-2</string>
+
+</resources>

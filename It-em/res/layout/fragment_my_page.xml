@@ -1,49 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" >
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/my_page_frag_nick_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <com.pinthecloud.item.view.PagerSlidingTabStrip
-            xmlns:psts="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_page_frag_tab"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/main_tab_height"
-            android:background="@color/brand_color"
-            psts:pstsActivateTextColor="@android:color/white"
-            psts:pstsDividerColor="@android:color/transparent"
-            psts:pstsIndicatorColor="@android:color/white"
-            psts:pstsIndicatorHeight="@dimen/main_tab_indicator_height"
-            psts:pstsShouldExpand="true"
-            psts:pstsTabSwitch="true"
-            psts:pstsTextAllCaps="false" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/my_page_frag_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/my_page_frag_upload_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+                <TextView
+                    android:id="@+id/my_page_frag_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
-</RelativeLayout>
+            <com.pinthecloud.item.view.PagerSlidingTabStrip
+                xmlns:psts="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/my_page_frag_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_tab_height"
+                android:background="@color/brand_color"
+                psts:pstsActivateTextColor="@android:color/white"
+                psts:pstsDividerColor="@android:color/transparent"
+                psts:pstsIndicatorHeight="@dimen/none"
+                psts:pstsShouldExpand="true"
+                psts:pstsTabSwitch="true"
+                psts:pstsTextAllCaps="false" />
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/my_page_frag_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
