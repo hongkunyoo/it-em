@@ -2,7 +2,6 @@ package com.pinthecloud.item.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
@@ -61,21 +60,5 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 			}
 		}); 
 		exceptionDialog.show(getFragmentManager(), GlobalVariable.DIALOG_KEY);
-	}
-
-
-	public void Log(ItFragment fragment, Object... params){
-		if(GlobalVariable.DEBUG_MODE){
-			Log.e("ERROR", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-			Log.e("ERROR", "[ "+fragment.getClass().getName() + " ]");
-			for(Object str : params) {
-				if (str == null) {
-					Log.e("ERROR", "null");
-					continue;
-				}
-				Log.e("ERROR", str.toString());
-			}
-			Log.e("ERROR", "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-		}
 	}
 }
