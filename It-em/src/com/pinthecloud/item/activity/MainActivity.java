@@ -48,6 +48,7 @@ public class MainActivity extends ItActivity{
 
 	private void setToolbar(){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_toolbar);
+		toolbar.setLogo(R.drawable.ic_launcher);
 		setSupportActionBar(toolbar);
 	}
 

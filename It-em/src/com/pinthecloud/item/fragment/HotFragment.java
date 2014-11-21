@@ -37,8 +37,8 @@ public class HotFragment extends ItFragment {
 		updateHotItemList();
 		return view;
 	}
-
-
+	
+	
 	private void findComponent(View view){
 		progressBar = (ProgressBar)view.findViewById(R.id.hot_frag_progress_bar);
 		hotItemListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.hot_frag_item_list_refresh);

@@ -30,8 +30,8 @@ public class MyPageFragment extends ItFragment {
 		setTab();
 		return view;
 	}
-
-
+	
+	
 	private void findComponent(View view){
 		nickNameText = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
 		tab = (PagerSlidingTabStrip) view.findViewById(R.id.my_page_frag_tab);

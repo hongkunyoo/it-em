@@ -38,8 +38,8 @@ public class HomeFragment extends ItFragment {
 		updateHomeItemList();
 		return view;
 	}
-
-
+	
+	
 	private void findComponent(View view){
 		progressBar = (ProgressBar)view.findViewById(R.id.home_frag_progress_bar);
 		homeItemListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);

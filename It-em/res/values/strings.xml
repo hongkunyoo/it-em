@@ -11,17 +11,17 @@
     <string name="internet_not_connected_message">Internet is unavailable. Please check network status.</string>
 
     <!-- Login -->
-    <string name="facebook_login">Login with facebook in a instant</string>
+    <string name="facebook_login">Login with facebook in an instant</string>
 
     <!-- Main -->
     <string-array name="main_tab_title_string_array">
         <item>Home</item>
         <item>Hot</item>
-        <item>MyPage</item>
+        <item>My Page</item>
     </string-array>
     <string-array name="my_page_tab_title_string_array">
-        <item>MyItem</item>
-        <item>ItItem</item>
+        <item>It:em</item>
+        <item>it</item>
     </string-array>
 
     <string name="settings">Settings</string>

@@ -10,13 +10,15 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HomeFragment;
 import com.pinthecloud.item.fragment.HotFragment;
 import com.pinthecloud.item.fragment.MyPageFragment;
+import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
 
-public class MainPagerAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconTabProvider {
 
+	private String[] titles;
+	private int[] titleIcons = {R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher};
 	private HomeFragment homeFragment;
 	private HotFragment hotFragment;
 	private MyPageFragment myPageFragment;
-	private String[] titles;
 
 
 	public MainPagerAdapter(FragmentManager fm, Context context) {
@@ -31,6 +33,12 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public CharSequence getPageTitle(int position) {
 		return this.titles[position];
+	}
+
+
+	@Override
+	public int getPageIconResId(int position) {
+		return this.titleIcons[position];
 	}
 
 
@@ -50,6 +58,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getCount() {
-		return this.titles.length;
+		return this.titleIcons.length;
 	}
 }

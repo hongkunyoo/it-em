@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,33 +25,42 @@ public class MainFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
+		
+		int startTab = prefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
 		findComponent(view);
-		setTab();
+		setTab(startTab);
+		setActionBar(startTab);
+		
 		return view;
 	}
 
 
+	private void setActionBar(int position){
+		ActionBar actionBar = activity.getSupportActionBar();
+		actionBar.setTitle(mainPagerAdapter.getPageTitle(position));
+	}
+	
+	
 	private void findComponent(View view){
 		tab = (PagerSlidingTabStrip) view.findViewById(R.id.main_frag_tab);
 		viewPager = (ViewPager) view.findViewById(R.id.main_frag_pager);
 	}
 
 
-	private void setTab(){
-		int startTab = prefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
-
+	private void setTab(int position){
 		mainPagerAdapter = new MainPagerAdapter(getFragmentManager(), activity);
 		viewPager.setOffscreenPageLimit(mainPagerAdapter.getCount());
 		viewPager.setAdapter(mainPagerAdapter);
-		viewPager.setCurrentItem(startTab);
+		viewPager.setCurrentItem(position);
 
-		tab.setStartTab(startTab);
+		tab.setStartTab(position);
 		tab.setViewPager(viewPager);
 		tab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
 				prefHelper.put(PrefHelper.MAIN_EXIT_TAB, position);
+				setActionBar(position);
 			}
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
