@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.nineoldandroids.view.ViewHelper;
@@ -19,14 +19,14 @@ import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 
-	private View mHeader;
-	private int mMinHeaderHeight;
-	private int mHeaderHeight;
+	private FrameLayout mHeader;
+	public static int mHeaderHeight;
+	public static int mTabHeight;
 
 	private TextView nickNameText;
 
 	private PagerSlidingTabStrip tab;
-	private ViewPager viewPager;
+	private ViewPager mViewPager;
 	private MyPagePagerAdapter myPagePagerAdapter;
 
 
@@ -44,9 +44,9 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition) {
-		if (viewPager.getCurrentItem() == pagePosition) {
+		if (mViewPager.getCurrentItem() == pagePosition) {
 			int scrollY = getScrollY(view, firstVisibleItem);
-			ViewHelper.setTranslationY(mHeader, Math.max(-scrollY, -mMinHeaderHeight));
+			ViewHelper.setTranslationY(mHeader, Math.max(-scrollY, -(mHeaderHeight - mTabHeight)));
 		}
 	}
 
@@ -57,6 +57,9 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 
 	public int getScrollY(AbsListView view, int firstVisiblePosition) {
 		View c = view.getChildAt(0);
+		if(c == null){
+			return 0;
+		}
 		int headerHeight = 0;
 		if (firstVisiblePosition >= 1) {
 			headerHeight = mHeaderHeight;
@@ -66,16 +69,15 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 
 
 	private void findComponent(View view){
-		mHeader = view.findViewById(R.id.my_page_frag_header_layout);
+		mHeader = (FrameLayout)view.findViewById(R.id.my_page_frag_header_layout);
 		nickNameText = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
 		tab = (PagerSlidingTabStrip) view.findViewById(R.id.my_page_frag_tab);
-		viewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
+		mViewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
 	}
 
 
 	private void setComponent(){
-		mMinHeaderHeight = getResources().getDimensionPixelSize(R.dimen.my_page_header_height)
-				- getResources().getDimensionPixelSize(R.dimen.main_tab_height);
+		mTabHeight = getResources().getDimensionPixelSize(R.dimen.main_tab_height);
 		mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.my_page_header_height);
 	}
 
@@ -83,8 +85,8 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 	private void setTab(){
 		myPagePagerAdapter = new MyPagePagerAdapter(getFragmentManager(), activity);
 		myPagePagerAdapter.setTabHolderScrollingContent(this);
-		viewPager.setAdapter(myPagePagerAdapter);
-		tab.setViewPager(viewPager);
+		mViewPager.setAdapter(myPagePagerAdapter);
+		tab.setViewPager(mViewPager);
 		tab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
@@ -93,9 +95,11 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 				ScrollTabHolder currentHolder = scrollTabHolders.valueAt(position);
 				currentHolder.adjustScroll((int) (mHeader.getHeight() + ViewHelper.getTranslationY(mHeader)));
 			}
+
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			}
+
 			@Override
 			public void onPageScrollStateChanged(int state) {
 			}

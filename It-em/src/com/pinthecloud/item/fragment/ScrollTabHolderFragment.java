@@ -7,7 +7,7 @@ import com.pinthecloud.item.interfaces.ScrollTabHolder;
 public abstract class ScrollTabHolderFragment extends ItFragment implements ScrollTabHolder {
 
 	protected static final String POSITION_KEY = "POSITION_KEY";
-	protected int position;
+	protected int mPosition;
 	protected ScrollTabHolder mScrollTabHolder;
 
 	public void setScrollTabHolder(ScrollTabHolder scrollTabHolder) {

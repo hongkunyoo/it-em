@@ -33,10 +33,10 @@ public class CollectItemFragment extends ScrollTabHolderFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		position = getArguments().getInt(POSITION_KEY);
+		mPosition = getArguments().getInt(POSITION_KEY);
 	}
-	
-	
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -50,9 +50,20 @@ public class CollectItemFragment extends ScrollTabHolderFragment {
 
 
 	@Override
-	public void adjustScroll(int scrollHeight) {
-		if (scrollHeight != 0 || collectItemGrid.getFirstVisiblePosition() < 1) {
+	public void adjustScroll(final int scrollHeight) {
+		if (scrollHeight - MyPageFragment.mTabHeight == 0 
+				&& collectItemGrid.getScrollY() > MyPageFragment.mHeaderHeight - MyPageFragment.mTabHeight) {
+			return;
 		}
+		//		collectItemGrid.scrollTo(collectItemGrid.getScrollX(), -scrollHeight + mHeaderHeight);
+		collectItemGrid.post(new Runnable() {
+
+			@Override
+			public void run() {
+				collectItemGrid.smoothScrollBy(-scrollHeight + MyPageFragment.mHeaderHeight, 100);
+				collectItemGrid.smoothScrollToPositionFromTop(1, scrollHeight, 20);
+			}
+		});
 	}
 
 
@@ -89,7 +100,7 @@ public class CollectItemFragment extends ScrollTabHolderFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				if (mScrollTabHolder != null){
-					mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, position);
+					mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, mPosition);
 				}
 
 				if (firstVisibleItem + visibleItemCount >= totalItemCount-9 && !isAdding) {
