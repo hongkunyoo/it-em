@@ -31,6 +31,13 @@ public class CollectItemFragment extends ScrollTabHolderFragment {
 
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		position = getArguments().getInt(POSITION_KEY);
+	}
+	
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -45,8 +52,6 @@ public class CollectItemFragment extends ScrollTabHolderFragment {
 	@Override
 	public void adjustScroll(int scrollHeight) {
 		if (scrollHeight != 0 || collectItemGrid.getFirstVisiblePosition() < 1) {
-			//			myItemGrid.setSelectionFromTop(1, scrollHeight);
-			collectItemGrid.smoothScrollBy(scrollHeight, 0);
 		}
 	}
 
