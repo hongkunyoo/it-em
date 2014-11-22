@@ -8,4 +8,5 @@
     <!-- Main -->
     <dimen name="main_tab_height">48dp</dimen>
     <dimen name="main_tab_indicator_height">4dp</dimen>
+    <dimen name="my_page_header_height">248dp</dimen>
 </resources>

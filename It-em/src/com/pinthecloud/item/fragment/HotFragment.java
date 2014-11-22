@@ -1,7 +1,6 @@
 package com.pinthecloud.item.fragment;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -33,12 +32,12 @@ public class HotFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_hot, container, false);
 		findComponent(view);
 		setRefreshLayout();
-		setHotItemList();
+		setHotItemList(inflater);
 		updateHotItemList();
 		return view;
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		progressBar = (ProgressBar)view.findViewById(R.id.hot_frag_progress_bar);
 		hotItemListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.hot_frag_item_list_refresh);
@@ -59,11 +58,10 @@ public class HotFragment extends ItFragment {
 	}
 
 
-	@SuppressLint("InflateParams")
-	private void setHotItemList(){
-		final View footer = activity.getLayoutInflater().inflate(R.layout.row_home_item_list_footer, null);
+	private void setHotItemList(LayoutInflater inflater){
+		View footer = inflater.inflate(R.layout.row_home_item_list_footer, hotItemList, false);
 		hotItemList.addFooterView(footer);
-		
+
 		hotItemListAdapter = new HotItemListAdapter(activity, thisFragment);
 		hotItemList.setAdapter(hotItemListAdapter);
 

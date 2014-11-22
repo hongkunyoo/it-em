@@ -16,16 +16,10 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 
 	private String[] titles;
 	private int[] titleIcons = {R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher};
-	private HomeFragment homeFragment;
-	private HotFragment hotFragment;
-	private MyPageFragment myPageFragment;
 
 
 	public MainPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
-		homeFragment = new HomeFragment();
-		hotFragment = new HotFragment();
-		myPageFragment = new MyPageFragment();
 		titles = context.getResources().getStringArray(R.array.main_tab_title_string_array);
 	}
 
@@ -46,11 +40,11 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 	public Fragment getItem(int position) {
 		switch(position){
 		case 0:
-			return this.homeFragment;
+			return new HomeFragment();
 		case 1:
-			return this.hotFragment;
+			return new HotFragment();
 		case 2:
-			return this.myPageFragment;
+			return new MyPageFragment();
 		}
 		return null;
 	}

@@ -8,16 +8,26 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 
+import com.etsy.android.grid.StaggeredGridView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class MyItemFragment extends ItFragment {
+public class MyItemFragment extends ScrollTabHolderFragment {
 
-	private GridView myItemGrid;
+	private StaggeredGridView myItemGrid;
 	private MyItemGridAdapter myItemGridAdapter;
+	private boolean isAdding = false;
+
+
+	public static ScrollTabHolderFragment newInstance(int position) {
+		MyItemFragment fragment = new MyItemFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(POSITION_KEY, position);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 
 	@Override
@@ -26,18 +36,33 @@ public class MyItemFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
 		findComponent(view);
-		setMyItemGrid();
+		setMyItemGrid(inflater);
 		updateMyItemGrid();
 		return view;
 	}
 
 
-	private void findComponent(View view){
-		myItemGrid = (GridView)view.findViewById(R.id.my_item_frag_grid);
+	@Override
+	public void adjustScroll(int scrollHeight) {
+		if (scrollHeight != 0 || myItemGrid.getFirstVisiblePosition() < 1) {
+			//			myItemGrid.setSelectionFromTop(1, scrollHeight);
+			myItemGrid.smoothScrollBy(scrollHeight, 0);
+		}
 	}
 
 
-	private void setMyItemGrid(){
+	private void findComponent(View view){
+		myItemGrid = (StaggeredGridView)view.findViewById(R.id.my_item_frag_grid);
+	}
+
+
+	private void setMyItemGrid(LayoutInflater inflater){
+		View header = inflater.inflate(R.layout.row_my_item_grid_header, myItemGrid, false);
+		myItemGrid.addHeaderView(header);
+
+		View footer = inflater.inflate(R.layout.row_home_item_list_footer, myItemGrid, false);
+		myItemGrid.addFooterView(footer);
+
 		myItemGridAdapter = new MyItemGridAdapter(activity, thisFragment);
 		myItemGrid.setAdapter(myItemGridAdapter);
 
@@ -58,8 +83,14 @@ public class MyItemFragment extends ItFragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				if (firstVisibleItem + visibleItemCount >= totalItemCount-9) {
+				if (mScrollTabHolder != null){
+					mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, position);
+				}
+				
+				if (firstVisibleItem + visibleItemCount >= totalItemCount-9 && !isAdding) {
+					isAdding = true;
 					addNextMyItemGrid();
+					isAdding = false;
 				}
 			}
 		});
