@@ -13,6 +13,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
+
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
 import com.pinthecloud.item.model.Item;
@@ -23,6 +24,7 @@ public class HotFragment extends ItFragment {
 	private SwipeRefreshLayout hotItemListRefresh;
 	private StickyListHeadersListView hotItemList;
 	private HotItemListAdapter hotItemListAdapter;
+	private boolean isAdding = false;
 
 
 	@Override
@@ -83,8 +85,10 @@ public class HotFragment extends ItFragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				if (firstVisibleItem + visibleItemCount >= totalItemCount-5) {
+				if (firstVisibleItem + visibleItemCount >= totalItemCount-3 && !isAdding) {
+					isAdding = true;
 					addNextHotItemList();
+					isAdding = false;
 				}
 			}
 		});

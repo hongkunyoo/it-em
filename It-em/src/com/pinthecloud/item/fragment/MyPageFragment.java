@@ -95,11 +95,9 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 				ScrollTabHolder currentHolder = scrollTabHolders.valueAt(position);
 				currentHolder.adjustScroll((int) (mHeader.getHeight() + ViewHelper.getTranslationY(mHeader)));
 			}
-
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			}
-
 			@Override
 			public void onPageScrollStateChanged(int state) {
 			}

@@ -14,10 +14,11 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.CollectItemGridAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class CollectItemFragment extends ScrollTabHolderFragment {
+public class CollectItemFragment extends ScrollTabHolderFragment implements OnScrollListener {
 
 	private StaggeredGridView collectItemGrid;
 	private CollectItemGridAdapter collectItemGridAdapter;
+	private int firstVisibleItem = 0;
 	private boolean isAdding = false;
 
 
@@ -51,19 +52,32 @@ public class CollectItemFragment extends ScrollTabHolderFragment {
 
 	@Override
 	public void adjustScroll(final int scrollHeight) {
-		if (scrollHeight - MyPageFragment.mTabHeight == 0 
-				&& collectItemGrid.getScrollY() > MyPageFragment.mHeaderHeight - MyPageFragment.mTabHeight) {
+		if (scrollHeight - MyPageFragment.mTabHeight == 0 && firstVisibleItem >= 1) {
 			return;
 		}
-		//		collectItemGrid.scrollTo(collectItemGrid.getScrollX(), -scrollHeight + mHeaderHeight);
-		collectItemGrid.post(new Runnable() {
+		collectItemGrid.scrollTo(0, -scrollHeight + MyPageFragment.mHeaderHeight);
+	}
 
-			@Override
-			public void run() {
-				collectItemGrid.smoothScrollBy(-scrollHeight + MyPageFragment.mHeaderHeight, 100);
-				collectItemGrid.smoothScrollToPositionFromTop(1, scrollHeight, 20);
-			}
-		});
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+	}
+
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		this.firstVisibleItem = firstVisibleItem;
+
+		if (mScrollTabHolder != null){
+			mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, mPosition);
+		}
+
+		if (firstVisibleItem + visibleItemCount >= totalItemCount-6 && !isAdding) {
+			isAdding = true;
+			addNextCollectItemGrid();
+			isAdding = false;
+		}
 	}
 
 
@@ -81,33 +95,13 @@ public class CollectItemFragment extends ScrollTabHolderFragment {
 
 		collectItemGridAdapter = new CollectItemGridAdapter(activity, thisFragment);
 		collectItemGrid.setAdapter(collectItemGridAdapter);
+		collectItemGrid.setOnScrollListener(this);
 
 		collectItemGrid.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-			}
-		});
-
-		collectItemGrid.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				if (mScrollTabHolder != null){
-					mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, mPosition);
-				}
-
-				if (firstVisibleItem + visibleItemCount >= totalItemCount-9 && !isAdding) {
-					isAdding = true;
-					addNextCollectItemGrid();
-					isAdding = false;
-				}
 			}
 		});
 	}

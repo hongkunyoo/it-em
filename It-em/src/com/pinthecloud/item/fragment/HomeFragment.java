@@ -25,6 +25,7 @@ public class HomeFragment extends ItFragment {
 	private HomeItemListAdapter homeItemListAdapter;
 	private RecyclerView.LayoutManager homeItemListLayoutManager;
 	private List<Item> itemList;
+	private boolean isAdding = false;
 
 
 	@Override
@@ -38,8 +39,8 @@ public class HomeFragment extends ItFragment {
 		updateHomeItemList();
 		return view;
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		progressBar = (ProgressBar)view.findViewById(R.id.home_frag_progress_bar);
 		homeItemListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
@@ -78,8 +79,10 @@ public class HomeFragment extends ItFragment {
 				int lastVisibleItem = ((LinearLayoutManager) homeItemListLayoutManager).findLastVisibleItemPosition();
 				int totalItemCount = homeItemListAdapter.getItemCount();
 
-				if (lastVisibleItem >= totalItemCount - 5) {
+				if (lastVisibleItem >= totalItemCount-3 && !isAdding) {
+					isAdding = true;
 					addNextHomeItemList();
+					isAdding = false;
 				}
 			}
 		});
