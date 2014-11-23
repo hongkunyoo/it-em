@@ -17,7 +17,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class HomeFragment extends MainItemFragment {
+public class HomeFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mListRefresh;

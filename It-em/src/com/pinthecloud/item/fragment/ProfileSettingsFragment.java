@@ -27,7 +27,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			mActivity.onBackPressed();
-			return true;
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -8,10 +8,8 @@ public abstract class MyPageItemFragment extends ItFragment implements ScrollTab
 
 	protected static final String POSITION_KEY = "POSITION_KEY";
 	protected int mPosition;
-	protected int mFirstVisibleItem = 0;
-	protected boolean mIsAdding = false;
-	protected ScrollTabHolder mScrollTabHolder;
 
+	protected ScrollTabHolder mScrollTabHolder;
 	public void setScrollTabHolder(ScrollTabHolder scrollTabHolder) {
 		mScrollTabHolder = scrollTabHolder;
 	}

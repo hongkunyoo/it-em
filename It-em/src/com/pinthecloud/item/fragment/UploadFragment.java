@@ -27,12 +27,12 @@ public class UploadFragment extends ItFragment {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			mActivity.onBackPressed();
-			return true;
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
+
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);

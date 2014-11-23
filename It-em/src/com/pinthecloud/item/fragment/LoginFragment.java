@@ -20,18 +20,18 @@ import com.pinthecloud.item.activity.MainActivity;
 
 public class LoginFragment extends ItFragment {
 
-	private LoginButton facebookButton;
-	private UiLifecycleHelper uiHelper;
-	private Button tempButton;
+	private LoginButton mFacebookButton;
+	private UiLifecycleHelper mUiHelper;
+	private Button mTempButton;
 
-	private Session.StatusCallback callback = new Session.StatusCallback() {
+	private Session.StatusCallback mCallback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			onSessionStateChange(session, state, exception);
 		}
 	};
 
-	private FacebookDialog.Callback dialogCallback = new FacebookDialog.Callback() {
+	private FacebookDialog.Callback mDialogCallback = new FacebookDialog.Callback() {
 		@Override
 		public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
 		}
@@ -44,8 +44,8 @@ public class LoginFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		uiHelper = new UiLifecycleHelper(mActivity, callback);
-		uiHelper.onCreate(savedInstanceState);
+		mUiHelper = new UiLifecycleHelper(mActivity, mCallback);
+		mUiHelper.onCreate(savedInstanceState);
 	}
 
 
@@ -63,7 +63,7 @@ public class LoginFragment extends ItFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
+		mUiHelper.onSaveInstanceState(outState);
 	}
 
 
@@ -75,38 +75,41 @@ public class LoginFragment extends ItFragment {
 				(session.isOpened() || session.isClosed()) ) {
 			onSessionStateChange(session, session.getState(), null);
 		}
-		uiHelper.onResume();
+		mUiHelper.onResume();
 		AppEventsLogger.activateApp(mActivity);
 	}
+
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		uiHelper.onPause();
+		mUiHelper.onPause();
 		AppEventsLogger.deactivateApp(mActivity);
 	}
+
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		uiHelper.onDestroy();
+		mUiHelper.onDestroy();
 	}
+
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		uiHelper.onActivityResult(requestCode, resultCode, data, dialogCallback);
+		mUiHelper.onActivityResult(requestCode, resultCode, data, mDialogCallback);
 	}
 
 
 	private void findComponent(View view){
-		facebookButton = (LoginButton)view.findViewById(R.id.login_frag_facebook_button);
-		tempButton = (Button)view.findViewById(R.id.login_frag_temp_button);
+		mFacebookButton = (LoginButton)view.findViewById(R.id.login_frag_facebook_button);
+		mTempButton = (Button)view.findViewById(R.id.login_frag_temp_button);
 	}
 
 
 	private void setButton(){
-		facebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override
 			public void onUserInfoFetched(GraphUser user) {
@@ -116,7 +119,8 @@ public class LoginFragment extends ItFragment {
 				}
 			}
 		});
-		tempButton.setOnClickListener(new OnClickListener() {
+
+		mTempButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

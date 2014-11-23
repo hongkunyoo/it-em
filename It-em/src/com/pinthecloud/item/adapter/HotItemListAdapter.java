@@ -15,26 +15,26 @@ import com.pinthecloud.item.model.Item;
 
 public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyListHeadersAdapter {
 
-	private Context context;
-	private ItFragment frag;
+	private Context mContext;
+	private ItFragment mFrag;
 
 
 	public HotItemListAdapter(Context context, ItFragment frag) {
 		super(context, 0);
-		this.context = context;
-		this.frag = frag;
+		this.mContext = context;
+		this.mFrag = frag;
 	}
 
 
 	private static class ViewHolder {
-		public View view;
-		public ImageView image;
-		public TextView text;
+		public View mView;
+		public ImageView mImage;
+		public TextView mText;
 
 		public ViewHolder(View view) {
-			this.view = view;
-			this.image = (ImageView)view.findViewById(R.id.row_hot_item_list_image);
-			this.text = (TextView)view.findViewById(R.id.row_hot_item_list_text);
+			this.mView = view;
+			this.mImage = (ImageView)view.findViewById(R.id.row_hot_item_list_image);
+			this.mText = (TextView)view.findViewById(R.id.row_hot_item_list_text);
 		}
 	}
 
@@ -46,14 +46,14 @@ public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyList
 		if (item != null) {
 			onBindViewHolder(viewHolder, item);
 		}
-		return viewHolder.view;
+		return viewHolder.mView;
 	}
 
 
 	private ViewHolder onCreateViewHolder(View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.row_hot_item_list, parent, false);
 		}
 		return new ViewHolder(view);
@@ -61,17 +61,17 @@ public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyList
 
 
 	private void onBindViewHolder(ViewHolder holder, Item item) {
-		holder.text.setText(item.getContent());
+		holder.mText.setText(item.getContent());
 	}
 
 
 	private static class HeaderViewHolder {
-		public View view;
-		public TextView text;
+		public View mView;
+		public TextView mText;
 
 		public HeaderViewHolder(View view) {
-			this.view = view;
-			this.text = (TextView)view.findViewById(R.id.row_hot_item_list_header_text);
+			this.mView = view;
+			this.mText = (TextView)view.findViewById(R.id.row_hot_item_list_header_text);
 		}
 	}
 
@@ -83,14 +83,14 @@ public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyList
 		if (item != null) {
 			onBindHeaderViewHolder(viewHolder, item);
 		}
-		return viewHolder.view;
+		return viewHolder.mView;
 	}
 
 
 	private HeaderViewHolder onCreateHeaderViewHolder(View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.row_hot_item_list_header, parent, false);
 		}
 		return new HeaderViewHolder(view);
@@ -98,7 +98,7 @@ public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyList
 
 
 	private void onBindHeaderViewHolder(HeaderViewHolder holder, Item item) {
-		holder.text.setText(item.getContent());
+		holder.mText.setText(item.getContent());
 	}
 
 

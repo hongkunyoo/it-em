@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_page_frag_container_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -35,7 +36,8 @@
             psts:pstsIndicatorHeight="@dimen/none"
             psts:pstsShouldExpand="true"
             psts:pstsTabSwitch="true"
-            psts:pstsTextAllCaps="false" />
+            psts:pstsTextAllCaps="false"
+            psts:pstsUnderlineHeight="@dimen/none" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -25,12 +25,12 @@ public class CollectItemGridAdapter extends ArrayAdapter<Item> {
 
 
 	private static class ViewHolder {
-		public View view;
-		public ImageView image;
+		public View mView;
+		public ImageView mImage;
 
 		public ViewHolder(View view) {
-			this.view = view;
-			this.image = (ImageView)view.findViewById(R.id.row_collect_item_grid_image);
+			this.mView = view;
+			this.mImage = (ImageView)view.findViewById(R.id.row_collect_item_grid_image);
 		}
 	}
 
@@ -38,13 +38,11 @@ public class CollectItemGridAdapter extends ArrayAdapter<Item> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = onCreateViewHolder(convertView, parent);
-
 		Item item = getItem(position);
 		if (item != null) {
 			onBindViewHolder(viewHolder, item);
 		}
-
-		return viewHolder.view;
+		return viewHolder.mView;
 	}
 
 

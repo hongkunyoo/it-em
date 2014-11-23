@@ -33,8 +33,7 @@ public class ItemFragment extends ItFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.item_it:
-			// TODO
-			return true;
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

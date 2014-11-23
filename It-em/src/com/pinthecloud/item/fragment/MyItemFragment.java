@@ -9,15 +9,16 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.etsy.android.grid.StaggeredGridView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.view.GridViewWithHeaderAndFooter;
 
-public class MyItemFragment extends MyPageItemFragment implements OnScrollListener {
+public class MyItemFragment extends MyPageItemFragment {
 
-	private StaggeredGridView mGridView;
+	private GridViewWithHeaderAndFooter mGridView;
 	private MyItemGridAdapter mGridAdapter;
+	private boolean mIsAdding = false;
 
 
 	public static MyPageItemFragment newInstance(int position) {
@@ -50,37 +51,14 @@ public class MyItemFragment extends MyPageItemFragment implements OnScrollListen
 
 	@Override
 	public void adjustScroll(final int scrollHeight) {
-		if (scrollHeight - MyPageFragment.mTabHeight == 0 && mFirstVisibleItem >= 1) {
-			return;
-		}
-		mGridView.smoothScrollToPositionFromTop(1, scrollHeight);
-	}
-	
-	
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-	}
-
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
-		this.mFirstVisibleItem = firstVisibleItem;
-
-		if (mScrollTabHolder != null){
-			mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, mPosition);
-		}
-
-		if (firstVisibleItem + visibleItemCount >= totalItemCount-6 && !mIsAdding) {
-			mIsAdding = true;
-			addNextItem();
-			mIsAdding = false;
+		if (scrollHeight - MyPageFragment.mTabHeight != 0 || mGridView.getFirstVisiblePosition() < 1) {
+			mGridView.smoothScrollToPositionFromTop(mGridView.getNumColumns(), scrollHeight, 0);
 		}
 	}
 
 
 	private void findComponent(View view){
-		mGridView = (StaggeredGridView)view.findViewById(R.id.my_item_frag_grid);
+		mGridView = (GridViewWithHeaderAndFooter)view.findViewById(R.id.my_item_frag_grid);
 	}
 
 
@@ -88,18 +66,36 @@ public class MyItemFragment extends MyPageItemFragment implements OnScrollListen
 		View header = inflater.inflate(R.layout.row_my_item_grid_header, mGridView, false);
 		mGridView.addHeaderView(header);
 
-		View footer = inflater.inflate(R.layout.row_home_item_list_footer, mGridView, false);
-		mGridView.addFooterView(footer);
-
 		mGridAdapter = new MyItemGridAdapter(mActivity, mThisFragment);
 		mGridView.setAdapter(mGridAdapter);
-		mGridView.setOnScrollListener(this);
 
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+			}
+		});
+
+		mGridView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				if (mScrollTabHolder != null){
+					// Scroll Header
+					mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, mPosition);
+				}
+
+				if (firstVisibleItem + visibleItemCount >= totalItemCount-6 && !mIsAdding) {
+					// Add more item
+					mIsAdding = true;
+					addNextItem();
+					mIsAdding = false;
+				}
 			}
 		});
 	}

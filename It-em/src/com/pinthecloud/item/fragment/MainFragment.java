@@ -15,9 +15,9 @@ import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MainFragment extends ItFragment {
 
-	private PagerSlidingTabStrip tab;
-	private ViewPager viewPager;
-	private MainPagerAdapter mainPagerAdapter;
+	private PagerSlidingTabStrip mTab;
+	private ViewPager mViewPager;
+	private MainPagerAdapter mMainPagerAdapter;
 
 
 	@Override
@@ -37,25 +37,25 @@ public class MainFragment extends ItFragment {
 
 	private void setActionBar(int position){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle(mainPagerAdapter.getPageTitle(position));
+		actionBar.setTitle(mMainPagerAdapter.getPageTitle(position));
 	}
 
 
 	private void findComponent(View view){
-		tab = (PagerSlidingTabStrip) view.findViewById(R.id.main_frag_tab);
-		viewPager = (ViewPager) view.findViewById(R.id.main_frag_pager);
+		mTab = (PagerSlidingTabStrip) view.findViewById(R.id.main_frag_tab);
+		mViewPager = (ViewPager) view.findViewById(R.id.main_frag_pager);
 	}
 
 
 	private void setTab(int position){
-		mainPagerAdapter = new MainPagerAdapter(getFragmentManager(), mActivity);
-		viewPager.setOffscreenPageLimit(mainPagerAdapter.getCount());
-		viewPager.setAdapter(mainPagerAdapter);
-		viewPager.setCurrentItem(position);
+		mMainPagerAdapter = new MainPagerAdapter(getFragmentManager(), mActivity);
+		mViewPager.setOffscreenPageLimit(mMainPagerAdapter.getCount());
+		mViewPager.setAdapter(mMainPagerAdapter);
+		mViewPager.setCurrentItem(position);
 
-		tab.setStartTab(position);
-		tab.setViewPager(viewPager);
-		tab.setOnPageChangeListener(new OnPageChangeListener() {
+		mTab.setStartTab(position);
+		mTab.setViewPager(mViewPager);
+		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {

@@ -47,13 +47,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
 	public static class FooterViewHolder extends RecyclerView.ViewHolder {
-		public View view;
-		public ProgressBar progressBar;
+		public View mView;
+		public ProgressBar mProgressBar;
 
 		public FooterViewHolder(View view) {
 			super(view);
-			this.view = view;
-			this.progressBar = (ProgressBar)view.findViewById(R.id.row_home_item_list_footer_progress_bar);
+			this.mView = view;
+			this.mProgressBar = (ProgressBar)view.findViewById(R.id.row_home_item_list_footer_progress_bar);
 		}
 	}
 

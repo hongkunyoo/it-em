@@ -18,7 +18,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class HotFragment extends MainItemFragment {
+public class HotFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mListRefresh;
@@ -81,7 +81,6 @@ public class HotFragment extends MainItemFragment {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 			}
-
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
