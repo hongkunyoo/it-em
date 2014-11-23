@@ -9,6 +9,7 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HomeFragment;
 import com.pinthecloud.item.fragment.HotFragment;
+import com.pinthecloud.item.fragment.MainItemFragment;
 import com.pinthecloud.item.fragment.MyPageFragment;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
 
@@ -38,15 +39,19 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 
 	@Override
 	public Fragment getItem(int position) {
+		MainItemFragment fragment = null;
 		switch(position){
 		case 0:
-			return new HomeFragment();
+			fragment = new HomeFragment();
+			break;
 		case 1:
-			return new HotFragment();
+			fragment = new HotFragment();
+			break;
 		case 2:
-			return new MyPageFragment();
+			fragment = new MyPageFragment();
+			break;
 		}
-		return null;
+		return fragment;
 	}
 
 

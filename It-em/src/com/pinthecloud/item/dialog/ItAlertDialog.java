@@ -9,28 +9,28 @@ import com.pinthecloud.item.interfaces.ItDialogCallback;
 
 public class ItAlertDialog extends ItDialogFragment{
 
-	private ItDialogCallback itDialogCallback;
-	private String title;
-	private String message;
-	private String okMessage;
-	private String cancelMessage;
-	private boolean cancel;
+	private ItDialogCallback mItDialogCallback;
+	private String mTitle;
+	private String mMessage;
+	private String mOkMessage;
+	private String mCancelMessage;
+	private boolean mCancel;
 
 
 	public ItAlertDialog(String title, String message, String okMessage, String cancelMessage, boolean cancel, ItDialogCallback itDialogCallback) {
 		super();
-		this.itDialogCallback = itDialogCallback;
-		this.title = title;
-		this.message = message;
-		this.okMessage = okMessage;
-		this.cancelMessage = cancelMessage;
-		this.cancel = cancel;
+		this.mItDialogCallback = itDialogCallback;
+		this.mTitle = title;
+		this.mMessage = message;
+		this.mOkMessage = okMessage;
+		this.mCancelMessage = cancelMessage;
+		this.mCancel = cancel;
 	}
 
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		AlertDialog.Builder altBuilder = new AlertDialog.Builder(activity);
+		AlertDialog.Builder altBuilder = new AlertDialog.Builder(mActivity);
 		setTitle(altBuilder);
 		setMessage();
 		setDialog(altBuilder);
@@ -40,36 +40,36 @@ public class ItAlertDialog extends ItDialogFragment{
 
 
 	private void setTitle(AlertDialog.Builder altBuilder){
-		if(title == null){
+		if(mTitle == null){
 			setStyle(STYLE_NO_TITLE, 0);
 		}else{
-			altBuilder.setTitle(title);
+			altBuilder.setTitle(mTitle);
 		}
 	}
 
 
 	private void setMessage(){
-		if(okMessage == null){
-			okMessage =  getResources().getString(android.R.string.ok);
+		if(mOkMessage == null){
+			mOkMessage =  getResources().getString(android.R.string.ok);
 		}
-		if(cancelMessage == null){
-			cancelMessage =  getResources().getString(android.R.string.no);	
+		if(mCancelMessage == null){
+			mCancelMessage =  getResources().getString(android.R.string.no);	
 		}
 	}
 
 
 	private void setDialog(AlertDialog.Builder altBuilder){
-		altBuilder.setMessage(message);
-		altBuilder.setPositiveButton(okMessage, new DialogInterface.OnClickListener() {
+		altBuilder.setMessage(mMessage);
+		altBuilder.setPositiveButton(mOkMessage, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog,int which) {
-				itDialogCallback.doPositiveThing(null);
+				mItDialogCallback.doPositiveThing(null);
 				dismiss();
 			}
 		});
-		if(cancel){
-			altBuilder.setNegativeButton(cancelMessage, new DialogInterface.OnClickListener() {
+		if(mCancel){
+			altBuilder.setNegativeButton(mCancelMessage, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					itDialogCallback.doNegativeThing(null);
+					mItDialogCallback.doNegativeThing(null);
 					dismiss();
 				}
 			});

@@ -13,14 +13,14 @@ import com.pinthecloud.item.model.Item;
 
 public class CollectItemGridAdapter extends ArrayAdapter<Item> {
 
-	private Context context;
-	private ItFragment frag;
+	private Context mContext;
+	private ItFragment mFrag;
 
 
 	public CollectItemGridAdapter(Context context, ItFragment frag) {
 		super(context, 0);
-		this.context = context;
-		this.frag = frag;
+		this.mContext = context;
+		this.mFrag = frag;
 	}
 
 
@@ -51,7 +51,7 @@ public class CollectItemGridAdapter extends ArrayAdapter<Item> {
 	private ViewHolder onCreateViewHolder(View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.row_collect_item_grid, parent, false);
 		}
 		return new ViewHolder(view);

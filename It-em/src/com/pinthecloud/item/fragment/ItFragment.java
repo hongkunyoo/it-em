@@ -15,24 +15,24 @@ import com.pinthecloud.item.interfaces.ItDialogCallback;
 
 public class ItFragment extends Fragment implements ExceptionManager.Handler {
 
-	protected ItApplication app;
-	protected ItActivity activity;
-	protected ItFragment thisFragment;
-	protected PrefHelper prefHelper;
+	protected ItApplication mApp;
+	protected ItActivity mActivity;
+	protected ItFragment mThisFragment;
+	protected PrefHelper mPrefHelper;
 
 
 	public ItFragment(){
-		app = ItApplication.getInstance();
-		thisFragment = this;
-		prefHelper = app.getPrefHelper();
+		mApp = ItApplication.getInstance();
+		mThisFragment = this;
+		mPrefHelper = mApp.getPrefHelper();
 	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		activity = (ItActivity) getActivity();
-		ExceptionManager.setHandler(thisFragment);
+		mActivity = (ItActivity) getActivity();
+		ExceptionManager.setHandler(mThisFragment);
 	}
 
 

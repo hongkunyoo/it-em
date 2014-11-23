@@ -8,32 +8,32 @@ import com.pinthecloud.item.analysis.UserHabitHelper;
 
 public class ItActivity extends ActionBarActivity{
 
-	protected ItApplication app;
-	protected ItActivity thisActivity;
-	protected UserHabitHelper userHabitHelper;
-	protected GAHelper gaHelper;
+	protected ItApplication mApp;
+	protected ItActivity mThisActivity;
+	protected UserHabitHelper mUserHabitHelper;
+	protected GAHelper mGaHelper;
 
 
 	public ItActivity(){
-		app = ItApplication.getInstance();
-		thisActivity = this;
-		userHabitHelper = app.getUserHabitHelper();
-		gaHelper = app.getGaHelper();
+		mApp = ItApplication.getInstance();
+		mThisActivity = this;
+		mUserHabitHelper = mApp.getUserHabitHelper();
+		mGaHelper = mApp.getGaHelper();
 	}
 
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		userHabitHelper.activityStart(thisActivity);
-		gaHelper.reportActivityStart(thisActivity);
+		mUserHabitHelper.activityStart(mThisActivity);
+		mGaHelper.reportActivityStart(mThisActivity);
 	}
 
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		userHabitHelper.activityStop(thisActivity);
-		gaHelper.reportActivityStop(thisActivity);
+		mUserHabitHelper.activityStop(mThisActivity);
+		mGaHelper.reportActivityStop(mThisActivity);
 	}
 }

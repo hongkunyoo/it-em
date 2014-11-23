@@ -25,22 +25,22 @@ public class MainFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
-		
-		int startTab = prefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
+
+		int startTab = mPrefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
 		findComponent(view);
 		setTab(startTab);
 		setActionBar(startTab);
-		
+
 		return view;
 	}
 
 
 	private void setActionBar(int position){
-		ActionBar actionBar = activity.getSupportActionBar();
+		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setTitle(mainPagerAdapter.getPageTitle(position));
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		tab = (PagerSlidingTabStrip) view.findViewById(R.id.main_frag_tab);
 		viewPager = (ViewPager) view.findViewById(R.id.main_frag_pager);
@@ -48,7 +48,7 @@ public class MainFragment extends ItFragment {
 
 
 	private void setTab(int position){
-		mainPagerAdapter = new MainPagerAdapter(getFragmentManager(), activity);
+		mainPagerAdapter = new MainPagerAdapter(getFragmentManager(), mActivity);
 		viewPager.setOffscreenPageLimit(mainPagerAdapter.getCount());
 		viewPager.setAdapter(mainPagerAdapter);
 		viewPager.setCurrentItem(position);
@@ -59,7 +59,7 @@ public class MainFragment extends ItFragment {
 
 			@Override
 			public void onPageSelected(int position) {
-				prefHelper.put(PrefHelper.MAIN_EXIT_TAB, position);
+				mPrefHelper.put(PrefHelper.MAIN_EXIT_TAB, position);
 				setActionBar(position);
 			}
 			@Override

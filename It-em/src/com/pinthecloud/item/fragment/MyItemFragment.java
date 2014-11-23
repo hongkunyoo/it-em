@@ -14,15 +14,13 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class MyItemFragment extends ScrollTabHolderFragment implements OnScrollListener {
+public class MyItemFragment extends MyPageItemFragment implements OnScrollListener {
 
-	private StaggeredGridView myItemGrid;
-	private MyItemGridAdapter myItemGridAdapter;
-	private int firstVisibleItem = 0;
-	private boolean isAdding = false;
+	private StaggeredGridView mGridView;
+	private MyItemGridAdapter mGridAdapter;
 
 
-	public static ScrollTabHolderFragment newInstance(int position) {
+	public static MyPageItemFragment newInstance(int position) {
 		MyItemFragment fragment = new MyItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
@@ -44,21 +42,21 @@ public class MyItemFragment extends ScrollTabHolderFragment implements OnScrollL
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
 		findComponent(view);
-		setMyItemGrid(inflater);
-		updateMyItemGrid();
+		setGrid(inflater);
+		updateGrid();
 		return view;
 	}
 
 
 	@Override
 	public void adjustScroll(final int scrollHeight) {
-		if (scrollHeight - MyPageFragment.mTabHeight == 0 && firstVisibleItem >= 1) {
+		if (scrollHeight - MyPageFragment.mTabHeight == 0 && mFirstVisibleItem >= 1) {
 			return;
 		}
-		myItemGrid.scrollTo(0, -scrollHeight + MyPageFragment.mHeaderHeight);
+		mGridView.smoothScrollToPositionFromTop(1, scrollHeight);
 	}
-
-
+	
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 	}
@@ -67,37 +65,37 @@ public class MyItemFragment extends ScrollTabHolderFragment implements OnScrollL
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		this.firstVisibleItem = firstVisibleItem;
+		this.mFirstVisibleItem = firstVisibleItem;
 
 		if (mScrollTabHolder != null){
 			mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, mPosition);
 		}
 
-		if (firstVisibleItem + visibleItemCount >= totalItemCount-6 && !isAdding) {
-			isAdding = true;
-			addNextMyItemGrid();
-			isAdding = false;
+		if (firstVisibleItem + visibleItemCount >= totalItemCount-6 && !mIsAdding) {
+			mIsAdding = true;
+			addNextItem();
+			mIsAdding = false;
 		}
 	}
 
 
 	private void findComponent(View view){
-		myItemGrid = (StaggeredGridView)view.findViewById(R.id.my_item_frag_grid);
+		mGridView = (StaggeredGridView)view.findViewById(R.id.my_item_frag_grid);
 	}
 
 
-	private void setMyItemGrid(LayoutInflater inflater){
-		View header = inflater.inflate(R.layout.row_my_item_grid_header, myItemGrid, false);
-		myItemGrid.addHeaderView(header);
+	private void setGrid(LayoutInflater inflater){
+		View header = inflater.inflate(R.layout.row_my_item_grid_header, mGridView, false);
+		mGridView.addHeaderView(header);
 
-		View footer = inflater.inflate(R.layout.row_home_item_list_footer, myItemGrid, false);
-		myItemGrid.addFooterView(footer);
+		View footer = inflater.inflate(R.layout.row_home_item_list_footer, mGridView, false);
+		mGridView.addFooterView(footer);
 
-		myItemGridAdapter = new MyItemGridAdapter(activity, thisFragment);
-		myItemGrid.setAdapter(myItemGridAdapter);
-		myItemGrid.setOnScrollListener(this);
+		mGridAdapter = new MyItemGridAdapter(mActivity, mThisFragment);
+		mGridView.setAdapter(mGridAdapter);
+		mGridView.setOnScrollListener(this);
 
-		myItemGrid.setOnItemClickListener(new OnItemClickListener() {
+		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -107,20 +105,20 @@ public class MyItemFragment extends ScrollTabHolderFragment implements OnScrollL
 	}
 
 
-	private void updateMyItemGrid() {
+	public void updateGrid() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);
-			myItemGridAdapter.add(item);
+			mGridAdapter.add(item);
 		}
 	}
 
 
-	private void addNextMyItemGrid() {
+	private void addNextItem() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);
-			myItemGridAdapter.add(item);
+			mGridAdapter.add(item);
 		}
 	}
 }

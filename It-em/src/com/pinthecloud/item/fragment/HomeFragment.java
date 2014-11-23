@@ -17,15 +17,15 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class HomeFragment extends ItFragment {
+public class HomeFragment extends MainItemFragment {
 
-	private ProgressBar progressBar;
-	private SwipeRefreshLayout homeItemListRefresh;
-	private RecyclerView homeItemList;
-	private HomeItemListAdapter homeItemListAdapter;
-	private RecyclerView.LayoutManager homeItemListLayoutManager;
-	private List<Item> itemList;
-	private boolean isAdding = false;
+	private ProgressBar mProgressBar;
+	private SwipeRefreshLayout mListRefresh;
+	private RecyclerView mListView;
+	private HomeItemListAdapter mListAdapter;
+	private RecyclerView.LayoutManager mListLayoutManager;
+	private List<Item> mItemList;
+	private boolean mIsAdding = false;
 
 
 	@Override
@@ -35,77 +35,77 @@ public class HomeFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 		findComponent(view);
 		setRefreshLayout();
-		setHomeItemList();
-		updateHomeItemList();
+		setList();
+		updateList();
 		return view;
 	}
 
 
 	private void findComponent(View view){
-		progressBar = (ProgressBar)view.findViewById(R.id.home_frag_progress_bar);
-		homeItemListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
-		homeItemList = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.home_frag_progress_bar);
+		mListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
+		mListView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
 	}
 
 
 	private void setRefreshLayout(){
-		homeItemListRefresh.setColorSchemeResources(R.color.brand_color, R.color.brand_color_dark, R.color.accent_color);
-		homeItemListRefresh.setOnRefreshListener(new OnRefreshListener() {
+		mListRefresh.setColorSchemeResources(R.color.brand_color, R.color.brand_color_dark, R.color.accent_color);
+		mListRefresh.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
 			public void onRefresh() {
-				updateHomeItemList();
-				homeItemListRefresh.setRefreshing(false);
+				updateList();
+				mListRefresh.setRefreshing(false);
 			}
 		});
 	}
 
 
-	private void setHomeItemList(){
-		homeItemList.setHasFixedSize(true);
+	private void setList(){
+		mListView.setHasFixedSize(true);
 
-		homeItemListLayoutManager = new LinearLayoutManager(activity);
-		homeItemList.setLayoutManager(homeItemListLayoutManager);
+		mListLayoutManager = new LinearLayoutManager(mActivity);
+		mListView.setLayoutManager(mListLayoutManager);
 
-		itemList = Lists.newArrayList();
-		homeItemListAdapter = new HomeItemListAdapter(thisFragment, itemList);
-		homeItemList.setAdapter(homeItemListAdapter);
+		mItemList = Lists.newArrayList();
+		mListAdapter = new HomeItemListAdapter(mThisFragment, mItemList);
+		mListView.setAdapter(mListAdapter);
 
-		homeItemList.setOnScrollListener(new RecyclerView.OnScrollListener() {
+		mListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-				int lastVisibleItem = ((LinearLayoutManager) homeItemListLayoutManager).findLastVisibleItemPosition();
-				int totalItemCount = homeItemListAdapter.getItemCount();
+				int lastVisibleItem = ((LinearLayoutManager) mListLayoutManager).findLastVisibleItemPosition();
+				int totalItemCount = mListAdapter.getItemCount();
 
-				if (lastVisibleItem >= totalItemCount-3 && !isAdding) {
-					isAdding = true;
-					addNextHomeItemList();
-					isAdding = false;
+				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
+					mIsAdding = true;
+					addNextItemList();
+					mIsAdding = false;
 				}
 			}
 		});
 	}
 
 
-	private void updateHomeItemList() {
+	private void updateList() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);
-			itemList.add(item);
+			mItemList.add(item);
 		}
-		progressBar.setVisibility(View.GONE);
-		homeItemListAdapter.notifyDataSetChanged();
+		mProgressBar.setVisibility(View.GONE);
+		mListAdapter.notifyDataSetChanged();
 	}
 
 
-	private void addNextHomeItemList() {
+	private void addNextItemList() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);
-			itemList.add(item);
+			mItemList.add(item);
 		}
-		homeItemListAdapter.notifyDataSetChanged();
+		mListAdapter.notifyDataSetChanged();
 	}
 }

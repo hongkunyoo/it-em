@@ -28,17 +28,17 @@ public class GAHelper {
 
 	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
 	private final String PROPERTY_ID = "UA-53944359-2";
-	private Context context;
+	private Context mContext;
 
 
 	public GAHelper(Context context) {
 		super();
-		this.context = context;
+		this.mContext = context;
 	}
 
 	private synchronized Tracker getTracker(TrackerName trackerId) {
 		if (!mTrackers.containsKey(trackerId)) {
-			GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(mContext);
 			Tracker t = (trackerId == TrackerName.APP_TRACKER) ? analytics.newTracker(PROPERTY_ID)
 					: (trackerId == TrackerName.GLOBAL_TRACKER) ? analytics.newTracker(R.xml.global_tracker)
 							: analytics.newTracker(R.xml.ecommerce_tracker);
@@ -81,14 +81,14 @@ public class GAHelper {
 
 	public void reportActivityStart(Activity activity){
 		if(!GlobalVariable.DEBUG_MODE){
-			GoogleAnalytics.getInstance(context).reportActivityStart(activity);
+			GoogleAnalytics.getInstance(mContext).reportActivityStart(activity);
 		}
 	}
 
 
 	public void reportActivityStop(Activity activity){
 		if(!GlobalVariable.DEBUG_MODE){
-			GoogleAnalytics.getInstance(context).reportActivityStop(activity);
+			GoogleAnalytics.getInstance(mContext).reportActivityStop(activity);
 		}
 	}
 }

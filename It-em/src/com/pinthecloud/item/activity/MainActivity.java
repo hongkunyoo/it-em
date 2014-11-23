@@ -34,11 +34,11 @@ public class MainActivity extends ItActivity{
 		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.main_upload:
-			intent = new Intent(thisActivity, UploadActivity.class);
+			intent = new Intent(mThisActivity, UploadActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.main_settings:
-			intent = new Intent(thisActivity, SettingsActivity.class);
+			intent = new Intent(mThisActivity, SettingsActivity.class);
 			startActivity(intent);
 			break;
 		}

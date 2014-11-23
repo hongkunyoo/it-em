@@ -18,13 +18,13 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class HotFragment extends ItFragment {
+public class HotFragment extends MainItemFragment {
 
-	private ProgressBar progressBar;
-	private SwipeRefreshLayout hotItemListRefresh;
-	private StickyListHeadersListView hotItemList;
-	private HotItemListAdapter hotItemListAdapter;
-	private boolean isAdding = false;
+	private ProgressBar mProgressBar;
+	private SwipeRefreshLayout mListRefresh;
+	private StickyListHeadersListView mListView;
+	private HotItemListAdapter mListAdapter;
+	private boolean mIsAdding = false;
 
 
 	@Override
@@ -34,41 +34,41 @@ public class HotFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_hot, container, false);
 		findComponent(view);
 		setRefreshLayout();
-		setHotItemList();
-		updateHotItemList();
+		setList();
+		updateList();
 		return view;
 	}
 
 
 	private void findComponent(View view){
-		progressBar = (ProgressBar)view.findViewById(R.id.hot_frag_progress_bar);
-		hotItemListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.hot_frag_item_list_refresh);
-		hotItemList = (StickyListHeadersListView)view.findViewById(R.id.hot_frag_item_list);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.hot_frag_progress_bar);
+		mListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.hot_frag_item_list_refresh);
+		mListView = (StickyListHeadersListView)view.findViewById(R.id.hot_frag_item_list);
 	}
 
 
 	private void setRefreshLayout(){
-		hotItemListRefresh.setColorSchemeResources(R.color.brand_color, R.color.brand_color_dark, R.color.accent_color);
-		hotItemListRefresh.setOnRefreshListener(new OnRefreshListener() {
+		mListRefresh.setColorSchemeResources(R.color.brand_color, R.color.brand_color_dark, R.color.accent_color);
+		mListRefresh.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
 			public void onRefresh() {
-				updateHotItemList();
-				hotItemListRefresh.setRefreshing(false);
+				updateList();
+				mListRefresh.setRefreshing(false);
 			}
 		});
 	}
 
 
 	@SuppressLint("InflateParams")
-	private void setHotItemList(){
-		View footer = activity.getLayoutInflater().inflate(R.layout.row_home_item_list_footer, null);
-		hotItemList.addFooterView(footer);
+	private void setList(){
+		View footer = mActivity.getLayoutInflater().inflate(R.layout.row_home_item_list_footer, null);
+		mListView.addFooterView(footer);
 
-		hotItemListAdapter = new HotItemListAdapter(activity, thisFragment);
-		hotItemList.setAdapter(hotItemListAdapter);
+		mListAdapter = new HotItemListAdapter(mActivity, mThisFragment);
+		mListView.setAdapter(mListAdapter);
 
-		hotItemList.setOnItemClickListener(new OnItemClickListener() {
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -76,7 +76,7 @@ public class HotFragment extends ItFragment {
 			}
 		});
 
-		hotItemList.setOnScrollListener(new OnScrollListener() {
+		mListView.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -85,31 +85,31 @@ public class HotFragment extends ItFragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				if (firstVisibleItem + visibleItemCount >= totalItemCount-3 && !isAdding) {
-					isAdding = true;
-					addNextHotItemList();
-					isAdding = false;
+				if (firstVisibleItem + visibleItemCount >= totalItemCount-3 && !mIsAdding) {
+					mIsAdding = true;
+					addNextItemList();
+					mIsAdding = false;
 				}
 			}
 		});
 	}
 
 
-	private void updateHotItemList() {
+	private void updateList() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);
-			hotItemListAdapter.add(item);
+			mListAdapter.add(item);
 		}
-		progressBar.setVisibility(View.GONE);
+		mProgressBar.setVisibility(View.GONE);
 	}
 
 
-	private void addNextHotItemList() {
+	private void addNextItemList() {
 		for(int i=0 ; i<5 ; i++){
 			Item item = new Item();
 			item.setContent(""+i);
-			hotItemListAdapter.add(item);
+			mListAdapter.add(item);
 		}
 	}
 }

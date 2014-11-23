@@ -26,7 +26,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			activity.onBackPressed();
+			mActivity.onBackPressed();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -34,7 +34,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void setActionBar(){
-		ActionBar actionBar = activity.getSupportActionBar();
+		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 }

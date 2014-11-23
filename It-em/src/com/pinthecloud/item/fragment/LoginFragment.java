@@ -44,7 +44,7 @@ public class LoginFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		uiHelper = new UiLifecycleHelper(activity, callback);
+		uiHelper = new UiLifecycleHelper(mActivity, callback);
 		uiHelper.onCreate(savedInstanceState);
 	}
 
@@ -76,14 +76,14 @@ public class LoginFragment extends ItFragment {
 			onSessionStateChange(session, session.getState(), null);
 		}
 		uiHelper.onResume();
-		AppEventsLogger.activateApp(activity);
+		AppEventsLogger.activateApp(mActivity);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		uiHelper.onPause();
-		AppEventsLogger.deactivateApp(activity);
+		AppEventsLogger.deactivateApp(mActivity);
 	}
 
 	@Override
@@ -132,9 +132,9 @@ public class LoginFragment extends ItFragment {
 
 
 	private void goToNextActivity(){
-		Intent intent = new Intent(activity, MainActivity.class);
+		Intent intent = new Intent(mActivity, MainActivity.class);
 		startActivity(intent);
-		activity.finish();
+		mActivity.finish();
 	}
 
 

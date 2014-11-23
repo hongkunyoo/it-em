@@ -9,21 +9,21 @@ import com.pinthecloud.item.activity.ItActivity;
 
 public class ItDialogFragment extends DialogFragment {
 
-	protected ItActivity activity;
-	protected ItDialogFragment thisFragment;
+	protected ItActivity mActivity;
+	protected ItDialogFragment mThisFragment;
 	private boolean isShowing = false;
 
 
 	public ItDialogFragment() {
 		super();
-		this.thisFragment = this;
+		this.mThisFragment = this;
 	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		activity = (ItActivity) getActivity();
+		mActivity = (ItActivity) getActivity();
 	}
 
 

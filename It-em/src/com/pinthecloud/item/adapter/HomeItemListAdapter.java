@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +22,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		FOOTER
 	}
 
-	private ItFragment frag;
-	private List<Item> itemList;
+	private ItFragment mFrag;
+	private List<Item> mItemList;
 
 
 	public HomeItemListAdapter(ItFragment frag, List<Item> itemList) {
-		this.frag = frag;
-		this.itemList = itemList;
+		this.mFrag = frag;
+		this.mItemList = itemList;
 	}
 
 
@@ -78,7 +77,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public void onBindViewHolder(ViewHolder holder, final int position) {
 		int viewType = getItemViewType(position);
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
-			Item item = itemList.get(position);
+			Item item = mItemList.get(position);
 			NormalViewHolder viewHolder = (NormalViewHolder)holder;
 			setNormalComponent(viewHolder, item);
 		}else if(viewType == VIEW_TYPE.FOOTER.ordinal()){
@@ -90,7 +89,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	@Override
 	public int getItemCount() {
-		return this.itemList.size()+1;
+		return this.mItemList.size()+1;
 	}
 
 

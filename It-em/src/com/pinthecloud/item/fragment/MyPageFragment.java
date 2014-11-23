@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nineoldandroids.view.ViewHelper;
@@ -17,17 +17,17 @@ import com.pinthecloud.item.adapter.MyPagePagerAdapter;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
-public class MyPageFragment extends ItFragment implements ScrollTabHolder {
+public class MyPageFragment extends MainItemFragment implements ScrollTabHolder, OnPageChangeListener {
 
-	private FrameLayout mHeader;
 	public static int mHeaderHeight;
 	public static int mTabHeight;
 
-	private TextView nickNameText;
+	private RelativeLayout mHeader;
+	private TextView mNickNameText;
 
-	private PagerSlidingTabStrip tab;
+	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
-	private MyPagePagerAdapter myPagePagerAdapter;
+	private MyPagePagerAdapter mViewPagerAdapter;
 
 
 	@Override
@@ -55,6 +55,37 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 	}
 
 
+	@Override
+	public void onPageSelected(int position) {
+		//		SparseArrayCompat<ScrollTabHolder> scrollTabHolders = mViewPagerAdapter.getScrollTabHolders();
+		//		ScrollTabHolder fragmentContent = scrollTabHolders.valueAt(position);
+		//		fragmentContent.adjustScroll((int) (mHeader.getHeight() + ViewHelper.getTranslationY(mHeader)));
+	}
+
+
+	@Override
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		int currentItem = mViewPager.getCurrentItem();
+		if (positionOffsetPixels > 0) {
+			SparseArrayCompat<ScrollTabHolder> scrollTabHolders = mViewPagerAdapter.getScrollTabHolders();
+			ScrollTabHolder fragmentContent = null;
+			if (position < currentItem) {
+				// Revealed the previous page
+				fragmentContent = scrollTabHolders.valueAt(position);
+			} else {
+				// Revealed the next page
+				fragmentContent = scrollTabHolders.valueAt(position + 1);
+			}
+			fragmentContent.adjustScroll((int) (mHeader.getHeight() + ViewHelper.getTranslationY(mHeader)));
+		}
+	}
+
+
+	@Override
+	public void onPageScrollStateChanged(int state) {
+	}
+
+
 	public int getScrollY(AbsListView view, int firstVisiblePosition) {
 		View c = view.getChildAt(0);
 		if(c == null){
@@ -69,9 +100,9 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 
 
 	private void findComponent(View view){
-		mHeader = (FrameLayout)view.findViewById(R.id.my_page_frag_header_layout);
-		nickNameText = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
-		tab = (PagerSlidingTabStrip) view.findViewById(R.id.my_page_frag_tab);
+		mHeader = (RelativeLayout)view.findViewById(R.id.my_page_frag_header_layout);
+		mNickNameText = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
+		mTab = (PagerSlidingTabStrip) view.findViewById(R.id.my_page_frag_tab);
 		mViewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
 	}
 
@@ -83,24 +114,10 @@ public class MyPageFragment extends ItFragment implements ScrollTabHolder {
 
 
 	private void setTab(){
-		myPagePagerAdapter = new MyPagePagerAdapter(getFragmentManager(), activity);
-		myPagePagerAdapter.setTabHolderScrollingContent(this);
-		mViewPager.setAdapter(myPagePagerAdapter);
-		tab.setViewPager(mViewPager);
-		tab.setOnPageChangeListener(new OnPageChangeListener() {
-
-			@Override
-			public void onPageSelected(int position) {
-				SparseArrayCompat<ScrollTabHolder> scrollTabHolders = myPagePagerAdapter.getScrollTabHolders();
-				ScrollTabHolder currentHolder = scrollTabHolders.valueAt(position);
-				currentHolder.adjustScroll((int) (mHeader.getHeight() + ViewHelper.getTranslationY(mHeader)));
-			}
-			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			}
-			@Override
-			public void onPageScrollStateChanged(int state) {
-			}
-		});
+		mViewPagerAdapter = new MyPagePagerAdapter(getFragmentManager(), mActivity);
+		mViewPagerAdapter.setTabHolderScrollingContent(this);
+		mViewPager.setAdapter(mViewPagerAdapter);
+		mTab.setViewPager(mViewPager);
+		mTab.setOnPageChangeListener(this);
 	}
 }
