@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyPagePagerAdapter;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
+import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MyPageFragment extends ItFragment {

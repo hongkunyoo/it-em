@@ -65,7 +65,7 @@ public class MyItemFragment extends MyPageItemFragment {
 	private void setGrid(LayoutInflater inflater){
 		View header = inflater.inflate(R.layout.row_my_item_grid_header, mGridView, false);
 		mGridView.addHeaderView(header);
-
+		
 		mGridAdapter = new MyItemGridAdapter(mActivity, mThisFragment);
 		mGridView.setAdapter(mGridAdapter);
 

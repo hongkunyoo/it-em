@@ -19,6 +19,8 @@ public class PrefHelper {
 	// Key
 	public static final String MAIN_EXIT_TAB = "MAIN_EXIT_TAB";
 
+	// User
+	public static final String IS_LOGIN_KEY = "IS_LOGIN_KEY";
 	
 	private SharedPreferences mPref;
 	public PrefHelper(Context context){

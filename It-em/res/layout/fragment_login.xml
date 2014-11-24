@@ -12,7 +12,7 @@
         facebook:confirm_logout="false"
         facebook:fetch_user_info="true"
         facebook:login_text="@string/facebook_login"
-        facebook:logout_text="" />
+        facebook:logout_text="@string/facebook_login" />
 
     <Button
         android:id="@+id/login_frag_temp_button"
