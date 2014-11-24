@@ -7,7 +7,7 @@ import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 
-public class ItActivity extends ActionBarActivity{
+public class ItActivity extends ActionBarActivity {
 
 	protected ItApplication app;
 	protected ItActivity thisActivity;

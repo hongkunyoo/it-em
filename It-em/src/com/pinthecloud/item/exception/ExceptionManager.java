@@ -3,12 +3,13 @@ package com.pinthecloud.item.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 
 public class ExceptionManager {
 
 	private static Map<String, Handler> map = new HashMap<String, ExceptionManager.Handler>();
-
+	
 	public static void setHandler(ItFragment frag) {
 		map.put(frag.getClass().getName(), frag);
 	}

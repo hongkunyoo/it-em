@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.HongkunTestActivity;
 import com.pinthecloud.item.activity.LoginActivity;
 
 public class SplashFragment extends ItFragment {
@@ -22,7 +23,10 @@ public class SplashFragment extends ItFragment {
 
 
 	private void runItem() {
-		goToNextActivity();
+		Intent intent = new Intent();
+		intent.setClass(activity, HongkunTestActivity.class);
+		startActivity(intent);
+//		goToNextActivity();
 	}
 
 

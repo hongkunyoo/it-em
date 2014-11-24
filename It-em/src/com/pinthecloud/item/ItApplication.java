@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.pinthecloud.item.analysis.UserHabitHelper;
+import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 
@@ -30,6 +31,7 @@ public class ItApplication extends Application {
 	private static UserHabitHelper userHabitHelper;
 	private static PrefHelper prefHelper;
 	private static ObjectPrefHelper objPrefHelper;
+	private static AimHelper aimHelper;
 
 	public ItApplication() {
 		app = this;
@@ -39,6 +41,10 @@ public class ItApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		
+		init();
+	}
+	
+	private void init() {
 		String AZURE_URL;
 		String AZURE_KEY;
 		if (GlobalVariable.DEBUG_MODE) {
@@ -61,25 +67,30 @@ public class ItApplication extends Application {
 		userHabitHelper = new UserHabitHelper();
 		prefHelper = new PrefHelper(app);
 		objPrefHelper = new ObjectPrefHelper(app);
+		aimHelper = new AimHelper();
 	}
 
 	public static ItApplication getInstance(){
 		return app;
 	}
-	public static MobileServiceClient getMobileClient() {
+	public MobileServiceClient getMobileClient() {
+		if (mClient == null) init();
 		return mClient;
 	}
 	public UserHabitHelper getUserHabitHelper() {
 		return userHabitHelper;
 	}
 	public PrefHelper getPrefHelper() {
-		if (prefHelper == null)
-			prefHelper = new PrefHelper(app);
+		if (prefHelper == null) init();
 		return prefHelper;
 	}
 	public ObjectPrefHelper getObjPrefHelper() {
-		if (objPrefHelper == null) objPrefHelper = new ObjectPrefHelper(app);
+		if (objPrefHelper == null) init();
 		return objPrefHelper;
+	}
+	public AimHelper getAimHelper() {
+		if (aimHelper == null) init();
+		return aimHelper;
 	}
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);

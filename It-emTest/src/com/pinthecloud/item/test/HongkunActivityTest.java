@@ -4,15 +4,20 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.activity.SplashActivity;
+import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.test.model.TestObject;
+import com.pinthecloud.item.test.util.MyLog;
 
 public class HongkunActivityTest extends ActivityInstrumentationTestCase2<SplashActivity>{
 	
 	PrefHelper prefHelper;
 	TestObject testObj;
 	ObjectPrefHelper objPrefHelper;
+	AimHelper aimHelper;
 	
 	public HongkunActivityTest() {
 		super(SplashActivity.class);
@@ -30,25 +35,8 @@ public class HongkunActivityTest extends ActivityInstrumentationTestCase2<Splash
 		
 		prefHelper = ItApplication.getInstance().getPrefHelper();
 		objPrefHelper = ItApplication.getInstance().getObjPrefHelper();
+		aimHelper = ItApplication.getInstance().getAimHelper();
 		
-		assertNotNull(ItApplication.getInstance());
-		assertNotNull(prefHelper);
-		assertNotNull(objPrefHelper);
-	}
-	
-	public void testMy() {
-		testObj = new TestObject();
-		
-		testObj.setTestInt(123);
-		testObj.setTestBoolean(true);
-		testObj.setTestFloat(12345f);
-		testObj.setTestString("testing String~");
-		
-		objPrefHelper.put(testObj);
-		
-		TestObject o = new TestObject();
-		TestObject result = objPrefHelper.get(o);
-		assertEquals(testObj, result);
 	}
 	
 }

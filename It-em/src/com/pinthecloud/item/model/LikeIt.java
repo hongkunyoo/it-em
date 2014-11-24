@@ -2,7 +2,7 @@ package com.pinthecloud.item.model;
 
 
 
-public class Like extends AbstractItemModel<Like>{
+public class LikeIt extends AbstractItemModel<LikeIt>{
 	
 	@Override
 	public final String getContent() {

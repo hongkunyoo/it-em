@@ -51,6 +51,7 @@
         <activity
             android:name=".activity.AppSettingsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.HongkunTestActivity"></activity>
     </application>
 
 </manifest>
