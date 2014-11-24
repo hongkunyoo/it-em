@@ -4,29 +4,26 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.fragment.ItFragment;
 
 public class ItDialogFragment extends DialogFragment {
 
-	protected ItActivity activity;
-	protected ItDialogFragment thisFragment;
+	protected ItActivity mActivity;
+	protected ItDialogFragment mThisFragment;
 	private boolean isShowing = false;
 
 
 	public ItDialogFragment() {
 		super();
-		this.thisFragment = this;
+		this.mThisFragment = this;
 	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		activity = (ItActivity) getActivity();
+		mActivity = (ItActivity) getActivity();
 	}
 
 
@@ -50,21 +47,5 @@ public class ItDialogFragment extends DialogFragment {
 
 	public boolean isShowing(){
 		return isShowing;
-	}
-
-
-	public void Log(ItFragment fragment, Object... params){
-		if(GlobalVariable.DEBUG_MODE){
-			Log.e("ERROR", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-			Log.e("ERROR", "[ "+fragment.getClass().getName() + " ]");
-			for(Object str : params) {
-				if (str == null) {
-					Log.e("ERROR", "null");
-					continue;
-				}
-				Log.e("ERROR", str.toString());
-			}
-			Log.e("ERROR", "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-		}
 	}
 }

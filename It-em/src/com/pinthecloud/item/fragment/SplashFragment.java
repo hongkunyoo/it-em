@@ -31,9 +31,9 @@ public class SplashFragment extends ItFragment {
 
 
 	private void goToNextActivity() {
-		if(thisFragment.isAdded()){
+		if(mThisFragment.isAdded()){
 			Intent intent = new Intent();
-			intent.setClass(activity, LoginActivity.class);
+			intent.setClass(mActivity, LoginActivity.class);
 			startActivity(intent);
 		}
 	}

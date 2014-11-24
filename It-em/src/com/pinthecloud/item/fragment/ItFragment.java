@@ -2,7 +2,6 @@ package com.pinthecloud.item.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
@@ -11,26 +10,29 @@ import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
+import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 
 public class ItFragment extends Fragment implements ExceptionManager.Handler {
 
-	protected ItApplication app;
-	protected ItActivity activity;
-	protected ItFragment thisFragment;
+	protected ItApplication mApp;
+	protected ItActivity mActivity;
+	protected ItFragment mThisFragment;
+	protected PrefHelper mPrefHelper;
 
 
 	public ItFragment(){
-		app = ItApplication.getInstance();
-		thisFragment = this;
+		mApp = ItApplication.getInstance();
+		mThisFragment = this;
+		mPrefHelper = mApp.getPrefHelper();
 	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		activity = (ItActivity) getActivity();
-		ExceptionManager.setHandler(thisFragment);
+		mActivity = (ItActivity) getActivity();
+		ExceptionManager.setHandler(mThisFragment);
 	}
 
 
@@ -39,7 +41,6 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 		String title = null;
 		String message = null;
 		if(ex.getType().equals(ItException.TYPE.INTERNET_NOT_CONNECTED)){
-			title = null;
 			message = getResources().getString(R.string.internet_not_connected_message);
 		} else{
 			title = ex.getType().toString();
@@ -58,21 +59,5 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 			}
 		}); 
 		exceptionDialog.show(getFragmentManager(), GlobalVariable.DIALOG_KEY);
-	}
-
-
-	public void Log(ItFragment fragment, Object... params){
-		if(GlobalVariable.DEBUG_MODE){
-			Log.e("ERROR", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-			Log.e("ERROR", "[ "+fragment.getClass().getName() + " ]");
-			for(Object str : params) {
-				if (str == null) {
-					Log.e("ERROR", "null");
-					continue;
-				}
-				Log.e("ERROR", str.toString());
-			}
-			Log.e("ERROR", "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-		}
 	}
 }

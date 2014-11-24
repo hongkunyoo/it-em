@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/main_upload"
+        android:title="@string/upload"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/main_settings"
+        android:title="@string/settings"
+        app:showAsAction="never"/>
+
+</menu>

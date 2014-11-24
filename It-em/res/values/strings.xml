@@ -11,17 +11,27 @@
     <string name="internet_not_connected_message">Internet is unavailable. Please check network status.</string>
 
     <!-- Login -->
-    <string name="facebook_login">Login with facebook in a instant</string>
+    <string name="facebook_login">Login with facebook in an instant</string>
 
-    <!-- Item -->
-    <string-array name="item_tab_title_string_array">
-        <item>All</item>
-        <item>Rank</item>
-        <item>My</item>
+    <!-- Main -->
+    <string-array name="main_tab_title_string_array">
+        <item>Home</item>
+        <item>Hot</item>
+        <item>My Page</item>
+    </string-array>
+    <string-array name="my_page_tab_title_string_array">
+        <item>It:em</item>
+        <item>it</item>
     </string-array>
 
-    <string name="app_settings">App Settings</string>
+    <string name="settings">Settings</string>
     <string name="image">Image</string>
     <string name="it">It</string>
+    
+    <!-- Upload -->
+    <string name="upload">Upload</string>
+    
+    <!-- Profile Settings -->
+    <string name="profile">Profile</string>
 
 </resources>

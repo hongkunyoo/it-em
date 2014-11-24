@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
@@ -29,14 +30,20 @@ public class ItApplication extends Application {
 
 	// Analysis
 	private static UserHabitHelper userHabitHelper;
+	private static GAHelper gaHelper;
+
+	// Helper
 	private static PrefHelper prefHelper;
 	private static ObjectPrefHelper objPrefHelper;
 	private static AimHelper aimHelper;
 
+
 	public ItApplication() {
+		super();
 		app = this;
 	}
-	
+
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -45,6 +52,7 @@ public class ItApplication extends Application {
 	}
 	
 	private void init() {
+
 		String AZURE_URL;
 		String AZURE_KEY;
 		if (GlobalVariable.DEBUG_MODE) {
@@ -61,10 +69,10 @@ public class ItApplication extends Application {
 					AZURE_KEY,
 					app);
 		} catch (MalformedURLException e) {
-			// Do nothing
 		}
 
 		userHabitHelper = new UserHabitHelper();
+		gaHelper = new GAHelper(app);
 		prefHelper = new PrefHelper(app);
 		objPrefHelper = new ObjectPrefHelper(app);
 		aimHelper = new AimHelper();
@@ -79,6 +87,9 @@ public class ItApplication extends Application {
 	}
 	public UserHabitHelper getUserHabitHelper() {
 		return userHabitHelper;
+	}
+	public GAHelper getGaHelper() {
+		return gaHelper;
 	}
 	public PrefHelper getPrefHelper() {
 		if (prefHelper == null) init();
