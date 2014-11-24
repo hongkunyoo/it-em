@@ -23,10 +23,10 @@ public class SplashFragment extends ItFragment {
 
 
 	private void runItem() {
-		Intent intent = new Intent();
-		intent.setClass(activity, HongkunTestActivity.class);
-		startActivity(intent);
-//		goToNextActivity();
+//		Intent intent = new Intent();
+//		intent.setClass(mActivity, HongkunTestActivity.class);
+//		startActivity(intent);
+		goToNextActivity();
 	}
 
 
