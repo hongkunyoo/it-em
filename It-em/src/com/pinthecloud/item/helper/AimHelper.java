@@ -29,28 +29,30 @@ public class AimHelper {
 	private final String AIM_UPDATE = "aim_update";
 	private final String AIM_DELETE = "aim_delete";
 
+
 	public AimHelper() {
 		mClient = ItApplication.getInstance().getMobileClient();
 	}
 
-	public<E extends AbstractItemModel<E>> void listItem(int page, final ItListCallback<Item> callback) {
 
+	public<E extends AbstractItemModel<E>> void listItem(int page, final ItListCallback<Item> callback) {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("page", page);
 
 		mClient.invokeApi(AIM_ITEM_LIST, jo, new ApiJsonOperationCallback() {
 
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				if (arg1 == null) {
-					MyLog.log(arg0);
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					MyLog.log(_json);
 				} else {
-					MyLog.log(arg1);
+					MyLog.log(exception);
 				}
 			}
 		});
 	}
+
 
 	public<E extends AbstractItemModel<E>> void list(E obj, final ItListCallback<E> callback) {
 		String refId = obj.getRefId();
@@ -59,88 +61,83 @@ public class AimHelper {
 		mClient.invokeApi(AIM_LIST, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				JsonElement json = arg0.getAsJsonArray();
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				JsonElement json = _json.getAsJsonArray();
 				List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
 				callback.onCompleted(list, list.size());
 			}
 		});
 	}
-	
+
+
 	public<E extends AbstractItemModel<E>> void list(String refId, final ItListCallback<E> callback) {
 		if (refId == null || refId.equals("")) return;
 
 		mClient.invokeApi(AIM_LIST, null, new ApiJsonOperationCallback() {
 
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				JsonElement json = arg0.getAsJsonArray();
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				JsonElement json = _json.getAsJsonArray();
 				List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
 				callback.onCompleted(list, list.size());
 			}
 		});
 	}
 
-	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final ItEntityCallback<String> callback) {
 
+	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final ItEntityCallback<String> callback) {
 		mClient.invokeApi(AIM_ADD, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				if (arg1 == null) {
-					callback.onCompleted(arg0.getAsString());
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(_json.getAsString());
 				} else {
 					String content = null;
-					if (arg2 != null) content = arg2.getContent();
+					if (response != null) content = response.getContent();
 					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, content));
 				}
-				
+
 			}
 		});
 	}
 
-	public <E extends AbstractItemModel<E>> void del(final E obj, final ItEntityCallback<Boolean> callback) {
 
+	public <E extends AbstractItemModel<E>> void del(final E obj, final ItEntityCallback<Boolean> callback) {
 		mClient.invokeApi(AIM_DELETE, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				callback.onCompleted(arg0.getAsBoolean());
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				callback.onCompleted(_json.getAsBoolean());
 			}
 		});
 	}
 
-	public <E extends AbstractItemModel<E>> void get(final E obj, final ItEntityCallback<E> callback) {
 
+	public <E extends AbstractItemModel<E>> void get(final E obj, final ItEntityCallback<E> callback) {
 		mClient.invokeApi(AIM_GET, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				callback.onCompleted((E)new Gson().fromJson(arg0, obj.getClass()));
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
 			}
 		});
 	}
 
-	public <E extends AbstractItemModel<E>> void update(final E obj, final ItEntityCallback<Boolean> callback) {
 
+	public <E extends AbstractItemModel<E>> void update(final E obj, final ItEntityCallback<Boolean> callback) {
 		mClient.invokeApi(AIM_UPDATE, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				callback.onCompleted(arg0.getAsBoolean());
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				callback.onCompleted(_json.getAsBoolean());
 			}
 		});
 	}

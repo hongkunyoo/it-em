@@ -12,12 +12,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.view.GridViewWithHeaderAndFooter;
+import com.pinthecloud.item.view.GridViewWithHeaderFooter;
 
 public class MyItemFragment extends MyPageItemFragment {
 
-	private GridViewWithHeaderAndFooter mGridView;
+	private GridViewWithHeaderFooter mGridView;
 	private MyItemGridAdapter mGridAdapter;
+	private int mGridSpacing;
 	private boolean mIsAdding = false;
 
 
@@ -34,6 +35,7 @@ public class MyItemFragment extends MyPageItemFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPosition = getArguments().getInt(POSITION_KEY);
+		mGridSpacing = getResources().getDimensionPixelSize(R.dimen.my_item_spacing);
 	}
 
 
@@ -52,20 +54,20 @@ public class MyItemFragment extends MyPageItemFragment {
 	@Override
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - MyPageFragment.mTabHeight != 0 || mGridView.getFirstVisiblePosition() < 1) {
-			mGridView.smoothScrollToPositionFromTop(mGridView.getNumColumns(), scrollHeight, 0);
+			mGridView.smoothScrollToPositionFromTop(mGridView.getNumColumns(), scrollHeight+mGridSpacing, 0);
 		}
 	}
 
 
 	private void findComponent(View view){
-		mGridView = (GridViewWithHeaderAndFooter)view.findViewById(R.id.my_item_frag_grid);
+		mGridView = (GridViewWithHeaderFooter)view.findViewById(R.id.my_item_frag_grid);
 	}
 
 
 	private void setGrid(LayoutInflater inflater){
 		View header = inflater.inflate(R.layout.row_my_item_grid_header, mGridView, false);
 		mGridView.addHeaderView(header);
-
+		
 		mGridAdapter = new MyItemGridAdapter(mActivity, mThisFragment);
 		mGridView.setAdapter(mGridAdapter);
 

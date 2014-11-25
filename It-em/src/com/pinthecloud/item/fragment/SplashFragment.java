@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.HongkunTestActivity;
 import com.pinthecloud.item.activity.LoginActivity;
+import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.helper.PrefHelper;
 
 public class SplashFragment extends ItFragment {
 
@@ -45,7 +47,13 @@ public class SplashFragment extends ItFragment {
 		
 		if(mThisFragment.isAdded()){
 			Intent intent = new Intent();
-			intent.setClass(mActivity, LoginActivity.class);
+			if (!mPrefHelper.getBoolean(PrefHelper.IS_LOGIN_KEY)){
+				// New User
+				intent.setClass(mActivity, LoginActivity.class);
+			} else{
+				// Has Logined
+				intent.setClass(mActivity, MainActivity.class);
+			}
 			startActivity(intent);
 		}
 	}

@@ -51,11 +51,6 @@ public class AsyncChainer {
 	}
 
 
-	public static interface Chainable {
-		public void doNext(ItFragment frag);
-	}
-
-
 	public static void clearChain(ItFragment frag) {
 		Class<?> clazz = null;
 		if (frag == null) {
@@ -65,5 +60,10 @@ public class AsyncChainer {
 		}
 		Queue<Chainable> queue = mapQueue.get(clazz.getName());
 		queue.clear();
+	}
+
+
+	public static interface Chainable {
+		public void doNext(ItFragment frag);
 	}
 }

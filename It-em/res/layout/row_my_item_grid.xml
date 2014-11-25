@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <android.support.v7.widget.CardView
+    <com.pinthecloud.item.view.SquareImageView
+        android:id="@+id/row_my_item_grid_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/image"
+        android:scaleType="fitXY" />
 
-        <ImageView
-            android:id="@+id/row_my_item_grid_image"
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/row_my_item_grid_image" >
+
+        <TextView
+            android:id="@+id/row_my_item_grid_it_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/row_my_item_grid_reply"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/image"
-            android:scaleType="fitXY" />
-    </android.support.v7.widget.CardView>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

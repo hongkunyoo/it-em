@@ -84,14 +84,12 @@ public class AbstractItemModel<T> {
 	private class AbstractFeedModelAdapter implements JsonSerializer<T> {
 
 		@Override
-		public JsonElement serialize(T arg0, Type arg1,
-				JsonSerializationContext arg2) {
+		public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
 			Gson gson = new Gson();
-			JsonObject json = gson.fromJson(gson.toJson(arg0), JsonObject.class);
+			JsonObject json = gson.fromJson(gson.toJson(src), JsonObject.class);
 			JsonObject jo = new JsonObject();
-			jo.addProperty("table", arg0.getClass().getSimpleName());
+			jo.addProperty("table", src.getClass().getSimpleName());
 			jo.add("data", json);
-			
 			return jo;
 		}
 	}

@@ -28,7 +28,6 @@ public class HongkunTestFragment extends ItFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_hongkun_test, container, false);
 		findComponent(view);
@@ -37,7 +36,6 @@ public class HongkunTestFragment extends ItFragment {
 	}
 	
 	private void findComponent(View view) {
-		// TODO Auto-generated method stub
 		btn = (Button)view.findViewById(R.id.button1);
 		btn2 = (Button)view.findViewById(R.id.button2);
 		editText = (EditText)view.findViewById(R.id.editText1);
@@ -51,7 +49,6 @@ public class HongkunTestFragment extends ItFragment {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				MyLog.log("btn Clicked");
 				Item item = new Item().rand(true);
 				id = item.getId();
@@ -75,7 +72,6 @@ public class HongkunTestFragment extends ItFragment {
 	
 	@Override
 	public void handleException(ItException ex) {
-		// TODO Auto-generated method stub
 		MyLog.log(ex);
 	}
 }

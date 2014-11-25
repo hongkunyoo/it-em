@@ -35,7 +35,7 @@ public class ItApplication extends Application {
 
 	// Helper
 	private static PrefHelper prefHelper;
-	private static ObjectPrefHelper objPrefHelper;
+	private static ObjectPrefHelper objectPrefHelper;
 	private static AimHelper aimHelper;
 	private static AimDBHelper aimDBHelper;
 
@@ -48,12 +48,11 @@ public class ItApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
 		init();
 	}
-	
-	private void init() {
 
+
+	private void init() {
 		String AZURE_URL;
 		String AZURE_KEY;
 		if (GlobalVariable.DEBUG_MODE) {
@@ -74,11 +73,13 @@ public class ItApplication extends Application {
 
 		userHabitHelper = new UserHabitHelper();
 		gaHelper = new GAHelper(app);
+
 		prefHelper = new PrefHelper(app);
-		objPrefHelper = new ObjectPrefHelper(app);
+		objectPrefHelper = new ObjectPrefHelper(app);
 		aimHelper = new AimHelper();
 		aimDBHelper = new AimDBHelper(app);
 	}
+
 
 	public static ItApplication getInstance(){
 		return app;
@@ -97,9 +98,9 @@ public class ItApplication extends Application {
 		if (prefHelper == null) init();
 		return prefHelper;
 	}
-	public ObjectPrefHelper getObjPrefHelper() {
-		if (objPrefHelper == null) init();
-		return objPrefHelper;
+	public ObjectPrefHelper getObjectPrefHelper() {
+		if (objectPrefHelper == null) init();
+		return objectPrefHelper;
 	}
 	public AimHelper getAimHelper() {
 		if (aimHelper == null) init();

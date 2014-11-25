@@ -1,109 +1,176 @@
 package com.pinthecloud.item.adapter;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
-import android.content.Context;
+import java.util.List;
+
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.view.CircleImageView;
+import com.pinthecloud.item.view.SquareImageView;
 
-public class HotItemListAdapter extends ArrayAdapter<Item> implements StickyListHeadersAdapter {
+public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private Context mContext;
+	private enum VIEW_TYPE{
+		NORMAL,
+		FOOTER
+	}
+
 	private ItFragment mFrag;
+	private List<Item> mItemList;
+	private boolean hasFooter = false;
+
+	public void setHasFooter(boolean hasFooter) {
+		this.hasFooter = hasFooter;
+	}
 
 
-	public HotItemListAdapter(Context context, ItFragment frag) {
-		super(context, 0);
-		this.mContext = context;
+	public HotItemListAdapter(ItFragment frag, List<Item> itemList) {
 		this.mFrag = frag;
+		this.mItemList = itemList;
+		setHasStableIds(true);
 	}
 
 
-	private static class ViewHolder {
-		public View mView;
-		public ImageView mImage;
-		public TextView mText;
+	public static class NormalViewHolder extends RecyclerView.ViewHolder {
+		public View view;
+		public TextView rank;
+		public CircleImageView profileImage;
+		public TextView nickName;
+		public SquareImageView image;
+		public TextView content;
+		public Button itButton;
+		public TextView itNumber;
+		public Button reply;
 
-		public ViewHolder(View view) {
+		public NormalViewHolder(View view) {
+			super(view);
+			this.view = view;
+			this.rank = (TextView)view.findViewById(R.id.row_home_item_list_header_rank);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_header_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_header_nick_name);
+			this.image = (SquareImageView)view.findViewById(R.id.row_hot_item_list_image);
+			this.content = (TextView)view.findViewById(R.id.row_hot_item_list_content);
+			this.itButton = (Button)view.findViewById(R.id.row_hot_item_list_it_button);
+			this.itNumber = (TextView)view.findViewById(R.id.row_hot_item_list_it_number);
+			this.reply = (Button)view.findViewById(R.id.row_hot_item_list_reply);
+		}
+	}
+
+
+	public static class FooterViewHolder extends RecyclerView.ViewHolder {
+		public View mView;
+		public ProgressBar mProgressBar;
+
+		public FooterViewHolder(View view) {
+			super(view);
 			this.mView = view;
-			this.mImage = (ImageView)view.findViewById(R.id.row_hot_item_list_image);
-			this.mText = (TextView)view.findViewById(R.id.row_hot_item_list_text);
+			this.mProgressBar = (ProgressBar)view.findViewById(R.id.row_home_item_list_footer_progress_bar);
 		}
 	}
 
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder viewHolder = onCreateViewHolder(convertView, parent);
-		Item item = getItem(position);
-		if (item != null) {
-			onBindViewHolder(viewHolder, item);
-		}
-		return viewHolder.mView;
-	}
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = null;
+		ViewHolder viewHolder = null;
+		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-
-	private ViewHolder onCreateViewHolder(View convertView, ViewGroup parent) {
-		View view = convertView;
-		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			view = inflater.inflate(R.layout.row_hot_item_list, parent, false);
+			viewHolder = new NormalViewHolder(view);
+		} else if(viewType == VIEW_TYPE.FOOTER.ordinal()){
+			view = inflater.inflate(R.layout.row_home_item_list_footer, parent, false);
+			viewHolder = new FooterViewHolder(view);
 		}
-		return new ViewHolder(view);
-	}
 
-
-	private void onBindViewHolder(ViewHolder holder, Item item) {
-		holder.mText.setText(item.getContent());
-	}
-
-
-	private static class HeaderViewHolder {
-		public View mView;
-		public TextView mText;
-
-		public HeaderViewHolder(View view) {
-			this.mView = view;
-			this.mText = (TextView)view.findViewById(R.id.row_hot_item_list_header_text);
-		}
-	}
-
-
-	@Override 
-	public View getHeaderView(int position, View convertView, ViewGroup parent) {
-		HeaderViewHolder viewHolder = onCreateHeaderViewHolder(convertView, parent);
-		Item item = getItem(position);
-		if (item != null) {
-			onBindHeaderViewHolder(viewHolder, item);
-		}
-		return viewHolder.mView;
-	}
-
-
-	private HeaderViewHolder onCreateHeaderViewHolder(View convertView, ViewGroup parent) {
-		View view = convertView;
-		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(R.layout.row_hot_item_list_header, parent, false);
-		}
-		return new HeaderViewHolder(view);
-	}
-
-
-	private void onBindHeaderViewHolder(HeaderViewHolder holder, Item item) {
-		holder.mText.setText(item.getContent());
+		return viewHolder;
 	}
 
 
 	@Override
-	public long getHeaderId(int position) {
-		return getItem(position).getContent().subSequence(0, 1).charAt(0);
+	public void onBindViewHolder(ViewHolder holder, int position) {
+		int viewType = getItemViewType(position);
+		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
+			Item item = mItemList.get(position);
+			NormalViewHolder viewHolder = (NormalViewHolder)holder;
+			setNormalComponent(viewHolder, item);
+		}
+	}
+
+
+	@Override
+	public int getItemCount() {
+		if(hasFooter){
+			return mItemList.size()+1;
+		} else{
+			return mItemList.size();
+		}
+	}
+
+
+	@Override
+	public int getItemViewType(int position) {
+		if(hasFooter){
+			if (position < getItemCount()-1) {
+				return VIEW_TYPE.NORMAL.ordinal();
+			} else{
+				return VIEW_TYPE.FOOTER.ordinal();
+			}
+		} else{
+			return VIEW_TYPE.NORMAL.ordinal();
+		}
+	}
+
+
+	private void setNormalComponent(NormalViewHolder holder, Item item){
+		setNormalText(holder, item);
+		setNormalButton(holder, item);
+	}
+
+
+	private void setNormalText(NormalViewHolder holder, Item item){
+		holder.content.setText(item.getContent());
+		holder.itNumber.setText(""+item.getLikeItCount());
+	}
+
+
+	private void setNormalButton(NormalViewHolder holder, Item item){
+		holder.itButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+			}
+		});
+
+		holder.reply.setText(""+item.getReplyCount());
+		holder.reply.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+			}
+		});
+	}
+
+
+	public void add(Item item, int position) {
+		mItemList.add(position, item);
+		notifyItemInserted(position);
+	}
+
+
+	public void remove(Item item) {
+		int position = mItemList.indexOf(item);
+		mItemList.remove(position);
+		notifyItemRemoved(position);
 	}
 }

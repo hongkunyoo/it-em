@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.pinthecloud.item.view.GridViewWithHeaderAndFooter
+    <com.pinthecloud.item.view.GridViewWithHeaderFooter
         android:id="@+id/my_item_frag_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:horizontalSpacing="@dimen/my_item_spacing"
         android:numColumns="@integer/my_page_item_grid_column_num"
         android:scrollbars="none"
-        android:stretchMode="columnWidth" />
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/my_item_spacing" />
 
 </RelativeLayout>

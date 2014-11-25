@@ -1,29 +1,34 @@
 package com.pinthecloud.item.fragment;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-import android.annotation.SuppressLint;
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
 
+import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
+import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
+import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
+import com.pinthecloud.item.adapter.HotItemListHeaderAdapter;
 import com.pinthecloud.item.model.Item;
 
 public class HotFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mListRefresh;
-	private StickyListHeadersListView mListView;
+	private RecyclerView mListView;
 	private HotItemListAdapter mListAdapter;
+	private LinearLayoutManager mListLayoutManager;
+	private List<Item> mItemList;
 	private boolean mIsAdding = false;
 
 
@@ -43,7 +48,7 @@ public class HotFragment extends ItFragment {
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.hot_frag_progress_bar);
 		mListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.hot_frag_item_list_refresh);
-		mListView = (StickyListHeadersListView)view.findViewById(R.id.hot_frag_item_list);
+		mListView = (RecyclerView)view.findViewById(R.id.hot_frag_item_list);
 	}
 
 
@@ -60,34 +65,38 @@ public class HotFragment extends ItFragment {
 	}
 
 
-	@SuppressLint("InflateParams")
 	private void setList(){
-		View footer = mActivity.getLayoutInflater().inflate(R.layout.row_home_item_list_footer, null);
-		mListView.addFooterView(footer);
+		mListView.setHasFixedSize(true);
 
-		mListAdapter = new HotItemListAdapter(mActivity, mThisFragment);
+		mListLayoutManager = new LinearLayoutManager(mActivity);
+		mListView.setLayoutManager(mListLayoutManager);
+		mListView.setItemAnimator(new DefaultItemAnimator());
+
+		mItemList = Lists.newArrayList();
+		mListAdapter = new HotItemListAdapter(mThisFragment, mItemList);
 		mListView.setAdapter(mListAdapter);
 
-		mListView.setOnItemClickListener(new OnItemClickListener() {
+		StickyHeadersItemDecoration decoration = new StickyHeadersBuilder()
+		.setAdapter(mListAdapter)
+		.setRecyclerView(mListView)
+		.setStickyHeadersAdapter(new HotItemListHeaderAdapter(mItemList), true)
+		.build();
+		mListView.addItemDecoration(decoration);
+
+		mListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-			}
-		});
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				int lastVisibleItem = mListLayoutManager.findLastVisibleItemPosition();
+				int totalItemCount = mListLayoutManager.getItemCount();
 
-		mListView.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				if (firstVisibleItem + visibleItemCount >= totalItemCount-3 && !mIsAdding) {
+				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
 					mIsAdding = true;
+					mListAdapter.setHasFooter(true);
 					addNextItemList();
 					mIsAdding = false;
+					mListAdapter.setHasFooter(false);
 				}
 			}
 		});
@@ -95,20 +104,12 @@ public class HotFragment extends ItFragment {
 
 
 	private void updateList() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mListAdapter.add(item);
-		}
 		mProgressBar.setVisibility(View.GONE);
+		mListAdapter.notifyDataSetChanged();
 	}
 
 
 	private void addNextItemList() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mListAdapter.add(item);
-		}
+		mListAdapter.notifyDataSetChanged();
 	}
 }

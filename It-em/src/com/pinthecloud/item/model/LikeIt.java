@@ -8,7 +8,6 @@ public class LikeIt extends AbstractItemModel<LikeIt>{
 	public final String getContent() {
 		return null;
 	}
-	
 	@Override
 	public final void setContent(String content) {
 	}

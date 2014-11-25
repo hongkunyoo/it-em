@@ -17,6 +17,7 @@ import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.helper.PrefHelper;
 
 public class LoginFragment extends ItFragment {
 
@@ -71,8 +72,7 @@ public class LoginFragment extends ItFragment {
 	public void onResume() {
 		super.onResume();
 		Session session = Session.getActiveSession();
-		if (session != null &&
-				(session.isOpened() || session.isClosed()) ) {
+		if (session != null && (session.isOpened() || session.isClosed()) ) {
 			onSessionStateChange(session, session.getState(), null);
 		}
 		mUiHelper.onResume();
@@ -131,6 +131,7 @@ public class LoginFragment extends ItFragment {
 
 
 	private void facebookLogin(GraphUser user){
+		mPrefHelper.put(PrefHelper.IS_LOGIN_KEY, true);
 		goToNextActivity();
 	}
 

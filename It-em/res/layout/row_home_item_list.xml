@@ -2,19 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/home_item_spacing"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/row_home_item_list_image"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/row_home_item_list_header_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.pinthecloud.item.view.CircleImageView
+            android:id="@+id/row_home_item_list_header_profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/row_home_item_list_header_nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <com.pinthecloud.item.view.SquareImageView
+        android:id="@+id/row_home_item_list_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:contentDescription="@string/image"
         android:scaleType="fitXY" />
 
     <TextView
-        android:id="@+id/row_home_item_list_text"
+        android:id="@+id/row_home_item_list_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/row_home_item_list_it_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/row_home_item_list_it_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/row_home_item_list_reply"
+            android:layout_toStartOf="@+id/row_home_item_list_reply" />
+
+        <Button
+            android:id="@+id/row_home_item_list_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.pinthecloud.item.view.CircleImageView
+            android:id="@+id/row_home_item_list_profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/row_home_item_list_nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>
