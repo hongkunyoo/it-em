@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.pinthecloud.item.view.GridViewWithHeaderAndFooter
+    <com.pinthecloud.item.view.GridViewWithHeaderFooter
         android:id="@+id/collect_item_frag_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

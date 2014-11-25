@@ -9,15 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/my_page_frag_header_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/my_page_header_height" >
+        android:layout_height="@dimen/my_page_header_height"
+        android:orientation="vertical" >
 
         <RelativeLayout
             android:id="@+id/my_page_frag_profile_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="@dimen/my_page_profile_height" >
 
             <TextView
                 android:id="@+id/my_page_frag_nick_name"
@@ -30,7 +31,6 @@
             android:id="@+id/my_page_frag_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_tab_height"
-            android:layout_alignBottom="@+id/my_page_frag_profile_layout"
             android:background="@color/brand_color"
             psts:pstsActivateTextColor="@android:color/white"
             psts:pstsIndicatorHeight="@dimen/none"
@@ -38,6 +38,6 @@
             psts:pstsTabSwitch="true"
             psts:pstsTextAllCaps="false"
             psts:pstsUnderlineHeight="@dimen/none" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

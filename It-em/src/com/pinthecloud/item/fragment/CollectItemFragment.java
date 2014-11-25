@@ -12,11 +12,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.CollectItemGridAdapter;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.view.GridViewWithHeaderAndFooter;
+import com.pinthecloud.item.view.GridViewWithHeaderFooter;
 
 public class CollectItemFragment extends MyPageItemFragment {
 
-	private GridViewWithHeaderAndFooter mGridView;
+	private GridViewWithHeaderFooter mGridView;
 	private CollectItemGridAdapter mGridAdapter;
 	private boolean mIsAdding = false;
 
@@ -58,7 +58,7 @@ public class CollectItemFragment extends MyPageItemFragment {
 
 
 	private void findComponent(View view){
-		mGridView = (GridViewWithHeaderAndFooter)view.findViewById(R.id.collect_item_frag_grid);
+		mGridView = (GridViewWithHeaderFooter)view.findViewById(R.id.collect_item_frag_grid);
 	}
 
 

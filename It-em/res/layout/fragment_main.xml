@@ -17,7 +17,7 @@
         psts:pstsTabSwitch="true"
         psts:pstsUnderlineHeight="@dimen/none" />
 
-    <android.support.v4.view.ViewPager
+    <com.pinthecloud.item.view.DisallowChildScrollViewPager
         android:id="@+id/main_frag_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

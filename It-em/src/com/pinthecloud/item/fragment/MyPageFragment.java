@@ -8,20 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyPagePagerAdapter;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
 import com.pinthecloud.item.util.MyLog;
+import com.pinthecloud.item.view.NoPageTransformer;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MyPageFragment extends ItFragment {
 
 	public static int mTabHeight;
 
-	private RelativeLayout mHeader;
+	private LinearLayout mHeader;
 	private TextView mNickNameText;
 
 	private PagerSlidingTabStrip mTab;
@@ -42,7 +43,7 @@ public class MyPageFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mHeader = (RelativeLayout)view.findViewById(R.id.my_page_frag_header_layout);
+		mHeader = (LinearLayout)view.findViewById(R.id.my_page_frag_header_layout);
 		mNickNameText = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
 		mTab = (PagerSlidingTabStrip) view.findViewById(R.id.my_page_frag_tab);
 		mViewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
@@ -71,28 +72,22 @@ public class MyPageFragment extends ItFragment {
 		});
 
 		mViewPager.setAdapter(mViewPagerAdapter);
+		mViewPager.setPageTransformer(false, new NoPageTransformer());
+		
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
+				SparseArrayCompat<ScrollTabHolder> scrollTabHolders = mViewPagerAdapter.getScrollTabHolders();
+				ScrollTabHolder fragmentContent = scrollTabHolders.valueAt(position);
+				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 			}
+			
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-				int currentItem = mViewPager.getCurrentItem();
-				if (positionOffsetPixels > 0) {
-					SparseArrayCompat<ScrollTabHolder> scrollTabHolders = mViewPagerAdapter.getScrollTabHolders();
-					ScrollTabHolder fragmentContent = null;
-					if (position < currentItem) {
-						// Revealed the previous page
-						fragmentContent = scrollTabHolders.valueAt(position);
-					} else {
-						// Revealed the next page
-						fragmentContent = scrollTabHolders.valueAt(position + 1);
-					}
-					fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
-				}
 			}
+			
 			@Override
 			public void onPageScrollStateChanged(int state) {
 			}

@@ -1,7 +1,6 @@
 package com.pinthecloud.item.fragment;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
@@ -11,12 +10,13 @@ import android.view.ViewGroup;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainPagerAdapter;
 import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.view.DisallowChildScrollViewPager;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MainFragment extends ItFragment {
 
 	private PagerSlidingTabStrip mTab;
-	private ViewPager mViewPager;
+	private DisallowChildScrollViewPager mViewPager;
 	private MainPagerAdapter mMainPagerAdapter;
 
 
@@ -43,7 +43,7 @@ public class MainFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mTab = (PagerSlidingTabStrip) view.findViewById(R.id.main_frag_tab);
-		mViewPager = (ViewPager) view.findViewById(R.id.main_frag_pager);
+		mViewPager = (DisallowChildScrollViewPager) view.findViewById(R.id.main_frag_pager);
 	}
 
 
@@ -52,7 +52,7 @@ public class MainFragment extends ItFragment {
 		mViewPager.setOffscreenPageLimit(mMainPagerAdapter.getCount());
 		mViewPager.setAdapter(mMainPagerAdapter);
 		mViewPager.setCurrentItem(position);
-
+		
 		mTab.setStartTab(position);
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {

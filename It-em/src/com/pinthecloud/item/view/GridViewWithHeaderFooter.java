@@ -35,10 +35,10 @@ import android.widget.WrapperListAdapter;
 /**
  * A {@link GridView} that supports adding header rows in a
  * very similar way to {@link android.widget.ListView}.
- * See {@link GridViewWithHeaderAndFooter#addHeaderView(View, Object, boolean)}
- * See {@link GridViewWithHeaderAndFooter#addFooterView(View, Object, boolean)}
+ * See {@link GridViewWithHeaderFooter#addHeaderView(View, Object, boolean)}
+ * See {@link GridViewWithHeaderFooter#addFooterView(View, Object, boolean)}
  */
-public class GridViewWithHeaderAndFooter extends GridView {
+public class GridViewWithHeaderFooter extends GridView {
 
 	/**
 	 * This view holder will be set to be a tag of a place holder view to indicate that this view is a place holder view.
@@ -76,17 +76,17 @@ public class GridViewWithHeaderAndFooter extends GridView {
 		super.setClipChildren(false);
 	}
 
-	public GridViewWithHeaderAndFooter(Context context) {
+	public GridViewWithHeaderFooter(Context context) {
 		super(context);
 		initHeaderGridView();
 	}
 
-	public GridViewWithHeaderAndFooter(Context context, AttributeSet attrs) {
+	public GridViewWithHeaderFooter(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initHeaderGridView();
 	}
 
-	public GridViewWithHeaderAndFooter(Context context, AttributeSet attrs, int defStyle) {
+	public GridViewWithHeaderFooter(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initHeaderGridView();
 	}
@@ -286,9 +286,9 @@ public class GridViewWithHeaderAndFooter extends GridView {
 
 		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-			int targetWidth = GridViewWithHeaderAndFooter.this.getMeasuredWidth()
-					- GridViewWithHeaderAndFooter.this.getPaddingLeft()
-					- GridViewWithHeaderAndFooter.this.getPaddingRight();
+			int targetWidth = GridViewWithHeaderFooter.this.getMeasuredWidth()
+					- GridViewWithHeaderFooter.this.getPaddingLeft()
+					- GridViewWithHeaderFooter.this.getPaddingRight();
 			widthMeasureSpec = MeasureSpec.makeMeasureSpec(targetWidth,
 					MeasureSpec.getMode(widthMeasureSpec));
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
