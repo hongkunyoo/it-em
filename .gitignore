@@ -31,3 +31,6 @@ proguard/
 
 .classpath
 project.properties
+
+It-em/src/com/pinthecloud/item/util/HongUtil.java
+
