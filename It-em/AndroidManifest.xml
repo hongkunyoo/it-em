@@ -48,17 +48,24 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UploadActivity"
-            android:label="@string/upload"
+            android:label="@string/item_upload"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ProfileSettingsActivity"
-            android:label="@string/profile"
+            android:label="@string/profile_settings"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/settings"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.HongkunTestActivity"></activity>
+        <activity
+            android:name=".activity.OtherPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ReplyActivity"
+            android:label="@string/reply"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.HongkunTestActivity" />
     </application>
 
 </manifest>

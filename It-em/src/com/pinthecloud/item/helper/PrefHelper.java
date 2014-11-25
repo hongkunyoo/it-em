@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.pinthecloud.item.exception.ItException;
 
@@ -15,13 +14,14 @@ public class PrefHelper {
 	public static final int DEFAULT_INT = 0;
 	public static final boolean DEFAULT_BOOLEAN = false;
 	public static final float DEFAULT_FLOAT = 0;
-	
+
 	// Key
 	public static final String MAIN_EXIT_TAB = "MAIN_EXIT_TAB";
 
 	// User
 	public static final String IS_LOGIN_KEY = "IS_LOGIN_KEY";
-	
+
+
 	private SharedPreferences mPref;
 	public PrefHelper(Context context){
 		this.mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -43,11 +43,10 @@ public class PrefHelper {
 		else if (obj instanceof Long)
 			mPref.edit().putLong(key, (Long) obj).commit();
 		else {
-//			Log.e("ERROR", "No such instance - key : " + key + " clasName : " +obj.getClass());
-//			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
 		}
 	}
-	
+
 	public Object get(String key, Class<?> clazz) {
 		String className = clazz.getName();
 		if (className.equals("java.lang.String") || className.equals("java.lang.Character")
@@ -61,11 +60,10 @@ public class PrefHelper {
 		} else if (className.equals("java.lang.Boolean") || className.equals("boolean")) {
 			return mPref.getBoolean(key, DEFAULT_BOOLEAN);
 		} else {
-			Log.e("ERROR", "No such primative - key : " + key + " / class : " +clazz);
 			throw new ItException(ItException.TYPE.NO_SUCH_PRIMATIVE);
 		}
 	}
-	
+
 	public String getString(String key){
 		return mPref.getString(key, DEFAULT_STRING);
 	}

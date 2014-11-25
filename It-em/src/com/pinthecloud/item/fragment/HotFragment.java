@@ -59,7 +59,6 @@ public class HotFragment extends ItFragment {
 			@Override
 			public void onRefresh() {
 				updateList();
-				mListRefresh.setRefreshing(false);
 			}
 		});
 	}
@@ -73,7 +72,7 @@ public class HotFragment extends ItFragment {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = Lists.newArrayList();
-		mListAdapter = new HotItemListAdapter(mThisFragment, mItemList);
+		mListAdapter = new HotItemListAdapter(mActivity, mThisFragment, mItemList);
 		mListView.setAdapter(mListAdapter);
 
 		StickyHeadersItemDecoration decoration = new StickyHeadersBuilder()
@@ -92,11 +91,7 @@ public class HotFragment extends ItFragment {
 				int totalItemCount = mListLayoutManager.getItemCount();
 
 				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
-					mIsAdding = true;
-					mListAdapter.setHasFooter(true);
 					addNextItemList();
-					mIsAdding = false;
-					mListAdapter.setHasFooter(false);
 				}
 			}
 		});
@@ -105,11 +100,18 @@ public class HotFragment extends ItFragment {
 
 	private void updateList() {
 		mProgressBar.setVisibility(View.GONE);
+		mListRefresh.setRefreshing(false);
 		mListAdapter.notifyDataSetChanged();
 	}
 
 
 	private void addNextItemList() {
+		mIsAdding = true;
+		mListAdapter.setHasFooter(true);
+		mListAdapter.notifyDataSetChanged();
+
+		mIsAdding = false;
+		mListAdapter.setHasFooter(false);
 		mListAdapter.notifyDataSetChanged();
 	}
 }

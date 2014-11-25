@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.adapter.ItItemGridAdapter;
-import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.GridViewWithHeaderFooter;
 
 public class ItItemFragment extends MyPageItemFragment {
@@ -20,7 +21,7 @@ public class ItItemFragment extends MyPageItemFragment {
 	private ItItemGridAdapter mGridAdapter;
 	private boolean mIsAdding = false;
 	private int mGridSpacing;
-	
+
 
 	public static MyPageItemFragment newInstance(int position) {
 		ItItemFragment fragment = new ItItemFragment();
@@ -76,6 +77,8 @@ public class ItItemFragment extends MyPageItemFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				Intent intent = new Intent(mActivity, ItemActivity.class);
+				startActivity(intent);
 			}
 		});
 
@@ -104,19 +107,9 @@ public class ItItemFragment extends MyPageItemFragment {
 
 
 	public void updateGrid() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mGridAdapter.add(item);
-		}
 	}
 
 
 	private void addNextItem() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mGridAdapter.add(item);
-		}
 	}
 }

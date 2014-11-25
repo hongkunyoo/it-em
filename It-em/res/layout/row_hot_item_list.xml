@@ -5,40 +5,70 @@
     android:layout_marginBottom="@dimen/home_item_spacing"
     android:orientation="vertical" >
 
-    <com.pinthecloud.item.view.SquareImageView
-        android:id="@+id/row_hot_item_list_image"
+    <LinearLayout
+        android:id="@+id/row_hot_item_list_profile_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/image"
-        android:scaleType="fitXY" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/row_hot_item_list_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/row_hot_item_list_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/row_hot_item_list_it_button"
+        <com.pinthecloud.item.view.CircleImageView
+            android:id="@+id/row_hot_item_list_profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/row_hot_item_list_it_number"
+            android:id="@+id/row_hot_item_list_nick_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/row_hot_item_list_reply"
-            android:layout_toStartOf="@+id/row_hot_item_list_reply" />
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/row_hot_item_list_reply"
+    <LinearLayout
+        android:id="@+id/row_hot_item_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <com.pinthecloud.item.view.SquareImageView
+            android:id="@+id/row_hot_item_list_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/row_hot_item_list_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-</LinearLayout>
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/row_hot_item_list_it_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/row_hot_item_list_it_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/row_hot_item_list_reply"
+                android:layout_toStartOf="@+id/row_hot_item_list_reply" />
+
+            <Button
+                android:id="@+id/row_hot_item_list_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

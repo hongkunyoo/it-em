@@ -9,7 +9,7 @@ import com.pinthecloud.item.interfaces.ItDialogCallback;
 
 public class ItAlertDialog extends ItDialogFragment{
 
-	private ItDialogCallback mItDialogCallback;
+	private ItDialogCallback mCallback;
 	private String mTitle;
 	private String mMessage;
 	private String mOkMessage;
@@ -17,9 +17,9 @@ public class ItAlertDialog extends ItDialogFragment{
 	private boolean mCancel;
 
 
-	public ItAlertDialog(String title, String message, String okMessage, String cancelMessage, boolean cancel, ItDialogCallback itDialogCallback) {
+	public ItAlertDialog(String title, String message, String okMessage, String cancelMessage, boolean cancel, ItDialogCallback callback) {
 		super();
-		this.mItDialogCallback = itDialogCallback;
+		this.mCallback = callback;
 		this.mTitle = title;
 		this.mMessage = message;
 		this.mOkMessage = okMessage;
@@ -61,15 +61,20 @@ public class ItAlertDialog extends ItDialogFragment{
 	private void setDialog(AlertDialog.Builder altBuilder){
 		altBuilder.setMessage(mMessage);
 		altBuilder.setPositiveButton(mOkMessage, new DialogInterface.OnClickListener() {
+
+			@Override
 			public void onClick(DialogInterface dialog,int which) {
-				mItDialogCallback.doPositiveThing(null);
+				mCallback.doPositiveThing(null);
 				dismiss();
 			}
 		});
+
 		if(mCancel){
 			altBuilder.setNegativeButton(mCancelMessage, new DialogInterface.OnClickListener() {
+
+				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mItDialogCallback.doNegativeThing(null);
+					mCallback.doNegativeThing(null);
 					dismiss();
 				}
 			});

@@ -14,24 +14,25 @@
     <string name="facebook_login">Login with facebook in an instant</string>
 
     <!-- Main -->
-    <string-array name="main_tab_title_string_array">
-        <item>Home</item>
-        <item>Hot</item>
-        <item>My Page</item>
-    </string-array>
-    <string-array name="my_page_tab_title_string_array">
-        <item>My Item</item>
-        <item>It Item</item>
-    </string-array>
-
     <string name="settings">Settings</string>
     <string name="image">Image</string>
     <string name="it">It</string>
-    
-    <!-- Upload -->
-    <string name="upload">Upload</string>
-    
-    <!-- Profile Settings -->
-    <string name="profile">Profile</string>
 
+    <!-- Upload -->
+    <string name="item_upload">Item Upload</string>
+    <string name="upload">Upload</string>
+
+    <!-- Profile Settings -->
+    <string name="profile_settings">Profile Settings</string>
+    <string name="nick_name">Nick Name</string>
+    <string name="description">Description</string>
+    <string name="website">Website</string>
+    <string name="done">Done</string>
+    
+    <!-- Settings -->
+    <string name="logout">Logout</string>
+
+    <!-- Reply -->
+    <string name="reply">Reply</string>
+    <string name="previous_reply">Previous Reply&#8230;</string>
 </resources>
