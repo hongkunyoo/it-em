@@ -12,6 +12,7 @@ import com.pinthecloud.item.util.RandomUtil;
 
 public class AbstractItemModel<T> {
 	private String id;
+//	private int intId;
 	private String content;
 	private String whoMade;
 	private String createTime;
@@ -23,6 +24,12 @@ public class AbstractItemModel<T> {
 	public void setId(String id) {
 		this.id = id;
 	}
+//	public int getIntId() {
+//		return intId;
+//	}
+//	public void setIntId(int intId) {
+//		this.intId = intId;
+//	}
 	public String getContent() {
 		return content;
 	}
@@ -60,6 +67,13 @@ public class AbstractItemModel<T> {
 	
 	@SuppressWarnings("unchecked")
 	public T rand() {
+		return this.rand(false);
+	}
+	@SuppressWarnings("unchecked")
+	public T rand(boolean hasId) {
+		if (hasId) {
+			this.setId(RandomUtil.getString());
+		}
 		this.setContent(RandomUtil.getObjName());
 		this.setWhoMade(RandomUtil.getName());
 		this.setCreateTime(RandomUtil.getTime());

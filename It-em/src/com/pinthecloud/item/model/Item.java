@@ -2,11 +2,14 @@ package com.pinthecloud.item.model;
 
 import java.util.List;
 
+import com.pinthecloud.item.util.RandomUtil;
+
 public class Item extends AbstractItemModel<Item> {
 	private List<Reply> replyList;
 	private int replyCount;
 	private List<LikeIt> likeItList;
 	private int likeItCount;
+	private String imgUrl;
 	
 	public int getReplyCount() {
 		return replyCount;
@@ -38,5 +41,27 @@ public class Item extends AbstractItemModel<Item> {
 
 	public void setLikeItList(List<LikeIt> likeList) {
 		this.likeItList = likeList;
+	}
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+	
+	@Override
+	public Item rand() {
+		Item item = super.rand();
+		item.setLikeItCount(RandomUtil.getInt());
+		item.setReplyCount(RandomUtil.getInt());
+		item.setImgUrl(RandomUtil.getString());
+		return item;
+	}
+	
+	@Override
+	public Item rand(boolean hasId) {
+		Item item = this.rand();
+		item.setId(RandomUtil.getString());
+		return item;
 	}
 }

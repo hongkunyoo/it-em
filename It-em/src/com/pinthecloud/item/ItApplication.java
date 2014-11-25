@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
+import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
@@ -36,7 +37,7 @@ public class ItApplication extends Application {
 	private static PrefHelper prefHelper;
 	private static ObjectPrefHelper objPrefHelper;
 	private static AimHelper aimHelper;
-
+	private static AimDBHelper aimDBHelper;
 
 	public ItApplication() {
 		super();
@@ -76,6 +77,7 @@ public class ItApplication extends Application {
 		prefHelper = new PrefHelper(app);
 		objPrefHelper = new ObjectPrefHelper(app);
 		aimHelper = new AimHelper();
+		aimDBHelper = new AimDBHelper(app);
 	}
 
 	public static ItApplication getInstance(){
@@ -102,6 +104,10 @@ public class ItApplication extends Application {
 	public AimHelper getAimHelper() {
 		if (aimHelper == null) init();
 		return aimHelper;
+	}
+	public AimDBHelper getAimDBHelper() {
+		if (aimDBHelper == null) init();
+		return aimDBHelper;
 	}
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -23,14 +23,26 @@ public class SplashFragment extends ItFragment {
 
 
 	private void runItem() {
-//		Intent intent = new Intent();
-//		intent.setClass(mActivity, HongkunTestActivity.class);
-//		startActivity(intent);
 		goToNextActivity();
 	}
 
 
 	private void goToNextActivity() {
+		boolean isHong = false;
+		try {
+			Class.forName("com.pinthecloud.item.util.HongUtil");
+			isHong = true;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			isHong = false;
+		}
+		if (isHong) {
+			Intent hongTent = new Intent();
+			hongTent.setClass(mActivity, HongkunTestActivity.class);
+			startActivity(hongTent);
+			return;
+		}
+		
 		if(mThisFragment.isAdded()){
 			Intent intent = new Intent();
 			intent.setClass(mActivity, LoginActivity.class);
