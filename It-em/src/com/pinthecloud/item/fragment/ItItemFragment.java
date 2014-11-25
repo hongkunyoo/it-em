@@ -19,7 +19,8 @@ public class ItItemFragment extends MyPageItemFragment {
 	private GridViewWithHeaderFooter mGridView;
 	private ItItemGridAdapter mGridAdapter;
 	private boolean mIsAdding = false;
-
+	private int mGridSpacing;
+	
 
 	public static MyPageItemFragment newInstance(int position) {
 		ItItemFragment fragment = new ItItemFragment();
@@ -34,6 +35,7 @@ public class ItItemFragment extends MyPageItemFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPosition = getArguments().getInt(POSITION_KEY);
+		mGridSpacing = getResources().getDimensionPixelSize(R.dimen.my_item_spacing);
 	}
 
 
@@ -41,7 +43,7 @@ public class ItItemFragment extends MyPageItemFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_collect_item, container, false);
+		View view = inflater.inflate(R.layout.fragment_it_item, container, false);
 		findComponent(view);
 		setGrid(inflater);
 		updateGrid();
@@ -52,7 +54,7 @@ public class ItItemFragment extends MyPageItemFragment {
 	@Override
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - MyPageFragment.mTabHeight != 0 || mGridView.getFirstVisiblePosition() < 1) {
-			mGridView.smoothScrollToPositionFromTop(mGridView.getNumColumns(), scrollHeight, 0);
+			mGridView.smoothScrollToPositionFromTop(mGridView.getNumColumns(), scrollHeight+mGridSpacing, 0);
 		}
 	}
 

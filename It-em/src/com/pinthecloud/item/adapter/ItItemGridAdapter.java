@@ -25,12 +25,12 @@ public class ItItemGridAdapter extends ArrayAdapter<Item> {
 
 
 	private static class ViewHolder {
-		public View mView;
-		public ImageView mImage;
+		public View view;
+		public ImageView image;
 
 		public ViewHolder(View view) {
-			this.mView = view;
-			this.mImage = (ImageView)view.findViewById(R.id.row_it_item_grid_image);
+			this.view = view;
+			this.image = (ImageView)view.findViewById(R.id.row_it_item_grid_image);
 		}
 	}
 
@@ -42,7 +42,7 @@ public class ItItemGridAdapter extends ArrayAdapter<Item> {
 		if (item != null) {
 			onBindViewHolder(viewHolder, item);
 		}
-		return viewHolder.mView;
+		return viewHolder.view;
 	}
 
 

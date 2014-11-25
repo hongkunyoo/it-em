@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyPagePagerAdapter;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
-import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.view.NoPageTransformer;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
@@ -73,7 +72,7 @@ public class MyPageFragment extends ItFragment {
 
 		mViewPager.setAdapter(mViewPagerAdapter);
 		mViewPager.setPageTransformer(false, new NoPageTransformer());
-		
+
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 
@@ -83,11 +82,9 @@ public class MyPageFragment extends ItFragment {
 				ScrollTabHolder fragmentContent = scrollTabHolders.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 			}
-			
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			}
-			
 			@Override
 			public void onPageScrollStateChanged(int state) {
 			}

@@ -80,11 +80,13 @@ public class HomeFragment extends ItFragment {
 				super.onScrolled(recyclerView, dx, dy);
 				int lastVisibleItem = mListLayoutManager.findLastVisibleItemPosition();
 				int totalItemCount = mListLayoutManager.getItemCount();
-				
+
 				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
 					mIsAdding = true;
+					mListAdapter.setHasFooter(true);
 					addNextItemList();
 					mIsAdding = false;
+					mListAdapter.setHasFooter(false);
 				}
 			}
 		});

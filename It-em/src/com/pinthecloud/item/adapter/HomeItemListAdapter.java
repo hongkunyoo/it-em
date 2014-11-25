@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,6 +16,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.CircleImageView;
+import com.pinthecloud.item.view.SquareImageView;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -27,6 +27,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	private ItFragment mFrag;
 	private List<Item> mItemList;
+	private boolean hasFooter = false;
+
+	public void setHasFooter(boolean hasFooter) {
+		this.hasFooter = hasFooter;
+	}
 
 
 	public HomeItemListAdapter(ItFragment frag, List<Item> itemList) {
@@ -37,7 +42,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
-		public ImageView image;
+		public SquareImageView image;
 		public TextView content;
 		public Button itButton;
 		public TextView itNumber;
@@ -48,7 +53,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.image = (ImageView)view.findViewById(R.id.row_home_item_list_image);
+			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (Button)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
@@ -102,16 +107,24 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	@Override
 	public int getItemCount() {
-		return this.mItemList.size()+1;
+		if(hasFooter){
+			return mItemList.size()+1;
+		} else{
+			return mItemList.size();
+		}
 	}
 
 
 	@Override
 	public int getItemViewType(int position) {
-		if (position < getItemCount()-1) {
-			return VIEW_TYPE.NORMAL.ordinal();
+		if(hasFooter){
+			if (position < getItemCount()-1) {
+				return VIEW_TYPE.NORMAL.ordinal();
+			} else{
+				return VIEW_TYPE.FOOTER.ordinal();
+			}
 		} else{
-			return VIEW_TYPE.FOOTER.ordinal();
+			return VIEW_TYPE.NORMAL.ordinal();
 		}
 	}
 
