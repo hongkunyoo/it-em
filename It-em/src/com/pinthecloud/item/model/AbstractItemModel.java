@@ -12,24 +12,24 @@ import com.pinthecloud.item.util.RandomUtil;
 
 public class AbstractItemModel<T> {
 	private String id;
-//	private int intId;
+	//	private int intId;
 	private String content;
 	private String whoMade;
 	private String createTime;
 	private String refId;
-	
+
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-//	public int getIntId() {
-//		return intId;
-//	}
-//	public void setIntId(int intId) {
-//		this.intId = intId;
-//	}
+	//	public int getIntId() {
+	//		return intId;
+	//	}
+	//	public void setIntId(int intId) {
+	//		this.intId = intId;
+	//	}
 	public String getContent() {
 		return content;
 	}
@@ -54,21 +54,22 @@ public class AbstractItemModel<T> {
 	public void setRefId(String refId) {
 		this.refId = refId;
 	}
-	
+
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);
 	}
-	
+
 	public JsonElement toJson() {
 		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractFeedModelAdapter()).create().toJson(this);
 		return new Gson().fromJson(jsonStr, JsonElement.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public T rand() {
 		return this.rand(false);
 	}
+
 	@SuppressWarnings("unchecked")
 	public T rand(boolean hasId) {
 		if (hasId) {
@@ -80,7 +81,7 @@ public class AbstractItemModel<T> {
 		this.setRefId(RandomUtil.getString(10));
 		return (T)this;
 	}
-	
+
 	private class AbstractFeedModelAdapter implements JsonSerializer<T> {
 
 		@Override

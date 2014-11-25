@@ -30,31 +30,23 @@ public class SplashFragment extends ItFragment {
 
 
 	private void goToNextActivity() {
-		boolean isHong = false;
 		try {
 			Class.forName("com.pinthecloud.item.util.HongUtil");
-			isHong = true;
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			isHong = false;
-		}
-		if (isHong) {
 			Intent hongTent = new Intent();
 			hongTent.setClass(mActivity, HongkunTestActivity.class);
 			startActivity(hongTent);
-			return;
-		}
-		
-		if(mThisFragment.isAdded()){
-			Intent intent = new Intent();
-			if (!mPrefHelper.getBoolean(PrefHelper.IS_LOGIN_KEY)){
-				// New User
-				intent.setClass(mActivity, LoginActivity.class);
-			} else{
-				// Has Logined
-				intent.setClass(mActivity, MainActivity.class);
+		} catch (ClassNotFoundException e) {
+			if(mThisFragment.isAdded()){
+				Intent intent = new Intent();
+				if (!mPrefHelper.getBoolean(PrefHelper.IS_LOGIN_KEY)){
+					// New User
+					intent.setClass(mActivity, LoginActivity.class);
+				} else{
+					// Has Logined
+					intent.setClass(mActivity, MainActivity.class);
+				}
+				startActivity(intent);
 			}
-			startActivity(intent);
 		}
 	}
 }
