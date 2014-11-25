@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.view.CircleImageView;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -35,13 +38,23 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public ImageView image;
-		public TextView text;
+		public TextView content;
+		public Button itButton;
+		public TextView itNumber;
+		public Button reply;
+		public CircleImageView profileImage;
+		public TextView nickName;
 
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
 			this.image = (ImageView)view.findViewById(R.id.row_home_item_list_image);
-			this.text = (TextView)view.findViewById(R.id.row_home_item_list_text);
+			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
+			this.itButton = (Button)view.findViewById(R.id.row_home_item_list_it_button);
+			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
+			this.reply = (Button)view.findViewById(R.id.row_home_item_list_reply);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 		}
 	}
 
@@ -62,13 +75,16 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = null;
 		ViewHolder viewHolder = null;
+		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
-			view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_item_list, parent, false);
+			view = inflater.inflate(R.layout.row_home_item_list, parent, false);
 			viewHolder = new NormalViewHolder(view);
 		} else if(viewType == VIEW_TYPE.FOOTER.ordinal()){
-			view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_item_list_footer, parent, false);
+			view = inflater.inflate(R.layout.row_home_item_list_footer, parent, false);
 			viewHolder = new FooterViewHolder(view);
 		}
+
 		return viewHolder;
 	}
 
@@ -80,9 +96,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			Item item = mItemList.get(position);
 			NormalViewHolder viewHolder = (NormalViewHolder)holder;
 			setNormalComponent(viewHolder, item);
-		}else if(viewType == VIEW_TYPE.FOOTER.ordinal()){
-			FooterViewHolder viewHolder = (FooterViewHolder)holder;
-			setFooterComponent(viewHolder);
 		}
 	}
 
@@ -104,10 +117,44 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
 	private void setNormalComponent(NormalViewHolder holder, Item item){
-		holder.text.setText(item.getContent());
+		setNormalText(holder, item);
+		setNormalButton(holder, item);
 	}
 
 
-	private void setFooterComponent(FooterViewHolder holder){
+	private void setNormalText(NormalViewHolder holder, Item item){
+		holder.content.setText(item.getContent());
+		holder.itNumber.setText(""+item.getLikeItCount());
+	}
+
+
+	private void setNormalButton(NormalViewHolder holder, Item item){
+		holder.itButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+			}
+		});
+
+		holder.reply.setText(""+item.getReplyCount());
+		holder.reply.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+			}
+		});
+	}
+
+
+	public void add(Item item, int position) {
+		mItemList.add(position, item);
+		notifyItemInserted(position);
+	}
+
+
+	public void remove(Item item) {
+		int position = mItemList.indexOf(item);
+		mItemList.remove(position);
+		notifyItemRemoved(position);
 	}
 }

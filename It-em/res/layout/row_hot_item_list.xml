@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/home_item_spacing"
     android:orientation="vertical" >
 
-    <ImageView
+    <com.pinthecloud.item.view.SquareImageView
         android:id="@+id/row_hot_item_list_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:contentDescription="@string/image"
         android:scaleType="fitXY" />

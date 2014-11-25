@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
-import com.pinthecloud.item.model.Item;
 
 public class HotFragment extends ItFragment {
 
@@ -95,20 +94,10 @@ public class HotFragment extends ItFragment {
 
 
 	private void updateList() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mListAdapter.add(item);
-		}
 		mProgressBar.setVisibility(View.GONE);
 	}
 
 
 	private void addNextItemList() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mListAdapter.add(item);
-		}
 	}
 }

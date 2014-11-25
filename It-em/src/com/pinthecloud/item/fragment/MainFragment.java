@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainPagerAdapter;
 import com.pinthecloud.item.helper.PrefHelper;
-import com.pinthecloud.item.view.DisallowChildScrollViewPager;
+import com.pinthecloud.item.view.ParentViewPager;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MainFragment extends ItFragment {
 
 	private PagerSlidingTabStrip mTab;
-	private DisallowChildScrollViewPager mViewPager;
+	private ParentViewPager mViewPager;
 	private MainPagerAdapter mMainPagerAdapter;
 
 
@@ -43,7 +43,7 @@ public class MainFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mTab = (PagerSlidingTabStrip) view.findViewById(R.id.main_frag_tab);
-		mViewPager = (DisallowChildScrollViewPager) view.findViewById(R.id.main_frag_pager);
+		mViewPager = (ParentViewPager) view.findViewById(R.id.main_frag_pager);
 	}
 
 

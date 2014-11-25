@@ -7,34 +7,31 @@ import com.pinthecloud.item.activity.SplashActivity;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.test.model.TestObject;
-import com.pinthecloud.item.test.util.MyLog;
 
 public class HongkunActivityTest extends ActivityInstrumentationTestCase2<SplashActivity>{
-	
-	PrefHelper prefHelper;
-	TestObject testObj;
-	ObjectPrefHelper objPrefHelper;
-	AimHelper aimHelper;
-	
+
+	private PrefHelper prefHelper;
+	private TestObject testObj;
+	private ObjectPrefHelper objPrefHelper;
+	private AimHelper aimHelper;
+
+
 	public HongkunActivityTest() {
 		super(SplashActivity.class);
 	}
-	
+
+
 	public HongkunActivityTest(Class<SplashActivity> activityClass) {
 		super(activityClass);
 	}
-	
+
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		
 		prefHelper = ItApplication.getInstance().getPrefHelper();
-		objPrefHelper = ItApplication.getInstance().getObjPrefHelper();
+		objPrefHelper = ItApplication.getInstance().getObjectPrefHelper();
 		aimHelper = ItApplication.getInstance().getAimHelper();
-		
 	}
-	
 }

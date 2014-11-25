@@ -5,18 +5,21 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class DisallowChildScrollViewPager extends ViewPager {
+public class ParentViewPager extends ViewPager {
 
-	public DisallowChildScrollViewPager(Context context) {
+	public ParentViewPager(Context context) {
 		super(context);
 	}
 
-	public DisallowChildScrollViewPager(Context context, AttributeSet attrs) {
+	public ParentViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
 	@Override
 	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-		return false;
+		if(v != this && v instanceof ViewPager){
+			return false;
+		}
+		return super.canScroll(v, checkV, dx, x, y);
 	}
 }

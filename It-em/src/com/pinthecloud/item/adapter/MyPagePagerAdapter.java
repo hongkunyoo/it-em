@@ -7,7 +7,7 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.util.SparseArrayCompat;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.CollectItemFragment;
+import com.pinthecloud.item.fragment.ItItemFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
 import com.pinthecloud.item.fragment.MyPageItemFragment;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
@@ -40,7 +40,7 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 			fragment = (MyPageItemFragment) MyItemFragment.newInstance(position);
 			break;
 		case 1:
-			fragment = (MyPageItemFragment) CollectItemFragment.newInstance(position);
+			fragment = (MyPageItemFragment) ItItemFragment.newInstance(position);
 			break;
 		}
 		mScrollTabHolders.put(position, fragment);

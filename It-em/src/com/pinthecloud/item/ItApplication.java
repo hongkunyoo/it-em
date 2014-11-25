@@ -34,7 +34,7 @@ public class ItApplication extends Application {
 
 	// Helper
 	private static PrefHelper prefHelper;
-	private static ObjectPrefHelper objPrefHelper;
+	private static ObjectPrefHelper objectPrefHelper;
 	private static AimHelper aimHelper;
 
 
@@ -47,12 +47,11 @@ public class ItApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
 		init();
 	}
-	
-	private void init() {
 
+
+	private void init() {
 		String AZURE_URL;
 		String AZURE_KEY;
 		if (GlobalVariable.DEBUG_MODE) {
@@ -73,10 +72,12 @@ public class ItApplication extends Application {
 
 		userHabitHelper = new UserHabitHelper();
 		gaHelper = new GAHelper(app);
+
 		prefHelper = new PrefHelper(app);
-		objPrefHelper = new ObjectPrefHelper(app);
+		objectPrefHelper = new ObjectPrefHelper(app);
 		aimHelper = new AimHelper();
 	}
+
 
 	public static ItApplication getInstance(){
 		return app;
@@ -95,14 +96,16 @@ public class ItApplication extends Application {
 		if (prefHelper == null) init();
 		return prefHelper;
 	}
-	public ObjectPrefHelper getObjPrefHelper() {
-		if (objPrefHelper == null) init();
-		return objPrefHelper;
+	public ObjectPrefHelper getObjectPrefHelper() {
+		if (objectPrefHelper == null) init();
+		return objectPrefHelper;
 	}
 	public AimHelper getAimHelper() {
 		if (aimHelper == null) init();
 		return aimHelper;
 	}
+
+
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

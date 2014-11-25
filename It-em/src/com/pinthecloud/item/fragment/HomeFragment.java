@@ -5,6 +5,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ public class HomeFragment extends ItFragment {
 	private SwipeRefreshLayout mListRefresh;
 	private RecyclerView mListView;
 	private HomeItemListAdapter mListAdapter;
-	private RecyclerView.LayoutManager mListLayoutManager;
+	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
 	private boolean mIsAdding = false;
 
@@ -66,6 +67,7 @@ public class HomeFragment extends ItFragment {
 
 		mListLayoutManager = new LinearLayoutManager(mActivity);
 		mListView.setLayoutManager(mListLayoutManager);
+		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = Lists.newArrayList();
 		mListAdapter = new HomeItemListAdapter(mThisFragment, mItemList);
@@ -76,9 +78,9 @@ public class HomeFragment extends ItFragment {
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-				int lastVisibleItem = ((LinearLayoutManager) mListLayoutManager).findLastVisibleItemPosition();
-				int totalItemCount = mListAdapter.getItemCount();
-
+				int lastVisibleItem = mListLayoutManager.findLastVisibleItemPosition();
+				int totalItemCount = mListLayoutManager.getItemCount();
+				
 				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
 					mIsAdding = true;
 					addNextItemList();
@@ -90,22 +92,12 @@ public class HomeFragment extends ItFragment {
 
 
 	private void updateList() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mItemList.add(item);
-		}
 		mProgressBar.setVisibility(View.GONE);
 		mListAdapter.notifyDataSetChanged();
 	}
 
 
 	private void addNextItemList() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mItemList.add(item);
-		}
 		mListAdapter.notifyDataSetChanged();
 	}
 }

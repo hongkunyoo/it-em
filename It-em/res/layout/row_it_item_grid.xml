@@ -9,7 +9,7 @@
         android:layout_height="match_parent" >
 
         <ImageView
-            android:id="@+id/row_collect_item_grid_image"
+            android:id="@+id/row_it_item_grid_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"

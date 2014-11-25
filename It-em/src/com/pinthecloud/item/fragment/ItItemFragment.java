@@ -10,19 +10,19 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.adapter.CollectItemGridAdapter;
+import com.pinthecloud.item.adapter.ItItemGridAdapter;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.GridViewWithHeaderFooter;
 
-public class CollectItemFragment extends MyPageItemFragment {
+public class ItItemFragment extends MyPageItemFragment {
 
 	private GridViewWithHeaderFooter mGridView;
-	private CollectItemGridAdapter mGridAdapter;
+	private ItItemGridAdapter mGridAdapter;
 	private boolean mIsAdding = false;
 
 
 	public static MyPageItemFragment newInstance(int position) {
-		CollectItemFragment fragment = new CollectItemFragment();
+		ItItemFragment fragment = new ItItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
 		fragment.setArguments(bundle);
@@ -66,7 +66,7 @@ public class CollectItemFragment extends MyPageItemFragment {
 		View header = inflater.inflate(R.layout.row_my_item_grid_header, mGridView, false);
 		mGridView.addHeaderView(header);
 
-		mGridAdapter = new CollectItemGridAdapter(mActivity, mThisFragment);
+		mGridAdapter = new ItItemGridAdapter(mActivity, mThisFragment);
 		mGridView.setAdapter(mGridAdapter);
 
 		mGridView.setOnItemClickListener(new OnItemClickListener() {

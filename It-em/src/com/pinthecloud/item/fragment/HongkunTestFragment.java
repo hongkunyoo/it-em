@@ -19,15 +19,14 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.MyLog;
 
 public class HongkunTestFragment extends ItFragment {
-	AimHelper aimHelper;
 	
-	Button btn;
-	EditText editText;
+	private AimHelper aimHelper;
+	private Button btn;
+	private EditText editText;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_hongkun_test, container, false);
 		findComponent(view);
@@ -36,7 +35,6 @@ public class HongkunTestFragment extends ItFragment {
 	}
 	
 	private void findComponent(View view) {
-		// TODO Auto-generated method stub
 		btn = (Button)view.findViewById(R.id.button1);
 		editText = (EditText)view.findViewById(R.id.editText1);
 		
@@ -49,7 +47,6 @@ public class HongkunTestFragment extends ItFragment {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				MyLog.log("btn Clicked");
 				int page = Integer.parseInt(editText.getText().toString());
 				aimHelper.listItem(page, new ItListCallback<Item>(){
@@ -77,7 +74,6 @@ public class HongkunTestFragment extends ItFragment {
 	
 	@Override
 	public void handleException(ItException ex) {
-		// TODO Auto-generated method stub
 		MyLog.log(ex);
 	}
 }
