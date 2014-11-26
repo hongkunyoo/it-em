@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import android.content.Context;
 
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.util.MyLog;
 
 public class ObjectPrefHelper {
 
@@ -28,8 +27,7 @@ public class ObjectPrefHelper {
 
 		for (Method method : methods) {
 			if (!isGetter(method)) continue;
-			
-			MyLog.log(removePrefix(method.getName()), invokeGetMethod(obj, method));
+
 			pref.put(removePrefix(method.getName()), invokeGetMethod(obj, method));
 		}
 	}
@@ -41,10 +39,8 @@ public class ObjectPrefHelper {
 		for (Method method : methods) {
 			if (!isSetter(method)) continue;
 
-			// Type type = method.getGenericParameterTypes()[0];
 			Class<?> paramClazz = method.getParameterTypes()[0];
-			invokeSetMethod(obj, method,
-					pref.get(removePrefix(method.getName()), paramClazz));
+			invokeSetMethod(obj, method, pref.get(removePrefix(method.getName()), paramClazz));
 		}
 
 		return obj;
@@ -54,14 +50,8 @@ public class ObjectPrefHelper {
 		try {
 			return method.invoke(obj);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return null;
 	}
@@ -71,14 +61,8 @@ public class ObjectPrefHelper {
 		try {
 			method.invoke(obj, arg);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 

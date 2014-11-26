@@ -2,6 +2,8 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -9,10 +11,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.activity.OtherPageActivity;
+import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.CircleImageView;
@@ -25,6 +31,7 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 		FOOTER
 	}
 
+	private Context mContext;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 	private boolean hasFooter = false;
@@ -34,7 +41,8 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 	}
 
 
-	public HotItemListAdapter(ItFragment frag, List<Item> itemList) {
+	public HotItemListAdapter(Context context, ItFragment frag, List<Item> itemList) {
+		this.mContext = context;
 		this.mFrag = frag;
 		this.mItemList = itemList;
 		setHasStableIds(true);
@@ -43,9 +51,13 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
+
+		public LinearLayout profileLayout;
 		public TextView rank;
 		public CircleImageView profileImage;
 		public TextView nickName;
+
+		public LinearLayout itemLayout;
 		public SquareImageView image;
 		public TextView content;
 		public Button itButton;
@@ -55,9 +67,13 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.rank = (TextView)view.findViewById(R.id.row_home_item_list_header_rank);
-			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_header_profile_image);
-			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_header_nick_name);
+
+			this.profileLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
+			this.rank = (TextView)view.findViewById(R.id.row_hot_item_list_rank);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_hot_item_list_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_hot_item_list_nick_name);
+
+			this.itemLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_item_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_hot_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_hot_item_list_content);
 			this.itButton = (Button)view.findViewById(R.id.row_hot_item_list_it_button);
@@ -102,8 +118,9 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 		int viewType = getItemViewType(position);
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position);
-			NormalViewHolder viewHolder = (NormalViewHolder)holder;
-			setNormalComponent(viewHolder, item);
+			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
+			setNormalText(normalViewHolder, item);
+			setNormalButton(normalViewHolder, item);
 		}
 	}
 
@@ -132,12 +149,6 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 	}
 
 
-	private void setNormalComponent(NormalViewHolder holder, Item item){
-		setNormalText(holder, item);
-		setNormalButton(holder, item);
-	}
-
-
 	private void setNormalText(NormalViewHolder holder, Item item){
 		holder.content.setText(item.getContent());
 		holder.itNumber.setText(""+item.getLikeItCount());
@@ -145,6 +156,24 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 	private void setNormalButton(NormalViewHolder holder, Item item){
+		holder.profileLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, OtherPageActivity.class);
+				mContext.startActivity(intent);
+			}
+		});
+
+		holder.itemLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, ItemActivity.class);
+				mContext.startActivity(intent);
+			}
+		});
+
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -157,6 +186,8 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent(mContext, ReplyActivity.class);
+				mContext.startActivity(intent);
 			}
 		});
 	}

@@ -2,6 +2,8 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -9,10 +11,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.activity.OtherPageActivity;
+import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.CircleImageView;
@@ -25,6 +31,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		FOOTER
 	}
 
+	private Context mContext;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 	private boolean hasFooter = false;
@@ -34,7 +41,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	public HomeItemListAdapter(ItFragment frag, List<Item> itemList) {
+	public HomeItemListAdapter(Context context, ItFragment frag, List<Item> itemList) {
+		this.mContext = context;
 		this.mFrag = frag;
 		this.mItemList = itemList;
 	}
@@ -42,22 +50,30 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
+
+		public LinearLayout itemLayout;
 		public SquareImageView image;
 		public TextView content;
 		public Button itButton;
 		public TextView itNumber;
 		public Button reply;
+
+		public LinearLayout profileLayout;
 		public CircleImageView profileImage;
 		public TextView nickName;
 
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
+
+			this.itemLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_item_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (Button)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
 			this.reply = (Button)view.findViewById(R.id.row_home_item_list_reply);
+
+			this.profileLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 		}
@@ -99,8 +115,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		int viewType = getItemViewType(position);
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position);
-			NormalViewHolder viewHolder = (NormalViewHolder)holder;
-			setNormalComponent(viewHolder, item);
+			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
+			setNormalText(normalViewHolder, item);
+			setNormalButton(normalViewHolder, item);
 		}
 	}
 
@@ -129,12 +146,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	private void setNormalComponent(NormalViewHolder holder, Item item){
-		setNormalText(holder, item);
-		setNormalButton(holder, item);
-	}
-
-
 	private void setNormalText(NormalViewHolder holder, Item item){
 		holder.content.setText(item.getContent());
 		holder.itNumber.setText(""+item.getLikeItCount());
@@ -142,6 +153,24 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
 	private void setNormalButton(NormalViewHolder holder, Item item){
+		holder.profileLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, OtherPageActivity.class);
+				mContext.startActivity(intent);
+			}
+		});
+
+		holder.itemLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, ItemActivity.class);
+				mContext.startActivity(intent);
+			}
+		});
+
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -154,6 +183,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent(mContext, ReplyActivity.class);
+				mContext.startActivity(intent);
 			}
 		});
 	}

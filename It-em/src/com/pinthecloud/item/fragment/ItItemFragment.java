@@ -1,26 +1,28 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.List;
+
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
+import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ItItemGridAdapter;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.view.GridViewWithHeaderFooter;
 
 public class ItItemFragment extends MyPageItemFragment {
 
-	private GridViewWithHeaderFooter mGridView;
+	private RecyclerView mGridView;
 	private ItItemGridAdapter mGridAdapter;
+	private GridLayoutManager mGridLayoutManager;
+	private List<Item> mItemList;
 	private boolean mIsAdding = false;
-	private int mGridSpacing;
-	
+
 
 	public static MyPageItemFragment newInstance(int position) {
 		ItItemFragment fragment = new ItItemFragment();
@@ -35,7 +37,6 @@ public class ItItemFragment extends MyPageItemFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPosition = getArguments().getInt(POSITION_KEY);
-		mGridSpacing = getResources().getDimensionPixelSize(R.dimen.my_item_spacing);
 	}
 
 
@@ -53,70 +54,60 @@ public class ItItemFragment extends MyPageItemFragment {
 
 	@Override
 	public void adjustScroll(final int scrollHeight) {
-		if (scrollHeight - MyPageFragment.mTabHeight != 0 || mGridView.getFirstVisiblePosition() < 1) {
-			mGridView.smoothScrollToPositionFromTop(mGridView.getNumColumns(), scrollHeight+mGridSpacing, 0);
+		int findFirstVisibleItemPosition = mGridLayoutManager.findFirstVisibleItemPosition();
+		int spanCount = mGridLayoutManager.getSpanCount();
+		if (scrollHeight - MyPageFragment.mTabHeight != 0 || findFirstVisibleItemPosition < spanCount) {
+			mGridLayoutManager.scrollToPositionWithOffset(spanCount, scrollHeight);
 		}
 	}
 
 
 	private void findComponent(View view){
-		mGridView = (GridViewWithHeaderFooter)view.findViewById(R.id.collect_item_frag_grid);
+		mGridView = (RecyclerView)view.findViewById(R.id.it_item_frag_grid);
 	}
 
 
 	private void setGrid(LayoutInflater inflater){
-		View header = inflater.inflate(R.layout.row_my_item_grid_header, mGridView, false);
-		mGridView.addHeaderView(header);
+		mGridView.setHasFixedSize(true);
 
-		mGridAdapter = new ItItemGridAdapter(mActivity, mThisFragment);
+		mGridLayoutManager = new GridLayoutManager(mActivity, getResources().getInteger(R.integer.my_page_item_grid_column_num));
+		mGridView.setLayoutManager(mGridLayoutManager);
+		mGridView.setItemAnimator(new DefaultItemAnimator());
+
+		mItemList = Lists.newArrayList();
+		mGridAdapter = new ItItemGridAdapter(mActivity, mThisFragment, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 
-		mGridView.setOnItemClickListener(new OnItemClickListener() {
+		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-			}
-		});
-
-		mGridView.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				// Scroll Header
 				if (mScrollTabHolder != null){
-					// Scroll Header
-					mScrollTabHolder.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, mPosition);
+					mScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
 				}
 
-				if (firstVisibleItem + visibleItemCount >= totalItemCount-6 && !mIsAdding) {
-					// Add more item
-					mIsAdding = true;
-					addNextItem();
-					mIsAdding = false;
+				// Add more item
+				int lastVisibleItem = mGridLayoutManager.findLastVisibleItemPosition();
+				int totalItemCount = mGridLayoutManager.getItemCount();
+				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
+					addNextItemList();
 				}
 			}
 		});
 	}
 
 
-	public void updateGrid() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mGridAdapter.add(item);
-		}
+	private void updateGrid() {
+		mGridAdapter.notifyDataSetChanged();
 	}
 
 
-	private void addNextItem() {
-		for(int i=0 ; i<5 ; i++){
-			Item item = new Item();
-			item.setContent(""+i);
-			mGridAdapter.add(item);
-		}
+	private void addNextItemList() {
+		mIsAdding = true;
+
+		mIsAdding = false;
+		mGridAdapter.notifyDataSetChanged();
 	}
 }

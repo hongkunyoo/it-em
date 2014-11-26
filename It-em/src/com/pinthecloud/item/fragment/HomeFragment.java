@@ -56,7 +56,6 @@ public class HomeFragment extends ItFragment {
 			@Override
 			public void onRefresh() {
 				updateList();
-				mListRefresh.setRefreshing(false);
 			}
 		});
 	}
@@ -70,7 +69,7 @@ public class HomeFragment extends ItFragment {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = Lists.newArrayList();
-		mListAdapter = new HomeItemListAdapter(mThisFragment, mItemList);
+		mListAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
 		mListView.setAdapter(mListAdapter);
 
 		mListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -82,11 +81,7 @@ public class HomeFragment extends ItFragment {
 				int totalItemCount = mListLayoutManager.getItemCount();
 
 				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
-					mIsAdding = true;
-					mListAdapter.setHasFooter(true);
 					addNextItemList();
-					mIsAdding = false;
-					mListAdapter.setHasFooter(false);
 				}
 			}
 		});
@@ -95,11 +90,18 @@ public class HomeFragment extends ItFragment {
 
 	private void updateList() {
 		mProgressBar.setVisibility(View.GONE);
+		mListRefresh.setRefreshing(false);
 		mListAdapter.notifyDataSetChanged();
 	}
 
 
 	private void addNextItemList() {
+		mIsAdding = true;
+		mListAdapter.setHasFooter(true);
+		mListAdapter.notifyDataSetChanged();
+
+		mIsAdding = false;
+		mListAdapter.setHasFooter(false);
 		mListAdapter.notifyDataSetChanged();
 	}
 }

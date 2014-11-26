@@ -2,8 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/my_item_spacing"
     android:background="@android:color/white"
     android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/row_my_item_grid_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <com.pinthecloud.item.view.SquareImageView
         android:id="@+id/row_my_item_grid_image"

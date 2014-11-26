@@ -17,7 +17,7 @@ public class AbstractItemModel<T> {
 	private String whoMadeId;
 	private String rawCreateDateTime;
 	private String refId;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -66,15 +66,16 @@ public class AbstractItemModel<T> {
 	public String toString() {
 		return new Gson().toJson(this);
 	}
-	
+
 	public JsonElement toJson() {
 		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractFeedModelAdapter()).create().toJson(this);
 		return new Gson().fromJson(jsonStr, JsonElement.class);
 	}
-	
+
 	public T rand() {
 		return this.rand(false);
 	}
+
 	@SuppressWarnings("unchecked")
 	public T rand(boolean hasId) {
 		if (hasId) {
@@ -87,7 +88,7 @@ public class AbstractItemModel<T> {
 		this.setRefId(RandomUtil.getString(10));
 		return (T)this;
 	}
-	
+
 	private class AbstractFeedModelAdapter implements JsonSerializer<T> {
 
 		@Override
