@@ -22,7 +22,11 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.MyPagePagerAdapter;
+import com.pinthecloud.item.dialog.ItAlertListDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
+import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.NoPageTransformer;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
@@ -66,8 +70,10 @@ public class MyPageFragment extends ItFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.my_page_upload:
-			Intent intent = new Intent(mActivity, UploadActivity.class);
-			startActivity(intent);
+			String[] itemList = getResources().getStringArray(R.array.image_select_string_array);
+			ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
+			ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
+			listDialog.show(getFragmentManager(), ItDialogFragment.DIALOG_KEY);
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -153,5 +159,39 @@ public class MyPageFragment extends ItFragment {
 		}
 
 		return -c.getTop() + (findFirstVisibleItemPosition / spanCount) * c.getHeight() + headerHeight;
+	}
+
+
+	private ItDialogCallback[] getDialogCallbacks(String[] itemList){
+		final Intent intent = new Intent(mActivity, UploadActivity.class);
+		ItDialogCallback[] callbacks = new ItDialogCallback[itemList.length];
+		callbacks[0] = new ItDialogCallback() {
+
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+				// Get image from gallery
+				intent.putExtra(UploadFragment.MEDIA_KEY, FileUtil.GALLERY);
+				startActivity(intent);
+			}
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+			}
+		};
+
+		callbacks[1] = new ItDialogCallback() {
+
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+				// Get image from camera
+				intent.putExtra(UploadFragment.MEDIA_KEY, FileUtil.CAMERA);
+				startActivity(intent);
+			}
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+			}
+		};
+
+		callbacks[itemList.length-1] = null;
+		return callbacks;
 	}
 }

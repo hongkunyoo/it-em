@@ -21,10 +21,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
@@ -32,11 +32,9 @@ import com.pinthecloud.item.view.CircleImageView;
 
 public class ProfileSettingsFragment extends ItFragment {
 
-	private final int GALLERY = 0;
-	private final int CAMERA = 1;
-
 	private Uri mProfileImageUri;
 	private Bitmap mProfileImageBitmap;
+	private Bitmap mSmallProfileImageBitmap;
 	private CircleImageView mProfileImage;
 
 	private TextView mId;
@@ -63,20 +61,56 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		if(!mIsTakenProfileImage){
+			mProfileImage.setImageResource(R.drawable.ic_launcher);
+		} else{
+			mProfileImage.setImageBitmap(mSmallProfileImageBitmap);
+		}
+	}
+
+
+	@Override
+	public void onStop() {
+		mProfileImage.setImageBitmap(null);
+		super.onStop();
+	}
+
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK){
 			String imagePath = null;
 			switch(requestCode){
-			case GALLERY:
+			case FileUtil.GALLERY:
 				imagePath = getImagePathFromGallery(data);
 				break;
-			case CAMERA:
+			case FileUtil.CAMERA:
 				imagePath = getImagePathFromCamera(data);
 				break;
 			}
 			refineProfileImageBitmap(imagePath);
 			mIsTakenProfileImage = true;
+		}
+	}
+
+
+	private void getMedia(int mediaType){
+		Intent intent = null;
+		switch(mediaType){
+		case FileUtil.GALLERY:
+			intent = new Intent(Intent.ACTION_PICK, Media.EXTERNAL_CONTENT_URI);
+			intent.setType("image/*");
+			startActivityForResult(intent, FileUtil.GALLERY);
+			break;
+		case FileUtil.CAMERA:
+			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			mProfileImageUri = FileUtil.getOutputMediaFileUri();
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, mProfileImageUri);
+			startActivityForResult(intent, FileUtil.CAMERA);
+			break;
 		}
 	}
 
@@ -116,18 +150,19 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void refineProfileImageBitmap(String imagePath){
 		mProfileImageBitmap = BitmapUtil.decodeInSampleSize(mActivity, mProfileImageUri, 
-				BitmapUtil.BIG_PIC_SIZE, BitmapUtil.BIG_PIC_SIZE);
+				BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
 
 		int width = mProfileImageBitmap.getWidth();
 		int height = mProfileImageBitmap.getHeight();
-		if(height < width){
-			mProfileImageBitmap = BitmapUtil.crop(mProfileImageBitmap, 0, 0, height, height);
+		if(width >= height){
+			mProfileImageBitmap = BitmapUtil.crop(mProfileImageBitmap, width/2 - height/2, 0, height, height);
 		} else{
-			mProfileImageBitmap = BitmapUtil.crop(mProfileImageBitmap, 0, 0, width, width);
+			mProfileImageBitmap = BitmapUtil.crop(mProfileImageBitmap, 0, height/2 - width/2, width, width);
 		}
 
 		int degree = BitmapUtil.getImageOrientation(imagePath);
 		mProfileImageBitmap = BitmapUtil.rotate(mProfileImageBitmap, degree);
+		mSmallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 	}	
 
 
@@ -210,7 +245,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				String[] itemList = getDialogItemList();
 				ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
 				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-				listDialog.show(getFragmentManager(), GlobalVariable.DIALOG_KEY);
+				listDialog.show(getFragmentManager(), ItDialogFragment.DIALOG_KEY);
 			}
 		});
 	}
@@ -232,10 +267,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				// Get image from gallery
-				Intent intent = new Intent(Intent.ACTION_PICK, Media.EXTERNAL_CONTENT_URI);
-				intent.setType("image/*");
-				startActivityForResult(intent, GALLERY);
+				getMedia(FileUtil.GALLERY);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -246,11 +278,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				// Get image from camera
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				mProfileImageUri = FileUtil.getOutputMediaFileUri();
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, mProfileImageUri);
-				startActivityForResult(intent, CAMERA);
+				getMedia(FileUtil.CAMERA);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {

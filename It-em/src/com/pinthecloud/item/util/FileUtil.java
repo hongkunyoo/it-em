@@ -18,6 +18,9 @@ import com.pinthecloud.item.exception.ItException;
 
 public class FileUtil {
 
+	public static final int GALLERY = 0;
+	public static final int CAMERA = 1;
+	
 
 	public static Uri getOutputMediaFileUri(){
 		return Uri.fromFile(getOutputMediaFile());

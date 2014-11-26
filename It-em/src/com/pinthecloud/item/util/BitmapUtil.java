@@ -14,8 +14,12 @@ import android.net.Uri;
 
 public class BitmapUtil {
 
-	public static final int SMALL_PIC_SIZE = 100;
-	public static final int BIG_PIC_SIZE = 320;
+	public static final int SMALL_SIZE = 100;
+	public static final int BIG_SIZE = 320;
+	
+	public static final String SMALL_POSTFIX = "_small";
+	public static final String PNG = ".png";
+	
 
 	public static Bitmap decodeInSampleSize(Context context, Uri imageUri, int reqWidth, int reqHeight) {
 		// First decode with inJustDecodeBounds=true to check dimensions
