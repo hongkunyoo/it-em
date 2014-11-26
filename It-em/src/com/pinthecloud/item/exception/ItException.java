@@ -61,6 +61,7 @@ public class ItException extends RuntimeException {
 		BLOB_STORAGE_ERROR,
 		DUPLICATED_NICK_NAME,
 		NO_SUCH_INSTANCE,
-		NO_SUCH_PRIMATIVE
+		NO_SUCH_PRIMATIVE,
+		FORMATE_ERROR
 	}
 }

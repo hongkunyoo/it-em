@@ -42,11 +42,25 @@ public class RandomUtil {
 	public static String getTime() {
 		return String.valueOf(getInt(24)) + ":" +getInt(60);
 	}
+	public static String getDateTime() {
+		return "2014" + getNumber(1, 13, 2) + getNumber(1, 31, 2) + getNumber(0, 24, 2)
+				+ getNumber(0, 60, 2) + getNumber(0, 60, 2); 
+	}
+	public static String getNumber(int start, int end, int digit) {
+		String num = String.valueOf(getInt(end - start) + start);
+		for (int i = num.length() ; i < digit ; i++) {
+			num = "0" + num;
+		}
+		return num;
+	}
 	public static String getName() {
 		return nameList.get(getInt(nameList.size()));
 	}
 	public static String getObjName() {
 		return objList.get(getInt(objList.size()));
+	}
+	public static String getUrl() {
+		return "http://www." + getString(8) + ".com";
 	}
 	private static List<String> nameList = new ArrayList<String>(){
 		/**
