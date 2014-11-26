@@ -3,6 +3,7 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -110,9 +111,19 @@ public class ItApplication extends Application {
 		if (aimDBHelper == null) init();
 		return aimDBHelper;
 	}
+
+
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
+	}
+
+
+	public void showProgressDialog(Context context){
+		ProgressDialog progressDialog = new ProgressDialog(context);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+		progressDialog.setContentView(R.layout.custom_progress_dialog);
 	}
 }

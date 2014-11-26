@@ -99,7 +99,7 @@ public class HomeFragment extends ItFragment {
 		mIsAdding = true;
 		mListAdapter.setHasFooter(true);
 		mListAdapter.notifyDataSetChanged();
-		
+
 		mIsAdding = false;
 		mListAdapter.setHasFooter(false);
 		mListAdapter.notifyDataSetChanged();

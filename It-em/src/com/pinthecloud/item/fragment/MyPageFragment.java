@@ -6,6 +6,9 @@ import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
+import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.MyPagePagerAdapter;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
 import com.pinthecloud.item.view.CircleImageView;
@@ -41,11 +45,31 @@ public class MyPageFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
+		setHasOptionsMenu(true);
 		findComponent(view);
 		setComponent();
 		setButton();
 		setTab();
 		return view;
+	}
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.my_page, menu);
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.my_page_upload:
+			Intent intent = new Intent(mActivity, UploadActivity.class);
+			startActivity(intent);
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 

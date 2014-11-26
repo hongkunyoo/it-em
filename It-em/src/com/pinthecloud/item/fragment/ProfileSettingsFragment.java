@@ -153,12 +153,19 @@ public class ProfileSettingsFragment extends ItFragment {
 			mActivity.onBackPressed();
 			break;
 		case R.id.profile_settings_done:
-			Intent intent = new Intent(mActivity, MainActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+			setProfile();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+
+	private void setProfile(){
+		mApp.showProgressDialog(mActivity);
+
+		Intent intent = new Intent(mActivity, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 
 

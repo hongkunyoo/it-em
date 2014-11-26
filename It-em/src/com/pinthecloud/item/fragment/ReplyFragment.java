@@ -16,8 +16,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
@@ -27,7 +27,10 @@ import com.pinthecloud.item.model.Reply;
 public class ReplyFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
-	private TextView mPreviousReply;
+	
+	private LinearLayout mPreviousLayout;
+	private ProgressBar mPreviousProgressBar;
+	
 	private EditText mReplyText;
 	private Button mRegisterButton;
 
@@ -72,6 +75,8 @@ public class ReplyFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_progress_bar);
+		mPreviousLayout = (LinearLayout)view.findViewById(R.id.reply_frag_previous_layout);
+		mPreviousProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_previous_progress_bar);
 		mRegisterButton = (Button)view.findViewById(R.id.reply_frag_register);
 		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
 	}
@@ -101,7 +106,7 @@ public class ReplyFragment extends ItFragment {
 
 
 	private void setButton(){
-		mPreviousReply.setOnClickListener(new OnClickListener() {
+		mPreviousLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -113,7 +118,6 @@ public class ReplyFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mProgressBar.setVisibility(View.VISIBLE);
 			}
 		});
 	}
@@ -130,8 +134,8 @@ public class ReplyFragment extends ItFragment {
 		mListAdapter = new ReplyListAdapter(mThisFragment, mReplyList);
 		mListView.setAdapter(mListAdapter);
 	}
-	
-	
+
+
 	private void updateList() {
 		mProgressBar.setVisibility(View.GONE);
 		mListAdapter.notifyDataSetChanged();
@@ -139,9 +143,9 @@ public class ReplyFragment extends ItFragment {
 
 
 	private void loadPreviousReplyList() {
-		mProgressBar.setVisibility(View.VISIBLE);
-		
-		mProgressBar.setVisibility(View.GONE);
+		mPreviousProgressBar.setVisibility(View.VISIBLE);
+
+		mPreviousProgressBar.setVisibility(View.GONE);
 		mListAdapter.notifyDataSetChanged();
 	}
 }

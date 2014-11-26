@@ -9,14 +9,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 
 public class UploadFragment extends ItFragment {
 
-	private ProgressBar mProgressBar;
 	private Button mUploadButton;
 
 
@@ -51,7 +49,6 @@ public class UploadFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mProgressBar = (ProgressBar)view.findViewById(R.id.upload_frag_progress_bar);
 		mUploadButton = (Button)view.findViewById(R.id.upload_frag_upload);
 	}
 
@@ -61,7 +58,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mProgressBar.setVisibility(View.VISIBLE);
+				mApp.showProgressDialog(mActivity);
 
 				Intent intent = new Intent(mActivity, MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

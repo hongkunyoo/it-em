@@ -50,7 +50,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
-		
+
 		public LinearLayout itemLayout;
 		public SquareImageView image;
 		public TextView content;
@@ -65,7 +65,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
-			
+
 			this.itemLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_item_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
@@ -170,7 +170,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				mContext.startActivity(intent);
 			}
 		});
-		
+
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override

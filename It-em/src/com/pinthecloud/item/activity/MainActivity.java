@@ -31,14 +31,9 @@ public class MainActivity extends ItActivity{
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent;
 		switch (item.getItemId()) {
-		case R.id.main_upload:
-			intent = new Intent(mThisActivity, UploadActivity.class);
-			startActivity(intent);
-			break;
 		case R.id.main_settings:
-			intent = new Intent(mThisActivity, SettingsActivity.class);
+			Intent intent = new Intent(mThisActivity, SettingsActivity.class);
 			startActivity(intent);
 			break;
 		}

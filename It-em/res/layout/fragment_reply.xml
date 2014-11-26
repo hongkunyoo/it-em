@@ -9,19 +9,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
-    
-    <TextView
-        android:id="@+id/reply_frag_previous"
+
+    <LinearLayout
+        android:id="@+id/reply_frag_previous_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous_reply" />
+        android:orientation="horizontal" >
+
+        <ProgressBar
+            android:id="@+id/reply_frag_previous_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/previous_reply" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reply_frag_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/reply_frag_reply_layout"
-        android:layout_below="@+id/reply_frag_previous" />
+        android:layout_below="@+id/reply_frag_previous_layout" />
 
     <LinearLayout
         android:id="@+id/reply_frag_reply_layout"
