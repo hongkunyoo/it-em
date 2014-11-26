@@ -1,6 +1,7 @@
 package com.pinthecloud.item.fragment;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ public class ItemFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_item, container, false);
 		setHasOptionsMenu(true);
+		setActionBar();
 		return view;
 	}
 
@@ -39,5 +41,11 @@ public class ItemFragment extends ItFragment {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 }

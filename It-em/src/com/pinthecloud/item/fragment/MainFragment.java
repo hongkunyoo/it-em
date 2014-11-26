@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainPagerAdapter;
 import com.pinthecloud.item.helper.PrefHelper;
-import com.pinthecloud.item.view.ParentViewPager;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
+import com.pinthecloud.item.view.ParentViewPager;
 
 public class MainFragment extends ItFragment {
 
@@ -52,7 +52,7 @@ public class MainFragment extends ItFragment {
 		mViewPager.setOffscreenPageLimit(mMainPagerAdapter.getCount());
 		mViewPager.setAdapter(mMainPagerAdapter);
 		mViewPager.setCurrentItem(position);
-		
+
 		mTab.setStartTab(position);
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {

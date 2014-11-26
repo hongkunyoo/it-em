@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -105,9 +106,9 @@ public class MyPageFragment extends ItFragment {
 		mViewPagerAdapter.setTabHolderScrollingContent(new ScrollTabHolder() {
 
 			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition) {
+			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 				if (mViewPager.getCurrentItem() == pagePosition) {
-					int scrollY = getListScrollY(view);
+					int scrollY = getGridScrollY(view, (GridLayoutManager)layoutManager);
 					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTab.getHeight()));
 				}
 			}
@@ -138,15 +139,19 @@ public class MyPageFragment extends ItFragment {
 	}
 
 
-	private int getListScrollY(AbsListView view) {
+	private int getGridScrollY(RecyclerView view, GridLayoutManager layoutManager) {
 		View c = view.getChildAt(0);
 		if(c == null){
 			return 0;
 		}
+
+		int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+		int spanCount = layoutManager.getSpanCount();
 		int headerHeight = 0;
-		if (view.getFirstVisiblePosition() >= 1) {
+		if (findFirstVisibleItemPosition >= spanCount) {
 			headerHeight = mHeader.getHeight();
 		}
-		return -c.getTop() + view.getFirstVisiblePosition() * c.getHeight() + headerHeight;
+
+		return -c.getTop() + (findFirstVisibleItemPosition / spanCount) * c.getHeight() + headerHeight;
 	}
 }
