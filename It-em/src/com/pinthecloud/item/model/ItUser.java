@@ -1,6 +1,51 @@
 package com.pinthecloud.item.model;
 
+import com.google.gson.Gson;
+
 public class ItUser {
+	@com.google.gson.annotations.SerializedName("id")
 	private String id;
+	@com.google.gson.annotations.SerializedName("itUserId")
 	private String itUserId;
+	@com.google.gson.annotations.SerializedName("nickName")
+	private String nickName;
+	@com.google.gson.annotations.SerializedName("selfIntro")
+	private String selfIntro;
+	@com.google.gson.annotations.SerializedName("imgUrl")
+	private String imgUrl;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getItUserId() {
+		return itUserId;
+	}
+	public void setItUserId(String itUserId) {
+		this.itUserId = itUserId;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getSelfIntro() {
+		return selfIntro;
+	}
+	public void setSelfIntro(String selfIntro) {
+		this.selfIntro = selfIntro;
+	}
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+	@Override
+	public String toString() {
+		return new Gson().toJson(this);
+	}
 }

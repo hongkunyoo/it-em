@@ -49,13 +49,21 @@ public class HongkunTestFragment extends ItFragment {
 		aimHelper = ItApplication.getInstance().getAimHelper();
 		aimDBHelper = ItApplication.getInstance().getAimDBHelper();
 		today = ItDateTime.getToday();
-		MyLog.log(today);
+		
 		btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				today = today.getYesterday();
-				MyLog.log(today.toPrettyString());
+				item = new Item().rand();
+				MyLog.log(item);
+				aimHelper.add(mThisFragment, item, new ItEntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						// TODO Auto-generated method stub
+						MyLog.log(entity);
+					}
+				});
 			}
 		});
 		

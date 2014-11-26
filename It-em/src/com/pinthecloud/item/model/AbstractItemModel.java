@@ -14,6 +14,7 @@ public class AbstractItemModel<T> {
 	private String id;
 	private String content;
 	private String whoMade;
+	private String whoMadeId;
 	private String rawCreateDateTime;
 	private String refId;
 	
@@ -34,6 +35,12 @@ public class AbstractItemModel<T> {
 	}
 	public void setWhoMade(String whoMade) {
 		this.whoMade = whoMade;
+	}
+	public String getWhoMadeId() {
+		return whoMadeId;
+	}
+	public void setWhoMadeId(String id) {
+		this.whoMadeId = id;
 	}
 	public String getRawCreateDateTime() {
 		return rawCreateDateTime;
@@ -73,9 +80,10 @@ public class AbstractItemModel<T> {
 		if (hasId) {
 			this.setId(RandomUtil.getString());
 		}
-		this.setContent(RandomUtil.getObjName());
+		this.setContent(RandomUtil.getObjName() + " is a " + RandomUtil.getObjName());
 		this.setWhoMade(RandomUtil.getName());
-		this.setRawCreateDateTime(RandomUtil.getDateTime());
+		this.setWhoMade(RandomUtil.getString());
+		this.setRawCreateDateTime(ItDateTime.getToday().toString());
 		this.setRefId(RandomUtil.getString(10));
 		return (T)this;
 	}

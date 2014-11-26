@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.eowise.recyclerview.stickyheaders.StickyHeadersAdapter;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
 
 public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemListHeaderAdapter.ViewHolder> {
@@ -44,12 +45,12 @@ public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemLis
 	@Override
 	public void onBindViewHolder(ViewHolder headerViewHolder, int position) {
 		Item item = mItemList.get(position);
-		headerViewHolder.date.setText(item.getCreateTime());
+		headerViewHolder.date.setText(item.getCreateDateTime().toPrettyDateTime());
 	}
 
 
 	@Override
 	public long getHeaderId(int position) {
-		return mItemList.get(position).getCreateTime().charAt(0);
+		return Long.parseLong(mItemList.get(position).getCreateDateTime().toDate(), 10);
 	}
 }

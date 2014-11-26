@@ -11,6 +11,12 @@ public class Item extends AbstractItemModel<Item> {
 	private int likeItCount;
 	private String imgUrl;
 	
+	public String getRefId() {
+		return null;
+	}
+	public void setRefId(String refId) {
+		
+	}
 	public int getReplyCount() {
 		return replyCount;
 	}

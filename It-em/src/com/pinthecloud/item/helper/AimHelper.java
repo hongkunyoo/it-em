@@ -32,8 +32,8 @@ public class AimHelper {
 	private final String AIM_DELETE = "aim_delete";
 
 
-	public AimHelper() {
-		mClient = ItApplication.getInstance().getMobileClient();
+	public AimHelper(ItApplication context) {
+		this.mClient = context.getMobileClient();
 	}
 
 

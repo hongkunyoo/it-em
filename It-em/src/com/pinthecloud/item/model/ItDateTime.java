@@ -7,18 +7,18 @@ import java.util.Locale;
 
 import com.pinthecloud.item.exception.ItException;
 
+// 20141113014345 --> 2014-11-13 01:43:45
 public class ItDateTime {
 	private String dateTime;
 	
 	public ItDateTime(String rawDateTime) {
-		if (dateTime.length() != 14) {
+		if (rawDateTime.length() != 14) {
 			throw new ItException(ItException.TYPE.FORMATE_ERROR);
 		}
 		this.dateTime = rawDateTime;
 	}
 	
 	public int getYear() {
-		// 20141113014345 --> 2014-11-13 01:43:45
 		return Integer.parseInt(dateTime.substring(0, 4));
 	}
 	public int getMonth() {
@@ -51,7 +51,13 @@ public class ItDateTime {
         cal.add(Calendar.DATE, -1);    
         return new ItDateTime(dateFormat.format(cal.getTime()));
 	}
-	public String toPrettyString() {
+	public String toPrettyDate() {
+		return String.format(Locale.KOREA, "%d-%d-%d", this.getYear(), this.getMonth(), this.getDate());
+	}
+	public String toDate() {
+		return String.format(Locale.KOREA, "%d%d%d", this.getYear(), this.getMonth(), this.getDate());
+	}
+	public String toPrettyDateTime() {
 		return String.format(Locale.KOREA, "%d-%d-%d(%d:%d:%d)", this.getYear(), this.getMonth(), this.getDate(), 
 				this.getHours(), this.getMinutes(), this.getSeconds());
 	}
