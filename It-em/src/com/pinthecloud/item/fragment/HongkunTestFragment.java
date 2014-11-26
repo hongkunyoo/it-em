@@ -13,17 +13,20 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.AimHelper;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.MyLog;
 
 public class HongkunTestFragment extends ItFragment {
 	AimHelper aimHelper;
 	AimDBHelper aimDBHelper;
-	
+	ItDateTime today;
 	Button btn;
 	Button btn2;
 	EditText editText;
 	String id;
+	Item item;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,15 +48,22 @@ public class HongkunTestFragment extends ItFragment {
 	private void test() {
 		aimHelper = ItApplication.getInstance().getAimHelper();
 		aimDBHelper = ItApplication.getInstance().getAimDBHelper();
+		today = ItDateTime.getToday();
+		
 		btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				MyLog.log("btn Clicked");
-				Item item = new Item().rand(true);
-				id = item.getId();
-				int i = aimDBHelper.add(item);
-				MyLog.log("result",i, item);
+				item = new Item().rand();
+				MyLog.log(item);
+				aimHelper.add(mThisFragment, item, new ItEntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						// TODO Auto-generated method stub
+						MyLog.log(entity);
+					}
+				});
 			}
 		});
 		

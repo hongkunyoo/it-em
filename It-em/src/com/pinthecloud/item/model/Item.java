@@ -11,6 +11,12 @@ public class Item extends AbstractItemModel<Item> {
 	private int likeItCount;
 	private String imgUrl;
 	
+	public String getRefId() {
+		return null;
+	}
+	public void setRefId(String refId) {
+		
+	}
 	public int getReplyCount() {
 		return replyCount;
 	}
@@ -45,16 +51,19 @@ public class Item extends AbstractItemModel<Item> {
 	@Override
 	public Item rand() {
 		Item item = super.rand();
-		item.setLikeItCount(RandomUtil.getInt());
-		item.setReplyCount(RandomUtil.getInt());
-		item.setImgUrl(RandomUtil.getString());
+//		item.setLikeItCount(RandomUtil.getInt());
+//		item.setReplyCount(RandomUtil.getInt());
+		item.setImgUrl(RandomUtil.getUrl());
 		return item;
 	}
 	
 	@Override
 	public Item rand(boolean hasId) {
-		Item item = this.rand();
-		item.setId(RandomUtil.getString());
+		Item item = super.rand(hasId);
+//		item.setLikeItCount(RandomUtil.getInt());
+//		item.setReplyCount(RandomUtil.getInt());
+		item.setImgUrl(RandomUtil.getUrl());
+		
 		return item;
 	}
 }

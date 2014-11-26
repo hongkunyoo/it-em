@@ -16,11 +16,13 @@ import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
+import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.MyLog;
 
 public class AimHelper {
 
+	private static final String RANK_ITEM = "rank_item";
 	private MobileServiceClient mClient;
 	private final String AIM_LIST = "aim_list";
 	private final String AIM_ITEM_LIST = "aim_item_list";
@@ -30,8 +32,8 @@ public class AimHelper {
 	private final String AIM_DELETE = "aim_delete";
 
 
-	public AimHelper() {
-		mClient = ItApplication.getInstance().getMobileClient();
+	public AimHelper(ItApplication context) {
+		this.mClient = context.getMobileClient();
 	}
 
 
@@ -49,6 +51,22 @@ public class AimHelper {
 				} else {
 					MyLog.log(exception);
 				}
+			}
+		});
+	}
+	
+	public void getRand10(ItDateTime date, final ItListCallback<Item> callback) {
+		
+		JsonObject jo = new JsonObject();
+		jo.addProperty("date", date.toString());
+		
+		mClient.invokeApi(RANK_ITEM, jo, new ApiJsonOperationCallback() {
+			
+			@Override
+			public void onCompleted(JsonElement arg0, Exception arg1,
+					ServiceFilterResponse arg2) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}

@@ -15,6 +15,7 @@ import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.helper.UserHelper;
 
 public class ItApplication extends Application {
 
@@ -39,6 +40,7 @@ public class ItApplication extends Application {
 	private static ObjectPrefHelper objectPrefHelper;
 	private static AimHelper aimHelper;
 	private static AimDBHelper aimDBHelper;
+	private static UserHelper userHelper;
 
 	public ItApplication() {
 		super();
@@ -77,7 +79,8 @@ public class ItApplication extends Application {
 
 		prefHelper = new PrefHelper(app);
 		objectPrefHelper = new ObjectPrefHelper(app);
-		aimHelper = new AimHelper();
+		aimHelper = new AimHelper(app);
+		userHelper = new UserHelper(app);
 		aimDBHelper = new AimDBHelper(app);
 	}
 
@@ -111,8 +114,10 @@ public class ItApplication extends Application {
 		if (aimDBHelper == null) init();
 		return aimDBHelper;
 	}
-
-
+	public UserHelper getUserHelper() {
+		if (userHelper == null) init();
+		return userHelper;
+	}
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

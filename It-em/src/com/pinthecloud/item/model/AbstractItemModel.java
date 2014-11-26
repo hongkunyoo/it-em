@@ -12,10 +12,10 @@ import com.pinthecloud.item.util.RandomUtil;
 
 public class AbstractItemModel<T> {
 	private String id;
-	//	private int intId;
 	private String content;
 	private String whoMade;
-	private String createTime;
+	private String whoMadeId;
+	private String rawCreateDateTime;
 	private String refId;
 
 	public String getId() {
@@ -24,12 +24,6 @@ public class AbstractItemModel<T> {
 	public void setId(String id) {
 		this.id = id;
 	}
-	//	public int getIntId() {
-	//		return intId;
-	//	}
-	//	public void setIntId(int intId) {
-	//		this.intId = intId;
-	//	}
 	public String getContent() {
 		return content;
 	}
@@ -42,11 +36,17 @@ public class AbstractItemModel<T> {
 	public void setWhoMade(String whoMade) {
 		this.whoMade = whoMade;
 	}
-	public String getCreateTime() {
-		return createTime;
+	public String getWhoMadeId() {
+		return whoMadeId;
 	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
+	public void setWhoMadeId(String id) {
+		this.whoMadeId = id;
+	}
+	public String getRawCreateDateTime() {
+		return rawCreateDateTime;
+	}
+	public void setRawCreateDateTime(String createTime) {
+		this.rawCreateDateTime = createTime;
 	}
 	public String getRefId() {
 		return refId;
@@ -55,6 +55,13 @@ public class AbstractItemModel<T> {
 		this.refId = refId;
 	}
 
+	public ItDateTime getCreateDateTime() {
+		return new ItDateTime(this.rawCreateDateTime);
+	}
+	public void setCreateDateTime(ItDateTime dateTime) {
+		this.rawCreateDateTime = dateTime.toString();
+	}
+	
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);
@@ -65,7 +72,6 @@ public class AbstractItemModel<T> {
 		return new Gson().fromJson(jsonStr, JsonElement.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	public T rand() {
 		return this.rand(false);
 	}
@@ -75,9 +81,10 @@ public class AbstractItemModel<T> {
 		if (hasId) {
 			this.setId(RandomUtil.getString());
 		}
-		this.setContent(RandomUtil.getObjName());
+		this.setContent(RandomUtil.getObjName() + " is a " + RandomUtil.getObjName());
 		this.setWhoMade(RandomUtil.getName());
-		this.setCreateTime(RandomUtil.getTime());
+		this.setWhoMade(RandomUtil.getString());
+		this.setRawCreateDateTime(ItDateTime.getToday().toString());
 		this.setRefId(RandomUtil.getString(10));
 		return (T)this;
 	}
