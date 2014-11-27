@@ -36,4 +36,7 @@
     <!-- Reply -->
     <string name="reply">Reply</string>
     <string name="previous_reply">Previous Reply&#8230;</string>
+    
+    <!-- Item -->
+    <string name="author">Author</string>
 </resources>

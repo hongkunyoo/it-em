@@ -2,12 +2,9 @@ package com.pinthecloud.item.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Images.Media;
 import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -82,88 +79,12 @@ public class ProfileSettingsFragment extends ItFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK){
-			String imagePath = null;
-			switch(requestCode){
-			case FileUtil.GALLERY:
-				imagePath = getImagePathFromGallery(data);
-				break;
-			case FileUtil.CAMERA:
-				imagePath = getImagePathFromCamera(data);
-				break;
-			}
-			refineProfileImageBitmap(imagePath);
+			String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
+			mProfileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
+			mSmallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 			mIsTakenProfileImage = true;
 		}
 	}
-
-
-	private void getMedia(int mediaType){
-		Intent intent = null;
-		switch(mediaType){
-		case FileUtil.GALLERY:
-			intent = new Intent(Intent.ACTION_PICK, Media.EXTERNAL_CONTENT_URI);
-			intent.setType("image/*");
-			startActivityForResult(intent, FileUtil.GALLERY);
-			break;
-		case FileUtil.CAMERA:
-			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			mProfileImageUri = FileUtil.getOutputMediaFileUri();
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, mProfileImageUri);
-			startActivityForResult(intent, FileUtil.CAMERA);
-			break;
-		}
-	}
-
-
-	private String getImagePathFromGallery(Intent data){
-		mProfileImageUri = data.getData();
-		String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-		Cursor cursor = mActivity.getContentResolver().query(mProfileImageUri, filePathColumn, null, null, null);
-		cursor.moveToFirst();
-
-		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-		String imagePath = cursor.getString(columnIndex);
-		cursor.close();
-
-		return imagePath;
-	}
-
-
-	private String getImagePathFromCamera(Intent data){
-		if(mProfileImageUri == null){
-			if(data == null){
-				mProfileImageUri = FileUtil.getLastCaptureBitmapUri(mActivity);
-			} else{
-				mProfileImageUri = data.getData();
-				if(mProfileImageUri == null){
-					// Intent pass data as Bitmap
-					Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-					mProfileImageUri = FileUtil.getOutputMediaFileUri();
-					FileUtil.saveBitmapToFile(mActivity, mProfileImageUri, bitmap);
-				}
-			}
-		}
-		return mProfileImageUri.getPath();
-	}
-
-
-	private void refineProfileImageBitmap(String imagePath){
-		mProfileImageBitmap = BitmapUtil.decodeInSampleSize(mActivity, mProfileImageUri, 
-				BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
-
-		int width = mProfileImageBitmap.getWidth();
-		int height = mProfileImageBitmap.getHeight();
-		if(width >= height){
-			mProfileImageBitmap = BitmapUtil.crop(mProfileImageBitmap, width/2 - height/2, 0, height, height);
-		} else{
-			mProfileImageBitmap = BitmapUtil.crop(mProfileImageBitmap, 0, height/2 - width/2, width, width);
-		}
-
-		int degree = BitmapUtil.getImageOrientation(imagePath);
-		mProfileImageBitmap = BitmapUtil.rotate(mProfileImageBitmap, degree);
-		mSmallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-	}	
 
 
 	@Override
@@ -267,7 +188,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				getMedia(FileUtil.GALLERY);
+				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -278,7 +199,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				getMedia(FileUtil.CAMERA);
+				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.CAMERA);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {

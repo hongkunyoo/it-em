@@ -15,7 +15,6 @@ public class Item extends AbstractItemModel<Item> {
 		return null;
 	}
 	public void setRefId(String refId) {
-		
 	}
 	public int getReplyCount() {
 		return replyCount;
@@ -63,7 +62,6 @@ public class Item extends AbstractItemModel<Item> {
 //		item.setLikeItCount(RandomUtil.getInt());
 //		item.setReplyCount(RandomUtil.getInt());
 		item.setImgUrl(RandomUtil.getUrl());
-		
 		return item;
 	}
 }

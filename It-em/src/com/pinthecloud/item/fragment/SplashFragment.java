@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.HongkunTestActivity;
+import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.helper.PrefHelper;
@@ -45,6 +46,7 @@ public class SplashFragment extends ItFragment {
 					// Has Logined
 					intent.setClass(mActivity, MainActivity.class);
 				}
+				intent.setClass(mActivity, ItemActivity.class);
 				startActivity(intent);
 			}
 		}

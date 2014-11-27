@@ -2,12 +2,9 @@ package com.pinthecloud.item.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Images.Media;
 import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,9 +22,9 @@ import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
+import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
-import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.view.SquareImageView;
 
 public class UploadFragment extends ItFragment {
@@ -66,7 +63,7 @@ public class UploadFragment extends ItFragment {
 		setComponent();
 		setButton();
 		setImage();
-		getMedia(mMediaType);
+		mImageUri = FileUtil.getMediaUri(mThisFragment, mMediaType);
 		return view;
 	}
 
@@ -93,16 +90,9 @@ public class UploadFragment extends ItFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK){
-			String imagePath = null;
-			switch(requestCode){
-			case FileUtil.GALLERY:
-				imagePath = getImagePathFromGallery(data);
-				break;
-			case FileUtil.CAMERA:
-				imagePath = getImagePathFromCamera(data);
-				break;
-			}
-			refineImageBitmap(imagePath);
+			String imagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
+			mImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
+			mSmallImageBitmap = BitmapUtil.decodeInSampleSize(mImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 
 			mIsTakenImage = true;
 			mUploadButton.setEnabled(isUploadButtonEnable());
@@ -110,77 +100,6 @@ public class UploadFragment extends ItFragment {
 			mActivity.finish();
 		}
 	}
-
-
-	private void getMedia(int mediaType){
-		Intent intent = null;
-		switch(mediaType){
-		case FileUtil.GALLERY:
-			intent = new Intent(Intent.ACTION_PICK, Media.EXTERNAL_CONTENT_URI);
-			intent.setType("image/*");
-			startActivityForResult(intent, FileUtil.GALLERY);
-			break;
-		case FileUtil.CAMERA:
-			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			mImageUri = FileUtil.getOutputMediaFileUri();
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-			startActivityForResult(intent, FileUtil.CAMERA);
-			break;
-		}
-	}
-
-
-	private String getImagePathFromGallery(Intent data){
-		mImageUri = data.getData();
-		String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-		Cursor cursor = mActivity.getContentResolver().query(mImageUri, filePathColumn, null, null, null);
-		cursor.moveToFirst();
-
-		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-		String imagePath = cursor.getString(columnIndex);
-		cursor.close();
-
-		return imagePath;
-	}
-
-
-	private String getImagePathFromCamera(Intent data){
-		if(mImageUri == null){
-			if(data == null){
-				mImageUri = FileUtil.getLastCaptureBitmapUri(mActivity);
-			} else{
-				mImageUri = data.getData();
-				if(mImageUri == null){
-					// Intent pass data as Bitmap
-					Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-					mImageUri = FileUtil.getOutputMediaFileUri();
-					FileUtil.saveBitmapToFile(mActivity, mImageUri, bitmap);
-				}
-			}
-		}
-		return mImageUri.getPath();
-	}
-
-
-	private void refineImageBitmap(String imagePath){
-		mImageBitmap = BitmapUtil.decodeInSampleSize(mActivity, mImageUri, 
-				BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
-
-		MyLog.log("width : " + mImageBitmap.getWidth());
-		MyLog.log("height : " + mImageBitmap.getHeight());
-		int width = mImageBitmap.getWidth();
-		int height = mImageBitmap.getHeight();
-		if(width >= height){
-			mImageBitmap = BitmapUtil.crop(mImageBitmap, width/2 - height/2, 0, height, height);
-		} else{
-			mImageBitmap = BitmapUtil.crop(mImageBitmap, 0, height/2 - width/2, width, width);
-		}
-
-		int degree = BitmapUtil.getImageOrientation(imagePath);
-		mImageBitmap = BitmapUtil.rotate(mImageBitmap, degree);
-		mSmallImageBitmap = BitmapUtil.decodeInSampleSize(mImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-	}	
 
 
 	@Override
@@ -276,7 +195,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				getMedia(FileUtil.GALLERY);
+				mImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -287,7 +206,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				getMedia(FileUtil.CAMERA);
+				mImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.CAMERA);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {

@@ -60,7 +60,7 @@ public class PrefHelper {
 		} else if (className.equals("java.lang.Boolean") || className.equals("boolean")) {
 			return mPref.getBoolean(key, DEFAULT_BOOLEAN);
 		} else {
-			throw new ItException(ItException.TYPE.NO_SUCH_PRIMATIVE);
+			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
 		}
 	}
 
