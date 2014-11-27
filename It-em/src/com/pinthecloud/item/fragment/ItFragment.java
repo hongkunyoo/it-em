@@ -13,6 +13,7 @@ import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.helper.UserHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 
 public class ItFragment extends Fragment implements ExceptionManager.Handler {
@@ -24,7 +25,7 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 	protected PrefHelper mPrefHelper;
 	protected ObjectPrefHelper mObjectPrefHelper;
 	protected AimHelper mAimHelper;
-
+	protected UserHelper userHelper;
 
 	public ItFragment(){
 		mApp = ItApplication.getInstance();
@@ -33,6 +34,7 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 		mPrefHelper = mApp.getPrefHelper();
 		mObjectPrefHelper = mApp.getObjectPrefHelper();
 		mAimHelper = mApp.getAimHelper();
+		userHelper = mApp.getUserHelper();
 	}
 
 

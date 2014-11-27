@@ -18,6 +18,9 @@ import com.facebook.widget.LoginButton;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.MyLog;
 
 public class LoginFragment extends ItFragment {
 
@@ -109,6 +112,8 @@ public class LoginFragment extends ItFragment {
 
 
 	private void setButton(){
+		
+//		mFacebookButton.setReadPermissions(Arrays.asList("user_birthday"));
 		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override
@@ -119,7 +124,7 @@ public class LoginFragment extends ItFragment {
 				}
 			}
 		});
-
+		
 		mTempButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -132,6 +137,22 @@ public class LoginFragment extends ItFragment {
 
 	private void facebookLogin(GraphUser user){
 		mPrefHelper.put(PrefHelper.IS_LOGIN_KEY, true);
+		MyLog.log(user, user.getId());
+		ItUser itUser = new ItUser();
+		itUser.setItUserId(user.getId());
+		itUser.setNickName(user.getFirstName());
+		itUser.setSelfIntro("");
+		itUser.setImgUrl("");
+		itUser.setWebPage("");
+		userHelper.add(mThisFragment, itUser, new ItEntityCallback<ItUser>() {
+			
+			@Override
+			public void onCompleted(ItUser entity) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
 		goToNextActivity();
 	}
 

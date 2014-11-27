@@ -31,7 +31,7 @@ public class SplashFragment extends ItFragment {
 
 	private void goToNextActivity() {
 		try {
-			Class.forName("com.pinthecloud.item.util.HongUtil");
+			Class.forName("com.pinthecloud.item.util.HongUtil2");
 			Intent hongTent = new Intent();
 			hongTent.setClass(mActivity, HongkunTestActivity.class);
 			startActivity(hongTent);

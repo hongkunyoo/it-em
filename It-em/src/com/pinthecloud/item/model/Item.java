@@ -63,7 +63,6 @@ public class Item extends AbstractItemModel<Item> {
 //		item.setLikeItCount(RandomUtil.getInt());
 //		item.setReplyCount(RandomUtil.getInt());
 		item.setImgUrl(RandomUtil.getUrl());
-		
 		return item;
 	}
 }

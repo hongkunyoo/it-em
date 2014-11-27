@@ -13,6 +13,8 @@ public class ItUser {
 	private String selfIntro;
 	@com.google.gson.annotations.SerializedName("imgUrl")
 	private String imgUrl;
+	@com.google.gson.annotations.SerializedName("webPage")
+	private String webPage;
 	
 	public String getId() {
 		return id;
@@ -43,6 +45,12 @@ public class ItUser {
 	}
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+	public String getWebPage() {
+		return webPage;
+	}
+	public void setWebPage(String webPage) {
+		this.webPage = webPage;
 	}
 	@Override
 	public String toString() {
