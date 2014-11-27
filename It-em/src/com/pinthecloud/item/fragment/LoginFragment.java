@@ -119,7 +119,6 @@ public class LoginFragment extends ItFragment {
 
 	private void setButton(){
 		
-//		mFacebookButton.setReadPermissions(Arrays.asList("user_birthday"));
 		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override
@@ -142,12 +141,11 @@ public class LoginFragment extends ItFragment {
 
 
 	private void facebookLogin(final GraphUser user){
-//		mPrefHelper.put(PrefHelper.IS_LOGIN_KEY, true);
 		final ItUser itUser = new ItUser();
 		itUser.setItUserId(user.getId());
 		itUser.setNickName(user.getFirstName());
 		itUser.setSelfIntro("");
-		// https://athere.blob.core.windows.net/userprofile/ID
+		// e.g. https://athere.blob.core.windows.net/userprofile/ID
 		itUser.setImgUrl(blobStorageHelper.getHostUrl(BlobStorageHelper. USER_PROFILE) + user.getId());
 		itUser.setWebPage("");
 		

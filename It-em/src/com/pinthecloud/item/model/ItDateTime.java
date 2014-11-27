@@ -39,14 +39,24 @@ public class ItDateTime {
 	public String toString() {
 		return dateTime;
 	}
+	public String getElaspedTime() {
+		Calendar createCal = Calendar.getInstance(Locale.KOREA);
+		Calendar nowCal = Calendar.getInstance(Locale.KOREA);
+		createCal.set(this.getYear(), this.getMonth()-1, this.getDate(), this.getHours(), this.getMinutes(), this.getSeconds());
+		long elapseSec = (nowCal.getTimeInMillis() - createCal.getTimeInMillis())/1000;
+		if (elapseSec < 60) return String.valueOf(elapseSec + " seconds ago");
+		elapseSec = elapseSec / 60;
+		if (elapseSec < 60) return String.valueOf(elapseSec + " minutes ago");
+		return this.toPrettyDate();
+	}
 	public static ItDateTime getToday() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd000000", Locale.KOREA);
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.KOREA);
         return new ItDateTime(dateFormat.format(cal.getTime()));
 	}
 	public ItDateTime getYesterday() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd000000", Locale.KOREA);
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.KOREA);
         cal.set(this.getYear(), this.getMonth()-1, this.getDate());
         cal.add(Calendar.DATE, -1);    
         return new ItDateTime(dateFormat.format(cal.getTime()));
