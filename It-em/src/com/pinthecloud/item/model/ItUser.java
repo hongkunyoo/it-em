@@ -1,6 +1,7 @@
 package com.pinthecloud.item.model;
 
 import com.google.gson.Gson;
+import com.pinthecloud.item.helper.PrefHelper;
 
 public class ItUser {
 	@com.google.gson.annotations.SerializedName("id")
@@ -55,5 +56,8 @@ public class ItUser {
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);
+	}
+	public boolean isLoggedIn() {
+		return (this.id != null && !this.id.equals(PrefHelper.DEFAULT_STRING)); 
 	}
 }

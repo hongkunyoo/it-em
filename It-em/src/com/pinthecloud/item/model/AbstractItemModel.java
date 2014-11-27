@@ -17,7 +17,7 @@ public class AbstractItemModel<T> {
 	private String whoMadeId;
 	private String rawCreateDateTime;
 	private String refId;
-
+	
 	public String getId() {
 		return id;
 	}
@@ -39,7 +39,7 @@ public class AbstractItemModel<T> {
 	public String getWhoMadeId() {
 		return whoMadeId;
 	}
-	public void setWhoMadeId(String id) {
+	public void setWhoMadeId(String whoMadeId) {
 		this.whoMadeId = id;
 	}
 	public String getRawCreateDateTime() {

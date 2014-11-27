@@ -55,7 +55,7 @@ public class AimHelper {
 		});
 	}
 	
-	public void getRand10(ItDateTime date, final ItListCallback<Item> callback) {
+	public void getRank10(ItDateTime date, final ItListCallback<Item> callback) {
 		
 		JsonObject jo = new JsonObject();
 		jo.addProperty("date", date.toString());
@@ -73,8 +73,8 @@ public class AimHelper {
 
 
 	public<E extends AbstractItemModel<E>> void list(E obj, final ItListCallback<E> callback) {
-		String refId = obj.getRefId();
-		if (refId == null || refId.equals("")) return;
+		String id = obj.getId();
+		if (id == null || id.equals("")) return;
 
 		mClient.invokeApi(AIM_LIST, obj.toJson(), new ApiJsonOperationCallback() {
 
@@ -89,8 +89,8 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void list(String refId, final ItListCallback<E> callback) {
-		if (refId == null || refId.equals("")) return;
+	public<E extends AbstractItemModel<E>> void list(String itemId, final ItListCallback<E> callback) {
+		if (itemId == null || itemId.equals("")) return;
 
 		mClient.invokeApi(AIM_LIST, null, new ApiJsonOperationCallback() {
 

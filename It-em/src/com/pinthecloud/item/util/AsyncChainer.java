@@ -35,7 +35,7 @@ public class AsyncChainer {
 	}
 
 
-	public static void notifyNext(ItFragment frag) {
+	public static void notifyNext(ItFragment frag, Object... params) {
 		Class<?> clazz = null;
 		if (frag == null) {
 			clazz = ItFragment.class;
@@ -46,7 +46,7 @@ public class AsyncChainer {
 		if (queue != null && !queue.isEmpty()) {
 			Chainable c = queue.poll();
 			if (c == null) throw new ItException("chain == null");
-			c.doNext(frag);
+			c.doNext(frag, params);
 		}
 	}
 
@@ -64,6 +64,6 @@ public class AsyncChainer {
 
 
 	public static interface Chainable {
-		public void doNext(ItFragment frag);
+		public void doNext(ItFragment frag, Object... params);
 	}
 }

@@ -11,6 +11,16 @@ public class Item extends AbstractItemModel<Item> {
 	private int likeItCount;
 	private String imgUrl;
 	
+	public Item() {
+		
+	}
+	public Item(String content, String whoMade, String whoMadeId, String imgUrl) {
+		this.setContent(content);
+		this.setWhoMade(whoMade);
+		this.setWhoMadeId(whoMadeId);
+		this.setImgUrl(imgUrl);
+	}
+	
 	public String getRefId() {
 		return null;
 	}

@@ -32,8 +32,18 @@ public class ObjectPrefHelper {
 		}
 	}
 
-	public <E> E get(E obj) {
-		Class<?> clazz = obj.getClass();
+	public <E> E get(Class<E> clazz) {
+//		Class<?> clazz = obj.getClass();
+		E obj = null;
+		try {
+			obj = clazz.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Method[] methods = clazz.getMethods();
 
 		for (Method method : methods) {

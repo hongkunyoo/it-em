@@ -13,6 +13,7 @@ import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.helper.AimHelper;
+import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
@@ -41,6 +42,7 @@ public class ItApplication extends Application {
 	private static AimHelper aimHelper;
 	private static AimDBHelper aimDBHelper;
 	private static UserHelper userHelper;
+	private static BlobStorageHelper blobStorageHelper;
 
 	public ItApplication() {
 		super();
@@ -82,6 +84,7 @@ public class ItApplication extends Application {
 		aimHelper = new AimHelper(app);
 		userHelper = new UserHelper(app);
 		aimDBHelper = new AimDBHelper(app);
+		blobStorageHelper = new BlobStorageHelper();
 	}
 
 
@@ -117,6 +120,10 @@ public class ItApplication extends Application {
 	public UserHelper getUserHelper() {
 		if (userHelper == null) init();
 		return userHelper;
+	}
+	public BlobStorageHelper getBlobStorageHelper() {
+		if (blobStorageHelper == null) init();
+		return blobStorageHelper;
 	}
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);

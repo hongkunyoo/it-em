@@ -10,7 +10,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.HongkunTestActivity;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
-import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.model.ItUser;
 
 public class SplashFragment extends ItFragment {
 
@@ -38,12 +38,12 @@ public class SplashFragment extends ItFragment {
 		} catch (ClassNotFoundException e) {
 			if(mThisFragment.isAdded()){
 				Intent intent = new Intent();
-				if (!mPrefHelper.getBoolean(PrefHelper.IS_LOGIN_KEY)){
+				if (mObjectPrefHelper.get(ItUser.class).isLoggedIn()){
+					// Has Loggined
+					intent.setClass(mActivity, MainActivity.class);					
+				} else{
 					// New User
 					intent.setClass(mActivity, LoginActivity.class);
-				} else{
-					// Has Logined
-					intent.setClass(mActivity, MainActivity.class);
 				}
 				startActivity(intent);
 			}
