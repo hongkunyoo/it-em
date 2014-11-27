@@ -60,6 +60,7 @@ public class ItException extends RuntimeException {
 		SERVER_ERROR,
 		INTERNAL_ERROR,
 		NO_SUCH_INSTANCE,
-		FORMATE_ERROR
+		FORMATE_ERROR, 
+		BLOB_STORAGE_ERROR
 	}
 }
