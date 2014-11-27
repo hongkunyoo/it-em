@@ -25,7 +25,6 @@ public class Item extends AbstractItemModel<Item> {
 		return null;
 	}
 	public void setRefId(String refId) {
-		
 	}
 	public int getReplyCount() {
 		return replyCount;

@@ -3,11 +3,11 @@ package com.pinthecloud.item.fragment;
 import android.app.Fragment;
 import android.os.Bundle;
 
-import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.AimHelper;
@@ -71,6 +71,6 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 				// Do nothing
 			}
 		}); 
-		exceptionDialog.show(getFragmentManager(), GlobalVariable.DIALOG_KEY);
+		exceptionDialog.show(getFragmentManager(), ItDialogFragment.DIALOG_KEY);
 	}
 }

@@ -6,17 +6,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images.Media;
 import android.text.format.Time;
 
 import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.exception.ItException;
+import com.pinthecloud.item.fragment.ItFragment;
 
 public class FileUtil {
+
+	public static final int GALLERY = 0;
+	public static final int CAMERA = 1;
 
 
 	public static Uri getOutputMediaFileUri(){
@@ -48,16 +54,17 @@ public class FileUtil {
 
 
 	public static File saveBitmapToFile(Context context, Uri uri, Bitmap bitmap){
-		File file = null;
 		try {
-			file = new File(uri.getPath());
+			File file = new File(uri.getPath());
 			FileOutputStream fos = new FileOutputStream(file);
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 			fos.close();
+			return file;
 		} catch (FileNotFoundException e) {
+			throw new ItException(ItException.TYPE.INTERNAL_ERROR);
 		} catch (IOException e) {
+			throw new ItException(ItException.TYPE.INTERNAL_ERROR);
 		}
-		return file;
 	}
 
 
@@ -75,5 +82,60 @@ public class FileUtil {
 			cursorImages.close();
 		}
 		return uri;  
+	}
+
+
+	public static Uri getMediaUri(ItFragment frag, int mediaType){
+		Intent intent = null;
+		Uri mediaUri = null;
+		switch(mediaType){
+		case GALLERY:
+			intent = new Intent(Intent.ACTION_PICK, Media.EXTERNAL_CONTENT_URI);
+			intent.setType("image/*");
+			frag.startActivityForResult(intent, GALLERY);
+			break;
+		case CAMERA:
+			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			mediaUri = getOutputMediaFileUri();
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri);
+			frag.startActivityForResult(intent, CAMERA);
+			break;
+		}
+		return mediaUri;
+	}
+
+
+	public static String getMediaPath(Context context, Intent data, Uri mediaUri, int mediaType){
+		String imagePath = null;
+		switch(mediaType){
+		case GALLERY:
+			mediaUri = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+			Cursor cursor = context.getContentResolver().query(mediaUri, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			imagePath = cursor.getString(columnIndex);
+			cursor.close();
+			break;
+		case CAMERA:
+			if(mediaUri == null){
+				if(data == null){
+					mediaUri = getLastCaptureBitmapUri(context);
+				} else{
+					mediaUri = data.getData();
+					if(mediaUri == null){
+						// Intent pass data as Bitmap
+						Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+						mediaUri = getOutputMediaFileUri();
+						saveBitmapToFile(context, mediaUri, bitmap);
+					}
+				}
+			}
+			imagePath = mediaUri.getPath();
+			break;
+		}
+		return imagePath;
 	}
 }

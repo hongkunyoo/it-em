@@ -17,42 +17,40 @@ import com.pinthecloud.item.model.ItUser;
 public class UserHelper {
 	private MobileServiceClient mClient;
 	private MobileServiceTable<ItUser> table;
-	
+
 	public UserHelper(ItApplication context) {
 		this.mClient = context.getMobileClient();
 		table = mClient.getTable(ItUser.class);
 	}
-	
+
 	public void add(final ItFragment frag, ItUser user, final ItEntityCallback<ItUser> callback) {
 		table.insert(user, new TableOperationCallback<ItUser>() {
-			
+
 			@Override
-			public void onCompleted(ItUser arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				if (arg1 == null) {
-					callback.onCompleted(arg0);
+			public void onCompleted(ItUser result, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(result);
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, arg1));
+					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, exception));
 				}
 			}
 		});
 	}
-	
+
 	public void get(final ItFragment frag, String id, final ItEntityCallback<ItUser> callback) {
 		table.where().field("id").eq(id).execute(new TableQueryCallback<ItUser>() {
-			
+
 			@Override
-			public void onCompleted(List<ItUser> arg0, int arg1, Exception arg2,
-					ServiceFilterResponse arg3) {
-				// TODO Auto-generated method stub
-				if (arg2 == null) {
-					if (arg1 == 1) {
-						callback.onCompleted(arg0.get(0));
+			public void onCompleted(List<ItUser> result, int count, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					if (count == 1) {
+						callback.onCompleted(result.get(0));
 						return;
 					}
 				}
-				ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.SERVER_ERROR, arg2));
+				ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.SERVER_ERROR, exception));	
 			}
 		});
 	}

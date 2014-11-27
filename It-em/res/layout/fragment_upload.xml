@@ -4,6 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.pinthecloud.item.view.SquareImageView
+            android:id="@+id/upload_frag_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/abc_ab_share_pack_holo_dark" />
+
+        <EditText
+            android:id="@+id/upload_frag_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/write_content"
+            android:inputType="textMultiLine"
+            android:maxLines="4" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
     <Button
         android:id="@+id/upload_frag_upload"
         android:layout_width="match_parent"

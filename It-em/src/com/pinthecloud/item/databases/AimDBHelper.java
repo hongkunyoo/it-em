@@ -1,6 +1,5 @@
 package com.pinthecloud.item.databases;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -11,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.pinthecloud.item.model.AbstractItemModel;
 
@@ -85,8 +85,7 @@ public class AimDBHelper {
 	}
 
 	public <E extends AbstractItemModel<?>> List<E> getList(E obj) {
-		List<E> list = new ArrayList<E>();
-
+		List<E> list = Lists.newArrayList();
 		return null;
 	}
 

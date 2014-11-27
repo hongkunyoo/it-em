@@ -13,4 +13,7 @@
     <dimen name="my_page_header_height">248dp</dimen>
     <dimen name="my_item_width">100dp</dimen>
     <dimen name="my_item_spacing">2dp</dimen>
+    
+    <!-- Item -->
+    <dimen name="item_layout_margin">5dp</dimen>
 </resources>
