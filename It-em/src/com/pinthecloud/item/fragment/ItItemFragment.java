@@ -75,7 +75,7 @@ public class ItItemFragment extends MyPageItemFragment {
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = Lists.newArrayList();
-		mGridAdapter = new ItItemGridAdapter(mActivity, mThisFragment, mItemList);
+		mGridAdapter = new ItItemGridAdapter(mActivity, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {

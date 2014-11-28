@@ -64,7 +64,7 @@ public class SettingsFragment extends ItFragment {
 			public void onClick(View v) {
 				mProgressBar.setVisibility(View.VISIBLE);
 				mPrefHelper.remove(PrefHelper.IS_LOGIN_KEY);
-				
+
 				Intent intent = new Intent(mActivity, LoginActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);

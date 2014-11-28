@@ -14,7 +14,7 @@ import com.pinthecloud.item.exception.ItException;
 public class BitmapUtil {
 
 	public static final int SMALL_SIZE = 100;
-	public static final int BIG_SIZE = 320;
+	public static final int BIG_SIZE = 480;
 
 	public static final String SMALL_POSTFIX = "_small";
 	public static final String PNG = ".png";

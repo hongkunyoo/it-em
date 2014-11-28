@@ -7,12 +7,15 @@ import android.os.Parcelable;
 
 import com.google.gson.Gson;
 
-public class Item extends AbstractItemModel<Item> implements Parcelable{
+public class Item extends AbstractItemModel<Item> implements Parcelable {
+	
+	public static String INTENT_KEY = "ITEM_INTENT_KEY";
+	
 	private List<Reply> replyList;
 	private int replyCount;
 	private List<LikeIt> likeItList;
 	private int likeItCount;
-	public static String INTENT_KEY = "ITEM_INTENT_KEY";
+	
 	
 	public Item() {
 		
@@ -22,6 +25,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable{
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
 	}
+	
 	
 	public String getRefId() {
 		return null;
@@ -52,34 +56,33 @@ public class Item extends AbstractItemModel<Item> implements Parcelable{
 	public void setLikeItList(List<LikeIt> likeList) {
 		this.likeItList = likeList;
 	}
-	public void setItem(Item other) {
-		this.setId(other.getId());
-		this.setContent(other.getContent());
-		this.setWhoMade(other.getWhoMade());
-		this.setWhoMadeId(other.getWhoMadeId());
-		this.setRawCreateDateTime(other.getRawCreateDateTime());
-		this.setRefId(other.getRefId());
-		this.setReplyList(other.getReplyList());
-		this.setReplyCount(other.getReplyCount());
-		this.setLikeItList(other.getLikeItList());
-		this.setLikeItCount(other.getLikeItCount());
+	public void setItem(Item item) {
+		this.setId(item.getId());
+		this.setContent(item.getContent());
+		this.setWhoMade(item.getWhoMade());
+		this.setWhoMadeId(item.getWhoMadeId());
+		this.setRawCreateDateTime(item.getRawCreateDateTime());
+		this.setRefId(item.getRefId());
+		this.setReplyList(item.getReplyList());
+		this.setReplyCount(item.getReplyCount());
+		this.setLikeItList(item.getLikeItList());
+		this.setLikeItCount(item.getLikeItCount());
 	}
+	
 	
 	@Override
 	public Item rand() {
 		Item item = super.rand();
-//		item.setLikeItCount(RandomUtil.getInt());
-//		item.setReplyCount(RandomUtil.getInt());
 		return item;
 	}
+	
 	
 	@Override
 	public Item rand(boolean hasId) {
 		Item item = super.rand(hasId);
-//		item.setLikeItCount(RandomUtil.getInt());
-//		item.setReplyCount(RandomUtil.getInt());
 		return item;
 	}
+	
 	
 	/*
 	 * Parcelable
@@ -106,9 +109,9 @@ public class Item extends AbstractItemModel<Item> implements Parcelable{
 	public void readToParcel(Parcel in){
 		this.setItem(new Gson().fromJson(in.readString(), Item.class));
 	}
+	
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

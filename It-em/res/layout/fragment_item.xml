@@ -12,7 +12,8 @@
             android:id="@+id/item_frag_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/abc_btn_check_material" />
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
             android:layout_width="match_parent"

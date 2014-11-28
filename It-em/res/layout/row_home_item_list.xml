@@ -16,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/image"
-            android:scaleType="fitXY" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/row_home_item_list_content"
@@ -37,6 +36,7 @@
                 android:id="@+id/row_home_item_list_it_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/row_home_item_list_reply"
                 android:layout_toStartOf="@+id/row_home_item_list_reply" />
 
@@ -63,7 +63,8 @@
         <TextView
             android:id="@+id/row_home_item_list_nick_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
 </LinearLayout>

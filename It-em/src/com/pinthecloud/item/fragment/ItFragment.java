@@ -71,6 +71,6 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 				// Do nothing
 			}
 		}); 
-		exceptionDialog.show(getFragmentManager(), ItDialogFragment.DIALOG_KEY);
+		exceptionDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 	}
 }

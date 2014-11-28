@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.eowise.recyclerview.stickyheaders.StickyHeadersAdapter;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
 
 public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemListHeaderAdapter.ViewHolder> {

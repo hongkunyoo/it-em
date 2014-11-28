@@ -160,46 +160,41 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-//				mApp.showProgressDialog(mActivity);
+				//				mApp.showProgressDialog(mActivity);
 				ItUser me = mObjectPrefHelper.get(ItUser.class);
 				final Item item = new Item();
 				item.setContent(mContent.getText().toString());
 				item.setWhoMade(me.getNickName());
 				item.setWhoMadeId(me.getId());
-				
+
 				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 					@Override
 					public void doNext(final ItFragment frag, Object... params) {
-						// TODO Auto-generated method stub
 						mAimHelper.add(frag, item, new ItEntityCallback<String>() {
 
 							@Override
 							public void onCompleted(String entity) {
-								// TODO Auto-generated method stub
 								item.setId(entity);
 								AsyncChainer.notifyNext(frag);
 							}
 						});
 					}
-					
+
 				}, new Chainable(){
 
 					@Override
 					public void doNext(ItFragment frag, Object... params) {
-						// TODO Auto-generated method stub
 						blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new ItEntityCallback<String>() {
 
 							@Override
 							public void onCompleted(String entity) {
-								// TODO Auto-generated method stub
 								Intent intent = new Intent(mActivity, MainActivity.class);
 								intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 								startActivity(intent);
 							}
 						});
 					}
-					
 				});
 			}
 		});
@@ -214,7 +209,7 @@ public class UploadFragment extends ItFragment {
 				String[] itemList = getDialogItemList();
 				ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
 				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-				listDialog.show(getFragmentManager(), ItDialogFragment.DIALOG_KEY);
+				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}
