@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
@@ -13,7 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.SquareImageView;
+import com.squareup.picasso.Picasso;
 
 public class ItemFragment extends ItFragment {
 
@@ -22,13 +26,15 @@ public class ItemFragment extends ItFragment {
 	private TextView mDate;
 	private TextView mItNumber;
 	private Button mDelete;
-
+	private Item item;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_item, container, false);
+		Intent intent = mActivity.getIntent();
+		item = intent.getExtras().getParcelable(Item.INTENT_KEY);
 		setHasOptionsMenu(true);
 		setActionBar();
 		findComponent(view);
@@ -74,6 +80,7 @@ public class ItemFragment extends ItFragment {
 	
 	
 	private void setComponent(){
+		Picasso.with(mActivity).load(BlobStorageHelper.getItemImgUrl(item.getId())).into(mImage);
 	}
 	
 	

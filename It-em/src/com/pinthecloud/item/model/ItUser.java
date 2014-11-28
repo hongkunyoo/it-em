@@ -12,8 +12,6 @@ public class ItUser {
 	private String nickName;
 	@com.google.gson.annotations.SerializedName("selfIntro")
 	private String selfIntro;
-	@com.google.gson.annotations.SerializedName("imgUrl")
-	private String imgUrl;
 	@com.google.gson.annotations.SerializedName("webPage")
 	private String webPage;
 	
@@ -40,12 +38,6 @@ public class ItUser {
 	}
 	public void setSelfIntro(String selfIntro) {
 		this.selfIntro = selfIntro;
-	}
-	public String getImgUrl() {
-		return imgUrl;
-	}
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
 	}
 	public String getWebPage() {
 		return webPage;

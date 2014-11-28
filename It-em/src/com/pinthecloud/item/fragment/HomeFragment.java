@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.Item;
 
 public class HomeFragment extends ItFragment {
@@ -27,7 +29,7 @@ public class HomeFragment extends ItFragment {
 	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
 	private boolean mIsAdding = false;
-
+	private int page = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +39,7 @@ public class HomeFragment extends ItFragment {
 		findComponent(view);
 		setRefreshLayout();
 		setList();
-		updateList();
+		updateList(0, null);
 		return view;
 	}
 
@@ -55,7 +57,7 @@ public class HomeFragment extends ItFragment {
 
 			@Override
 			public void onRefresh() {
-				updateList();
+				updateList(page, null);
 			}
 		});
 	}
@@ -88,10 +90,23 @@ public class HomeFragment extends ItFragment {
 	}
 
 
-	private void updateList() {
-		mProgressBar.setVisibility(View.GONE);
-		mListRefresh.setRefreshing(false);
-		mListAdapter.notifyDataSetChanged();
+	private void updateList(int _page, final ItEntityCallback<Boolean> callback) {
+		
+		mAimHelper.listItem(mThisFragment, _page, new ItListCallback<Item>() {
+			
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				// TODO Auto-generated method stub
+				mListAdapter.addAll(list);
+				mProgressBar.setVisibility(View.GONE);
+				mListRefresh.setRefreshing(false);
+				mListAdapter.notifyDataSetChanged();
+				if (callback != null)
+					callback.onCompleted(true);
+			}
+		});
+		
+		
 	}
 
 
@@ -99,9 +114,18 @@ public class HomeFragment extends ItFragment {
 		mIsAdding = true;
 		mListAdapter.setHasFooter(true);
 		mListAdapter.notifyDataSetChanged();
+		
+		updateList(this.page++, new ItEntityCallback<Boolean>() {
 
-		mIsAdding = false;
-		mListAdapter.setHasFooter(false);
-		mListAdapter.notifyDataSetChanged();
+			@Override
+			public void onCompleted(Boolean entity) {
+				// TODO Auto-generated method stub
+				mIsAdding = false;
+				mListAdapter.setHasFooter(false);
+				mListAdapter.notifyDataSetChanged();
+			}
+		});
+
+		
 	}
 }

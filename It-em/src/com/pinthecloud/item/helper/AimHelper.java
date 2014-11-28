@@ -18,7 +18,6 @@ import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.MyLog;
 
 public class AimHelper {
 
@@ -37,7 +36,7 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void listItem(int page, final ItListCallback<Item> callback) {
+	public<E extends AbstractItemModel<E>> void listItem(final ItFragment frag, int page, final ItListCallback<Item> callback) {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("page", page);
 
@@ -47,15 +46,17 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					MyLog.log(_json);
+					JsonElement json = _json.getAsJsonArray();
+					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
+					callback.onCompleted(list, list.size());
 				} else {
-					MyLog.log(exception);
+					ExceptionManager.fireException(new ItException(frag, "listItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 	
-	public void getRank10(ItDateTime date, final ItListCallback<Item> callback) {
+	public void getRank10(final ItFragment frag, ItDateTime date, final ItListCallback<Item> callback) {
 		
 		JsonObject jo = new JsonObject();
 		jo.addProperty("date", date.toString());
@@ -63,10 +64,16 @@ public class AimHelper {
 		mClient.invokeApi(RANK_ITEM, jo, new ApiJsonOperationCallback() {
 			
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
+			public void onCompleted(JsonElement arg0, Exception exception,
+					ServiceFilterResponse response) {
 				// TODO Auto-generated method stub
-				
+				if (exception == null) {
+//					JsonElement json = arg0.getAsJsonArray();
+//					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
+//					callback.onCompleted(list, list.size());
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "listItem", ItException.TYPE.SERVER_ERROR, response));
+				}
 			}
 		});
 	}

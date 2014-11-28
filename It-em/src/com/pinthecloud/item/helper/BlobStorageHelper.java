@@ -44,11 +44,23 @@ public class BlobStorageHelper {
 		blobClient = account.createCloudBlobClient();
 	}
 	
-	public String getHostUrl() {
+	public static String getHostUrl() {
 		return "https://athere.blob.core.windows.net/";
 	}
-	public String getHostUrl(String uri) {
+	public static String getHostUrl(String uri) {
 		return "https://athere.blob.core.windows.net/" + uri + "/";
+	}
+	public static String getUserProfileHostUrl() {
+		return getHostUrl(USER_PROFILE);
+	}
+	public static String getUserProfileImgUrl(String id) {
+		return getHostUrl(USER_PROFILE) + id;
+	}
+	public static String getItemImgHostUrl() {
+		return getHostUrl(ITEM_IMAGE);
+	}
+	public static String getItemImgUrl(String id) {
+		return getHostUrl(ITEM_IMAGE)+id;
 	}
 	
 

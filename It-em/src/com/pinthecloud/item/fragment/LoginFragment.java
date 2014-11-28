@@ -146,7 +146,6 @@ public class LoginFragment extends ItFragment {
 		itUser.setNickName(user.getFirstName());
 		itUser.setSelfIntro("");
 		// e.g. https://athere.blob.core.windows.net/userprofile/ID
-		itUser.setImgUrl(blobStorageHelper.getHostUrl(BlobStorageHelper. USER_PROFILE) + user.getId());
 		itUser.setWebPage("");
 		
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
@@ -154,28 +153,46 @@ public class LoginFragment extends ItFragment {
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
 				// TODO Auto-generated method stub
-				
-				
-					new AsyncTask<Void,Void,Bitmap>(){
+				userHelper.add(frag, itUser, new ItEntityCallback<ItUser>() {
 
-						@Override
-						protected Bitmap doInBackground(Void... params) {
-							// TODO Auto-generated method stub
-							Bitmap bm = null;
-							try {
-								bm = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							return bm;
+					@Override
+					public void onCompleted(ItUser entity) {
+						// TODO Auto-generated method stub
+						mObjectPrefHelper.put(entity);
+						itUser.setId(entity.getId());
+						goToNextActivity();
+					}
+				});
+			}
+			
+		}, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				// TODO Auto-generated method stub
+				
+				new AsyncTask<Void,Void,Bitmap>(){
+
+					@Override
+					protected Bitmap doInBackground(Void... params) {
+						// TODO Auto-generated method stub
+						Bitmap bm = null;
+						try {
+							bm = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-						
-						protected void onPostExecute(Bitmap result) {
-							AsyncChainer.notifyNext(frag, (Object)result);
-						};
-						
-					}.execute();
+						return bm;
+					}
+					
+					protected void onPostExecute(Bitmap result) {
+						AsyncChainer.notifyNext(frag, (Object)result);
+					};
+					
+				}.execute();
+				
+				
 			}
 			
 		}, new Chainable(){
@@ -184,28 +201,12 @@ public class LoginFragment extends ItFragment {
 			public void doNext(final ItFragment frag, Object... params) {
 				// TODO Auto-generated method stub
 				Bitmap picture = (Bitmap)params[0];
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getItUserId(), picture, new ItEntityCallback<String>() {
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), picture, new ItEntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
 						// TODO Auto-generated method stub
 						AsyncChainer.notifyNext(frag);
-					}
-				});
-			}
-			
-		}, new Chainable(){
-
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
-				userHelper.add(frag, itUser, new ItEntityCallback<ItUser>() {
-
-					@Override
-					public void onCompleted(ItUser entity) {
-						// TODO Auto-generated method stub
-						mObjectPrefHelper.put(entity);
-						goToNextActivity();
 					}
 				});
 			}

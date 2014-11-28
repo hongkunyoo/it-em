@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -15,14 +16,21 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.OtherPageActivity;
 import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.helper.AimHelper;
+import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
+import com.squareup.picasso.Picasso;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -118,6 +126,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
 			setNormalText(normalViewHolder, item);
 			setNormalButton(normalViewHolder, item);
+			setImageViews(normalViewHolder, item);
 		}
 	}
 
@@ -152,7 +161,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	private void setNormalButton(NormalViewHolder holder, Item item){
+	private void setNormalButton(final NormalViewHolder holder, final Item item){
 		holder.profileLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -167,6 +176,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, ItemActivity.class);
+				intent.putExtra(Item.INTENT_KEY, item);
 				mContext.startActivity(intent);
 			}
 		});
@@ -175,10 +185,29 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
+				AimHelper mAimHelper = ItApplication.getInstance().getAimHelper();
+				LikeIt likeIt = new LikeIt(item.getWhoMade(), item.getWhoMadeId(), item.getId());
+				mAimHelper.add(mFrag, likeIt, new ItEntityCallback<String>() {
+					
+					@Override
+					public void onCompleted(String entity) {
+						// TODO Auto-generated method stub
+						final int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
+						mFrag.getActivity().runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								holder.itNumber.setText(String.valueOf(likeItNum));
+							}
+						});
+						
+					}
+				});
 			}
 		});
 
-		holder.reply.setText(""+item.getReplyCount());
+		holder.reply.setText(String.valueOf(item.getReplyCount()));
 		holder.reply.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -188,12 +217,34 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 	}
+	
+	private void setImageViews(final NormalViewHolder holder, Item item) {
+		// TODO Auto-generated method stub
+//		Picasso.with(mFrag.getActivity()).load(BlobStorageHelper.getItemImgUrl(item.getId())).into(holder.image);
+//		MyLog.log(BlobStorageHelper.getItemImgUrl(item.getId()));
+//		Picasso.with(mFrag.getActivity()).load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId())).into(holder.profileImage);
+		BlobStorageHelper blobStorageHelper = ItApplication.getInstance().getBlobStorageHelper();
+		blobStorageHelper.downloadBitmapAsync(mFrag, BlobStorageHelper.ITEM_IMAGE, item.getId(), new ItEntityCallback<Bitmap>() {
 
+			@Override
+			public void onCompleted(Bitmap entity) {
+				// TODO Auto-generated method stub
+				holder.image.setImageBitmap(entity);
+			}
+		});
+	}
 
 	public void add(Item item, int position) {
 		mItemList.add(position, item);
 		notifyItemInserted(position);
 	}
+	public void addAll(List<Item> list) {
+		int len = list.size();
+		for (int i = 0 ; i < len ; i++) {
+			this.add(list.get(i), i);
+		}
+	}
+	
 
 
 	public void remove(Item item) {

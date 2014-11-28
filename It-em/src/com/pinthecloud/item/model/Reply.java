@@ -9,7 +9,7 @@ public class Reply extends AbstractItemModel<Reply> {
 	}
 	public Reply(String content, String whoMade, String whoMadeId, String refId) {
 		this.setContent(content);
-		this.setWhoMade(whoMadeId);
+		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
 		this.setRefId(refId);
 	}

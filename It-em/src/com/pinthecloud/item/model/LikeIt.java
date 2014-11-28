@@ -8,7 +8,7 @@ public class LikeIt extends AbstractItemModel<LikeIt>{
 		
 	}
 	public LikeIt(String whoMade, String whoMadeId, String refId) {
-		this.setWhoMade(whoMadeId);
+		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
 		this.setRefId(refId);
 	}

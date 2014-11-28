@@ -20,9 +20,14 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
-import com.pinthecloud.item.model.ItDateTime;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.SquareImageView;
@@ -155,11 +160,47 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mApp.showProgressDialog(mActivity);
+//				mApp.showProgressDialog(mActivity);
+				ItUser me = mObjectPrefHelper.get(ItUser.class);
+				final Item item = new Item();
+				item.setContent(mContent.getText().toString());
+				item.setWhoMade(me.getNickName());
+				item.setWhoMadeId(me.getId());
+				
+				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
-				Intent intent = new Intent(mActivity, MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
+					@Override
+					public void doNext(final ItFragment frag, Object... params) {
+						// TODO Auto-generated method stub
+						mAimHelper.add(frag, item, new ItEntityCallback<String>() {
+
+							@Override
+							public void onCompleted(String entity) {
+								// TODO Auto-generated method stub
+								item.setId(entity);
+								AsyncChainer.notifyNext(frag);
+							}
+						});
+					}
+					
+				}, new Chainable(){
+
+					@Override
+					public void doNext(ItFragment frag, Object... params) {
+						// TODO Auto-generated method stub
+						blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new ItEntityCallback<String>() {
+
+							@Override
+							public void onCompleted(String entity) {
+								// TODO Auto-generated method stub
+								Intent intent = new Intent(mActivity, MainActivity.class);
+								intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+							}
+						});
+					}
+					
+				});
 			}
 		});
 	}
