@@ -54,6 +54,11 @@ public class ItDateTime {
         Calendar cal = Calendar.getInstance(Locale.KOREA);
         return new ItDateTime(dateFormat.format(cal.getTime()));
 	}
+	public static ItDateTime getNow() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA);
+        Calendar cal = Calendar.getInstance(Locale.KOREA);
+        return new ItDateTime(dateFormat.format(cal.getTime()));
+	}
 	public ItDateTime getYesterday() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd000000", Locale.KOREA);
         Calendar cal = Calendar.getInstance(Locale.KOREA);

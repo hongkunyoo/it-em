@@ -27,6 +27,7 @@ public class HongkunTestFragment extends ItFragment {
 	EditText editText;
 	String id;
 	Item item;
+	ItDateTime datetime;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,21 +50,13 @@ public class HongkunTestFragment extends ItFragment {
 		aimHelper = ItApplication.getInstance().getAimHelper();
 		aimDBHelper = ItApplication.getInstance().getAimDBHelper();
 		today = ItDateTime.getToday();
-		
+		datetime = new ItDateTime("20141128095500");
+		MyLog.log(datetime);
 		btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				item = new Item().rand();
-				MyLog.log(item);
-				aimHelper.add(mThisFragment, item, new ItEntityCallback<String>() {
-
-					@Override
-					public void onCompleted(String entity) {
-						// TODO Auto-generated method stub
-						MyLog.log(entity);
-					}
-				});
+				MyLog.log(datetime.getElaspedTime());
 			}
 		});
 		
