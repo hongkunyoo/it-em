@@ -32,8 +32,8 @@ public class HotFragment extends ItFragment {
 	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
 
-	private boolean mIsAdding = false;
 	private ItDateTime currentDate = ItDateTime.getToday();
+	private boolean mIsAdding = false;
 
 
 	@Override
@@ -62,6 +62,7 @@ public class HotFragment extends ItFragment {
 
 			@Override
 			public void onRefresh() {
+				currentDate = ItDateTime.getToday();
 				updateList();
 			}
 		});
@@ -82,7 +83,7 @@ public class HotFragment extends ItFragment {
 		StickyHeadersItemDecoration decoration = new StickyHeadersBuilder()
 		.setAdapter(mListAdapter)
 		.setRecyclerView(mListView)
-		.setStickyHeadersAdapter(new HotItemListHeaderAdapter(mItemList), true)
+		.setStickyHeadersAdapter(new HotItemListHeaderAdapter(mActivity, mItemList))
 		.build();
 		mListView.addItemDecoration(decoration);
 
@@ -103,9 +104,8 @@ public class HotFragment extends ItFragment {
 
 
 	private void updateList() {
-		
 		mAimHelper.getRank10(mThisFragment, ItDateTime.getToday(), new ItListCallback<Item>() {
-	
+
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
@@ -122,18 +122,15 @@ public class HotFragment extends ItFragment {
 	private void addNextItemList() {
 		mIsAdding = true;
 		mListAdapter.setHasFooter(true);
-//		mListAdapter.notifyDataSetChanged();
-//
+		mListAdapter.notifyDataSetChanged();
+
 		currentDate = currentDate.getYesterday();
-		
 		mAimHelper.getRank10(mThisFragment, currentDate, new ItListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mIsAdding = false;
 				mListAdapter.setHasFooter(false);
-				mListAdapter.notifyDataSetChanged();
-
 				mItemList.addAll(list);
 				mListAdapter.notifyDataSetChanged();
 			}

@@ -13,20 +13,19 @@ import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.util.MyLog;
 
 public class UserHelper {
-	
+
 	private MobileServiceClient mClient;
 	private MobileServiceTable<ItUser> table;
 
-	
+
 	public UserHelper(ItApplication context) {
 		this.mClient = context.getMobileClient();
 		this.table = mClient.getTable(ItUser.class);
 	}
 
-	
+
 	public void add(final ItFragment frag, ItUser user, final ItEntityCallback<ItUser> callback) {
 		table.insert(user, new TableOperationCallback<ItUser>() {
 
@@ -42,7 +41,7 @@ public class UserHelper {
 		});
 	}
 
-	
+
 	public void get(final ItFragment frag, String id, final ItEntityCallback<ItUser> callback) {
 		table.where().field("id").eq(id).execute(new TableQueryCallback<ItUser>() {
 

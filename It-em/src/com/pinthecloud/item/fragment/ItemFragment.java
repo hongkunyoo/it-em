@@ -19,6 +19,7 @@ import com.pinthecloud.item.activity.OtherPageActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
 import com.squareup.picasso.Picasso;
@@ -135,7 +136,7 @@ public class ItemFragment extends ItFragment {
 		.into(mImage);
 
 		Picasso.with(mActivity)
-		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.ic_launcher)
 		.error(R.drawable.ic_launcher)
 		.fit()

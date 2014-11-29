@@ -33,7 +33,7 @@ public class AimHelper {
 
 	private MobileServiceClient mClient;
 
-	
+
 	public AimHelper(ItApplication context) {
 		this.mClient = context.getMobileClient();
 	}
@@ -58,63 +58,60 @@ public class AimHelper {
 			}
 		});
 	}
-	
+
 	public void getRank10(final ItFragment frag, ItDateTime date, final ItListCallback<Item> callback) {
-		
+
 		JsonObject jo = new JsonObject();
 		jo.addProperty("date", date.toString());
 		mClient.invokeApi(RANK_ITEM, jo, new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					JsonElement json = _json.getAsJsonArray();
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
-					if (callback != null)
-						callback.onCompleted(list, list.size());
+					callback.onCompleted(list, list.size());
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "getRank10", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
-	
+
+
 	public void listMyItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
-		
 		JsonObject jo = new JsonObject();
 		jo.addProperty("userId", userId);
 		mClient.invokeApi(MY_UPLOAD_ITEM, jo, new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					JsonElement json = _json.getAsJsonArray();
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
-					if (callback != null)
-						callback.onCompleted(list, list.size());
+					callback.onCompleted(list, list.size());
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
-	
+
+
 	public void listItItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
-		
 		JsonObject jo = new JsonObject();
 		jo.addProperty("userId", userId);
 		mClient.invokeApi(MY_IT_ITEM, jo, new ApiJsonOperationCallback() {
-			
+
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					JsonElement json = _json.getAsJsonArray();
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
-					if (callback != null)
-						callback.onCompleted(list, list.size());
+					callback.onCompleted(list, list.size());
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
 				}
@@ -123,24 +120,7 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void list(E obj, final ItListCallback<E> callback) {
-		String id = obj.getId();
-		if (id == null || id.equals("")) return;
-
-		mClient.invokeApi(AIM_LIST, obj.toJson(), new ApiJsonOperationCallback() {
-
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				JsonElement json = _json.getAsJsonArray();
-				List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
-				callback.onCompleted(list, list.size());
-			}
-		});
-	}
-
-
-	public<E extends AbstractItemModel<E>> void list(String itemId, final ItListCallback<E> callback) {
+	public<E extends AbstractItemModel<E>> void list(final ItFragment frag, String itemId, final ItListCallback<E> callback) {
 		if (itemId == null || itemId.equals("")) return;
 
 		mClient.invokeApi(AIM_LIST, null, new ApiJsonOperationCallback() {
@@ -148,15 +128,19 @@ public class AimHelper {
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
-				JsonElement json = _json.getAsJsonArray();
-				List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
-				callback.onCompleted(list, list.size());
+				if(exception == null){
+					JsonElement json = _json.getAsJsonArray();
+					List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
+					callback.onCompleted(list, list.size());
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.SERVER_ERROR, response));
+				}
 			}
 		});
 	}
 
 
-	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final ItEntityCallback<String> callback) {
+	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, E obj, final ItEntityCallback<String> callback) {
 		mClient.invokeApi(AIM_ADD, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@Override
@@ -165,48 +149,57 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsString());
 				} else {
-					String content = null;
-					if (response != null) content = response.getContent();
-					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, content));
+					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, response));
 				}
-
 			}
 		});
 	}
 
 
-	public <E extends AbstractItemModel<E>> void del(final E obj, final ItEntityCallback<Boolean> callback) {
+	public <E extends AbstractItemModel<E>> void del(final ItFragment frag, E obj, final ItEntityCallback<Boolean> callback) {
 		mClient.invokeApi(AIM_DELETE, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
-				callback.onCompleted(_json.getAsBoolean());
+				if (exception == null) {
+					callback.onCompleted(_json.getAsBoolean());
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "del", ItException.TYPE.SERVER_ERROR, response));
+				}
 			}
 		});
 	}
 
 
-	public <E extends AbstractItemModel<E>> void get(final E obj, final ItEntityCallback<E> callback) {
+	public <E extends AbstractItemModel<E>> void get(final ItFragment frag, final E obj, final ItEntityCallback<E> callback) {
 		mClient.invokeApi(AIM_GET, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
-				callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
+				if (exception == null) {
+					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.SERVER_ERROR, response));
+				}
 			}
 		});
 	}
 
 
-	public <E extends AbstractItemModel<E>> void update(final E obj, final ItEntityCallback<Boolean> callback) {
+	public <E extends AbstractItemModel<E>> void update(final ItFragment frag, E obj, final ItEntityCallback<Boolean> callback) {
 		mClient.invokeApi(AIM_UPDATE, obj.toJson(), new ApiJsonOperationCallback() {
 
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
-				callback.onCompleted(_json.getAsBoolean());
+				if (exception == null) {
+					callback.onCompleted(_json.getAsBoolean());
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.SERVER_ERROR, response));
+				}
 			}
 		});
 	}

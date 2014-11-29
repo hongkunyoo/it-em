@@ -25,8 +25,8 @@ import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
+import com.pinthecloud.item.util.BitmapUtil;
 import com.squareup.picasso.Picasso;
 
 public class LoginFragment extends ItFragment {
@@ -147,13 +147,14 @@ public class LoginFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(ItUser entity) {
+						mApp.dismissProgressDialog();
 						mObjectPrefHelper.put(entity);
 						itUser.setId(entity.getId());
 						goToNextActivity();
+						AsyncChainer.notifyNext(frag);
 					}
 				});
 			}
-
 		}, new Chainable(){
 
 			@Override
@@ -171,24 +172,21 @@ public class LoginFragment extends ItFragment {
 						return bm;
 					}
 
+					@Override
 					protected void onPostExecute(Bitmap result) {
 						AsyncChainer.notifyNext(frag, (Object)result);
 					};
 				}.execute();
 			}
-
 		}, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				Bitmap picture = (Bitmap)params[0];
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), picture, new ItEntityCallback<String>() {
-
-					@Override
-					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
+				Bitmap profileImage = (Bitmap)params[0];
+				profileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
+				Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), profileImage, null);
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, smallProfileImage, null);
 			}
 		});
 	}

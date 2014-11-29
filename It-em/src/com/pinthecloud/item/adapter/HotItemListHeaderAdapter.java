@@ -2,7 +2,9 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +12,17 @@ import android.widget.TextView;
 
 import com.eowise.recyclerview.stickyheaders.StickyHeadersAdapter;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.exception.ItException;
+import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
 
 public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemListHeaderAdapter.ViewHolder> {
 
+	private Context mContext;
 	private List<Item> mItemList;
 
 
-	public HotItemListHeaderAdapter(List<Item> itemList) {
+	public HotItemListHeaderAdapter(Context context, List<Item> itemList) {
+		this.mContext = context;
 		this.mItemList = itemList;
 	}
 
@@ -45,15 +49,32 @@ public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemLis
 	@Override
 	public void onBindViewHolder(ViewHolder headerViewHolder, int position) {
 		Item item = mItemList.get(position);
-		headerViewHolder.date.setText(item.getCreateDateTime().toPrettyDateTime());
+		ItDateTime itDateTime = item.getCreateDateTime();
+
+		Time nowTime = new Time();
+		nowTime.setToNow();
+
+		if(itDateTime.getYear() == nowTime.year && itDateTime.getMonth()-1 == nowTime.month){
+			if(itDateTime.getDate() == nowTime.monthDay){
+				headerViewHolder.date.setText(mContext.getResources().getString(R.string.today));
+				return;
+			} else if(itDateTime.getDate()+1 == nowTime.monthDay) {
+				headerViewHolder.date.setText(mContext.getResources().getString(R.string.yesterday));
+				return;
+			}
+		}
+		headerViewHolder.date.setText(item.getCreateDateTime().toPrettyDate());
 	}
 
 
 	@Override
 	public long getHeaderId(int position) {
-		if (mItemList.size() <= position) {
-			throw new ItException("DON'T KNOW WHY position is bigger than list size : " + position);
+		String date = null;
+		if(position < mItemList.size()){
+			date = mItemList.get(position).getCreateDateTime().toDate();
+		} else {
+			date = mItemList.get(mItemList.size()-1).getCreateDateTime().toDate();
 		}
-		return Long.parseLong(mItemList.get(position).getCreateDateTime().toDate(), 10);
+		return Long.parseLong(date, 10);
 	}
 }

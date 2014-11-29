@@ -2,21 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/home_item_spacing"
+    android:layout_marginBottom="@dimen/content_margin"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
+    <com.pinthecloud.item.view.SquareImageView
+        android:id="@+id/row_home_item_list_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
+
     <LinearLayout
-        android:id="@+id/row_home_item_list_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <com.pinthecloud.item.view.SquareImageView
-            android:id="@+id/row_home_item_list_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+        android:orientation="vertical"
+        android:padding="@dimen/content_margin" >
 
         <TextView
             android:id="@+id/row_home_item_list_content"
@@ -33,12 +34,21 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/row_home_item_list_it_number_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/row_home_item_list_it_button"
+                android:layout_toRightOf="@+id/row_home_item_list_it_button"
+                android:text="@string/plus" />
+
+            <TextView
                 android:id="@+id/row_home_item_list_it_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/row_home_item_list_reply"
-                android:layout_toStartOf="@+id/row_home_item_list_reply" />
+                android:layout_toEndOf="@+id/row_home_item_list_it_number_plus"
+                android:layout_toRightOf="@+id/row_home_item_list_it_number_plus" />
 
             <Button
                 android:id="@+id/row_home_item_list_reply"
@@ -52,8 +62,13 @@
     <LinearLayout
         android:id="@+id/row_home_item_list_profile_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/home_item_profile_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/content_margin"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingRight="@dimen/content_margin"
+        android:paddingStart="@dimen/content_margin" >
 
         <com.pinthecloud.item.view.CircleImageView
             android:id="@+id/row_home_item_list_profile_image"

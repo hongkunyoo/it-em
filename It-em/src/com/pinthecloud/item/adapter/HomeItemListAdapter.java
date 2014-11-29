@@ -27,6 +27,7 @@ import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
 import com.squareup.picasso.Picasso;
@@ -58,7 +59,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
-		public LinearLayout itemLayout;
 		public SquareImageView image;
 		public TextView content;
 		public Button itButton;
@@ -73,7 +73,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			super(view);
 			this.view = view;
 
-			this.itemLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_item_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (Button)view.findViewById(R.id.row_home_item_list_it_button);
@@ -172,7 +171,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 
-		holder.itemLayout.setOnClickListener(new OnClickListener() {
+		holder.image.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -186,21 +185,15 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
+				int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
+				holder.itNumber.setText(String.valueOf(likeItNum));
+
 				AimHelper mAimHelper = ItApplication.getInstance().getAimHelper();
 				LikeIt likeIt = new LikeIt(item.getWhoMade(), item.getWhoMadeId(), item.getId());
-
 				mAimHelper.add(mFrag, likeIt, new ItEntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
-						final int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
-						mActivity.runOnUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								holder.itNumber.setText(String.valueOf(likeItNum));
-							}
-						});
 					}
 				});
 			}
@@ -218,7 +211,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	private void setNormalImageView(NormalViewHolder holder, Item item) {
+	private void setNormalImageView(final NormalViewHolder holder, Item item) {
 		Picasso.with(mActivity)
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
 		.placeholder(R.drawable.ic_launcher)
@@ -227,7 +220,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		.into(holder.image);
 
 		Picasso.with(mActivity)
-		.load(BlobStorageHelper.getItemImgUrl(item.getWhoMadeId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.ic_launcher)
 		.error(R.drawable.ic_launcher)
 		.fit()
@@ -239,6 +232,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		//			@Override
 		//			public void onCompleted(Bitmap entity) {
 		//				holder.image.setImageBitmap(entity);
+		//			}
+		//		});
+		//		blobStorageHelper.downloadBitmapAsync(mFrag, BlobStorageHelper.USER_PROFILE, item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX, new ItEntityCallback<Bitmap>() {
+		//
+		//			@Override
+		//			public void onCompleted(Bitmap entity) {
+		//				holder.profileImage.setImageBitmap(entity);
 		//			}
 		//		});
 	}

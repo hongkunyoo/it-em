@@ -118,8 +118,6 @@ public class HomeFragment extends ItFragment {
 			public void onCompleted(List<Item> list, int count) {
 				mIsAdding = false;
 				mListAdapter.setHasFooter(false);
-				mListAdapter.notifyDataSetChanged();
-
 				mItemList.addAll(list);
 				mListAdapter.notifyDataSetChanged();
 			}
