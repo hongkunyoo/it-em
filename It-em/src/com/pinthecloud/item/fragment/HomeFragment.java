@@ -115,7 +115,7 @@ public class HomeFragment extends ItFragment {
 		mListAdapter.setHasFooter(true);
 		mListAdapter.notifyDataSetChanged();
 		
-		updateList(this.page++, new ItEntityCallback<Boolean>() {
+		updateList(++this.page, new ItEntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {

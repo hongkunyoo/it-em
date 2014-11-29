@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.text.format.Time;
+
 import com.pinthecloud.item.exception.ItException;
 
 // 20141113014345 --> 2014-11-13 01:43:45
@@ -40,6 +42,8 @@ public class ItDateTime {
 		return dateTime;
 	}
 	public String getElaspedTime() {
+		Time time = new Time();
+		time.setToNow();
 		Calendar createCal = Calendar.getInstance(Locale.KOREA);
 		Calendar nowCal = Calendar.getInstance(Locale.KOREA);
 		createCal.set(this.getYear(), this.getMonth()-1, this.getDate(), this.getHours(), this.getMinutes(), this.getSeconds());
