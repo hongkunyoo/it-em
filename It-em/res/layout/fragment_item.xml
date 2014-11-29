@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.pinthecloud.item.view.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -49,47 +50,29 @@
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
 
-        <LinearLayout
+        <fragment
+            android:id="@+id/item_frag_reply_frag"
+            android:name="com.pinthecloud.item.fragment.ReplyFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            tools:layout="@layout/fragment_reply" />
+
+        <LinearLayout
+            android:id="@+id/item_frag_profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.pinthecloud.item.view.CircleImageView
+                android:id="@+id/item_frag_profile_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/item_frag_nick_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/author" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <com.pinthecloud.item.view.CircleImageView
-                    android:id="@+id/item_frag_profile_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/item_frag_nick_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/item_frag_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/item_frag_website"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_gravity="center_vertical" />
         </LinearLayout>
     </LinearLayout>
 

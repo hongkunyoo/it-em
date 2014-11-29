@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,7 +64,6 @@ public class UploadFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_upload, container, false);
 		setHasOptionsMenu(true);
-		setActionBar();
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -108,19 +108,20 @@ public class UploadFragment extends ItFragment {
 
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.upload, menu);
+	}
+
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
+		case R.id.upload_close:
 			mActivity.onBackPressed();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 
@@ -160,7 +161,8 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				//				mApp.showProgressDialog(mActivity);
+				mApp.showProgressDialog(mActivity);
+
 				ItUser me = mObjectPrefHelper.get(ItUser.class);
 				final Item item = new Item();
 				item.setContent(mContent.getText().toString());

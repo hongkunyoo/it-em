@@ -11,7 +11,7 @@
         android:layout_height="@dimen/main_tab_height"
         android:background="@color/brand_color"
         psts:pstsDividerColor="@android:color/transparent"
-        psts:pstsIndicatorColor="@android:color/white"
+        psts:pstsIndicatorColor="@color/accent_color"
         psts:pstsIndicatorHeight="@dimen/main_tab_indicator_height"
         psts:pstsShouldExpand="true"
         psts:pstsTabSwitch="true"

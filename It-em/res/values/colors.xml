@@ -2,9 +2,9 @@
 <resources>
 
     <!-- Common -->
-    <color name="brand_color">#01b3c7</color>
-    <color name="brand_color_dark">#1e5085</color>
-    <color name="accent_color">#1e5085</color>
+    <color name="brand_color">#263238</color>
+    <color name="brand_color_dark">#000000</color>
+    <color name="accent_color">#ffd600</color>
 
     <!-- Tab -->
     <color name="background_tab_pressed">#6633B5E5</color>

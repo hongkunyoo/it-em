@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.pinthecloud.item.helper.PrefHelper;
 
 public class ItUser {
+	
+	public static final String INTENT_KEY = "IT_USER_INTENT_KEY";
+	
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
 	@com.google.gson.annotations.SerializedName("itUserId")

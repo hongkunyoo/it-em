@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
@@ -26,6 +27,7 @@ import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.FileUtil;
@@ -38,22 +40,36 @@ public class MyPageFragment extends ItFragment {
 
 	public static int mTabHeight;
 
+	private ProgressBar mProgressBar;
 	private LinearLayout mHeader;
 	private CircleImageView mProfileImage;
-	private TextView mNickNameText;
+	private TextView mNickName;
+	private TextView mDescription;
+	private TextView mWebsite;
 	private Button mProfileSettings;
 
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
 	private MyPagePagerAdapter mViewPagerAdapter;
 
-	private ItUser itUser;
+	private String mItUserId;
+	private ItUser mItUser;
+
+
+	public static MyPageFragment newInstance(String itUserId) {
+		MyPageFragment fragment = new MyPageFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(ItUser.INTENT_KEY, itUserId);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		itUser = mObjectPrefHelper.get(ItUser.class);
+		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
+		mItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -64,6 +80,7 @@ public class MyPageFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 		setHasOptionsMenu(true);
 		findComponent(view);
+		setItUser();
 		setComponent();
 		setButton();
 		setImageView();
@@ -94,18 +111,39 @@ public class MyPageFragment extends ItFragment {
 
 
 	private void findComponent(View view){
+		mProgressBar = (ProgressBar)view.findViewById(R.id.my_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.my_page_frag_header_layout);
 		mProfileImage = (CircleImageView)view.findViewById(R.id.my_page_frag_profile_image);
-		mNickNameText = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
+		mNickName = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
+		mDescription = (TextView)view.findViewById(R.id.my_page_frag_description);
+		mWebsite = (TextView)view.findViewById(R.id.my_page_frag_website);
 		mProfileSettings = (Button)view.findViewById(R.id.my_page_frag_profile_settings);
 		mTab = (PagerSlidingTabStrip) view.findViewById(R.id.my_page_frag_tab);
 		mViewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
 	}
 
 
+	private void setItUser(){
+		if(mItUserId.equals(mItUser.getId())){
+			mProgressBar.setVisibility(View.GONE);	
+		} else{
+			mUserHelper.get(mThisFragment, mItUserId, new ItEntityCallback<ItUser>() {
+
+				@Override
+				public void onCompleted(ItUser entity) {
+					mProgressBar.setVisibility(View.GONE);
+					mItUser = entity;
+				}
+			});
+		}
+	}
+
+
 	private void setComponent(){
 		mTabHeight = mTab.getHeight();
-		mNickNameText.setText(itUser.getNickName());
+		mNickName.setText(mItUser.getNickName());
+		mDescription.setText(mItUser.getSelfIntro());
+		mWebsite.setText(mItUser.getWebPage());
 	}
 
 
@@ -123,7 +161,7 @@ public class MyPageFragment extends ItFragment {
 
 	private void setImageView(){
 		Picasso.with(mActivity)
-		.load(BlobStorageHelper.getItemImgUrl(itUser.getId()))
+		.load(BlobStorageHelper.getItemImgUrl(mItUser.getId()))
 		.placeholder(R.drawable.ic_launcher)
 		.error(R.drawable.ic_launcher)
 		.fit()

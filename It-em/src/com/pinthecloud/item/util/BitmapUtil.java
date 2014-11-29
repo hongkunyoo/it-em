@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 
-import com.pinthecloud.item.exception.ItException;
-
 public class BitmapUtil {
 
 	public static final int SMALL_SIZE = 100;
@@ -88,12 +86,10 @@ public class BitmapUtil {
 				return 180;
 			case ExifInterface.ORIENTATION_ROTATE_270:
 				return 270;
-			default:
-				return 0;
 			}
 		} catch (IOException e) {
-			throw new ItException(ItException.TYPE.INTERNAL_ERROR);
 		}
+		return 0;
 	}
 
 

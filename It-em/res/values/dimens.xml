@@ -16,4 +16,7 @@
     
     <!-- Item -->
     <dimen name="item_layout_margin">5dp</dimen>
+    
+    <!-- Font -->
+    <dimen name="font_normal">16sp</dimen>
 </resources>

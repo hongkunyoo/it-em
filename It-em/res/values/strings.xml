@@ -21,6 +21,7 @@
     <string name="item_upload">Item Upload</string>
     <string name="upload">Upload</string>
     <string name="write_content">write description</string>
+    <string name="close">Close</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">Profile Settings</string>
@@ -34,8 +35,4 @@
 
     <!-- Reply -->
     <string name="reply">Reply</string>
-    <string name="previous_reply">Previous Reply&#8230;</string>
-    
-    <!-- Item -->
-    <string name="author">Author</string>
 </resources>
