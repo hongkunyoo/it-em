@@ -16,6 +16,9 @@
     <!-- Main -->
     <string name="settings">Settings</string>
     <string name="it">It</string>
+    <string name="plus">+</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
 
     <!-- Upload -->
     <string name="item_upload">Item Upload</string>

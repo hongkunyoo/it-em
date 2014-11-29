@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/upload_close"
-        android:title="@string/it"
+        android:title="@string/close"
         app:showAsAction="always" />
 
 </menu>

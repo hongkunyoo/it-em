@@ -12,10 +12,9 @@ import android.media.ExifInterface;
 public class BitmapUtil {
 
 	public static final int SMALL_SIZE = 100;
-	public static final int BIG_SIZE = 480;
+	public static final int BIG_SIZE = 300;
 
 	public static final String SMALL_POSTFIX = "_small";
-	public static final String PNG = ".png";
 
 
 	public static Bitmap decodeInSampleSize(Context context, String imagePath, int reqWidth, int reqHeight) {
@@ -63,8 +62,8 @@ public class BitmapUtil {
 
 			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
 			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight
-					&& (halfWidth / inSampleSize) > reqWidth) {
+			while ((halfHeight / inSampleSize) >= reqHeight
+					&& (halfWidth / inSampleSize) >= reqWidth) {
 				inSampleSize *= 2;
 			}
 		}

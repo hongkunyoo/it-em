@@ -19,7 +19,6 @@ import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.util.AsyncChainer;
 
 public class BlobStorageHelper {
 
@@ -151,7 +150,6 @@ public class BlobStorageHelper {
 				if (callback != null){
 					callback.onCompleted(result);
 				}
-				AsyncChainer.notifyNext(frag);
 			}
 		}).execute(id);
 	}
@@ -172,7 +170,6 @@ public class BlobStorageHelper {
 				if (callback != null){
 					callback.onCompleted(result);
 				}
-				AsyncChainer.notifyNext(frag);
 			}
 		}).execute(id);
 	}
@@ -193,7 +190,6 @@ public class BlobStorageHelper {
 				if (callback != null){
 					callback.onCompleted(result);
 				}
-				AsyncChainer.notifyNext(frag);
 			}
 		}).execute(id);
 	}
@@ -214,7 +210,6 @@ public class BlobStorageHelper {
 				if (callback != null){
 					callback.onCompleted(result);
 				}
-				AsyncChainer.notifyNext(frag);
 			}
 		}).execute(id);
 	}

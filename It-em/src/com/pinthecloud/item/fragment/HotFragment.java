@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
 import com.pinthecloud.item.adapter.HotItemListHeaderAdapter;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
@@ -33,8 +32,8 @@ public class HotFragment extends ItFragment {
 	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
 
-	private boolean mIsAdding = false;
 	private ItDateTime currentDate = ItDateTime.getToday();
+	private boolean mIsAdding = false;
 
 
 	@Override
@@ -45,7 +44,7 @@ public class HotFragment extends ItFragment {
 		findComponent(view);
 		setRefreshLayout();
 		setList();
-		updateList(currentDate, null);
+		updateList(currentDate);
 		return view;
 	}
 
@@ -63,7 +62,8 @@ public class HotFragment extends ItFragment {
 
 			@Override
 			public void onRefresh() {
-				updateList(currentDate, null);
+				currentDate = ItDateTime.getToday();
+				updateList(currentDate);
 			}
 		});
 	}
@@ -83,7 +83,7 @@ public class HotFragment extends ItFragment {
 		StickyHeadersItemDecoration decoration = new StickyHeadersBuilder()
 		.setAdapter(mListAdapter)
 		.setRecyclerView(mListView)
-		.setStickyHeadersAdapter(new HotItemListHeaderAdapter(mItemList), true)
+		.setStickyHeadersAdapter(new HotItemListHeaderAdapter(mActivity, mItemList))
 		.build();
 		mListView.addItemDecoration(decoration);
 
@@ -103,21 +103,17 @@ public class HotFragment extends ItFragment {
 	}
 
 
-	private void updateList(ItDateTime dateTime, final ItEntityCallback<Boolean> callback) {
+	private void updateList(ItDateTime dateTime) {
 		mAimHelper.getRank10(mThisFragment, dateTime, new ItListCallback<Item>() {
-	
+
 			@Override
 			public void onCompleted(List<Item> list, int count) {
-				for (int i = 0 ; i < count ; i++) {
-					mListAdapter.add(list.get(i), i);
-				}
 				mProgressBar.setVisibility(View.GONE);
 				mListRefresh.setRefreshing(false);
+
+				mItemList.clear();
+				mItemList.addAll(list);
 				mListAdapter.notifyDataSetChanged();
-	
-				if (callback != null){
-					callback.onCompleted(true);	
-				}
 			}
 		});
 	}
@@ -129,12 +125,13 @@ public class HotFragment extends ItFragment {
 		mListAdapter.notifyDataSetChanged();
 
 		currentDate = currentDate.getYesterday();
-		updateList(currentDate, new ItEntityCallback<Boolean>() {
+		mAimHelper.getRank10(mThisFragment, currentDate, new ItListCallback<Item>() {
 
 			@Override
-			public void onCompleted(Boolean entity) {
+			public void onCompleted(List<Item> list, int count) {
 				mIsAdding = false;
 				mListAdapter.setHasFooter(false);
+				mItemList.addAll(list);
 				mListAdapter.notifyDataSetChanged();
 			}
 		});

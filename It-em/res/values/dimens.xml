@@ -4,19 +4,27 @@
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
     <dimen name="line_thick_width">2dp</dimen>
+    <dimen name="content_margin">16dp</dimen>
     
     <!-- Main -->
     <dimen name="main_tab_indicator_height">4dp</dimen>
     <dimen name="main_tab_height">48dp</dimen>
-    <dimen name="home_item_spacing">10dp</dimen>
+    
+    <!-- Home -->
+    <dimen name="home_item_profile_height">56dp</dimen>
+    
+    <!-- Hot -->
+    <dimen name="hot_item_header_height">48dp</dimen>
+    
+    <!-- My Page -->
     <dimen name="my_page_profile_height">200dp</dimen>
     <dimen name="my_page_header_height">248dp</dimen>
+    
+    <!-- My Item -->
     <dimen name="my_item_width">100dp</dimen>
     <dimen name="my_item_spacing">2dp</dimen>
     
-    <!-- Item -->
-    <dimen name="item_layout_margin">5dp</dimen>
-    
     <!-- Font -->
     <dimen name="font_normal">16sp</dimen>
+    <dimen name="font_small">14sp</dimen>
 </resources>

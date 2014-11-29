@@ -2,11 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:background="@color/brand_color"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/none"
+    android:paddingLeft="@dimen/content_margin"
+    android:paddingRight="@dimen/none"
+    android:paddingStart="@dimen/content_margin" >
 
     <TextView
         android:id="@+id/row_hot_item_list_header_date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/hot_item_header_height"
+        android:gravity="center_vertical"
+        android:textColor="@color/accent_color"
+        android:textSize="@dimen/font_small" />
 
 </LinearLayout>
