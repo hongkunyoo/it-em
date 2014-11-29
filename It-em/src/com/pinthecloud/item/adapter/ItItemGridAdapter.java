@@ -131,7 +131,7 @@ public class ItItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	private void setNormalImageView(NormalViewHolder holder, Item item) {
 		Picasso.with(mContext)
-		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(item.getId()))
 		.placeholder(R.drawable.ic_launcher)
 		.error(R.drawable.ic_launcher)
 		.fit()

@@ -40,7 +40,7 @@ public class AbstractItemModel<T> {
 		return whoMadeId;
 	}
 	public void setWhoMadeId(String whoMadeId) {
-		this.whoMadeId = id;
+		this.whoMadeId = whoMadeId;
 	}
 	public String getRawCreateDateTime() {
 		return rawCreateDateTime;

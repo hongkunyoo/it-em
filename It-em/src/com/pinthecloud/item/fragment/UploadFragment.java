@@ -31,6 +31,7 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
+import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.view.SquareImageView;
 
 public class UploadFragment extends ItFragment {
@@ -161,14 +162,21 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mApp.showProgressDialog(mActivity);
+//				mActivity.runOnUiThread(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//						mApp.showProgressDialog(mActivity);
+//					}
+//				});
 
 				ItUser me = mObjectPrefHelper.get(ItUser.class);
 				final Item item = new Item();
 				item.setContent(mContent.getText().toString());
 				item.setWhoMade(me.getNickName());
 				item.setWhoMadeId(me.getId());
-
+				MyLog.log(item);
 				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 					@Override

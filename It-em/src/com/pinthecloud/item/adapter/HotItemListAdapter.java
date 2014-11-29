@@ -157,7 +157,7 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 	private void setNormalButton(NormalViewHolder holder, final Item item){
-		holder.profileLayout.setOnClickListener(new OnClickListener() {
+		holder.profileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -167,7 +167,7 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 			}
 		});
 
-		holder.itemLayout.setOnClickListener(new OnClickListener() {
+		holder.itemView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

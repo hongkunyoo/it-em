@@ -21,13 +21,15 @@ import com.pinthecloud.item.model.Item;
 
 public class AimHelper {
 
-	private static final String RANK_ITEM = "rank_item";
+	private static final String RANK_ITEM = "rank_10";
 	private final String AIM_LIST = "aim_list";
 	private final String AIM_ITEM_LIST = "aim_item_list";
 	private final String AIM_GET = "aim_get";
 	private final String AIM_ADD = "aim_add";
 	private final String AIM_UPDATE = "aim_update";
 	private final String AIM_DELETE = "aim_delete";
+	private final String MY_UPLOAD_ITEM = "my_upload_item";
+	private final String MY_IT_ITEM = "my_it_item";
 
 	private MobileServiceClient mClient;
 
@@ -61,18 +63,39 @@ public class AimHelper {
 		
 		JsonObject jo = new JsonObject();
 		jo.addProperty("date", date.toString());
-		
 		mClient.invokeApi(RANK_ITEM, jo, new ApiJsonOperationCallback() {
 			
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-//					JsonElement json = arg0.getAsJsonArray();
-//					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
-//					callback.onCompleted(list, list.size());
+					JsonElement json = _json.getAsJsonArray();
+					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
+					if (callback != null)
+						callback.onCompleted(list, list.size());
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "listItem", ItException.TYPE.SERVER_ERROR, response));
+					ExceptionManager.fireException(new ItException(frag, "getRank10", ItException.TYPE.SERVER_ERROR, response));
+				}
+			}
+		});
+	}
+	
+	public void listMyUploadItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
+		
+		JsonObject jo = new JsonObject();
+		jo.addProperty("userId", userId);
+		mClient.invokeApi(MY_UPLOAD_ITEM, jo, new ApiJsonOperationCallback() {
+			
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					JsonElement json = _json.getAsJsonArray();
+					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
+					if (callback != null)
+						callback.onCompleted(list, list.size());
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});

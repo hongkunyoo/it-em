@@ -135,7 +135,7 @@ public class ItemFragment extends ItFragment {
 		.into(mImage);
 
 		Picasso.with(mActivity)
-		.load(BlobStorageHelper.getItemImgUrl(item.getWhoMadeId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()))
 		.placeholder(R.drawable.ic_launcher)
 		.error(R.drawable.ic_launcher)
 		.fit()

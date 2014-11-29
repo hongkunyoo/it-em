@@ -90,6 +90,7 @@ public class ReplyFragment extends ItFragment {
 		mPreviousText = (TextView)view.findViewById(R.id.reply_frag_previous_text);
 		mSubmitButton = (Button)view.findViewById(R.id.reply_frag_submit);
 		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
+		mReplyText = (EditText)view.findViewById(R.id.reply_frag_reply_text);
 	}
 
 

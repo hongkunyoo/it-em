@@ -25,6 +25,7 @@ import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.squareup.picasso.Picasso;
 

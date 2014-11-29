@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.HongkunTestActivity;
 import com.pinthecloud.item.activity.LoginActivity;
@@ -30,8 +31,10 @@ public class SplashFragment extends ItFragment {
 
 
 	private void goToNextActivity() {
+		String className = "com.pinthecloud.item.util.HongUtil2";
+		if (GlobalVariable.HONG_DEBUG_MODE) className = "com.pinthecloud.item.util.HongUtil";
 		try {
-			Class.forName("com.pinthecloud.item.util.HongUtil2");
+			Class.forName(className);
 			Intent hongTent = new Intent();
 			hongTent.setClass(mActivity, HongkunTestActivity.class);
 			startActivity(hongTent);
