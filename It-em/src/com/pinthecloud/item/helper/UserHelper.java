@@ -13,6 +13,7 @@ import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.MyLog;
 
 public class UserHelper {
 	private MobileServiceClient mClient;
