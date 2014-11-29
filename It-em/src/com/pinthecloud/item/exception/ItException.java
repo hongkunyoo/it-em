@@ -58,9 +58,8 @@ public class ItException extends RuntimeException {
 	public enum TYPE {
 		INTERNET_NOT_CONNECTED,
 		SERVER_ERROR,
-		INTERNAL_ERROR,
+		BLOB_STORAGE_ERROR,
 		NO_SUCH_INSTANCE,
-		FORMATE_ERROR, 
-		BLOB_STORAGE_ERROR
+		FORMATE_ERROR
 	}
 }

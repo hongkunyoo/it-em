@@ -16,7 +16,6 @@ import android.provider.MediaStore.Images.Media;
 import android.text.format.Time;
 
 import com.pinthecloud.item.GlobalVariable;
-import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
 
 public class FileUtil {
@@ -54,17 +53,16 @@ public class FileUtil {
 
 
 	public static File saveBitmapToFile(Context context, Uri uri, Bitmap bitmap){
+		File file = null;
 		try {
-			File file = new File(uri.getPath());
+			file = new File(uri.getPath());
 			FileOutputStream fos = new FileOutputStream(file);
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 			fos.close();
-			return file;
 		} catch (FileNotFoundException e) {
-			throw new ItException(ItException.TYPE.INTERNAL_ERROR);
 		} catch (IOException e) {
-			throw new ItException(ItException.TYPE.INTERNAL_ERROR);
 		}
+		return file;
 	}
 
 

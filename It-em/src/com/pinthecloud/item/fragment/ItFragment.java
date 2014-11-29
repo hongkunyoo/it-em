@@ -26,7 +26,7 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 	protected PrefHelper mPrefHelper;
 	protected ObjectPrefHelper mObjectPrefHelper;
 	protected AimHelper mAimHelper;
-	protected UserHelper userHelper;
+	protected UserHelper mUserHelper;
 	protected BlobStorageHelper blobStorageHelper;
 
 	public ItFragment(){
@@ -36,7 +36,7 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 		mPrefHelper = mApp.getPrefHelper();
 		mObjectPrefHelper = mApp.getObjectPrefHelper();
 		mAimHelper = mApp.getAimHelper();
-		userHelper = mApp.getUserHelper();
+		mUserHelper = mApp.getUserHelper();
 		blobStorageHelper = mApp.getBlobStorageHelper();
 	}
 

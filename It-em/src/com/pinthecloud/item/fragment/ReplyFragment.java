@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
@@ -30,6 +31,7 @@ public class ReplyFragment extends ItFragment {
 
 	private LinearLayout mPreviousLayout;
 	private ProgressBar mPreviousProgressBar;
+	private TextView mPreviousText;
 
 	private EditText mReplyText;
 	private Button mSubmitButton;
@@ -38,6 +40,14 @@ public class ReplyFragment extends ItFragment {
 	private ReplyListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
 	private List<Reply> mReplyList;
+
+
+	public static ReplyFragment newInstance() {
+		ReplyFragment fragment = new ReplyFragment();
+		Bundle bundle = new Bundle();
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 
 	@Override
@@ -77,6 +87,7 @@ public class ReplyFragment extends ItFragment {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_progress_bar);
 		mPreviousLayout = (LinearLayout)view.findViewById(R.id.reply_frag_previous_layout);
 		mPreviousProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_previous_progress_bar);
+		mPreviousText = (TextView)view.findViewById(R.id.reply_frag_previous_text);
 		mSubmitButton = (Button)view.findViewById(R.id.reply_frag_submit);
 		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
 	}

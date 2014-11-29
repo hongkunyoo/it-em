@@ -11,11 +11,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.OtherPageActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +30,11 @@ public class ItemFragment extends ItFragment {
 	private TextView mDate;
 	private TextView mItNumber;
 	private Button mDelete;
+
+	private LinearLayout mProfileLayout;
+	private CircleImageView mProfileImage;
+	private TextView mNickName;
+
 	private Item item;
 
 
@@ -84,12 +93,16 @@ public class ItemFragment extends ItFragment {
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 		mDelete = (Button)view.findViewById(R.id.item_frag_delete);
+		mProfileLayout = (LinearLayout)view.findViewById(R.id.item_frag_profile_layout);
+		mProfileImage = (CircleImageView)view.findViewById(R.id.item_frag_profile_image);
+		mNickName = (TextView)view.findViewById(R.id.item_frag_nick_name);
 	}
 
 
 	private void setText(){
 		mContent.setText(item.getContent());
 		mItNumber.setText(""+item.getLikeItCount());
+		mNickName.setText(item.getWhoMade());
 	}
 
 
@@ -98,6 +111,16 @@ public class ItemFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
+			}
+		});
+
+		mProfileLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, OtherPageActivity.class);
+				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
+				startActivity(intent);
 			}
 		});
 	}
@@ -110,5 +133,12 @@ public class ItemFragment extends ItFragment {
 		.error(R.drawable.ic_launcher)
 		.fit()
 		.into(mImage);
+
+		Picasso.with(mActivity)
+		.load(BlobStorageHelper.getItemImgUrl(item.getWhoMadeId()))
+		.placeholder(R.drawable.ic_launcher)
+		.error(R.drawable.ic_launcher)
+		.fit()
+		.into(mProfileImage);
 	}
 }

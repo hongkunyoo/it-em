@@ -24,6 +24,7 @@ import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.view.CircleImageView;
@@ -166,6 +167,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, OtherPageActivity.class);
+				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
 				mActivity.startActivity(intent);
 			}
 		});

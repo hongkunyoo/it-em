@@ -26,11 +26,12 @@ public class ItApplication extends Application {
 	private final String AZURE_TEST_URL = "https://it-emtest.azure-mobile.net/";
 	private final String AZURE_TEST_KEY = "yHCLhyMsjiaLSbcMKeUdUOoZkbYXfK52";
 
-	// Application
-	private static ItApplication app;
-
 	// Mobile Service instances
 	private static MobileServiceClient mClient;
+	
+	// Application
+	private static ItApplication app;
+	private static ProgressDialog progressDialog;
 
 	// Analysis
 	private static UserHabitHelper userHabitHelper;
@@ -125,17 +126,21 @@ public class ItApplication extends Application {
 		if (blobStorageHelper == null) init();
 		return blobStorageHelper;
 	}
+	
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
 	}
-
-
+	
 	public void showProgressDialog(Context context){
-		ProgressDialog progressDialog = new ProgressDialog(context);
+		progressDialog = new ProgressDialog(context);
 		progressDialog.setCancelable(false);
 		progressDialog.show();
 		progressDialog.setContentView(R.layout.custom_progress_dialog);
+	}
+
+	public void dismissProgressDialog(){
+		progressDialog.dismiss();
 	}
 }

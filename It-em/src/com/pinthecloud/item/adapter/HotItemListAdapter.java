@@ -20,6 +20,7 @@ import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.OtherPageActivity;
 import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
@@ -155,12 +156,13 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 	}
 
 
-	private void setNormalButton(NormalViewHolder holder, Item item){
+	private void setNormalButton(NormalViewHolder holder, final Item item){
 		holder.profileLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, OtherPageActivity.class);
+				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
 				mContext.startActivity(intent);
 			}
 		});

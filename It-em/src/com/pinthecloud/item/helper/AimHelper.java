@@ -22,7 +22,6 @@ import com.pinthecloud.item.model.Item;
 public class AimHelper {
 
 	private static final String RANK_ITEM = "rank_item";
-	private MobileServiceClient mClient;
 	private final String AIM_LIST = "aim_list";
 	private final String AIM_ITEM_LIST = "aim_item_list";
 	private final String AIM_GET = "aim_get";
@@ -30,7 +29,9 @@ public class AimHelper {
 	private final String AIM_UPDATE = "aim_update";
 	private final String AIM_DELETE = "aim_delete";
 
+	private MobileServiceClient mClient;
 
+	
 	public AimHelper(ItApplication context) {
 		this.mClient = context.getMobileClient();
 	}
@@ -64,9 +65,8 @@ public class AimHelper {
 		mClient.invokeApi(RANK_ITEM, jo, new ApiJsonOperationCallback() {
 			
 			@Override
-			public void onCompleted(JsonElement arg0, Exception exception,
+			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
-				// TODO Auto-generated method stub
 				if (exception == null) {
 //					JsonElement json = arg0.getAsJsonArray();
 //					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());

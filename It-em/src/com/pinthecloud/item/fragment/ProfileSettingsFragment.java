@@ -40,7 +40,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mDescription;
 	private EditText mWebsite;
 
-	private ItUser itUser;
+	private ItUser me;
 	private boolean mIsTypedNickName = true;
 	private boolean mIsTakenProfileImage;
 
@@ -48,7 +48,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		itUser = mObjectPrefHelper.get(ItUser.class);
+		me = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -144,7 +144,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
-		mNickName.setText(itUser.getNickName());
+		mNickName.setText(me.getNickName());
 		mNickName.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -166,9 +166,9 @@ public class ProfileSettingsFragment extends ItFragment {
 			}
 		});
 
-		mId.setText(itUser.getItUserId());
-		mDescription.setText(itUser.getSelfIntro());
-		mWebsite.setText(itUser.getWebPage());
+		mId.setText(me.getItUserId());
+		mDescription.setText(me.getSelfIntro());
+		mWebsite.setText(me.getWebPage());
 	}
 
 

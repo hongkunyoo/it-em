@@ -19,6 +19,8 @@ import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.exception.ExceptionManager;
+import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
@@ -114,7 +116,6 @@ public class LoginFragment extends ItFragment {
 
 
 	private void setButton(){
-
 		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override
@@ -129,6 +130,8 @@ public class LoginFragment extends ItFragment {
 
 
 	private void facebookLogin(final GraphUser user){
+		mApp.showProgressDialog(mActivity);
+
 		final ItUser itUser = new ItUser();
 		itUser.setItUserId(user.getId());
 		itUser.setNickName(user.getFirstName());
@@ -139,7 +142,7 @@ public class LoginFragment extends ItFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				userHelper.add(frag, itUser, new ItEntityCallback<ItUser>() {
+				mUserHelper.add(frag, itUser, new ItEntityCallback<ItUser>() {
 
 					@Override
 					public void onCompleted(ItUser entity) {
@@ -162,6 +165,7 @@ public class LoginFragment extends ItFragment {
 						try {
 							bm = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
 						} catch (IOException e) {
+							ExceptionManager.fireException(new ItException(frag, "facebookLogin", ItException.TYPE.SERVER_ERROR));
 						}
 						return bm;
 					}
@@ -169,7 +173,6 @@ public class LoginFragment extends ItFragment {
 					protected void onPostExecute(Bitmap result) {
 						AsyncChainer.notifyNext(frag, (Object)result);
 					};
-
 				}.execute();
 			}
 

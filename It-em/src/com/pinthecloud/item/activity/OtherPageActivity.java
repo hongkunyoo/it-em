@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.MyPageFragment;
+import com.pinthecloud.item.model.ItUser;
 
 public class OtherPageActivity extends ItActivity {
 
@@ -28,7 +29,7 @@ public class OtherPageActivity extends ItActivity {
 	private void setFragment(){
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		MyPageFragment fragment = new MyPageFragment();
+		MyPageFragment fragment = MyPageFragment.newInstance(getIntent().getStringExtra(ItUser.INTENT_KEY));
 		fragmentTransaction.add(R.id.activity_container, fragment);
 		fragmentTransaction.commit();
 	}

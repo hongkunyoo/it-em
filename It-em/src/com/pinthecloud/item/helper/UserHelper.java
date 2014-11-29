@@ -15,22 +15,25 @@ import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 
 public class UserHelper {
+	
 	private MobileServiceClient mClient;
 	private MobileServiceTable<ItUser> table;
 
+	
 	public UserHelper(ItApplication context) {
 		this.mClient = context.getMobileClient();
-		table = mClient.getTable(ItUser.class);
+		this.table = mClient.getTable(ItUser.class);
 	}
 
+	
 	public void add(final ItFragment frag, ItUser user, final ItEntityCallback<ItUser> callback) {
 		table.insert(user, new TableOperationCallback<ItUser>() {
 
 			@Override
-			public void onCompleted(ItUser result, Exception exception,
+			public void onCompleted(ItUser entity, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(result);
+					callback.onCompleted(entity);
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, exception));
 				}
@@ -38,6 +41,7 @@ public class UserHelper {
 		});
 	}
 
+	
 	public void get(final ItFragment frag, String id, final ItEntityCallback<ItUser> callback) {
 		table.where().field("id").eq(id).execute(new TableQueryCallback<ItUser>() {
 
