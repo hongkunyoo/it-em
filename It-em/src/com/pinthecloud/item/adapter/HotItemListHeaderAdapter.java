@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.eowise.recyclerview.stickyheaders.StickyHeadersAdapter;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.model.Item;
 
 public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemListHeaderAdapter.ViewHolder> {
@@ -50,6 +51,9 @@ public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemLis
 
 	@Override
 	public long getHeaderId(int position) {
+		if (mItemList.size() <= position) {
+			throw new ItException("DON'T KNOW WHY position is bigger than list size : " + position);
+		}
 		return Long.parseLong(mItemList.get(position).getCreateDateTime().toDate(), 10);
 	}
 }

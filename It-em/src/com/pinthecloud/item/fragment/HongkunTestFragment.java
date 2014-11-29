@@ -62,7 +62,7 @@ public class HongkunTestFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				aimHelper.listMyUploadItem(mThisFragment, user.getId(), new ItListCallback<Item>() {
+				aimHelper.listMyItem(mThisFragment, user.getId(), new ItListCallback<Item>() {
 					
 					@Override
 					public void onCompleted(List<Item> list, int count) {

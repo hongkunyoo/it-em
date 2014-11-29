@@ -80,11 +80,32 @@ public class AimHelper {
 		});
 	}
 	
-	public void listMyUploadItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
+	public void listMyItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
 		
 		JsonObject jo = new JsonObject();
 		jo.addProperty("userId", userId);
 		mClient.invokeApi(MY_UPLOAD_ITEM, jo, new ApiJsonOperationCallback() {
+			
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					JsonElement json = _json.getAsJsonArray();
+					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
+					if (callback != null)
+						callback.onCompleted(list, list.size());
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
+				}
+			}
+		});
+	}
+	
+	public void listItItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
+		
+		JsonObject jo = new JsonObject();
+		jo.addProperty("userId", userId);
+		mClient.invokeApi(MY_IT_ITEM, jo, new ApiJsonOperationCallback() {
 			
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,

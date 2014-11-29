@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
+import com.pinthecloud.item.interfaces.ItListCallback;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 
 public class MyItemFragment extends MyPageItemFragment {
@@ -98,7 +100,17 @@ public class MyItemFragment extends MyPageItemFragment {
 
 
 	private void updateGrid() {
-		mGridAdapter.notifyDataSetChanged();
+		ItUser me = mObjectPrefHelper.get(ItUser.class);
+		mAimHelper.listMyItem(mThisFragment, me.getId(), new ItListCallback<Item>() {
+			
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				// TODO Auto-generated method stub
+				mItemList.addAll(list);
+				mGridAdapter.notifyDataSetChanged();
+			}
+		});
+		
 	}
 
 
