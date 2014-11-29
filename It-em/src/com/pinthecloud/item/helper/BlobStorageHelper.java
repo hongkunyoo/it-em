@@ -39,11 +39,10 @@ public class BlobStorageHelper {
 		} catch (URISyntaxException e) {
 			ExceptionManager.fireException(new ItException(null, "BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
 		}
-
-		// Create a blob service client
 		blobClient = account.createCloudBlobClient();
 	}
-	
+
+
 	public static String getHostUrl() {
 		return "https://athere.blob.core.windows.net/";
 	}
@@ -62,10 +61,10 @@ public class BlobStorageHelper {
 	public static String getItemImgUrl(String id) {
 		return getHostUrl(ITEM_IMAGE)+id;
 	}
-	
 
 
-	public String uploadBitmapSync(final ItFragment frag, String containerName, String id, Bitmap bitmap) {
+
+	public String uploadBitmapSync(ItFragment frag, String containerName, String id, Bitmap bitmap) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
@@ -86,7 +85,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public Bitmap downloadBitmapSync(final ItFragment frag, String containerName, String id) {
+	public Bitmap downloadBitmapSync(ItFragment frag, String containerName, String id) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		Bitmap bm = null;
@@ -97,18 +96,13 @@ public class BlobStorageHelper {
 			blob.download(baos);
 			bm = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
 		} catch (URISyntaxException e) {
-			// Do nothing
 		} catch (StorageException e) {
-			// Do noghing
-		}
-		if(bm == null){
-//			bm = BitmapFactory.decodeResource(frag.getResources(), R.drawable.profile_dialog_chupa_ico);
 		}
 		return bm;
 	}
 
 
-	public String downloadToFileSync(final ItFragment frag, String containerName, String id, String path) {
+	public String downloadToFileSync(ItFragment frag, String containerName, String id, String path) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
@@ -126,7 +120,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public boolean deleteBitmapSync(final ItFragment frag, String containerName, String id) {
+	public boolean deleteBitmapSync(ItFragment frag, String containerName, String id) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {

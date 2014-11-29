@@ -9,7 +9,7 @@ import com.pinthecloud.item.activity.ItActivity;
 
 public class ItDialogFragment extends DialogFragment {
 
-	public static final String DIALOG_KEY = "DIALOG_KEY";
+	public static final String INTENT_KEY = "DIALOG_INTENT_KEY";
 	
 	protected ItActivity mActivity;
 	protected ItDialogFragment mThisFragment;

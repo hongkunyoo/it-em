@@ -132,7 +132,7 @@ public class ReplyFragment extends ItFragment {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mReplyList = Lists.newArrayList();
-		mListAdapter = new ReplyListAdapter(mThisFragment, mReplyList);
+		mListAdapter = new ReplyListAdapter(mActivity, mReplyList);
 		mListView.setAdapter(mListAdapter);
 	}
 

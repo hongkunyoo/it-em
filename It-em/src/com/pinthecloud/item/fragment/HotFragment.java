@@ -20,7 +20,6 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
 import com.pinthecloud.item.adapter.HotItemListHeaderAdapter;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
 
@@ -32,8 +31,10 @@ public class HotFragment extends ItFragment {
 	private HotItemListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
+
 	private boolean mIsAdding = false;
 	private ItDateTime currentDate = ItDateTime.getToday();
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,23 +103,19 @@ public class HotFragment extends ItFragment {
 
 
 	private void updateList(ItDateTime dateTime, final ItEntityCallback<Boolean> callback) {
-		
-//		mAimHelper.getRank10(mThisFragment, dateTime, new ItListCallback<Item>() {
-//			
-//			@Override
-//			public void onCompleted(List<Item> list, int count) {
-//				// TODO Auto-generated method stub
-//				
-//				mProgressBar.setVisibility(View.GONE);
-//				mListRefresh.setRefreshing(false);
-//				mListAdapter.notifyDataSetChanged();
-//				
-//				
-//				if (callback != null) callback.onCompleted(true);
-//			}
-//		});
-		
-		
+		//		mAimHelper.getRank10(mThisFragment, dateTime, new ItListCallback<Item>() {
+		//
+		//			@Override
+		//			public void onCompleted(List<Item> list, int count) {
+		//				mProgressBar.setVisibility(View.GONE);
+		//				mListRefresh.setRefreshing(false);
+		//				mListAdapter.notifyDataSetChanged();
+		//
+		//				if (callback != null){
+		//					callback.onCompleted(true);	
+		//				}
+		//			}
+		//		});
 	}
 
 
@@ -126,12 +123,12 @@ public class HotFragment extends ItFragment {
 		mIsAdding = true;
 		mListAdapter.setHasFooter(true);
 		mListAdapter.notifyDataSetChanged();
+
 		currentDate = currentDate.getYesterday();
 		updateList(currentDate, new ItEntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				// TODO Auto-generated method stub
 				mIsAdding = false;
 				mListAdapter.setHasFooter(false);
 				mListAdapter.notifyDataSetChanged();

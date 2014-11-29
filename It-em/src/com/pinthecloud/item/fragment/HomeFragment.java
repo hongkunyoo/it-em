@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.Item;
 
@@ -28,8 +27,10 @@ public class HomeFragment extends ItFragment {
 	private HomeItemListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
+
 	private boolean mIsAdding = false;
 	private int page = 0;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +40,7 @@ public class HomeFragment extends ItFragment {
 		findComponent(view);
 		setRefreshLayout();
 		setList();
-		updateList(0, null);
+		updateList();
 		return view;
 	}
 
@@ -57,7 +58,7 @@ public class HomeFragment extends ItFragment {
 
 			@Override
 			public void onRefresh() {
-				updateList(page, null);
+				updateList();
 			}
 		});
 	}
@@ -90,23 +91,19 @@ public class HomeFragment extends ItFragment {
 	}
 
 
-	private void updateList(int _page, final ItEntityCallback<Boolean> callback) {
-		
-		mAimHelper.listItem(mThisFragment, _page, new ItListCallback<Item>() {
-			
+	private void updateList() {
+		mAimHelper.listItem(mThisFragment, 0, new ItListCallback<Item>() {
+
 			@Override
 			public void onCompleted(List<Item> list, int count) {
-				// TODO Auto-generated method stub
-				mListAdapter.addAll(list);
 				mProgressBar.setVisibility(View.GONE);
 				mListRefresh.setRefreshing(false);
+
+				mItemList.clear();
+				mItemList.addAll(list);
 				mListAdapter.notifyDataSetChanged();
-				if (callback != null)
-					callback.onCompleted(true);
 			}
 		});
-		
-		
 	}
 
 
@@ -115,17 +112,17 @@ public class HomeFragment extends ItFragment {
 		mListAdapter.setHasFooter(true);
 		mListAdapter.notifyDataSetChanged();
 		
-		updateList(++this.page, new ItEntityCallback<Boolean>() {
+		mAimHelper.listItem(mThisFragment, ++page, new ItListCallback<Item>() {
 
 			@Override
-			public void onCompleted(Boolean entity) {
-				// TODO Auto-generated method stub
+			public void onCompleted(List<Item> list, int count) {
 				mIsAdding = false;
 				mListAdapter.setHasFooter(false);
 				mListAdapter.notifyDataSetChanged();
+
+				mItemList.addAll(list);
+				mListAdapter.notifyDataSetChanged();
 			}
 		});
-
-		
 	}
 }

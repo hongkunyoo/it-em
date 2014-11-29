@@ -14,9 +14,10 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItemActivity;
-import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.SquareImageView;
+import com.squareup.picasso.Picasso;
 
 public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -26,14 +27,12 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	}
 
 	private Context mContext;
-	private ItFragment mFrag;
 	private List<Item> mItemList;
 	private int mGridColumnNum;
 
 
-	public MyItemGridAdapter(Context context, ItFragment frag, List<Item> itemList) {
+	public MyItemGridAdapter(Context context,  List<Item> itemList) {
 		this.mContext = context;
-		this.mFrag = frag;
 		this.mItemList = itemList;
 		this.mGridColumnNum = mContext.getResources().getInteger(R.integer.my_page_item_grid_column_num);
 	}
@@ -90,6 +89,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
 			setNormalText(normalViewHolder, item);
 			setNormalButton(normalViewHolder, item);
+			setNormalImageView(normalViewHolder, item);
 		}
 	}
 
@@ -116,15 +116,26 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	}
 
 
-	private void setNormalButton(NormalViewHolder holder, Item item){
+	private void setNormalButton(NormalViewHolder holder, final Item item){
 		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, ItemActivity.class);
+				intent.putExtra(Item.INTENT_KEY, item);
 				mContext.startActivity(intent);
 			}
 		});
+	}
+
+
+	private void setNormalImageView(NormalViewHolder holder, Item item) {
+		Picasso.with(mContext)
+		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
+		.placeholder(R.drawable.ic_launcher)
+		.error(R.drawable.ic_launcher)
+		.fit()
+		.into(holder.image);
 	}
 
 

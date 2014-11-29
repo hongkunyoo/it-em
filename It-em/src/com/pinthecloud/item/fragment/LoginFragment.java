@@ -8,9 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.facebook.AppEventsLogger;
 import com.facebook.Session;
@@ -32,7 +30,6 @@ public class LoginFragment extends ItFragment {
 
 	private LoginButton mFacebookButton;
 	private UiLifecycleHelper mUiHelper;
-	private Button mTempButton;
 
 	private Session.StatusCallback mCallback = new Session.StatusCallback() {
 		@Override
@@ -113,12 +110,11 @@ public class LoginFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mFacebookButton = (LoginButton)view.findViewById(R.id.login_frag_facebook_button);
-		mTempButton = (Button)view.findViewById(R.id.login_frag_temp_button);
 	}
 
 
 	private void setButton(){
-		
+
 		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override
@@ -129,14 +125,6 @@ public class LoginFragment extends ItFragment {
 				}
 			}
 		});
-		
-		mTempButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-//				goToNextActivity();
-			}
-		});
 	}
 
 
@@ -145,72 +133,59 @@ public class LoginFragment extends ItFragment {
 		itUser.setItUserId(user.getId());
 		itUser.setNickName(user.getFirstName());
 		itUser.setSelfIntro("");
-		// e.g. https://athere.blob.core.windows.net/userprofile/ID
-		itUser.setWebPage("");
-		
+		itUser.setWebPage(""); // e.g. https://athere.blob.core.windows.net/userprofile/ID
+
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
 				userHelper.add(frag, itUser, new ItEntityCallback<ItUser>() {
 
 					@Override
 					public void onCompleted(ItUser entity) {
-						// TODO Auto-generated method stub
 						mObjectPrefHelper.put(entity);
 						itUser.setId(entity.getId());
 						goToNextActivity();
 					}
 				});
 			}
-			
+
 		}, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
-				
 				new AsyncTask<Void,Void,Bitmap>(){
 
 					@Override
 					protected Bitmap doInBackground(Void... params) {
-						// TODO Auto-generated method stub
 						Bitmap bm = null;
 						try {
 							bm = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
 						return bm;
 					}
-					
+
 					protected void onPostExecute(Bitmap result) {
 						AsyncChainer.notifyNext(frag, (Object)result);
 					};
-					
+
 				}.execute();
-				
-				
 			}
-			
+
 		}, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
 				Bitmap picture = (Bitmap)params[0];
 				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), picture, new ItEntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
-						// TODO Auto-generated method stub
 						AsyncChainer.notifyNext(frag);
 					}
 				});
 			}
-			
 		});
 	}
 

@@ -24,12 +24,15 @@ import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.MyPagePagerAdapter;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.NoPageTransformer;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
+import com.squareup.picasso.Picasso;
 
 public class MyPageFragment extends ItFragment {
 
@@ -44,6 +47,15 @@ public class MyPageFragment extends ItFragment {
 	private ViewPager mViewPager;
 	private MyPagePagerAdapter mViewPagerAdapter;
 
+	private ItUser itUser;
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		itUser = mObjectPrefHelper.get(ItUser.class);
+	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +66,7 @@ public class MyPageFragment extends ItFragment {
 		findComponent(view);
 		setComponent();
 		setButton();
+		setImageView();
 		setTab();
 		return view;
 	}
@@ -73,7 +86,7 @@ public class MyPageFragment extends ItFragment {
 			String[] itemList = getResources().getStringArray(R.array.image_select_string_array);
 			ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
 			ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-			listDialog.show(getFragmentManager(), ItDialogFragment.DIALOG_KEY);
+			listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -92,6 +105,7 @@ public class MyPageFragment extends ItFragment {
 
 	private void setComponent(){
 		mTabHeight = mTab.getHeight();
+		mNickNameText.setText(itUser.getNickName());
 	}
 
 
@@ -104,6 +118,16 @@ public class MyPageFragment extends ItFragment {
 				startActivity(intent);
 			}
 		});
+	}
+
+
+	private void setImageView(){
+		Picasso.with(mActivity)
+		.load(BlobStorageHelper.getItemImgUrl(itUser.getId()))
+		.placeholder(R.drawable.ic_launcher)
+		.error(R.drawable.ic_launcher)
+		.fit()
+		.into(mProfileImage);
 	}
 
 

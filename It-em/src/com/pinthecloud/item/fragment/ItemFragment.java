@@ -28,18 +28,26 @@ public class ItemFragment extends ItFragment {
 	private Button mDelete;
 	private Item item;
 
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Intent intent = mActivity.getIntent();
+		item = intent.getExtras().getParcelable(Item.INTENT_KEY);
+	}
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_item, container, false);
-		Intent intent = mActivity.getIntent();
-		item = intent.getExtras().getParcelable(Item.INTENT_KEY);
 		setHasOptionsMenu(true);
 		setActionBar();
 		findComponent(view);
-		setComponent();
+		setText();
 		setButton();
+		setImageView();
 		return view;
 	}
 
@@ -73,23 +81,34 @@ public class ItemFragment extends ItFragment {
 	private void findComponent(View view){
 		mImage = (SquareImageView)view.findViewById(R.id.item_frag_image);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
-		mDate = (TextView)view.findViewById(R.id.item_frag_content);
-		mItNumber = (TextView)view.findViewById(R.id.item_frag_content);
+		mDate = (TextView)view.findViewById(R.id.item_frag_date);
+		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 		mDelete = (Button)view.findViewById(R.id.item_frag_delete);
 	}
-	
-	
-	private void setComponent(){
-		Picasso.with(mActivity).load(BlobStorageHelper.getItemImgUrl(item.getId())).into(mImage);
+
+
+	private void setText(){
+		mContent.setText(item.getContent());
+		mItNumber.setText(""+item.getLikeItCount());
 	}
-	
-	
+
+
 	private void setButton(){
 		mDelete.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 			}
 		});
+	}
+
+
+	private void setImageView(){
+		Picasso.with(mActivity)
+		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
+		.placeholder(R.drawable.ic_launcher)
+		.error(R.drawable.ic_launcher)
+		.fit()
+		.into(mImage);
 	}
 }

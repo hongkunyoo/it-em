@@ -38,14 +38,13 @@ public class SplashFragment extends ItFragment {
 		} catch (ClassNotFoundException e) {
 			if(mThisFragment.isAdded()){
 				Intent intent = new Intent();
-				if (mObjectPrefHelper.get(ItUser.class).isLoggedIn()){
-					// Has Loggined
-					intent.setClass(mActivity, MainActivity.class);					
-				} else{
+				if (!mObjectPrefHelper.get(ItUser.class).isLoggedIn()){
 					// New User
 					intent.setClass(mActivity, LoginActivity.class);
+				} else{
+					// Has Loggined
+					intent.setClass(mActivity, MainActivity.class);			
 				}
-//				intent.setClass(mActivity, ItemActivity.class);
 				startActivity(intent);
 			}
 		}

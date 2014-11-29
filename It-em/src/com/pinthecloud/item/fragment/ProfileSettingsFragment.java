@@ -23,6 +23,7 @@ import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
@@ -35,12 +36,20 @@ public class ProfileSettingsFragment extends ItFragment {
 	private CircleImageView mProfileImage;
 
 	private TextView mId;
-	private EditText mName;
+	private EditText mNickName;
 	private EditText mDescription;
 	private EditText mWebsite;
 
+	private ItUser itUser;
 	private boolean mIsTypedNickName = true;
 	private boolean mIsTakenProfileImage;
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		itUser = mObjectPrefHelper.get(ItUser.class);
+	}
 
 
 	@Override
@@ -128,14 +137,15 @@ public class ProfileSettingsFragment extends ItFragment {
 	private void findComponent(View view){
 		mProfileImage = (CircleImageView)view.findViewById(R.id.profile_settings_frag_profile_image);
 		mId = (TextView)view.findViewById(R.id.profile_settings_frag_id);
-		mName = (EditText)view.findViewById(R.id.profile_settings_frag_nick_name);
+		mNickName = (EditText)view.findViewById(R.id.profile_settings_frag_nick_name);
 		mDescription = (EditText)view.findViewById(R.id.profile_settings_frag_description);
 		mWebsite = (EditText)view.findViewById(R.id.profile_settings_frag_website);
 	}
 
 
 	private void setComponent(){
-		mName.addTextChangedListener(new TextWatcher() {
+		mNickName.setText(itUser.getNickName());
+		mNickName.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -155,6 +165,10 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void afterTextChanged(Editable s) {
 			}
 		});
+
+		mId.setText(itUser.getItUserId());
+		mDescription.setText(itUser.getSelfIntro());
+		mWebsite.setText(itUser.getWebPage());
 	}
 
 
@@ -166,7 +180,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				String[] itemList = getDialogItemList();
 				ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
 				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-				listDialog.show(getFragmentManager(), ItDialogFragment.DIALOG_KEY);
+				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}

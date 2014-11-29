@@ -2,6 +2,7 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +11,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.view.CircleImageView;
+import com.squareup.picasso.Picasso;
 
 public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.ViewHolder> {
 
-	private ItFragment mFrag;
+	private Context mContext;
 	private List<Reply> mReplyList;
 
 
-	public ReplyListAdapter(ItFragment frag, List<Reply> replyList) {
-		this.mFrag = frag;
+	public ReplyListAdapter(Context context, List<Reply> replyList) {
+		this.mContext = context;
 		this.mReplyList = replyList;
 	}
 
@@ -57,6 +59,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 	public void onBindViewHolder(ViewHolder holder, final int position) {
 		Reply reply = mReplyList.get(position);
 		setText(holder, reply);
+		setImageView(holder, reply);
 	}
 
 
@@ -67,8 +70,18 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 
 
 	private void setText(ViewHolder holder, Reply reply){
-		holder.content.setText(reply.getContent());
 		holder.nickName.setText(reply.getWhoMade());
+		holder.content.setText(reply.getContent());
+	}
+
+
+	private void setImageView(ViewHolder holder, Reply reply) {
+		Picasso.with(mContext)
+		.load(BlobStorageHelper.getItemImgUrl(reply.getWhoMadeId()))
+		.placeholder(R.drawable.ic_launcher)
+		.error(R.drawable.ic_launcher)
+		.fit()
+		.into(holder.profileImage);
 	}
 
 

@@ -14,11 +14,4 @@
         facebook:login_text="@string/facebook_login"
         facebook:logout_text="@string/facebook_login" />
 
-    <Button
-        android:id="@+id/login_frag_temp_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_frag_facebook_button"
-        android:layout_centerHorizontal="true" />
-
 </RelativeLayout>
