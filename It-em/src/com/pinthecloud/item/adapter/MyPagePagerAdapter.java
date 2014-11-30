@@ -9,7 +9,7 @@ import android.support.v4.util.SparseArrayCompat;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItItemFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
-import com.pinthecloud.item.fragment.MyPageItemFragment;
+import com.pinthecloud.item.fragment.MyPageTabFragment;
 import com.pinthecloud.item.interfaces.MyPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.CustomTabProvider;
@@ -52,13 +52,13 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter implements Cus
 
 	@Override
 	public Fragment getItem(int position) {
-		MyPageItemFragment fragment = null;
+		MyPageTabFragment fragment = null;
 		switch(position){
 		case 0:
-			fragment = (MyPageItemFragment) MyItemFragment.newInstance(position, mItUser);
+			fragment = (MyPageTabFragment) MyItemFragment.newInstance(position, mItUser);
 			break;
 		case 1:
-			fragment = (MyPageItemFragment) ItItemFragment.newInstance(position, mItUser);
+			fragment = (MyPageTabFragment) ItItemFragment.newInstance(position, mItUser);
 			break;
 		}
 

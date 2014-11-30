@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import com.pinthecloud.item.interfaces.MyPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 
-public abstract class MyPageItemFragment extends ItFragment implements MyPageTabHolder {
+public abstract class MyPageTabFragment extends ItFragment implements MyPageTabHolder {
 
 	protected static final String POSITION_KEY = "POSITION_KEY";
 	protected int mPosition;

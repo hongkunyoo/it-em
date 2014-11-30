@@ -9,5 +9,5 @@ public interface MyPageTabHolder {
 	
 	// MyPage to Item
 	public void adjustScroll(int scrollHeight);
-	public void updateItem();
+	public void updateTab();
 }

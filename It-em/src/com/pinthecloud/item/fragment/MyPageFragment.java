@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
@@ -38,11 +39,13 @@ import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
 
-public class MyPageFragment extends ItFragment {
+public class MyPageFragment extends MainTabFragment {
 
 	public static int mTabHeight;
 
 	private ProgressBar mProgressBar;
+	private RelativeLayout mContainer;
+
 	private LinearLayout mHeader;
 	private CircleImageView mProfileImage;
 	private TextView mNickName;
@@ -57,7 +60,7 @@ public class MyPageFragment extends ItFragment {
 	private String mItUserId;
 	private ItUser mItUser;
 
-	private boolean[] mIsUpdatedMyPageItems = {false, false};
+	private boolean[] mIsUpdatedTabs;
 
 
 	public static MyPageFragment newInstance(String itUserId) {
@@ -84,26 +87,6 @@ public class MyPageFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 		setHasOptionsMenu(true);
 		findComponent(view);
-
-		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				setItUser();
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				setComponent();
-				setButton();
-				setImageView();
-				setViewPager();
-				setTab();
-				setCustomTabName();
-			}
-		});
-
 		return view;
 	}
 
@@ -129,7 +112,31 @@ public class MyPageFragment extends ItFragment {
 	}
 
 
+	@Override
+	public void updateTab() {
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				setItUser();
+			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				setComponent();
+				setButton();
+				setImageView();
+				setViewPager();
+				setTab();
+				setCustomTabName();
+			}
+		});
+	}
+
+
 	private void findComponent(View view){
+		mContainer = (RelativeLayout)view.findViewById(R.id.my_page_frag_container_layout);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.my_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.my_page_frag_header_layout);
 		mProfileImage = (CircleImageView)view.findViewById(R.id.my_page_frag_profile_image);
@@ -145,6 +152,7 @@ public class MyPageFragment extends ItFragment {
 	private void setItUser(){
 		if(mItUserId.equals(mItUser.getId())){
 			mProgressBar.setVisibility(View.GONE);
+			mContainer.setVisibility(View.VISIBLE);
 			AsyncChainer.notifyNext(mThisFragment);
 		} else {
 			mUserHelper.get(mThisFragment, mItUserId, new ItEntityCallback<ItUser>() {
@@ -152,6 +160,7 @@ public class MyPageFragment extends ItFragment {
 				@Override
 				public void onCompleted(ItUser entity) {
 					mProgressBar.setVisibility(View.GONE);
+					mContainer.setVisibility(View.VISIBLE);
 					mItUser = entity;
 					AsyncChainer.notifyNext(mThisFragment);
 				}
@@ -213,11 +222,12 @@ public class MyPageFragment extends ItFragment {
 			public void adjustScroll(int scrollHeight) {
 			}
 			@Override
-			public void updateItem() {
+			public void updateTab() {
 			}
 		});
 
 		mViewPager.setAdapter(mViewPagerAdapter);
+		mIsUpdatedTabs = new boolean[mViewPagerAdapter.getCount()];
 	}
 
 
@@ -230,9 +240,9 @@ public class MyPageFragment extends ItFragment {
 				SparseArrayCompat<MyPageTabHolder> myPageTabHolders = mViewPagerAdapter.getMyPageTabHolders();
 				MyPageTabHolder fragmentContent = myPageTabHolders.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
-				if(!mIsUpdatedMyPageItems[position]){
-					fragmentContent.updateItem();
-					mIsUpdatedMyPageItems[position] = true;
+				if(!mIsUpdatedTabs[position]){
+					fragmentContent.updateTab();
+					mIsUpdatedTabs[position] = true;
 				}
 			}
 			@Override

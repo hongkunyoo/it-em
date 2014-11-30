@@ -18,7 +18,7 @@ import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 
-public class ItItemFragment extends MyPageItemFragment {
+public class ItItemFragment extends MyPageTabFragment {
 
 	private ProgressBar mProgressBar;
 	private RecyclerView mGridView;
@@ -28,7 +28,7 @@ public class ItItemFragment extends MyPageItemFragment {
 	private boolean mIsAdding = false;
 
 
-	public static MyPageItemFragment newInstance(int position, ItUser itUser) {
+	public static MyPageTabFragment newInstance(int position, ItUser itUser) {
 		ItItemFragment fragment = new ItItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
@@ -68,12 +68,14 @@ public class ItItemFragment extends MyPageItemFragment {
 
 
 	@Override
-	public void updateItem() {
+	public void updateTab() {
 		mAimHelper.listItItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
+				mGridView.setVisibility(View.VISIBLE);
+				
 				mItemList.clear();
 				mItemList.addAll(list);
 				mGridAdapter.notifyDataSetChanged();

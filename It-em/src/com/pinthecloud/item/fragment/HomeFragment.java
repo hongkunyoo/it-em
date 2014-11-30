@@ -19,7 +19,7 @@ import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.Item;
 
-public class HomeFragment extends ItFragment {
+public class HomeFragment extends MainTabFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mListRefresh;
@@ -40,8 +40,25 @@ public class HomeFragment extends ItFragment {
 		findComponent(view);
 		setRefreshLayout();
 		setList();
-		updateList();
 		return view;
+	}
+
+
+	@Override
+	public void updateTab() {
+		mAimHelper.listItem(mThisFragment, 0, new ItListCallback<Item>() {
+
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				mProgressBar.setVisibility(View.GONE);
+				mListRefresh.setRefreshing(false);
+				mListRefresh.setVisibility(View.VISIBLE);
+
+				mItemList.clear();
+				mItemList.addAll(list);
+				mListAdapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 
@@ -58,7 +75,7 @@ public class HomeFragment extends ItFragment {
 
 			@Override
 			public void onRefresh() {
-				updateList();
+				updateTab();
 			}
 		});
 	}
@@ -91,28 +108,11 @@ public class HomeFragment extends ItFragment {
 	}
 
 
-	private void updateList() {
-		mAimHelper.listItem(mThisFragment, 0, new ItListCallback<Item>() {
-
-			@Override
-			public void onCompleted(List<Item> list, int count) {
-				mProgressBar.setVisibility(View.GONE);
-				mListRefresh.setRefreshing(false);
-				mListRefresh.setVisibility(View.VISIBLE);
-
-				mItemList.clear();
-				mItemList.addAll(list);
-				mListAdapter.notifyDataSetChanged();
-			}
-		});
-	}
-
-
 	private void addNextItemList() {
 		mIsAdding = true;
 		mListAdapter.setHasFooter(true);
 		mListAdapter.notifyItemInserted(mItemList.size());
-		
+
 		mAimHelper.listItem(mThisFragment, ++page, new ItListCallback<Item>() {
 
 			@Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/my_page_frag_container_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -10,95 +10,102 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/my_page_frag_pager"
+    <RelativeLayout
+        android:id="@+id/my_page_frag_container_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" >
 
-    <LinearLayout
-        android:id="@+id/my_page_frag_header_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/my_page_header_height"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/my_page_frag_profile_layout"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/my_page_frag_pager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/my_page_profile_height"
-            android:background="@android:color/white"
-            android:paddingBottom="@dimen/content_margin"
-            android:paddingEnd="@dimen/content_margin"
-            android:paddingLeft="@dimen/content_margin"
-            android:paddingRight="@dimen/content_margin"
-            android:paddingStart="@dimen/content_margin"
-            android:paddingTop="@dimen/my_page_profile_top_margin" >
+            android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical" >
+        <LinearLayout
+            android:id="@+id/my_page_frag_header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/my_page_header_height"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/my_page_frag_profile_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/my_page_profile_height"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/content_margin"
+                android:paddingEnd="@dimen/content_margin"
+                android:paddingLeft="@dimen/content_margin"
+                android:paddingRight="@dimen/content_margin"
+                android:paddingStart="@dimen/content_margin"
+                android:paddingTop="@dimen/my_page_profile_top_margin" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                    <com.pinthecloud.item.view.CircleImageView
-                        xmlns:civ="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/my_page_frag_profile_image"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        civ:border_color="@color/line_color"
-                        civ:border_width="@dimen/line_width" />
+                        android:orientation="horizontal" >
+
+                        <com.pinthecloud.item.view.CircleImageView
+                            xmlns:civ="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/my_page_frag_profile_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:border_color="@color/line_color"
+                            app:border_width="@dimen/line_width" />
+
+                        <TextView
+                            android:id="@+id/my_page_frag_nick_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/content_margin"
+                            android:layout_marginStart="@dimen/content_margin"
+                            android:textColor="@color/my_page_tab_title"
+                            android:textSize="@dimen/font_large" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/my_page_frag_nick_name"
+                        android:id="@+id/my_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/content_margin"
-                        android:layout_marginStart="@dimen/content_margin"
-                        android:textColor="@color/my_page_tab_title"
-                        android:textSize="@dimen/font_large" />
+                        android:textColor="@color/my_page_tab_number"
+                        android:textSize="@dimen/font_small" />
+
+                    <TextView
+                        android:id="@+id/my_page_frag_website"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/my_page_tab_number"
+                        android:textSize="@dimen/font_small" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/my_page_frag_description"
+                <Button
+                    android:id="@+id/my_page_frag_profile_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/my_page_tab_number"
-                    android:textSize="@dimen/font_small" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/my_page_frag_website"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/my_page_tab_number"
-                    android:textSize="@dimen/font_small" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/my_page_frag_profile_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
-
-        <com.pinthecloud.item.view.PagerSlidingTabStrip
-            xmlns:psts="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_page_frag_tab"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/main_tab_height"
-            android:background="@android:color/white"
-            psts:pstsDividerColor="@android:color/transparent"
-            psts:pstsIndicatorHeight="@dimen/none"
-            psts:pstsShouldExpand="true"
-            psts:pstsSmoothScroll="false"
-            psts:pstsTabBackground="@drawable/my_page_tab_background"
-            psts:pstsTabSwitch="true"
-            psts:pstsUnderlineColor="@color/line_color"
-            psts:pstsUnderlineHeight="@dimen/line_width" />
-    </LinearLayout>
+            <com.pinthecloud.item.view.PagerSlidingTabStrip
+                xmlns:psts="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/my_page_frag_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_tab_height"
+                android:background="@android:color/white"
+                psts:pstsDividerColor="@android:color/transparent"
+                psts:pstsIndicatorHeight="@dimen/none"
+                psts:pstsShouldExpand="true"
+                psts:pstsSmoothScroll="false"
+                psts:pstsTabBackground="@drawable/my_page_tab_background"
+                psts:pstsTabSwitch="true"
+                psts:pstsUnderlineColor="@color/line_color"
+                psts:pstsUnderlineHeight="@dimen/line_width" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

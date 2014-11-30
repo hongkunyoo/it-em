@@ -5,13 +5,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.util.SparseArrayCompat;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HomeFragment;
 import com.pinthecloud.item.fragment.HotFragment;
-import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.fragment.MainTabFragment;
 import com.pinthecloud.item.fragment.MyPageFragment;
+import com.pinthecloud.item.interfaces.MainTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
 
@@ -19,11 +21,18 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 
 	private String[] mTitles;
 	private int[] mTitleIcons = {R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher};
+	private SparseArrayCompat<MainTabHolder> mMainTabHolders;
 
 
 	public MainPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		this.mTitles = context.getResources().getStringArray(R.array.main_tab_title_string_array);
+		this.mMainTabHolders = new SparseArrayCompat<MainTabHolder>();
+	}
+
+
+	public SparseArrayCompat<MainTabHolder> getMainTabHolders() {
+		return mMainTabHolders;
 	}
 
 
@@ -41,7 +50,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 
 	@Override
 	public Fragment getItem(int position) {
-		ItFragment fragment = null;
+		MainTabFragment fragment = null;
 		switch(position){
 		case 0:
 			fragment = new HomeFragment();
@@ -54,6 +63,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 			fragment = MyPageFragment.newInstance(itUser.getId());
 			break;
 		}
+
+		mMainTabHolders.put(position, fragment);
 		return fragment;
 	}
 
