@@ -9,7 +9,10 @@
     <TextView
         android:id="@+id/row_it_item_grid_rank"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/my_item_rank_margin"
+        android:layout_marginStart="@dimen/my_item_rank_margin"
+        android:layout_marginTop="@dimen/my_item_rank_margin" />
 
     <com.pinthecloud.item.view.SquareImageView
         android:id="@+id/row_it_item_grid_image"
@@ -18,22 +21,47 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/row_it_item_grid_image" >
+        android:layout_height="@dimen/my_item_it_reply_number_height"
+        android:layout_alignBottom="@+id/row_it_item_grid_image"
+        android:background="@color/my_page_it_reply_number_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/none"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingRight="@dimen/none"
+        android:paddingStart="@dimen/content_margin" >
 
         <TextView
             android:id="@+id/row_it_item_grid_it_number"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/my_page_it_reply_number"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/it_lower"
+            android:textColor="@color/my_page_it_reply_number"
+            android:textSize="@dimen/font_small" />
 
         <TextView
             android:id="@+id/row_it_item_grid_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
+            android:layout_marginLeft="@dimen/my_item_it_reply_number_margin"
+            android:layout_marginStart="@dimen/my_item_it_reply_number_margin"
+            android:textColor="@color/my_page_it_reply_number"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reply_lower"
+            android:textColor="@color/my_page_it_reply_number"
+            android:textSize="@dimen/font_small" />
+    </LinearLayout>
 
 </RelativeLayout>

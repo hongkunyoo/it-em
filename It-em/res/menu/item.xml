@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/item_it"
-        android:title="@string/it"
+        android:title="@string/it_lower"
         app:showAsAction="always" />
 
 </menu>

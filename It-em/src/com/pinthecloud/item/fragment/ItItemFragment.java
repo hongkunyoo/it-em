@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
@@ -19,6 +20,7 @@ import com.pinthecloud.item.model.Item;
 
 public class ItItemFragment extends MyPageItemFragment {
 
+	private ProgressBar mProgressBar;
 	private RecyclerView mGridView;
 	private ItItemGridAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
@@ -67,6 +69,7 @@ public class ItItemFragment extends MyPageItemFragment {
 
 
 	private void findComponent(View view){
+		mProgressBar = (ProgressBar)view.findViewById(R.id.it_item_frag_progress_bar);
 		mGridView = (RecyclerView)view.findViewById(R.id.it_item_frag_grid);
 	}
 
@@ -108,9 +111,11 @@ public class ItItemFragment extends MyPageItemFragment {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
+				mProgressBar.setVisibility(View.GONE);
 				mItemList.clear();
 				mItemList.addAll(list);
 				mGridAdapter.notifyDataSetChanged();
+				mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
 	}

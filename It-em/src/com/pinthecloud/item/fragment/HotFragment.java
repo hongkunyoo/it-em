@@ -44,7 +44,7 @@ public class HotFragment extends ItFragment {
 		findComponent(view);
 		setRefreshLayout();
 		setList();
-		updateList();
+		updateList(currentDate);
 		return view;
 	}
 
@@ -63,7 +63,7 @@ public class HotFragment extends ItFragment {
 			@Override
 			public void onRefresh() {
 				currentDate = ItDateTime.getToday();
-				updateList();
+				updateList(currentDate);
 			}
 		});
 	}
@@ -103,17 +103,23 @@ public class HotFragment extends ItFragment {
 	}
 
 
-	private void updateList() {
-		mAimHelper.getRank10(mThisFragment, ItDateTime.getToday(), new ItListCallback<Item>() {
+	private void updateList(ItDateTime itDateTime) {
+		mAimHelper.getRank10(mThisFragment, itDateTime, new ItListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
-				mProgressBar.setVisibility(View.GONE);
-				mListRefresh.setRefreshing(false);
+				if(list.size() < 1){
+					currentDate = currentDate.getYesterday();
+					updateList(currentDate);
+				} else {
+					mProgressBar.setVisibility(View.GONE);
+					mListRefresh.setRefreshing(false);
+					mListRefresh.setVisibility(View.VISIBLE);
 
-				mItemList.clear();
-				mItemList.addAll(list);
-				mListAdapter.notifyDataSetChanged();
+					mItemList.clear();
+					mItemList.addAll(list);
+					mListAdapter.notifyDataSetChanged();
+				}
 			}
 		});
 	}
@@ -122,7 +128,7 @@ public class HotFragment extends ItFragment {
 	private void addNextItemList() {
 		mIsAdding = true;
 		mListAdapter.setHasFooter(true);
-		mListAdapter.notifyDataSetChanged();
+		mListAdapter.notifyItemInserted(mItemList.size());
 
 		currentDate = currentDate.getYesterday();
 		mAimHelper.getRank10(mThisFragment, currentDate, new ItListCallback<Item>() {

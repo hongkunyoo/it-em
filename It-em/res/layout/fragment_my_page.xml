@@ -44,9 +44,12 @@
                     android:orientation="horizontal" >
 
                     <com.pinthecloud.item.view.CircleImageView
+                        xmlns:civ="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/my_page_frag_profile_image"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        civ:border_color="@color/line_color"
+                        civ:border_width="@dimen/line_width" />
 
                     <TextView
                         android:id="@+id/my_page_frag_nick_name"
@@ -82,25 +85,14 @@
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
 
-        <com.pinthecloud.item.view.PagerSlidingTabStrip
-            xmlns:psts="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_page_frag_tab"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/main_tab_height"
-            android:background="@color/brand_color"
-            psts:pstsActivateTextColor="@android:color/white"
-            psts:pstsIndicatorHeight="@dimen/none"
-            psts:pstsShouldExpand="true"
-            psts:pstsTabSwitch="true"
-            psts:pstsTextAllCaps="false"
-            psts:pstsUnderlineHeight="@dimen/none" />
-
         <LinearLayout
+            android:id="@+id/my_page_frag_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_tab_height"
             android:baselineAligned="false" >
 
             <LinearLayout
+                android:id="@+id/my_page_frag_my_item_tab"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -118,11 +110,14 @@
                     android:id="@+id/my_page_frag_my_item_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/my_page_tab_number_margin"
+                    android:layout_marginStart="@dimen/my_page_tab_number_margin"
                     android:textColor="@color/my_page_tab_number"
                     android:textSize="@dimen/font_medium" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/my_page_frag_it_item_tab"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -140,6 +135,8 @@
                     android:id="@+id/my_page_frag_it_item_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/my_page_tab_number_margin"
+                    android:layout_marginStart="@dimen/my_page_tab_number_margin"
                     android:textColor="@color/my_page_tab_number"
                     android:textSize="@dimen/font_medium" />
             </LinearLayout>

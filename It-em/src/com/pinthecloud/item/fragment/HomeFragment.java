@@ -98,6 +98,7 @@ public class HomeFragment extends ItFragment {
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mListRefresh.setRefreshing(false);
+				mListRefresh.setVisibility(View.VISIBLE);
 
 				mItemList.clear();
 				mItemList.addAll(list);
@@ -110,7 +111,7 @@ public class HomeFragment extends ItFragment {
 	private void addNextItemList() {
 		mIsAdding = true;
 		mListAdapter.setHasFooter(true);
-		mListAdapter.notifyDataSetChanged();
+		mListAdapter.notifyItemInserted(mItemList.size());
 		
 		mAimHelper.listItem(mThisFragment, ++page, new ItListCallback<Item>() {
 

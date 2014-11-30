@@ -4,10 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <ProgressBar
+        android:id="@+id/it_item_frag_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/my_item_progress_bar_bottom_margin" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/it_item_frag_grid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/my_item_spacing"
         android:scrollbars="none" />
 

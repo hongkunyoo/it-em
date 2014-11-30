@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.MainFragment;
 
 public class MainActivity extends ItActivity{
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,11 @@ public class MainActivity extends ItActivity{
 
 	private void setToolbar(){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_toolbar);
+		View toolbarShadow = findViewById(R.id.activity_toolbar_shadow);
+
 		toolbar.setLogo(R.drawable.ic_launcher);
+		toolbarShadow.setVisibility(View.GONE);
+
 		setSupportActionBar(toolbar);
 	}
 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,19 +50,17 @@ public class HotItemListHeaderAdapter implements StickyHeadersAdapter<HotItemLis
 		Item item = mItemList.get(position);
 		ItDateTime itDateTime = item.getCreateDateTime();
 
-		Time nowTime = new Time();
-		nowTime.setToNow();
-
-		if(itDateTime.getYear() == nowTime.year && itDateTime.getMonth()-1 == nowTime.month){
-			if(itDateTime.getDate() == nowTime.monthDay){
-				headerViewHolder.date.setText(mContext.getResources().getString(R.string.today));
-				return;
-			} else if(itDateTime.getDate()+1 == nowTime.monthDay) {
-				headerViewHolder.date.setText(mContext.getResources().getString(R.string.yesterday));
-				return;
-			}
+		switch(itDateTime.getElapsedDate()){
+		case 0:
+			headerViewHolder.date.setText(mContext.getResources().getString(R.string.today));
+			break;
+		case 1:
+			headerViewHolder.date.setText(mContext.getResources().getString(R.string.yesterday));
+			break;
+		default:
+			headerViewHolder.date.setText(item.getCreateDateTime().toPrettyDate());
+			break;
 		}
-		headerViewHolder.date.setText(item.getCreateDateTime().toPrettyDate());
 	}
 
 

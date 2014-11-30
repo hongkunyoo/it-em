@@ -35,8 +35,6 @@ import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.pinthecloud.item.view.NoPageTransformer;
-import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
 
 public class MyPageFragment extends ItFragment {
@@ -51,12 +49,18 @@ public class MyPageFragment extends ItFragment {
 	private TextView mWebsite;
 	private Button mProfileSettings;
 
-	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
 	private MyPagePagerAdapter mViewPagerAdapter;
+	private LinearLayout mTab;
+	private LinearLayout mMyItemTab;
+	private LinearLayout mItItemTab;
+	private TextView mMyItemNumber;
+	private TextView mItItemNumber;
 
 	private String mItUserId;
 	private ItUser mItUser;
+
+	private boolean[] updateMyPageItem = {true, true};
 
 
 	public static MyPageFragment newInstance(String itUserId) {
@@ -97,6 +101,7 @@ public class MyPageFragment extends ItFragment {
 				setComponent();
 				setButton();
 				setImageView();
+				setViewPager();
 				setTab();
 			}
 		});
@@ -134,8 +139,12 @@ public class MyPageFragment extends ItFragment {
 		mDescription = (TextView)view.findViewById(R.id.my_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.my_page_frag_website);
 		mProfileSettings = (Button)view.findViewById(R.id.my_page_frag_profile_settings);
-		mTab = (PagerSlidingTabStrip) view.findViewById(R.id.my_page_frag_tab);
 		mViewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
+		mTab = (LinearLayout)view.findViewById(R.id.my_page_frag_tab);
+		mMyItemTab = (LinearLayout)view.findViewById(R.id.my_page_frag_my_item_tab);
+		mItItemTab = (LinearLayout)view.findViewById(R.id.my_page_frag_it_item_tab);
+		mMyItemNumber = (TextView)view.findViewById(R.id.my_page_frag_my_item_number);
+		mItItemNumber = (TextView)view.findViewById(R.id.my_page_frag_it_item_number);
 	}
 
 
@@ -187,7 +196,7 @@ public class MyPageFragment extends ItFragment {
 	}
 
 
-	private void setTab(){
+	private void setViewPager(){
 		mViewPagerAdapter = new MyPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
 		mViewPagerAdapter.setTabHolderScrollingContent(new ScrollTabHolder() {
 
@@ -198,16 +207,23 @@ public class MyPageFragment extends ItFragment {
 					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTab.getHeight()));
 				}
 			}
+
+			@Override
+			public void updateTabNumber(int position, int number) {
+				if(position == MyPagePagerAdapter.MY_PAGE_ITEM.MY_ITEM.ordinal()){
+					mMyItemNumber.setText(""+number);
+				}else if(position == MyPagePagerAdapter.MY_PAGE_ITEM.IT_ITEM.ordinal()){
+					mItItemNumber.setText(""+number);
+				}
+			}
+
 			@Override
 			public void adjustScroll(int scrollHeight) {
 			}
 		});
 
 		mViewPager.setAdapter(mViewPagerAdapter);
-		mViewPager.setPageTransformer(false, new NoPageTransformer());
-
-		mTab.setViewPager(mViewPager);
-		mTab.setOnPageChangeListener(new OnPageChangeListener() {
+		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
@@ -220,6 +236,30 @@ public class MyPageFragment extends ItFragment {
 			}
 			@Override
 			public void onPageScrollStateChanged(int state) {
+			}
+		});
+	}
+
+
+	private void setTab(){
+		mMyItemTab.setSelected(true);
+		mMyItemTab.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mMyItemTab.setSelected(true);
+				mItItemTab.setSelected(false);
+				mViewPager.setCurrentItem(MyPagePagerAdapter.MY_PAGE_ITEM.MY_ITEM.ordinal(), false);
+			}
+		});
+
+		mItItemTab.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mMyItemTab.setSelected(false);
+				mItItemTab.setSelected(true);
+				mViewPager.setCurrentItem(MyPagePagerAdapter.MY_PAGE_ITEM.IT_ITEM.ordinal(), false);
 			}
 		});
 	}
