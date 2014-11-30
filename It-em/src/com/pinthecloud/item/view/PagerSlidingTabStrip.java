@@ -97,8 +97,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private int lastScrollX = 0;
 
-	private int tabBackgroundResId = R.drawable.item_tab_background;
-	private int transparentColorId = android.R.color.transparent;
+	private int tabBackgroundResId = R.drawable.main_tab_background;
 
 	private Locale locale;
 
@@ -196,19 +195,16 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	}
 
 	public void notifyDataSetChanged() {
-
 		tabsContainer.removeAllViews();
 
 		tabCount = pager.getAdapter().getCount();
 
 		for (int i = 0; i < tabCount; i++) {
-
 			if (pager.getAdapter() instanceof IconTabProvider) {
 				addIconTab(i, ((IconTabProvider) pager.getAdapter()).getPageIconResId(i));
 			} else {
 				addTextTab(i, pager.getAdapter().getPageTitle(i).toString());
 			}
-
 		}
 
 		updateTabStyles();
@@ -230,7 +226,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				scrollToChild(currentPosition, 0);
 			}
 		});
-
 	}
 
 	private void addTextTab(final int position, String title) {
@@ -265,7 +260,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private void updateTabStyles() {
 		for (int i = 0; i < tabCount; i++) {
 			View v = tabsContainer.getChildAt(i);
-			v.setBackgroundResource(!tabSwitch ? tabBackgroundResId : transparentColorId);
+			v.setBackgroundResource(tabBackgroundResId);
 
 			if (v instanceof TextView) {
 				TextView tab = (TextView) v;

@@ -5,7 +5,7 @@
     <string name="facebook_app_id">734298746647918</string>
 
     <!-- Common Word -->
-    <string name="app_name">It:em</string>
+    <string name="app_name">IT:EM</string>
 
     <!-- Common Sentence -->
     <string name="internet_not_connected_message">Internet is unavailable. Please check network status.</string>
@@ -19,6 +19,8 @@
     <string name="plus">+</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="my_item">IT:EM</string>
+    <string name="it_item">IT</string>
 
     <!-- Upload -->
     <string name="item_upload">IT:EM Upload</string>

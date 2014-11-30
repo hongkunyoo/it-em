@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import android.content.Context;
 
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.util.MyLog;
 
 public class ObjectPrefHelper {
 
@@ -38,7 +37,7 @@ public class ObjectPrefHelper {
 		} catch (InstantiationException e) {
 		} catch (IllegalAccessException e) {
 		}
-		
+
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
 			if (!isSetter(method)) continue;

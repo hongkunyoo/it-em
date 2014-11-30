@@ -54,18 +54,24 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/content_margin"
-                        android:layout_marginStart="@dimen/content_margin" />
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:textColor="@color/my_page_tab_title"
+                        android:textSize="@dimen/font_large" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/my_page_frag_description"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/my_page_tab_number"
+                    android:textSize="@dimen/font_small" />
 
                 <TextView
                     android:id="@+id/my_page_frag_website"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/my_page_tab_number"
+                    android:textSize="@dimen/font_small" />
             </LinearLayout>
 
             <Button
@@ -88,6 +94,61 @@
             psts:pstsTabSwitch="true"
             psts:pstsTextAllCaps="false"
             psts:pstsUnderlineHeight="@dimen/none" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_tab_height"
+            android:baselineAligned="false" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/my_page_tab_background"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_item"
+                    android:textColor="@color/my_page_tab_title"
+                    android:textSize="@dimen/font_medium" />
+
+                <TextView
+                    android:id="@+id/my_page_frag_my_item_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/my_page_tab_number"
+                    android:textSize="@dimen/font_medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/my_page_tab_background"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/it_item"
+                    android:textColor="@color/my_page_tab_title"
+                    android:textSize="@dimen/font_medium" />
+
+                <TextView
+                    android:id="@+id/my_page_frag_it_item_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/my_page_tab_number"
+                    android:textSize="@dimen/font_medium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_width"
+            android:background="@color/line_color" />
     </LinearLayout>
 
 </RelativeLayout>

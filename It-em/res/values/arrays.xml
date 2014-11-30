@@ -8,8 +8,8 @@
         <item>My Page</item>
     </string-array>
     <string-array name="my_page_tab_title_string_array">
-        <item>My Item</item>
-        <item>It Item</item>
+        <item>@string/my_item</item>
+        <item>@string/it_item</item>
     </string-array>
 
     <!-- Profile Settings -->
