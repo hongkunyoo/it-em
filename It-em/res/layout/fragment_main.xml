@@ -14,6 +14,7 @@
         psts:pstsIndicatorColor="@color/accent_color"
         psts:pstsIndicatorHeight="@dimen/main_tab_indicator_height"
         psts:pstsShouldExpand="true"
+        psts:pstsTabBackground="@drawable/main_tab_background"
         psts:pstsTabSwitch="true"
         psts:pstsUnderlineHeight="@dimen/none" />
 

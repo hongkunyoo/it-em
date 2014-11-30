@@ -65,7 +65,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private LinearLayout tabsContainer;
 	private ViewPager pager;
 
-	private int startTab = 0;
 	private int tabCount;
 
 	private int currentPosition = 0;
@@ -97,11 +96,13 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private int lastScrollX = 0;
 
-	private int tabBackgroundResId = R.drawable.main_tab_background;
+	private int tabBackgroundResId = android.R.color.transparent;
 
 	private Locale locale;
 
-	private boolean tabSwitch;
+	private boolean tabSwitch = false;
+	private int startTab = 0;
+	private boolean smoothScroll = true;
 
 	public PagerSlidingTabStrip(Context context) {
 		this(context, null);
@@ -159,6 +160,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		tabSwitch = a.getBoolean(R.styleable.PagerSlidingTabStrip_pstsTabSwitch, tabSwitch);
 		tabTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsActivateTextColor, tabTextColor);
 		tabDeactivateTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsDeactivateTextColor, tabDeactivateTextColor);
+		smoothScroll = a.getBoolean(R.styleable.PagerSlidingTabStrip_pstsSmoothScroll, smoothScroll);
 
 		a.recycle();
 
@@ -234,22 +236,22 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		tab.setGravity(Gravity.CENTER);
 		tab.setSingleLine();
 
-		addTab(position, tab);
+		addTab(position, tab, smoothScroll);
 	}
 
 	private void addIconTab(final int position, int resId) {
 		ImageButton tab = new ImageButton(getContext());
 		tab.setImageResource(resId);
 
-		addTab(position, tab);
+		addTab(position, tab, smoothScroll);
 	}
 
-	private void addTab(final int position, View tab) {
+	private void addTab(final int position, View tab, final boolean smoothScroll) {
 		tab.setFocusable(true);
 		tab.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				pager.setCurrentItem(position);
+				pager.setCurrentItem(position, smoothScroll);
 			}
 		});
 
@@ -385,11 +387,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				delegatePageListener.onPageSelected(position);
 			}
 		}
-
-	}
-
-	public void setStartTab(int startTab) {
-		this.startTab = startTab;
 	}
 
 	public void setIndicatorColor(int indicatorColor) {
@@ -538,6 +535,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		updateTabStyles();
 	}
 
+	public boolean getTabSwitch() {
+		return tabSwitch;
+	}
+
 	public void setActivateTextColor(int activateTextColor) {
 		this.tabTextColor = activateTextColor;
 		updateTabStyles();
@@ -546,6 +547,27 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	public void setDeactivateTextColor(int deactivateTextColor) {
 		this.tabDeactivateTextColor = deactivateTextColor;
 		updateTabStyles();
+	}
+
+	public int getDeactivateTextColor() {
+		return tabDeactivateTextColor;
+	}
+
+	public void setStartTab(int startTab) {
+		this.startTab = startTab;
+		updateTabStyles();
+	}
+
+	public int getStartTab(){
+		return startTab;
+	}
+
+	public void setSmoothScroll(boolean smoothScroll) {
+		this.smoothScroll = smoothScroll;
+	}
+
+	public boolean getSmoothScroll(){
+		return smoothScroll;
 	}
 
 	@Override
@@ -594,5 +616,4 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			}
 		};
 	}
-
 }

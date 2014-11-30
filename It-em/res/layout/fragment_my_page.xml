@@ -89,6 +89,7 @@
             android:id="@+id/my_page_frag_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_tab_height"
+            android:background="@android:color/white"
             android:baselineAligned="false" >
 
             <LinearLayout
@@ -143,6 +144,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/my_page_frag_tab_divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_width"
             android:background="@color/line_color" />

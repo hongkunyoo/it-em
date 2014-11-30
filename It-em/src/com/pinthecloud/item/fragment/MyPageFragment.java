@@ -56,6 +56,7 @@ public class MyPageFragment extends ItFragment {
 	private LinearLayout mItItemTab;
 	private TextView mMyItemNumber;
 	private TextView mItItemNumber;
+	private View mTabDivider;
 
 	private String mItUserId;
 	private ItUser mItUser;
@@ -145,6 +146,7 @@ public class MyPageFragment extends ItFragment {
 		mItItemTab = (LinearLayout)view.findViewById(R.id.my_page_frag_it_item_tab);
 		mMyItemNumber = (TextView)view.findViewById(R.id.my_page_frag_my_item_number);
 		mItItemNumber = (TextView)view.findViewById(R.id.my_page_frag_it_item_number);
+		mTabDivider = view.findViewById(R.id.my_page_frag_tab_divider);
 	}
 
 
@@ -167,7 +169,7 @@ public class MyPageFragment extends ItFragment {
 
 
 	private void setComponent(){
-		mTabHeight = mTab.getHeight();
+		mTabHeight = mTab.getHeight() + mTabDivider.getHeight();
 		mNickName.setText(mItUser.getNickName());
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());
@@ -204,7 +206,7 @@ public class MyPageFragment extends ItFragment {
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 				if (mViewPager.getCurrentItem() == pagePosition) {
 					int scrollY = getGridScrollY(view, (GridLayoutManager)layoutManager);
-					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTab.getHeight()));
+					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTabHeight));
 				}
 			}
 

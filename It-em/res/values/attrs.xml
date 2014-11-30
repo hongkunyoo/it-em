@@ -16,6 +16,7 @@
         <attr name="pstsTabSwitch" format="boolean" />
         <attr name="pstsActivateTextColor" format="color" />
         <attr name="pstsDeactivateTextColor" format="color" />
+        <attr name="pstsSmoothScroll" format="boolean" />
     </declare-styleable>
     <declare-styleable name="CircleImageView">
         <attr name="border_width" format="dimension" />
