@@ -85,69 +85,20 @@
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
 
-        <LinearLayout
+        <com.pinthecloud.item.view.PagerSlidingTabStrip
+            xmlns:psts="http://schemas.android.com/apk/res-auto"
             android:id="@+id/my_page_frag_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_tab_height"
             android:background="@android:color/white"
-            android:baselineAligned="false" >
-
-            <LinearLayout
-                android:id="@+id/my_page_frag_my_item_tab"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/my_page_tab_background"
-                android:gravity="center" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/my_item"
-                    android:textColor="@color/my_page_tab_title"
-                    android:textSize="@dimen/font_medium" />
-
-                <TextView
-                    android:id="@+id/my_page_frag_my_item_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/my_page_tab_number_margin"
-                    android:layout_marginStart="@dimen/my_page_tab_number_margin"
-                    android:textColor="@color/my_page_tab_number"
-                    android:textSize="@dimen/font_medium" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/my_page_frag_it_item_tab"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/my_page_tab_background"
-                android:gravity="center" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/it_item"
-                    android:textColor="@color/my_page_tab_title"
-                    android:textSize="@dimen/font_medium" />
-
-                <TextView
-                    android:id="@+id/my_page_frag_it_item_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/my_page_tab_number_margin"
-                    android:layout_marginStart="@dimen/my_page_tab_number_margin"
-                    android:textColor="@color/my_page_tab_number"
-                    android:textSize="@dimen/font_medium" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/my_page_frag_tab_divider"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_width"
-            android:background="@color/line_color" />
+            psts:pstsDividerColor="@android:color/transparent"
+            psts:pstsIndicatorHeight="@dimen/none"
+            psts:pstsShouldExpand="true"
+            psts:pstsSmoothScroll="false"
+            psts:pstsTabBackground="@drawable/my_page_tab_background"
+            psts:pstsTabSwitch="true"
+            psts:pstsUnderlineColor="@color/line_color"
+            psts:pstsUnderlineHeight="@dimen/line_width" />
     </LinearLayout>
 
 </RelativeLayout>

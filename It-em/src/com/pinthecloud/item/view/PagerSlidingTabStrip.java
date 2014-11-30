@@ -34,6 +34,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
@@ -47,6 +48,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	public interface IconTabProvider {
 		public int getPageIconResId(int position);
+	}
+
+	public interface CustomTabProvider {
+		public int getPageLayoutResId(int position);
 	}
 
 	// @formatter:off
@@ -204,6 +209,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		for (int i = 0; i < tabCount; i++) {
 			if (pager.getAdapter() instanceof IconTabProvider) {
 				addIconTab(i, ((IconTabProvider) pager.getAdapter()).getPageIconResId(i));
+			} else if (pager.getAdapter() instanceof CustomTabProvider) {
+				addCustomTab(i, ((CustomTabProvider) pager.getAdapter()).getPageLayoutResId(i));
 			} else {
 				addTextTab(i, pager.getAdapter().getPageTitle(i).toString());
 			}
@@ -246,6 +253,16 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		addTab(position, tab, smoothScroll);
 	}
 
+	private void addCustomTab(final int position, int resId) {
+		View tab = LayoutInflater.from(getContext()).inflate(resId, null);
+
+		addTab(position, tab, smoothScroll);
+	}
+
+	public View getTab(final int position) {
+		return tabsContainer.getChildAt(position);
+	}
+
 	private void addTab(final int position, View tab, final boolean smoothScroll) {
 		tab.setFocusable(true);
 		tab.setOnClickListener(new OnClickListener() {
@@ -276,6 +293,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			} else if (v instanceof ImageButton) {
 				ImageButton tab = (ImageButton) v;
 				tab.setSelected(tabSwitch && i == startTab ? true : false);
+			} else {
+				v.setSelected(tabSwitch && i == startTab ? true : false);
 			}
 		}
 	}
@@ -287,6 +306,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			if (v instanceof TextView) {
 				TextView tab = (TextView) v;
 				tab.setTextColor(position == i ? tabTextColor : tabDeactivateTextColor); 
+			} else if (v instanceof ImageButton) {
+				ImageButton tab = (ImageButton) v;
+				tab.setSelected(position == i ? true : false);
 			} else {
 				v.setSelected(position == i ? true : false);
 			}

@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/my_item_it_reply_number_height"
         android:layout_alignBottom="@+id/row_my_item_grid_image"
-        android:background="@color/my_page_it_reply_number_background"
+        android:background="@color/my_item_it_reply_number_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingEnd="@dimen/none"
@@ -37,14 +37,14 @@
             android:id="@+id/row_my_item_grid_it_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/my_page_it_reply_number"
+            android:textColor="@color/my_item_it_reply_number"
             android:textSize="@dimen/font_small" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/it_lower"
-            android:textColor="@color/my_page_it_reply_number"
+            android:textColor="@color/my_item_it_reply_number"
             android:textSize="@dimen/font_small" />
 
         <TextView
@@ -53,14 +53,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/my_item_it_reply_number_margin"
             android:layout_marginStart="@dimen/my_item_it_reply_number_margin"
-            android:textColor="@color/my_page_it_reply_number"
+            android:textColor="@color/my_item_it_reply_number"
             android:textSize="@dimen/font_small" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reply_lower"
-            android:textColor="@color/my_page_it_reply_number"
+            android:textColor="@color/my_item_it_reply_number"
             android:textSize="@dimen/font_small" />
     </LinearLayout>
 

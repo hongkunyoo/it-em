@@ -6,18 +6,17 @@ import android.content.Context;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.util.SparseArrayCompat;
 
+import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItItemFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
 import com.pinthecloud.item.fragment.MyPageItemFragment;
 import com.pinthecloud.item.interfaces.MyPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.view.PagerSlidingTabStrip.CustomTabProvider;
 
-public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
+public class MyPagePagerAdapter extends FragmentStatePagerAdapter implements CustomTabProvider {
 
-	public enum MY_PAGE_ITEM {
-		MY_ITEM, IT_ITEM
-	};
-
+	private String[] mTitles;
 	private SparseArrayCompat<MyPageTabHolder> mMyPageTabHolders;
 	private MyPageTabHolder mMyPageTabHolder;
 	private ItUser mItUser;
@@ -25,6 +24,7 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 
 	public MyPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
 		super(fm);
+		this.mTitles = context.getResources().getStringArray(R.array.my_page_tab_title_string_array);
 		this.mMyPageTabHolders = new SparseArrayCompat<MyPageTabHolder>();
 		this.mItUser = itUser;
 	}
@@ -39,12 +39,27 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 
 
 	@Override
+	public CharSequence getPageTitle(int position) {
+		return this.mTitles[position];
+	}
+
+
+	@Override
+	public int getPageLayoutResId(int position) {
+		return R.layout.tab_my_page;
+	}
+
+
+	@Override
 	public Fragment getItem(int position) {
 		MyPageItemFragment fragment = null;
-		if(position == MY_PAGE_ITEM.MY_ITEM.ordinal()){
+		switch(position){
+		case 0:
 			fragment = (MyPageItemFragment) MyItemFragment.newInstance(position, mItUser);
-		}else if(position == MY_PAGE_ITEM.IT_ITEM.ordinal()){
+			break;
+		case 1:
 			fragment = (MyPageItemFragment) ItItemFragment.newInstance(position, mItUser);
+			break;
 		}
 
 		mMyPageTabHolders.put(position, fragment);
@@ -55,6 +70,6 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getCount() {
-		return MY_PAGE_ITEM.values().length;
+		return this.mTitles.length;
 	}
 }

@@ -3,7 +3,6 @@
     <!-- Common -->
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
-    <dimen name="line_thick_width">2dp</dimen>
     <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="content_margin">16dp</dimen>
     

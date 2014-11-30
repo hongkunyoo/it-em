@@ -60,8 +60,8 @@ public class MainFragment extends ItFragment {
 		mViewPager.setAdapter(mMainPagerAdapter);
 		mViewPager.setCurrentItem(position);
 
-		mTab.setStartTab(position);
 		mTab.setViewPager(mViewPager);
+		mTab.setStartTab(position);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override

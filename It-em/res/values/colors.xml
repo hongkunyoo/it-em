@@ -15,7 +15,9 @@
     <color name="my_page_tab_selected">#0A000000</color>
     <color name="my_page_tab_title">#de000000</color>
     <color name="my_page_tab_number">#90a4ae</color>
-    <color name="my_page_it_reply_number">#deffffff</color>
-    <color name="my_page_it_reply_number_background">#4c000000</color>
+    
+    <!-- My Item -->
+    <color name="my_item_it_reply_number">#deffffff</color>
+    <color name="my_item_it_reply_number_background">#4c000000</color>
 
 </resources>
