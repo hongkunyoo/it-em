@@ -53,7 +53,6 @@ public class MyItemFragment extends MyPageItemFragment {
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
 		findComponent(view);
 		setGrid(inflater);
-		updateGrid();
 		return view;
 	}
 
@@ -64,8 +63,24 @@ public class MyItemFragment extends MyPageItemFragment {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
 		}
 	}
+	
+	
+	@Override
+	public void updateItem() {
+		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
 
-
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				mProgressBar.setVisibility(View.GONE);
+				mItemList.clear();
+				mItemList.addAll(list);
+				mGridAdapter.notifyDataSetChanged();
+				mMyPageTabHolder.updateTabNumber(mPosition, mItemList.size());
+			}
+		});
+	}
+	
+	
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.my_item_frag_progress_bar);
 		mGridView = (RecyclerView)view.findViewById(R.id.my_item_frag_grid);
@@ -89,8 +104,8 @@ public class MyItemFragment extends MyPageItemFragment {
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 				// Scroll Header
-				if (mScrollTabHolder != null){
-					mScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
+				if (mMyPageTabHolder != null){
+					mMyPageTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
 				}
 
 				// Add more item
@@ -99,21 +114,6 @@ public class MyItemFragment extends MyPageItemFragment {
 				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
 					addNextItemList();
 				}
-			}
-		});
-	}
-
-
-	private void updateGrid() {
-		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
-
-			@Override
-			public void onCompleted(List<Item> list, int count) {
-				mProgressBar.setVisibility(View.GONE);
-				mItemList.clear();
-				mItemList.addAll(list);
-				mGridAdapter.notifyDataSetChanged();
-				mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
 	}

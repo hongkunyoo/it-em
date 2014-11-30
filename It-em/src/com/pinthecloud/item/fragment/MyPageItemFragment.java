@@ -2,24 +2,23 @@ package com.pinthecloud.item.fragment;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.pinthecloud.item.interfaces.ScrollTabHolder;
+import com.pinthecloud.item.interfaces.MyPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 
-public abstract class MyPageItemFragment extends ItFragment implements ScrollTabHolder {
+public abstract class MyPageItemFragment extends ItFragment implements MyPageTabHolder {
 
 	protected static final String POSITION_KEY = "POSITION_KEY";
 	protected int mPosition;
 	protected ItUser mItUser;
 
-	protected ScrollTabHolder mScrollTabHolder;
-	public void setScrollTabHolder(ScrollTabHolder scrollTabHolder) {
-		mScrollTabHolder = scrollTabHolder;
+	protected MyPageTabHolder mMyPageTabHolder;
+	public void setMyPageTabHolder(MyPageTabHolder myPageTabHolder) {
+		mMyPageTabHolder = myPageTabHolder;
 	}
 
 	@Override
 	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 	}
-
 	@Override
 	public void updateTabNumber(int position, int number) {
 	}

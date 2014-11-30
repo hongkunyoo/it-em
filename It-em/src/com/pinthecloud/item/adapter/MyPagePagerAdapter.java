@@ -9,7 +9,7 @@ import android.support.v4.util.SparseArrayCompat;
 import com.pinthecloud.item.fragment.ItItemFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
 import com.pinthecloud.item.fragment.MyPageItemFragment;
-import com.pinthecloud.item.interfaces.ScrollTabHolder;
+import com.pinthecloud.item.interfaces.MyPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 
 public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
@@ -18,26 +18,26 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 		MY_ITEM, IT_ITEM
 	};
 
-	private SparseArrayCompat<ScrollTabHolder> mScrollTabHolders;
-	private ScrollTabHolder mListener;
+	private SparseArrayCompat<MyPageTabHolder> mMyPageTabHolders;
+	private MyPageTabHolder mMyPageTabHolder;
 	private ItUser mItUser;
 
 
 	public MyPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
 		super(fm);
-		this.mScrollTabHolders = new SparseArrayCompat<ScrollTabHolder>();
+		this.mMyPageTabHolders = new SparseArrayCompat<MyPageTabHolder>();
 		this.mItUser = itUser;
 	}
 
-	
-	public void setTabHolderScrollingContent(ScrollTabHolder listener) {
-		mListener = listener;
+
+	public void setMyPageTabHolder(MyPageTabHolder myPageTabHolder) {
+		this.mMyPageTabHolder = myPageTabHolder;
 	}
-	public SparseArrayCompat<ScrollTabHolder> getScrollTabHolders() {
-		return mScrollTabHolders;
+	public SparseArrayCompat<MyPageTabHolder> getMyPageTabHolders() {
+		return mMyPageTabHolders;
 	}
-	
-	
+
+
 	@Override
 	public Fragment getItem(int position) {
 		MyPageItemFragment fragment = null;
@@ -46,9 +46,9 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 		}else if(position == MY_PAGE_ITEM.IT_ITEM.ordinal()){
 			fragment = (MyPageItemFragment) ItItemFragment.newInstance(position, mItUser);
 		}
-		
-		mScrollTabHolders.put(position, fragment);
-		if (mListener != null) fragment.setScrollTabHolder(mListener);
+
+		mMyPageTabHolders.put(position, fragment);
+		if (mMyPageTabHolder != null) fragment.setMyPageTabHolder(mMyPageTabHolder);
 		return fragment;
 	}
 

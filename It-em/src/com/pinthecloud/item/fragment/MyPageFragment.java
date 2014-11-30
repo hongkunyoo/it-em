@@ -28,7 +28,7 @@ import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.ScrollTabHolder;
+import com.pinthecloud.item.interfaces.MyPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -60,7 +60,7 @@ public class MyPageFragment extends ItFragment {
 	private String mItUserId;
 	private ItUser mItUser;
 
-	private boolean[] updateMyPageItem = {true, true};
+	private boolean[] mIsUpdatedMyPageItems = {false, false};
 
 
 	public static MyPageFragment newInstance(String itUserId) {
@@ -198,7 +198,7 @@ public class MyPageFragment extends ItFragment {
 
 	private void setViewPager(){
 		mViewPagerAdapter = new MyPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
-		mViewPagerAdapter.setTabHolderScrollingContent(new ScrollTabHolder() {
+		mViewPagerAdapter.setMyPageTabHolder(new MyPageTabHolder() {
 
 			@Override
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
@@ -220,6 +220,9 @@ public class MyPageFragment extends ItFragment {
 			@Override
 			public void adjustScroll(int scrollHeight) {
 			}
+			@Override
+			public void updateItem() {
+			}
 		});
 
 		mViewPager.setAdapter(mViewPagerAdapter);
@@ -227,9 +230,13 @@ public class MyPageFragment extends ItFragment {
 
 			@Override
 			public void onPageSelected(int position) {
-				SparseArrayCompat<ScrollTabHolder> scrollTabHolders = mViewPagerAdapter.getScrollTabHolders();
-				ScrollTabHolder fragmentContent = scrollTabHolders.valueAt(position);
+				SparseArrayCompat<MyPageTabHolder> myPageTabHolders = mViewPagerAdapter.getMyPageTabHolders();
+				MyPageTabHolder fragmentContent = myPageTabHolders.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
+				if(!mIsUpdatedMyPageItems[position]){
+					fragmentContent.updateItem();
+					mIsUpdatedMyPageItems[position] = true;
+				}
 			}
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

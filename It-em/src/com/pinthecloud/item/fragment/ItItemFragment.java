@@ -53,7 +53,6 @@ public class ItItemFragment extends MyPageItemFragment {
 		View view = inflater.inflate(R.layout.fragment_it_item, container, false);
 		findComponent(view);
 		setGrid(inflater);
-		updateGrid();
 		return view;
 	}
 
@@ -65,6 +64,22 @@ public class ItItemFragment extends MyPageItemFragment {
 		if (scrollHeight - MyPageFragment.mTabHeight != 0 || findFirstVisibleItemPosition < spanCount) {
 			mGridLayoutManager.scrollToPositionWithOffset(spanCount, scrollHeight);
 		}
+	}
+
+
+	@Override
+	public void updateItem() {
+		mAimHelper.listItItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
+
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				mProgressBar.setVisibility(View.GONE);
+				mItemList.clear();
+				mItemList.addAll(list);
+				mGridAdapter.notifyDataSetChanged();
+				mMyPageTabHolder.updateTabNumber(mPosition, mItemList.size());
+			}
+		});
 	}
 
 
@@ -91,8 +106,8 @@ public class ItItemFragment extends MyPageItemFragment {
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 				// Scroll Header
-				if (mScrollTabHolder != null){
-					mScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
+				if (mMyPageTabHolder != null){
+					mMyPageTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
 				}
 
 				// Add more item
@@ -101,21 +116,6 @@ public class ItItemFragment extends MyPageItemFragment {
 				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
 					addNextItemList();
 				}
-			}
-		});
-	}
-
-
-	private void updateGrid() {
-		mAimHelper.listItItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
-
-			@Override
-			public void onCompleted(List<Item> list, int count) {
-				mProgressBar.setVisibility(View.GONE);
-				mItemList.clear();
-				mItemList.addAll(list);
-				mGridAdapter.notifyDataSetChanged();
-				mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
 	}
