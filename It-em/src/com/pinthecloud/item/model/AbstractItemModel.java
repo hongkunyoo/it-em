@@ -68,7 +68,7 @@ public class AbstractItemModel<T> {
 	}
 
 	public JsonElement toJson() {
-		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractFeedModelAdapter()).create().toJson(this);
+		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractItemModelAdapter()).create().toJson(this);
 		return new Gson().fromJson(jsonStr, JsonElement.class);
 	}
 
@@ -89,7 +89,7 @@ public class AbstractItemModel<T> {
 		return (T)this;
 	}
 
-	private class AbstractFeedModelAdapter implements JsonSerializer<T> {
+	private class AbstractItemModelAdapter implements JsonSerializer<T> {
 
 		@Override
 		public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {

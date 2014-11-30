@@ -8,25 +8,24 @@ import android.os.Parcelable;
 import com.google.gson.Gson;
 
 public class Item extends AbstractItemModel<Item> implements Parcelable {
-	
+
 	public static String INTENT_KEY = "ITEM_INTENT_KEY";
-	
+
 	private List<Reply> replyList;
 	private int replyCount;
 	private List<LikeIt> likeItList;
 	private int likeItCount;
-	
-	
+
 	public Item() {
-		
+		super();
 	}
 	public Item(String content, String whoMade, String whoMadeId) {
+		super();
 		this.setContent(content);
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
 	}
-	
-	
+
 	public String getRefId() {
 		return null;
 	}
@@ -56,7 +55,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setLikeItList(List<LikeIt> likeList) {
 		this.likeItList = likeList;
 	}
-	public void setItem(Item item) {
+	public void readItem(Item item) {
 		this.setId(item.getId());
 		this.setContent(item.getContent());
 		this.setWhoMade(item.getWhoMade());
@@ -68,22 +67,22 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setLikeItList(item.getLikeItList());
 		this.setLikeItCount(item.getLikeItCount());
 	}
-	
-	
+
+
 	@Override
 	public Item rand() {
 		Item item = super.rand();
 		return item;
 	}
-	
-	
+
+
 	@Override
 	public Item rand(boolean hasId) {
 		Item item = super.rand(hasId);
 		return item;
 	}
-	
-	
+
+
 	/*
 	 * Parcelable
 	 */
@@ -95,7 +94,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 			return new Item[size]; 
 		}
 	};
-	
+
 	public Item(Parcel in){
 		this();
 		readToParcel(in);
@@ -107,9 +106,9 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	}
 
 	public void readToParcel(Parcel in){
-		this.setItem(new Gson().fromJson(in.readString(), Item.class));
+		this.readItem(new Gson().fromJson(in.readString(), Item.class));
 	}
-	
+
 	@Override
 	public int describeContents() {
 		return 0;

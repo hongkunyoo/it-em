@@ -13,7 +13,7 @@ public class UploadActivity extends ItActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_toolbar_frame);
+		setContentView(R.layout.activity_toolbar_light_frame);
 		setToolbar();
 		setFragment();
 	}

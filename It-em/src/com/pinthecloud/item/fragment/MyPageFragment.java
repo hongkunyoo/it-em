@@ -30,6 +30,9 @@ import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
+import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.NoPageTransformer;
@@ -80,11 +83,24 @@ public class MyPageFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 		setHasOptionsMenu(true);
 		findComponent(view);
-		setItUser();
-		setComponent();
-		setButton();
-		setImageView();
-		setTab();
+
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				setItUser();
+			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				setComponent();
+				setButton();
+				setImageView();
+				setTab();
+			}
+		});
+
 		return view;
 	}
 
@@ -125,14 +141,16 @@ public class MyPageFragment extends ItFragment {
 
 	private void setItUser(){
 		if(mItUserId.equals(mItUser.getId())){
-			mProgressBar.setVisibility(View.GONE);	
-		} else{
+			mProgressBar.setVisibility(View.GONE);
+			AsyncChainer.notifyNext(mThisFragment);
+		} else {
 			mUserHelper.get(mThisFragment, mItUserId, new ItEntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
 					mProgressBar.setVisibility(View.GONE);
 					mItUser = entity;
+					AsyncChainer.notifyNext(mThisFragment);
 				}
 			});
 		}
@@ -161,7 +179,7 @@ public class MyPageFragment extends ItFragment {
 
 	private void setImageView(){
 		Picasso.with(mActivity)
-		.load(BlobStorageHelper.getItemImgUrl(mItUser.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.ic_launcher)
 		.error(R.drawable.ic_launcher)
 		.fit()
@@ -170,7 +188,7 @@ public class MyPageFragment extends ItFragment {
 
 
 	private void setTab(){
-		mViewPagerAdapter = new MyPagePagerAdapter(getFragmentManager(), mActivity);
+		mViewPagerAdapter = new MyPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
 		mViewPagerAdapter.setTabHolderScrollingContent(new ScrollTabHolder() {
 
 			@Override

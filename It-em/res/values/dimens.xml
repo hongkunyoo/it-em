@@ -19,6 +19,7 @@
     <!-- My Page -->
     <dimen name="my_page_profile_height">200dp</dimen>
     <dimen name="my_page_header_height">248dp</dimen>
+    <dimen name="my_page_profile_top_margin">24dp</dimen>
     
     <!-- My Item -->
     <dimen name="my_item_width">100dp</dimen>

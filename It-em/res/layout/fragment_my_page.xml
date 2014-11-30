@@ -24,7 +24,14 @@
         <RelativeLayout
             android:id="@+id/my_page_frag_profile_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/my_page_profile_height" >
+            android:layout_height="@dimen/my_page_profile_height"
+            android:background="@android:color/white"
+            android:paddingBottom="@dimen/content_margin"
+            android:paddingEnd="@dimen/content_margin"
+            android:paddingLeft="@dimen/content_margin"
+            android:paddingRight="@dimen/content_margin"
+            android:paddingStart="@dimen/content_margin"
+            android:paddingTop="@dimen/my_page_profile_top_margin" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -45,7 +52,9 @@
                         android:id="@+id/my_page_frag_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/content_margin"
+                        android:layout_marginStart="@dimen/content_margin" />
                 </LinearLayout>
 
                 <TextView
@@ -64,8 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
 
         <com.pinthecloud.item.view.PagerSlidingTabStrip

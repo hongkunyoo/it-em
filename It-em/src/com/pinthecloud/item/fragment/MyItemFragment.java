@@ -26,10 +26,11 @@ public class MyItemFragment extends MyPageItemFragment {
 	private boolean mIsAdding = false;
 
 
-	public static MyPageItemFragment newInstance(int position) {
+	public static MyPageItemFragment newInstance(int position, ItUser itUser) {
 		MyItemFragment fragment = new MyItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
+		bundle.putParcelable(ItUser.INTENT_KEY, itUser);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -39,6 +40,7 @@ public class MyItemFragment extends MyPageItemFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPosition = getArguments().getInt(POSITION_KEY);
+		mItUser = getArguments().getParcelable(ItUser.INTENT_KEY);
 	}
 
 
@@ -100,17 +102,15 @@ public class MyItemFragment extends MyPageItemFragment {
 
 
 	private void updateGrid() {
-		ItUser me = mObjectPrefHelper.get(ItUser.class);
-		mAimHelper.listMyItem(mThisFragment, me.getId(), new ItListCallback<Item>() {
-			
+		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
+
 			@Override
 			public void onCompleted(List<Item> list, int count) {
-				// TODO Auto-generated method stub
+				mItemList.clear();
 				mItemList.addAll(list);
 				mGridAdapter.notifyDataSetChanged();
 			}
 		});
-		
 	}
 
 

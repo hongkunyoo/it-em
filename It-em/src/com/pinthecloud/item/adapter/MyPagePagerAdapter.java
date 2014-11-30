@@ -11,18 +11,21 @@ import com.pinthecloud.item.fragment.ItItemFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
 import com.pinthecloud.item.fragment.MyPageItemFragment;
 import com.pinthecloud.item.interfaces.ScrollTabHolder;
+import com.pinthecloud.item.model.ItUser;
 
 public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 
 	private SparseArrayCompat<ScrollTabHolder> mScrollTabHolders;
 	private ScrollTabHolder mListener;
 	private String[] mTitles;
+	private ItUser mItUser;
 
 
-	public MyPagePagerAdapter(FragmentManager fm, Context context) {
+	public MyPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
 		super(fm);
-		mScrollTabHolders = new SparseArrayCompat<ScrollTabHolder>();
-		mTitles = context.getResources().getStringArray(R.array.my_page_tab_title_string_array);
+		this.mScrollTabHolders = new SparseArrayCompat<ScrollTabHolder>();
+		this.mTitles = context.getResources().getStringArray(R.array.my_page_tab_title_string_array);
+		this.mItUser = itUser;
 	}
 
 
@@ -37,10 +40,10 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter {
 		MyPageItemFragment fragment = null;
 		switch(position){
 		case 0:
-			fragment = (MyPageItemFragment) MyItemFragment.newInstance(position);
+			fragment = (MyPageItemFragment) MyItemFragment.newInstance(position, mItUser);
 			break;
 		case 1:
-			fragment = (MyPageItemFragment) ItItemFragment.newInstance(position);
+			fragment = (MyPageItemFragment) ItItemFragment.newInstance(position, mItUser);
 			break;
 		}
 		mScrollTabHolders.put(position, fragment);

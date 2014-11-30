@@ -21,7 +21,7 @@
     <string name="yesterday">Yesterday</string>
 
     <!-- Upload -->
-    <string name="item_upload">Item Upload</string>
+    <string name="item_upload">IT:EM Upload</string>
     <string name="upload">Upload</string>
     <string name="write_content">write description</string>
     <string name="close">Close</string>

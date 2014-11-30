@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainPagerAdapter;
 import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.util.MyLog;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.pinthecloud.item.view.ParentViewPager;
 
@@ -26,10 +27,12 @@ public class MainFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+		MyLog.log("here1");
 		int startTab = mPrefHelper.getInt(PrefHelper.MAIN_EXIT_TAB);
 		findComponent(view);
 		setTab(startTab);
 		setActionBar(startTab);
+		MyLog.log("here2");
 
 		return view;
 	}

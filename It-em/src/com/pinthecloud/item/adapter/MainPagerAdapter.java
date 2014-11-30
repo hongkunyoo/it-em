@@ -23,7 +23,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 
 	public MainPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
-		mTitles = context.getResources().getStringArray(R.array.main_tab_title_string_array);
+		this.mTitles = context.getResources().getStringArray(R.array.main_tab_title_string_array);
 	}
 
 
