@@ -63,8 +63,8 @@ public class MyItemFragment extends MyPageTabFragment {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
 		}
 	}
-	
-	
+
+
 	@Override
 	public void updateTab() {
 		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
@@ -73,16 +73,15 @@ public class MyItemFragment extends MyPageTabFragment {
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mGridView.setVisibility(View.VISIBLE);
-				
+
 				mItemList.clear();
-				mItemList.addAll(list);
-				mGridAdapter.notifyDataSetChanged();
+				mGridAdapter.addAll(list);
 				mMyPageTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.my_item_frag_progress_bar);
 		mGridView = (RecyclerView)view.findViewById(R.id.my_item_frag_grid);

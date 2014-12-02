@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.pinthecloud.item.GlobalVariable;
 
-public class MyLog {
+public class ItLog {
 	public static void log(Object... objs) {
 		if(GlobalVariable.DEBUG_MODE){
 			Log.e("ERROR",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");

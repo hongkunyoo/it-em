@@ -36,32 +36,20 @@ public class ItDateTime {
 		return new ItDateTime(dateTime.format("%Y%m%d000000"));
 	}
 
-	public String toPrettyDate() {
-		return dateTime.format("%Y-%m-%d");
-	}
-
 	public String toDate() {
 		return dateTime.format("%Y%m%d");
 	}
 
-	public String getElapsedTime() {
-		Time nowTime = new Time();
-		nowTime.setToNow();
+	public String toPrettyTime() {
+		return dateTime.format("%H:%M");
+	}
 
-		ItApplication app = ItApplication.getInstance();
-		if(dateTime.year == nowTime.year && dateTime.month == nowTime.month && dateTime.monthDay == nowTime.monthDay){
-			if(dateTime.hour == nowTime.hour){
-				if(dateTime.minute == nowTime.minute){
-					return (nowTime.second-dateTime.second) + app.getResources().getString(R.string.second);
-				} else {
-					return (nowTime.minute-dateTime.minute) + app.getResources().getString(R.string.minute);
-				}
-			} else {
-				return (nowTime.hour-dateTime.hour) + app.getResources().getString(R.string.hour);
-			}
-		} else {
-			return this.toPrettyDate();
-		}
+	public String toPrettyDate() {
+		return dateTime.format("%Y-%m-%d");
+	}
+
+	public String toPrettyDateTime() {
+		return dateTime.format("%Y-%m-%d %H:%M");
 	}
 
 	public int getElapsedDate() {
@@ -71,6 +59,33 @@ public class ItDateTime {
 		int nowJulianDay = Time.getJulianDay(nowTime.normalize(true), nowTime.gmtoff);
 		int itJulianDay = Time.getJulianDay(dateTime.normalize(true), dateTime.gmtoff);
 		return nowJulianDay - itJulianDay;
+	}
+	
+	public String getElapsedDateTimeString() {
+		Time nowTime = new Time();
+		nowTime.setToNow();
+
+		ItApplication app = ItApplication.getInstance();
+		if(dateTime.year == nowTime.year && dateTime.month == nowTime.month && dateTime.monthDay == nowTime.monthDay){
+			if(dateTime.hour == nowTime.hour){
+				if(dateTime.minute == nowTime.minute){
+					return (nowTime.second-dateTime.second) + app.getResources().getString(R.string.second_ago);
+				} else {
+					return (nowTime.minute-dateTime.minute) + app.getResources().getString(R.string.minute_ago);
+				}
+			} else {
+				return (nowTime.hour-dateTime.hour) + app.getResources().getString(R.string.hour_ago);
+			}
+		} else {
+			int elapsedDate = getElapsedDate();
+			if(elapsedDate == 1){
+				return app.getResources().getString(R.string.yesterday) + " " + toPrettyTime();
+			} else if(elapsedDate < 4) {
+				return elapsedDate + app.getResources().getString(R.string.day_ago) + " " + toPrettyTime();
+			} else {
+				return toPrettyDateTime();
+			}
+		}
 	}
 
 	@Override

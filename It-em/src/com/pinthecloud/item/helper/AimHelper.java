@@ -1,8 +1,10 @@
 package com.pinthecloud.item.helper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -120,34 +122,49 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void list(final ItFragment frag, String itemId, final ItListCallback<E> callback) {
+	public<E extends AbstractItemModel<E>> void list(final ItFragment frag, Class<E> clazz, String itemId, final ItListCallback<E> callback) {
 		if (itemId == null || itemId.equals("")) return;
 
-		mClient.invokeApi(AIM_LIST, null, new ApiJsonOperationCallback() {
+		try {
+			final E obj = clazz.newInstance();
+			JsonObject jo = new JsonObject();
+			jo.addProperty("table", obj.getClass().getSimpleName());
+			jo.addProperty("refId", itemId);
+			mClient.invokeApi(AIM_LIST, jo, new ApiJsonOperationCallback() {
 
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if(exception == null){
-					JsonElement json = _json.getAsJsonArray();
-					List<E> list = new Gson().fromJson(json, new TypeToken<List<?>>(){}.getType());
-					callback.onCompleted(list, list.size());
-				} else {
-					ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.SERVER_ERROR, response));
+				@SuppressWarnings("unchecked")
+				@Override
+				public void onCompleted(JsonElement _json, Exception exception,
+						ServiceFilterResponse response) {
+					if(exception == null){
+						JsonArray arr = _json.getAsJsonArray();
+						List<E> list = new ArrayList<E>();
+						for (int i = 0 ; i < arr.size() ; i++) {
+							list.add((E)new Gson().fromJson(arr.get(i), obj.getClass()));
+						}
+						callback.onCompleted(list, list.size());
+					} else {
+						ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.SERVER_ERROR, response));
+					}
 				}
-			}
-		});
+			});
+		} catch (InstantiationException e) {
+			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+		} catch (IllegalAccessException e) {
+			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+		}
 	}
 
 
-	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, E obj, final ItEntityCallback<String> callback) {
+	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final ItEntityCallback<E> callback) {
 		mClient.invokeApi(AIM_ADD, obj.toJson(), new ApiJsonOperationCallback() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(_json.getAsString());
+					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, response));
 				}

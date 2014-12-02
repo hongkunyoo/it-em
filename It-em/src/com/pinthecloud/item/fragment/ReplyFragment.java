@@ -18,12 +18,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
 
@@ -31,7 +32,6 @@ public class ReplyFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
 
-	private LinearLayout mPreviousLayout;
 	private ProgressBar mPreviousProgressBar;
 	private TextView mPreviousText;
 
@@ -65,7 +65,7 @@ public class ReplyFragment extends ItFragment {
 		setComponent();
 		setButton();
 		setList();
-		updateList();
+		loadReplyList();
 		return view;
 	}
 
@@ -89,7 +89,6 @@ public class ReplyFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_progress_bar);
-		mPreviousLayout = (LinearLayout)view.findViewById(R.id.reply_frag_previous_layout);
 		mPreviousProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_previous_progress_bar);
 		mPreviousText = (TextView)view.findViewById(R.id.reply_frag_previous_text);
 		mSubmitButton = (Button)view.findViewById(R.id.reply_frag_submit);
@@ -122,11 +121,11 @@ public class ReplyFragment extends ItFragment {
 
 
 	private void setButton(){
-		mPreviousLayout.setOnClickListener(new OnClickListener() {
+		mPreviousText.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				loadPreviousReplyList();
+				loadReplyList();
 			}
 		});
 
@@ -151,32 +150,33 @@ public class ReplyFragment extends ItFragment {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mReplyList = new ArrayList<Reply>();
-		mListAdapter = new ReplyListAdapter(mActivity, mReplyList);
+		mListAdapter = new ReplyListAdapter(mActivity, mThisFragment, mReplyList);
 		mListView.setAdapter(mListAdapter);
 	}
 
 
-	private void updateList() {
-		mProgressBar.setVisibility(View.GONE);
-		mListAdapter.notifyDataSetChanged();
+	private void loadReplyList() {
+		mAimHelper.list(mThisFragment, Reply.class, mItem.getId(), new ItListCallback<Reply>() {
+
+			@Override
+			public void onCompleted(List<Reply> list, int count) {
+				mProgressBar.setVisibility(View.GONE);
+				mPreviousProgressBar.setVisibility(View.INVISIBLE);
+				mListAdapter.addAll(0, list);
+			}
+		});
 	}
 
 
-	private void loadPreviousReplyList() {
-		mPreviousProgressBar.setVisibility(View.VISIBLE);
+	private void submitReply(final Reply reply){
+		mListAdapter.add(mReplyList.size(), reply);
+		mAimHelper.add(mThisFragment, reply, new ItEntityCallback<Reply>() {
 
-		mPreviousProgressBar.setVisibility(View.GONE);
-		mListAdapter.notifyDataSetChanged();
-	}
-
-
-	private void submitReply(Reply reply){
-		//		mListAdapter.add(reply, mReplyList.size());
-		//		mAimHelper.add(mThisFragment, reply, new ItEntityCallback<String>() {
-		//
-		//			@Override
-		//			public void onCompleted(String entity) {
-		//			}
-		//		});
+			@Override
+			public void onCompleted(Reply entity) {
+				int position = mReplyList.indexOf(reply);
+				mListAdapter.replace(position, entity);
+			}
+		});
 	}
 }

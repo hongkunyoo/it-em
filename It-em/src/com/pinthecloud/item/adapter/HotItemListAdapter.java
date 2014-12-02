@@ -191,12 +191,12 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 				int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
 				holder.itNumber.setText(String.valueOf(likeItNum));
 
-				AimHelper mAimHelper = ItApplication.getInstance().getAimHelper();
 				LikeIt likeIt = new LikeIt(item.getWhoMade(), item.getWhoMadeId(), item.getId());
-				mAimHelper.add(mFrag, likeIt, new ItEntityCallback<String>() {
+				AimHelper mAimHelper = ItApplication.getInstance().getAimHelper();
+				mAimHelper.add(mFrag, likeIt, new ItEntityCallback<LikeIt>() {
 
 					@Override
-					public void onCompleted(String entity) {
+					public void onCompleted(LikeIt entity) {
 					}
 				});
 			}
@@ -230,15 +230,8 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 	}
 
 
-	public void add(Item item, int position) {
-		mItemList.add(position, item);
-		notifyItemInserted(position);
-	}
-
-
-	public void remove(Item item) {
-		int position = mItemList.indexOf(item);
-		mItemList.remove(position);
-		notifyItemRemoved(position);
+	public void addAll(List<Item> itemList) {
+		mItemList.addAll(itemList);
+		notifyDataSetChanged();
 	}
 }

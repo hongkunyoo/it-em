@@ -17,7 +17,7 @@ public class AbstractItemModel<T> {
 	private String whoMadeId;
 	private String rawCreateDateTime;
 	private String refId;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -61,7 +61,7 @@ public class AbstractItemModel<T> {
 	public void setCreateDateTime(ItDateTime dateTime) {
 		this.rawCreateDateTime = dateTime.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);

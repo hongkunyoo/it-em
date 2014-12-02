@@ -40,31 +40,10 @@
                     android:id="@+id/row_reply_list_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/reply_nick_name_margin"
-                    android:layout_marginStart="@dimen/reply_nick_name_margin"
-                    android:layout_toEndOf="@+id/row_reply_list_nick_name"
-                    android:layout_toRightOf="@+id/row_reply_list_nick_name"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:textColor="@color/my_page_tab_number"
                     android:textSize="@dimen/font_small" />
-
-                <ProgressBar
-                    android:id="@+id/row_reply_list_progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/row_reply_list_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/delete"
-                    android:textColor="@color/my_page_tab_number"
-                    android:textSize="@dimen/font_medium"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView

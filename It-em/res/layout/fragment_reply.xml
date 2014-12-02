@@ -22,12 +22,13 @@
             android:id="@+id/reply_frag_previous_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/reply_frag_previous_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/previous_reply" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

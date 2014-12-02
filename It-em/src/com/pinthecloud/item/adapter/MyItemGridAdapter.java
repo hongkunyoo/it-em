@@ -111,8 +111,8 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 	private void setNormalText(NormalViewHolder holder, Item item){
-		holder.itNumber.setText(String.valueOf(item.getLikeItCount()));
-		holder.reply.setText(String.valueOf(item.getReplyCount()));
+		holder.itNumber.setText(item.getLikeItCount() + " ");
+		holder.reply.setText(item.getReplyCount() + " ");
 	}
 
 
@@ -138,15 +138,8 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	}
 
 
-	public void add(Item item, int position) {
-		mItemList.add(position, item);
-		notifyItemInserted(position);
-	}
-
-
-	public void remove(Item item) {
-		int position = mItemList.indexOf(item);
-		mItemList.remove(position);
-		notifyItemRemoved(position);
+	public void addAll(List<Item> itemList) {
+		mItemList.addAll(itemList);
+		notifyDataSetChanged();
 	}
 }

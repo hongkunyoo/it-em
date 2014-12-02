@@ -102,8 +102,8 @@ public class ItemFragment extends ItFragment {
 
 	private void setText(){
 		mContent.setText(mItem.getContent());
-		mDate.setText(mItem.getCreateDateTime().toPrettyDate());
-		mItNumber.setText(""+mItem.getLikeItCount());
+		mDate.setText(" " + mItem.getCreateDateTime().getElapsedDateTimeString());
+		mItNumber.setText(mItem.getLikeItCount() + " ");
 		mNickName.setText(mItem.getWhoMade());
 	}
 

@@ -19,7 +19,7 @@ import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.MyLog;
+import com.pinthecloud.item.util.ItLog;
 
 public class HongkunTestFragment extends ItFragment {
 
@@ -57,7 +57,7 @@ public class HongkunTestFragment extends ItFragment {
 		aimDBHelper = ItApplication.getInstance().getAimDBHelper();
 		today = ItDateTime.getToday();
 		final ItUser user = mObjectPrefHelper.get(ItUser.class);
-		MyLog.log(user.getId());
+		ItLog.log(user.getId());
 		btn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -67,7 +67,7 @@ public class HongkunTestFragment extends ItFragment {
 					@Override
 					public void onCompleted(List<Item> list, int count) {
 						// TODO Auto-generated method stub
-						MyLog.log(list);
+						ItLog.log(list);
 					}
 				});
 			}
@@ -80,7 +80,7 @@ public class HongkunTestFragment extends ItFragment {
 				Item item = new Item();
 				item.setId(id);
 				Item ii = aimDBHelper.get(item);
-				MyLog.log(ii);
+				ItLog.log(ii);
 			}
 		});
 	}
@@ -88,6 +88,6 @@ public class HongkunTestFragment extends ItFragment {
 
 	@Override
 	public void handleException(ItException ex) {
-		MyLog.log(ex);
+		ItLog.log(ex);
 	}
 }

@@ -173,11 +173,11 @@ public class UploadFragment extends ItFragment {
 
 					@Override
 					public void doNext(final ItFragment frag, Object... params) {
-						mAimHelper.add(frag, item, new ItEntityCallback<String>() {
+						mAimHelper.add(frag, item, new ItEntityCallback<Item>() {
 
 							@Override
-							public void onCompleted(String entity) {
-								item.setId(entity);
+							public void onCompleted(Item entity) {
+								item.setId(entity.getId());
 								AsyncChainer.notifyNext(frag);
 							}
 						});

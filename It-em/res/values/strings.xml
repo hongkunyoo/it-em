@@ -15,20 +15,20 @@
 
     <!-- Main -->
     <string name="settings">Settings</string>
-    
+
     <!-- Home -->
     <string name="plus">+</string>
-    
+
     <!-- Hot -->
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
-    
+
     <!-- My Page -->
     <string name="zero">0</string>
-    
+
     <!-- My Item -->
-    <string name="it_lower">&#160;it</string>
-    <string name="reply_lower">&#160;comment</string>
+    <string name="it_lower">it</string>
+    <string name="reply_lower">comment</string>
 
     <!-- Upload -->
     <string name="item_upload">IT:EM Upload</string>
@@ -42,20 +42,23 @@
     <string name="description">Description</string>
     <string name="website">Website</string>
     <string name="done">Done</string>
-    
+
     <!-- Settings -->
     <string name="logout">Logout</string>
 
     <!-- Reply -->
     <string name="reply">Comment</string>
     <string name="delete">Delete</string>
-    
+    <string name="previous_reply">See previous comment</string>
+
     <!-- Item -->
-    <string name="upload_date">Uploaded on&#160;</string>
-    <string name="it_number">&#160;numbers of IT</string>
-    
+    <string name="upload_date">Uploaded on</string>
+    <string name="it_number">numbers of IT</string>
+
     <!-- ItDateTime -->
-    <string name="second">second</string>
-    <string name="minute">minute</string>
-    <string name="hour">hour</string>
+    <string name="second_ago">second ago</string>
+    <string name="minute_ago">minute ago</string>
+    <string name="hour_ago">hour ago</string>
+    <string name="day_ago">day ago</string>
+
 </resources>

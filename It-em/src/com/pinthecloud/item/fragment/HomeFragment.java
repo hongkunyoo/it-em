@@ -55,8 +55,7 @@ public class HomeFragment extends MainTabFragment {
 				mListRefresh.setVisibility(View.VISIBLE);
 
 				mItemList.clear();
-				mItemList.addAll(list);
-				mListAdapter.notifyDataSetChanged();
+				mListAdapter.addAll(list);
 			}
 		});
 	}
@@ -119,8 +118,7 @@ public class HomeFragment extends MainTabFragment {
 			public void onCompleted(List<Item> list, int count) {
 				mIsAdding = false;
 				mListAdapter.setHasFooter(false);
-				mItemList.addAll(list);
-				mListAdapter.notifyDataSetChanged();
+				mListAdapter.addAll(list);
 			}
 		});
 	}

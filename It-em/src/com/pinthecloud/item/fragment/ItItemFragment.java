@@ -75,10 +75,9 @@ public class ItItemFragment extends MyPageTabFragment {
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mGridView.setVisibility(View.VISIBLE);
-				
+
 				mItemList.clear();
-				mItemList.addAll(list);
-				mGridAdapter.notifyDataSetChanged();
+				mGridAdapter.addAll(list);
 				mMyPageTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
