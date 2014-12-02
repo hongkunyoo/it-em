@@ -23,6 +23,9 @@
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     
+    <!-- My Page -->
+    <string name="zero">0</string>
+    
     <!-- My Item -->
     <string name="it_lower">&#160;it</string>
     <string name="reply_lower">&#160;comment</string>
