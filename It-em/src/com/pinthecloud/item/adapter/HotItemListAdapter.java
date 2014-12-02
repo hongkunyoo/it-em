@@ -208,6 +208,7 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ReplyActivity.class);
+				intent.putExtra(Item.INTENT_KEY, item);
 				mActivity.startActivity(intent);
 			}
 		});
@@ -215,17 +216,15 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 	private void setNormalImageView(final NormalViewHolder holder, Item item) {
-		Picasso.with(mActivity)
+		Picasso.with(holder.image.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
 		.placeholder(R.drawable.ic_launcher)
-		.error(R.drawable.ic_launcher)
 		.fit()
 		.into(holder.image);
 
-		Picasso.with(mActivity)
+		Picasso.with(holder.profileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.ic_launcher)
-		.error(R.drawable.ic_launcher)
 		.fit()
 		.into(holder.profileImage);
 	}

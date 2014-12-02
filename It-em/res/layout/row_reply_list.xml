@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/reply_height"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/content_margin"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingRight="@dimen/content_margin"
+        android:paddingStart="@dimen/content_margin" >
 
         <com.pinthecloud.item.view.CircleImageView
             android:id="@+id/row_reply_list_profile_image"
@@ -14,35 +19,67 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/reply_nick_name_margin"
+            android:layout_marginStart="@dimen/reply_nick_name_margin"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/row_reply_list_nick_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/row_reply_list_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/my_page_tab_title"
+                    android:textSize="@dimen/font_medium" />
+
+                <TextView
+                    android:id="@+id/row_reply_list_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/reply_nick_name_margin"
+                    android:layout_marginStart="@dimen/reply_nick_name_margin"
+                    android:layout_toEndOf="@+id/row_reply_list_nick_name"
+                    android:layout_toRightOf="@+id/row_reply_list_nick_name"
+                    android:textColor="@color/my_page_tab_number"
+                    android:textSize="@dimen/font_small" />
+
+                <ProgressBar
+                    android:id="@+id/row_reply_list_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/row_reply_list_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/delete"
+                    android:textColor="@color/my_page_tab_number"
+                    android:textSize="@dimen/font_medium"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/row_reply_list_content"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/reply_nick_name_margin"
+                android:textColor="@color/my_page_tab_title"
+                android:textSize="@dimen/font_small" />
         </LinearLayout>
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/row_reply_list_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:visibility="gone" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_width"
+        android:background="@color/line_color" />
 
-    <TextView
-        android:id="@+id/row_reply_list_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
-
-</RelativeLayout>
+</LinearLayout>

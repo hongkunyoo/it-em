@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/my_item_rank_margin"
         android:layout_marginStart="@dimen/my_item_rank_margin"
-        android:layout_marginTop="@dimen/my_item_rank_margin" />
+        android:layout_marginTop="@dimen/my_item_rank_margin"
+        android:visibility="gone" />
 
     <com.pinthecloud.item.view.SquareImageView
         android:id="@+id/row_it_item_grid_image"

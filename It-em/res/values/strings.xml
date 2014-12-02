@@ -24,10 +24,8 @@
     <string name="yesterday">Yesterday</string>
     
     <!-- My Item -->
-    <string name="my_item">IT:EM</string>
-    <string name="it_item">IT</string>
-    <string name="it_lower">it</string>
-    <string name="reply_lower">comment</string>
+    <string name="it_lower">&#160;it</string>
+    <string name="reply_lower">&#160;comment</string>
 
     <!-- Upload -->
     <string name="item_upload">IT:EM Upload</string>
@@ -47,6 +45,11 @@
 
     <!-- Reply -->
     <string name="reply">Comment</string>
+    <string name="delete">Delete</string>
+    
+    <!-- Item -->
+    <string name="upload_date">Uploaded on&#160;</string>
+    <string name="it_number">&#160;numbers of IT</string>
     
     <!-- ItDateTime -->
     <string name="second">second</string>

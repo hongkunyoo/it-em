@@ -190,10 +190,9 @@ public class MyPageFragment extends MainTabFragment {
 
 
 	private void setImageView(){
-		Picasso.with(mActivity)
+		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.ic_launcher)
-		.error(R.drawable.ic_launcher)
 		.fit()
 		.into(mProfileImage);
 	}

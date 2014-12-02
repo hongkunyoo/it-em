@@ -36,14 +36,14 @@ public class ItemFragment extends ItFragment {
 	private CircleImageView mProfileImage;
 	private TextView mNickName;
 
-	private Item item;
+	private Item mItem;
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = mActivity.getIntent();
-		item = intent.getExtras().getParcelable(Item.INTENT_KEY);
+		mItem = intent.getParcelableExtra(Item.INTENT_KEY);
 	}
 
 
@@ -101,9 +101,10 @@ public class ItemFragment extends ItFragment {
 
 
 	private void setText(){
-		mContent.setText(item.getContent());
-		mItNumber.setText(""+item.getLikeItCount());
-		mNickName.setText(item.getWhoMade());
+		mContent.setText(mItem.getContent());
+		mDate.setText(mItem.getCreateDateTime().toPrettyDate());
+		mItNumber.setText(""+mItem.getLikeItCount());
+		mNickName.setText(mItem.getWhoMade());
 	}
 
 
@@ -120,7 +121,7 @@ public class ItemFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, OtherPageActivity.class);
-				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
+				intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
 				startActivity(intent);
 			}
 		});
@@ -128,17 +129,15 @@ public class ItemFragment extends ItFragment {
 
 
 	private void setImageView(){
-		Picasso.with(mActivity)
-		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
+		Picasso.with(mImage.getContext())
+		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
 		.placeholder(R.drawable.ic_launcher)
-		.error(R.drawable.ic_launcher)
 		.fit()
 		.into(mImage);
 
-		Picasso.with(mActivity)
-		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
+		Picasso.with(mProfileImage.getContext())
+		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.ic_launcher)
-		.error(R.drawable.ic_launcher)
 		.fit()
 		.into(mProfileImage);
 	}
