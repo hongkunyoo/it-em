@@ -20,7 +20,7 @@ import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
 public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconTabProvider {
 
 	private String[] mTitles;
-	private int[] mTitleIcons = {R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher};
+	private int[] mTitleIcons = {R.drawable.main_tab_home, R.drawable.main_tab_hot, R.drawable.main_tab_my_page};
 	private SparseArrayCompat<MainTabHolder> mMainTabHolders;
 
 

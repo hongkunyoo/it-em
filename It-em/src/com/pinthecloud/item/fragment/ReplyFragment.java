@@ -25,6 +25,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ItListCallback;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
 
@@ -133,8 +134,8 @@ public class ReplyFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				String content = mReplyText.getText().toString();
-				Reply reply = new Reply(content, mItem.getWhoMade(), mItem.getWhoMadeId(), mItem.getId());
+				ItUser me = mObjectPrefHelper.get(ItUser.class);
+				Reply reply = new Reply(mReplyText.getText().toString(), me.getNickName(), me.getId(), mItem.getId());
 				mReplyText.setText("");
 				submitReply(reply);
 			}

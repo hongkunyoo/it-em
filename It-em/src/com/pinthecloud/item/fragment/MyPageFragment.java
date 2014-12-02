@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -51,7 +51,7 @@ public class MyPageFragment extends MainTabFragment {
 	private TextView mNickName;
 	private TextView mDescription;
 	private TextView mWebsite;
-	private Button mProfileSettings;
+	private ImageButton mProfileSettings;
 
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
@@ -143,7 +143,7 @@ public class MyPageFragment extends MainTabFragment {
 		mNickName = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
 		mDescription = (TextView)view.findViewById(R.id.my_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.my_page_frag_website);
-		mProfileSettings = (Button)view.findViewById(R.id.my_page_frag_profile_settings);
+		mProfileSettings = (ImageButton)view.findViewById(R.id.my_page_frag_profile_settings);
 		mViewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
 		mTab = (PagerSlidingTabStrip)view.findViewById(R.id.my_page_frag_tab);
 	}

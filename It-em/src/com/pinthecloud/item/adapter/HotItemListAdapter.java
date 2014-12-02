@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -67,7 +68,7 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 		public SquareImageView image;
 		public TextView content;
-		public Button itButton;
+		public ImageButton itButton;
 		public TextView itNumber;
 		public Button reply;
 
@@ -82,7 +83,7 @@ public class HotItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 			this.image = (SquareImageView)view.findViewById(R.id.row_hot_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_hot_item_list_content);
-			this.itButton = (Button)view.findViewById(R.id.row_hot_item_list_it_button);
+			this.itButton = (ImageButton)view.findViewById(R.id.row_hot_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_hot_item_list_it_number);
 			this.reply = (Button)view.findViewById(R.id.row_hot_item_list_reply);
 		}

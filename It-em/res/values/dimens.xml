@@ -5,6 +5,7 @@
     <dimen name="line_width">1dp</dimen>
     <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="content_margin">16dp</dimen>
+    <dimen name="toolbar_title_margin">72dp</dimen>
 
     <!-- Main -->
     <dimen name="main_tab_indicator_height">4dp</dimen>

@@ -162,43 +162,10 @@ public class UploadFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mActivity);
-
 				ItUser me = mObjectPrefHelper.get(ItUser.class);
-				final Item item = new Item();
-				item.setContent(mContent.getText().toString());
-				item.setWhoMade(me.getNickName());
-				item.setWhoMadeId(me.getId());
-
-				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-					@Override
-					public void doNext(final ItFragment frag, Object... params) {
-						mAimHelper.add(frag, item, new ItEntityCallback<Item>() {
-
-							@Override
-							public void onCompleted(Item entity) {
-								item.setId(entity.getId());
-								AsyncChainer.notifyNext(frag);
-							}
-						});
-					}
-
-				}, new Chainable(){
-
-					@Override
-					public void doNext(ItFragment frag, Object... params) {
-						blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new ItEntityCallback<String>() {
-
-							@Override
-							public void onCompleted(String entity) {
-								mApp.dismissProgressDialog();
-								Intent intent = new Intent(mActivity, MainActivity.class);
-								intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-								startActivity(intent);
-							}
-						});
-					}
-				});
+				Item item = new Item(mContent.getText().toString(), me.getNickName(), me.getId());
+				mContent.setText("");
+				uploadItem(item);
 			}
 		});
 	}
@@ -270,6 +237,40 @@ public class UploadFragment extends ItFragment {
 
 		callbacks[itemList.length-1] = null;
 		return callbacks;
+	}
+
+
+	private void uploadItem(final Item item){
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				mAimHelper.add(frag, item, new ItEntityCallback<Item>() {
+
+					@Override
+					public void onCompleted(Item entity) {
+						item.setId(entity.getId());
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+			}
+
+		}, new Chainable(){
+
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new ItEntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						mApp.dismissProgressDialog();
+						Intent intent = new Intent(mActivity, MainActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+					}
+				});
+			}
+		});
 	}
 
 

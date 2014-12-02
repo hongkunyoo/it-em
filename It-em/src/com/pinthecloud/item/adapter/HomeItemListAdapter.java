@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
@@ -61,11 +62,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 		public SquareImageView image;
 		public TextView content;
-		public Button itButton;
+		public ImageButton itButton;
 		public TextView itNumber;
 		public Button reply;
 
-		public LinearLayout profileLayout;
+		public RelativeLayout profileLayout;
 		public CircleImageView profileImage;
 		public TextView nickName;
 
@@ -75,11 +76,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
-			this.itButton = (Button)view.findViewById(R.id.row_home_item_list_it_button);
+			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
 			this.reply = (Button)view.findViewById(R.id.row_home_item_list_reply);
 
-			this.profileLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
+			this.profileLayout = (RelativeLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 		}

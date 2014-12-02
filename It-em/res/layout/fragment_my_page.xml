@@ -85,12 +85,15 @@
                         android:textSize="@dimen/font_small" />
                 </LinearLayout>
 
-                <Button
+                <ImageButton
                     android:id="@+id/my_page_frag_profile_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/profile_settings"
+                    android:src="@drawable/mypage_profile_edit_ic" />
             </RelativeLayout>
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip

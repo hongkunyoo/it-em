@@ -11,23 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_item_profile_height"
         android:paddingEnd="@dimen/content_margin"
-        android:paddingLeft="@dimen/content_margin"
+        android:paddingLeft="@dimen/none"
         android:paddingRight="@dimen/content_margin"
-        android:paddingStart="@dimen/content_margin" >
+        android:paddingStart="@dimen/none" >
 
         <TextView
             android:id="@+id/row_hot_item_list_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/content_margin"
+            android:layout_marginStart="@dimen/content_margin" />
 
         <TextView
             android:id="@+id/row_hot_item_list_nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/row_hot_item_list_rank"
-            android:layout_toRightOf="@+id/row_hot_item_list_rank" />
+            android:layout_marginLeft="@dimen/toolbar_title_margin"
+            android:layout_marginStart="@dimen/toolbar_title_margin" />
 
         <com.pinthecloud.item.view.CircleImageView
             xmlns:civ="http://schemas.android.com/apk/res-auto"
@@ -41,12 +43,22 @@
             civ:border_width="@dimen/line_width" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_width"
+        android:background="@color/line_color" />
+
     <com.pinthecloud.item.view.SquareImageView
         android:id="@+id/row_hot_item_list_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_width"
+        android:background="@color/line_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,16 +70,22 @@
             android:id="@+id/row_hot_item_list_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/home_item_content_margin" />
+            android:layout_marginBottom="@dimen/home_item_content_margin"
+            android:textColor="@color/my_page_tab_title"
+            android:textSize="@dimen/font_medium" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/row_hot_item_list_it_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/it_lower"
+                android:src="@drawable/card_it_btn" />
 
             <TextView
                 android:id="@+id/row_hot_item_list_it_number_plus"
@@ -78,7 +96,9 @@
                 android:layout_marginStart="@dimen/home_item_reply_margin"
                 android:layout_toEndOf="@+id/row_hot_item_list_it_button"
                 android:layout_toRightOf="@+id/row_hot_item_list_it_button"
-                android:text="@string/plus" />
+                android:text="@string/plus"
+                android:textColor="@color/my_page_tab_number"
+                android:textSize="@dimen/font_small" />
 
             <TextView
                 android:id="@+id/row_hot_item_list_it_number"
@@ -86,14 +106,18 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/row_hot_item_list_it_number_plus"
-                android:layout_toRightOf="@+id/row_hot_item_list_it_number_plus" />
+                android:layout_toRightOf="@+id/row_hot_item_list_it_number_plus"
+                android:textColor="@color/my_page_tab_number"
+                android:textSize="@dimen/font_small" />
 
             <Button
                 android:id="@+id/row_hot_item_list_reply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
         </RelativeLayout>
     </LinearLayout>
+
 </LinearLayout>
