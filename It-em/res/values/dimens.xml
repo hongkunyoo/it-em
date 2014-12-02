@@ -5,32 +5,45 @@
     <dimen name="line_width">1dp</dimen>
     <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="content_margin">16dp</dimen>
-    
+
     <!-- Main -->
     <dimen name="main_tab_indicator_height">4dp</dimen>
     <dimen name="main_tab_height">48dp</dimen>
-    
+
     <!-- Home -->
     <dimen name="home_item_profile_height">56dp</dimen>
-    
+    <dimen name="home_item_content_margin">12dp</dimen>
+    <dimen name="home_item_reply_margin">6dp</dimen>
+
     <!-- Hot -->
     <dimen name="hot_item_header_height">48dp</dimen>
-    
+
     <!-- My Page -->
     <dimen name="my_page_profile_height">200dp</dimen>
+    <dimen name="my_page_profile_content_margin">12dp</dimen>
     <dimen name="my_page_header_height">249dp</dimen>
     <dimen name="my_page_profile_top_margin">24dp</dimen>
     <dimen name="my_page_tab_number_margin">6dp</dimen>
-    
+
     <!-- My Item -->
     <dimen name="my_item_progress_bar_bottom_margin">100dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
     <dimen name="my_item_rank_margin">10dp</dimen>
     <dimen name="my_item_it_reply_number_height">40dp</dimen>
     <dimen name="my_item_it_reply_number_margin">12dp</dimen>
+
+    <!-- Item -->
+    <dimen name="item_content_margin">14dp</dimen>
+    <dimen name="item_it_number_margin">24dp</dimen>
+    <dimen name="item_rank_margin">10dp</dimen>
+    
+    <!-- Reply -->
+    <dimen name="reply_height">72dp</dimen>
+    <dimen name="reply_nick_name_margin">10dp</dimen>
     
     <!-- Font -->
     <dimen name="font_large">16sp</dimen>
     <dimen name="font_medium">14sp</dimen>
     <dimen name="font_small">12sp</dimen>
+
 </resources>

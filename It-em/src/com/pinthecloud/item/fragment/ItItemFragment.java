@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ItItemGridAdapter;
 import com.pinthecloud.item.interfaces.ItListCallback;
@@ -98,7 +98,7 @@ public class ItItemFragment extends MyPageTabFragment {
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mItemList = Lists.newArrayList();
+		mItemList = new ArrayList<Item>();
 		mGridAdapter = new ItItemGridAdapter(mActivity, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 

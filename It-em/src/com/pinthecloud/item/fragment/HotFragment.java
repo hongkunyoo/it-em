@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.widget.ProgressBar;
 
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
-import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HotItemListAdapter;
 import com.pinthecloud.item.adapter.HotItemListHeaderAdapter;
@@ -98,7 +98,7 @@ public class HotFragment extends MainTabFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mItemList = Lists.newArrayList();
+		mItemList = new ArrayList<Item>();
 		mListAdapter = new HotItemListAdapter(mActivity, mThisFragment, mItemList);
 		mListView.setAdapter(mListAdapter);
 

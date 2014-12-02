@@ -1,7 +1,9 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,9 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
+import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
 
 public class ReplyFragment extends ItFragment {
@@ -41,12 +43,14 @@ public class ReplyFragment extends ItFragment {
 	private LinearLayoutManager mListLayoutManager;
 	private List<Reply> mReplyList;
 
+	private Item mItem;
 
-	public static ReplyFragment newInstance() {
-		ReplyFragment fragment = new ReplyFragment();
-		Bundle bundle = new Bundle();
-		fragment.setArguments(bundle);
-		return fragment;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Intent intent = mActivity.getIntent();
+		mItem = intent.getParcelableExtra(Item.INTENT_KEY);
 	}
 
 
@@ -130,7 +134,10 @@ public class ReplyFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				String reply = mReplyText.getText().toString();
+				String content = mReplyText.getText().toString();
+				Reply reply = new Reply(content, mItem.getWhoMade(), mItem.getWhoMadeId(), mItem.getId());
+				mReplyText.setText("");
+				submitReply(reply);
 			}
 		});
 	}
@@ -143,7 +150,7 @@ public class ReplyFragment extends ItFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mReplyList = Lists.newArrayList();
+		mReplyList = new ArrayList<Reply>();
 		mListAdapter = new ReplyListAdapter(mActivity, mReplyList);
 		mListView.setAdapter(mListAdapter);
 	}
@@ -164,5 +171,12 @@ public class ReplyFragment extends ItFragment {
 
 
 	private void submitReply(Reply reply){
+		//		mListAdapter.add(reply, mReplyList.size());
+		//		mAimHelper.add(mThisFragment, reply, new ItEntityCallback<String>() {
+		//
+		//			@Override
+		//			public void onCompleted(String entity) {
+		//			}
+		//		});
 	}
 }

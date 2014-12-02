@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.google.common.collect.Lists;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.interfaces.ItListCallback;
@@ -88,7 +88,7 @@ public class HomeFragment extends MainTabFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mItemList = Lists.newArrayList();
+		mItemList = new ArrayList<Item>();
 		mListAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
 		mListView.setAdapter(mListAdapter);
 
