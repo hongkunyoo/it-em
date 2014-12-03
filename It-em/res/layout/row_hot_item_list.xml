@@ -34,8 +34,8 @@
         <com.pinthecloud.item.view.CircleImageView
             xmlns:civ="http://schemas.android.com/apk/res-auto"
             android:id="@+id/row_hot_item_list_profile_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/home_item_profile_image_width"
+            android:layout_height="@dimen/home_item_profile_image_width"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

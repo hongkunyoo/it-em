@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
-        android:id="@+id/upload_close"
+        android:id="@+id/upload_submit"
+        android:enabled="false"
         android:icon="@drawable/appbar_close_ic"
-        android:title="@string/close"
+        android:title="@string/submit"
         app:showAsAction="always"/>
 
 </menu>

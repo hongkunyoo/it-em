@@ -1,40 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical" >
+    android:background="@android:color/white" >
 
-    <com.pinthecloud.item.view.CircleImageView
-        android:id="@+id/profile_settings_frag_profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/profile_settings_frag_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/profile_settings_frag_nick_name"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/nick_name" />
+        android:layout_height="@dimen/toolbar_shadow_height"
+        android:background="@drawable/toolbar_shadow" />
 
-    <EditText
-        android:id="@+id/profile_settings_frag_description"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/description" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/content_margin" >
 
-    <EditText
-        android:id="@+id/profile_settings_frag_website"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/website" />
+        <com.pinthecloud.item.view.CircleImageView
+            xmlns:civ="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_settings_frag_profile_image"
+            android:layout_width="@dimen/profile_settings_profile_image"
+            android:layout_height="@dimen/profile_settings_profile_image"
+            android:layout_gravity="center_horizontal"
+            civ:border_color="@color/line_color"
+            civ:border_width="@dimen/line_width" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/profile_settings_frag_nick_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin"
+            android:ems="10"
+            android:hint="@string/nick_name"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/line_color"
+            android:textSize="@dimen/font_large" />
+
+        <EditText
+            android:id="@+id/profile_settings_frag_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/profile_settings_margin"
+            android:ems="10"
+            android:hint="@string/description"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/line_color"
+            android:textSize="@dimen/font_large" />
+
+        <EditText
+            android:id="@+id/profile_settings_frag_website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/profile_settings_margin"
+            android:ems="10"
+            android:hint="@string/website"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/line_color"
+            android:textSize="@dimen/font_large" />
+    </LinearLayout>
+
+</RelativeLayout>

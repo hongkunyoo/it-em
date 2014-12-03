@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/reply_height"
-    android:orientation="vertical" >
+    android:layout_height="@dimen/reply_row_height" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/row_reply_list_divider"
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/content_margin"
         android:paddingLeft="@dimen/content_margin"
@@ -57,8 +57,10 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/row_reply_list_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_width"
+        android:layout_alignParentBottom="true"
         android:background="@color/line_color" />
 
-</LinearLayout>
+</RelativeLayout>

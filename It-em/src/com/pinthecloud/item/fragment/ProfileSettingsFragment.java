@@ -16,17 +16,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
+import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
+import com.squareup.picasso.Picasso;
 
 public class ProfileSettingsFragment extends ItFragment {
 
@@ -35,20 +38,21 @@ public class ProfileSettingsFragment extends ItFragment {
 	private Bitmap mSmallProfileImageBitmap;
 	private CircleImageView mProfileImage;
 
-	private TextView mId;
 	private EditText mNickName;
 	private EditText mDescription;
 	private EditText mWebsite;
 
-	private ItUser mItUser;
-	private boolean mIsTypedNickName = true;
-	private boolean mIsTakenProfileImage;
-
+	private ItUser mMyItUser;
+	private boolean mIsProfileImageChanged = false;
+	private boolean mIsItUserUpdated = false;
+	private boolean mIsProfileImageUpdated = false;
+	private boolean mIsSmallProfileImageUpdated = false;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mItUser = mObjectPrefHelper.get(ItUser.class);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -69,11 +73,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(!mIsTakenProfileImage){
-			mProfileImage.setImageResource(R.drawable.ic_launcher);
-		} else{
-			mProfileImage.setImageBitmap(mSmallProfileImageBitmap);
-		}
+		mProfileImage.setImageBitmap(mProfileImageBitmap);
 	}
 
 
@@ -90,8 +90,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		if (resultCode == Activity.RESULT_OK){
 			String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
 			mProfileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
-			mSmallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-			mIsTakenProfileImage = true;
+			mIsProfileImageChanged = true;
 		}
 	}
 
@@ -106,7 +105,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		MenuItem menuItem = menu.findItem(R.id.profile_settings_done);
-		menuItem.setEnabled(mIsTypedNickName);
+		menuItem.setEnabled(mNickName.getText().toString().trim().length() > 0);
 		super.onPrepareOptionsMenu(menu);
 	}
 
@@ -118,25 +117,49 @@ public class ProfileSettingsFragment extends ItFragment {
 			mActivity.onBackPressed();
 			break;
 		case R.id.profile_settings_done:
-			setProfile();
+			mApp.showProgressDialog(mActivity);
+
+			trimProfileSettings();
+			if(!isProfileSettingsChanged() && !mIsProfileImageChanged){
+				mApp.dismissProgressDialog();
+				mActivity.onBackPressed();
+				break;
+			}
+
+
+			if(isProfileSettingsChanged()){
+				String message = checkProfileSettings();
+				if(!message.equals("")){
+					mApp.dismissProgressDialog();
+					showAlertDialog(message);
+					break;
+				}
+				updateProfileSettings();
+			} else {
+				mIsItUserUpdated = true;
+			}
+
+
+			if(mIsProfileImageChanged){
+				updateProfileImage();
+			} else {
+				mIsProfileImageUpdated = true;
+				mIsSmallProfileImageUpdated = true;
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 
-	private void setProfile(){
-		mApp.showProgressDialog(mActivity);
-
-		Intent intent = new Intent(mActivity, MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 
 	private void findComponent(View view){
 		mProfileImage = (CircleImageView)view.findViewById(R.id.profile_settings_frag_profile_image);
-		mId = (TextView)view.findViewById(R.id.profile_settings_frag_id);
 		mNickName = (EditText)view.findViewById(R.id.profile_settings_frag_nick_name);
 		mDescription = (EditText)view.findViewById(R.id.profile_settings_frag_description);
 		mWebsite = (EditText)view.findViewById(R.id.profile_settings_frag_website);
@@ -144,17 +167,11 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
-		mNickName.setText(mItUser.getNickName());
+		mNickName.setText(mMyItUser.getNickName());
 		mNickName.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				String nickName = s.toString().trim();
-				if(nickName.length() < 1){
-					mIsTypedNickName = false;
-				}else{
-					mIsTypedNickName = true;
-				}
 				mActivity.invalidateOptionsMenu();
 			}
 			@Override
@@ -166,32 +183,28 @@ public class ProfileSettingsFragment extends ItFragment {
 			}
 		});
 
-		mId.setText(mItUser.getItUserId());
-		mDescription.setText(mItUser.getSelfIntro());
-		mWebsite.setText(mItUser.getWebPage());
+		mDescription.setText(mMyItUser.getSelfIntro());
+		mWebsite.setText(mMyItUser.getWebPage());
 	}
 
 
 	private void setProfileImage(){
+		Picasso.with(mProfileImage.getContext())
+		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
+		.placeholder(R.drawable.ic_launcher)
+		.fit()
+		.into(mProfileImage);
+
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String[] itemList = getDialogItemList();
+				String[] itemList = getResources().getStringArray(R.array.image_select_delete_string_array);
 				ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
 				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
 				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
-	}
-
-
-	private String[] getDialogItemList(){
-		if(mIsTakenProfileImage){
-			return getResources().getStringArray(R.array.image_select_delete_string_array);
-		}else{
-			return getResources().getStringArray(R.array.image_select_string_array);
-		}
 	}
 
 
@@ -220,28 +233,130 @@ public class ProfileSettingsFragment extends ItFragment {
 			}
 		};
 
-		if(mIsTakenProfileImage){
-			callbacks[2] = new ItDialogCallback() {
+		callbacks[2] = new ItDialogCallback() {
 
-				@Override
-				public void doPositiveThing(Bundle bundle) {
-					// Set profile image default
-					mProfileImage.setImageResource(R.drawable.ic_launcher);
-					mIsTakenProfileImage = false;
-				}
-				@Override
-				public void doNegativeThing(Bundle bundle) {
-				}
-			};
-		}
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+				// Set profile image default
+				mProfileImageBitmap = BitmapUtil.decodeInSampleSize(getResources(), R.drawable.ic_launcher, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
+				mProfileImage.setImageBitmap(mProfileImageBitmap);
+				mIsProfileImageChanged = true;
+			}
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+			}
+		};
 
 		callbacks[itemList.length-1] = null;
 		return callbacks;
 	}
 
 
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+	private void trimProfileSettings(){
+		mNickName.setText(mNickName.getText().toString().trim());
+		mDescription.setText(mDescription.getText().toString().trim());
+		mWebsite.setText(mWebsite.getText().toString());
+	}
+
+
+	private boolean isProfileSettingsChanged(){
+		return !mMyItUser.getNickName().equals(mNickName.getText().toString())
+				|| !mMyItUser.getSelfIntro().equals(mDescription.getText().toString())
+				|| !mMyItUser.getWebPage().equals(mWebsite.getText().toString());
+	}
+
+
+	private String checkProfileSettings(){
+		String message = checkNickName(mNickName.getText().toString());
+		if(!message.equals("")) return message;
+		message = checkWebsite(mWebsite.getText().toString());
+		return message;
+	}
+
+
+	private String checkNickName(String nickName){
+		String nickNameRegx = "^[a-zA-Z0-9가-힣_-]{2,10}$";
+		String message = "";
+
+		if(nickName.length() < 2){
+			message = getResources().getString(R.string.min_nick_name_message);
+		} else if(!nickName.matches(nickNameRegx)){
+			message = getResources().getString(R.string.bad_nick_name_message);
+		} 
+		return message;
+	}
+
+
+	private String checkWebsite(String website){
+		return "";
+	}
+
+
+	private void showAlertDialog(String message){
+		ItAlertDialog dialog = new ItAlertDialog(null, message, null, null, false, new ItDialogCallback() {
+
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+			}
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+			}
+		});
+		dialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+	}
+
+
+	private void updateProfileSettings(){
+		mMyItUser.setNickName(mNickName.getText().toString());
+		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
+		mMyItUser.setWebPage(mWebsite.getText().toString());
+
+		mUserHelper.update(mThisFragment, mMyItUser, new ItEntityCallback<ItUser>() {
+
+			@Override
+			public void onCompleted(ItUser entity) {
+				mObjectPrefHelper.put(entity);
+				mIsItUserUpdated = true;
+				if(mIsProfileImageUpdated && mIsSmallProfileImageUpdated){
+					goToNextActivity();	
+				}
+			}
+		});
+	}
+
+
+	private void updateProfileImage(){
+		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
+				mProfileImageBitmap, new ItEntityCallback<String>() {
+
+			@Override
+			public void onCompleted(String entity) {
+				mIsProfileImageUpdated = true;
+				if(mIsItUserUpdated && mIsSmallProfileImageUpdated){
+					goToNextActivity();
+				}
+			}
+		});
+
+		mSmallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
+				mSmallProfileImageBitmap, new ItEntityCallback<String>() {
+
+			@Override
+			public void onCompleted(String entity) {
+				mIsSmallProfileImageUpdated = true;
+				if(mIsItUserUpdated && mIsProfileImageUpdated){
+					goToNextActivity();
+				}
+			}
+		});
+	}
+
+
+	private void goToNextActivity(){
+		mApp.dismissProgressDialog();
+		Intent intent = new Intent(mActivity, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 }

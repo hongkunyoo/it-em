@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/brand_color"
     android:scrollbars="none" >
 
     <LinearLayout
@@ -10,28 +11,35 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <LinearLayout
+        <com.pinthecloud.item.view.SquareImageView
+            android:id="@+id/item_frag_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"
+            android:scaleType="centerCrop" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:orientation="vertical" >
+            android:layout_marginBottom="@dimen/content_margin"
+            android:background="@android:color/white" >
 
-            <com.pinthecloud.item.view.SquareImageView
-                android:id="@+id/item_frag_image"
+            <View
+                android:id="@+id/item_frag_image_divider"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
+                android:layout_height="@dimen/line_width"
+                android:background="@color/line_color" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+                android:layout_below="@+id/item_frag_image_divider"
                 android:padding="@dimen/content_margin" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical" >
 
                     <LinearLayout
@@ -43,14 +51,14 @@
                             android:id="@+id/item_frag_rank"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/item_rank_margin"
+                            android:layout_marginRight="@dimen/item_rank_margin"
                             android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/item_frag_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/item_rank_margin"
-                            android:layout_marginStart="@dimen/item_rank_margin"
                             android:textColor="@color/my_page_tab_title"
                             android:textSize="@dimen/font_large" />
                     </LinearLayout>
@@ -105,13 +113,14 @@
                     android:layout_alignParentRight="true"
                     android:visibility="gone" />
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <fragment
             android:id="@+id/item_frag_reply_frag"
             android:name="com.pinthecloud.item.fragment.ReplyFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_margin"
             tools:layout="@layout/fragment_reply" />
 
         <LinearLayout
@@ -119,18 +128,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            android:orientation="horizontal" >
-
-            <com.pinthecloud.item.view.CircleImageView
-                android:id="@+id/item_frag_profile_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/content_margin"
+            android:paddingEnd="@dimen/content_margin"
+            android:paddingLeft="@dimen/content_margin"
+            android:paddingRight="@dimen/content_margin"
+            android:paddingStart="@dimen/content_margin" >
 
             <TextView
-                android:id="@+id/item_frag_nick_name"
                 android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_profile_height"
+                android:gravity="center_vertical"
+                android:text="@string/upload_by"
+                android:textColor="@color/my_page_tab_number"
+                android:textSize="@dimen/font_medium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
+                android:orientation="horizontal" >
+
+                <com.pinthecloud.item.view.CircleImageView
+                    xmlns:civ="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/item_frag_profile_image"
+                    android:layout_width="@dimen/item_profile_image_width"
+                    android:layout_height="@dimen/item_profile_image_width"
+                    android:layout_marginTop="@dimen/item_profile_image_top_margin"
+                    civ:border_color="@color/line_color"
+                    civ:border_width="@dimen/line_width" />
+
+                <TextView
+                    android:id="@+id/item_frag_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/content_margin"
+                    android:layout_marginStart="@dimen/content_margin"
+                    android:textColor="@color/my_page_tab_title"
+                    android:textSize="@dimen/font_large" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

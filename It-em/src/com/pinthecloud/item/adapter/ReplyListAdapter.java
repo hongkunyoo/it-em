@@ -20,6 +20,7 @@ import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
@@ -29,11 +30,13 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 	private Context mContext;
 	private ItFragment mFrag;
 	private List<Reply> mReplyList;
+	private ItUser mMyItUser;
 
 
-	public ReplyListAdapter(Context context, ItFragment frag, List<Reply> replyList) {
+	public ReplyListAdapter(Context context, ItFragment frag, ItUser myItUser, List<Reply> replyList) {
 		this.mContext = context;
 		this.mFrag = frag;
+		this.mMyItUser = myItUser;
 		this.mReplyList = replyList;
 	}
 
@@ -83,22 +86,28 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 		holder.content.setText(reply.getContent());
 		if(reply.getRawCreateDateTime() != null){
 			holder.time.setText(reply.getCreateDateTime().getElapsedDateTimeString());
+		} else {
+			holder.time.setText("");
 		}
 	}
 
 
 	private void setButton(ViewHolder holder, final Reply reply){
-		holder.view.setOnLongClickListener(new OnLongClickListener() {
+		if(reply.getWhoMadeId().equals(mMyItUser.getId())){
+			holder.view.setOnLongClickListener(new OnLongClickListener() {
 
-			@Override
-			public boolean onLongClick(View v) {
-				String[] itemList = mContext.getResources().getStringArray(R.array.reply_long_click_string_array);
-				ItDialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
-				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-				listDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
-				return false;
-			}
-		});
+				@Override
+				public boolean onLongClick(View v) {
+					String[] itemList = mContext.getResources().getStringArray(R.array.reply_long_click_string_array);
+					ItDialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
+					ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
+					listDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+					return false;
+				}
+			});
+		} else {
+			holder.view.setOnLongClickListener(null);
+		}
 	}
 
 
@@ -149,6 +158,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 			public void doNegativeThing(Bundle bundle) {
 			}
 		};
+		callbacks[itemList.length-1] = null;
 		return callbacks;
 	}
 

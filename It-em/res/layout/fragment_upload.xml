@@ -2,37 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@android:color/white" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_width"
+        android:background="@color/line_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/content_margin" >
 
         <com.pinthecloud.item.view.SquareImageView
             android:id="@+id/upload_frag_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/abc_ab_share_pack_holo_dark" />
+            android:layout_width="@dimen/toolbar_title_margin"
+            android:layout_height="@dimen/toolbar_title_margin"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
 
         <EditText
             android:id="@+id/upload_frag_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin"
             android:ems="10"
-            android:hint="@string/write_content"
+            android:hint="@string/description"
             android:inputType="textMultiLine"
-            android:maxLines="4" >
+            android:textColor="@color/my_page_tab_title"
+            android:textColorHint="@color/line_color"
+            android:textSize="@dimen/font_large" >
 
             <requestFocus />
         </EditText>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/upload_frag_upload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/upload" />
 
 </RelativeLayout>

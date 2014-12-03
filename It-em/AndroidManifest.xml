@@ -54,7 +54,8 @@
         <activity android:name=".activity.OtherPageActivity" />
         <activity
             android:name=".activity.ReplyActivity"
-            android:label="@string/reply" />
+            android:label="@string/reply"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".activity.HongkunTestActivity" />
     </application>
 
