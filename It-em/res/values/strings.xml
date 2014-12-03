@@ -33,15 +33,15 @@
     <!-- Upload -->
     <string name="item_upload">IT:EM Upload</string>
     <string name="upload">Upload</string>
-    <string name="write_content">write description</string>
-    <string name="close">Close</string>
 
     <!-- Profile Settings -->
-    <string name="profile_settings">Profile Settings</string>
+    <string name="profile_settings">Profile edit</string>
     <string name="nick_name">Nick Name</string>
     <string name="description">Description</string>
     <string name="website">Website</string>
     <string name="done">Done</string>
+    <string name="min_nick_name_message">Please type in more than 1 letter.</string>
+    <string name="bad_nick_name_message">Special letter is not good as nick name.</string>
 
     <!-- Settings -->
     <string name="logout">Logout</string>
@@ -50,10 +50,12 @@
     <string name="reply">Comment</string>
     <string name="delete">Delete</string>
     <string name="previous_reply">See previous comment</string>
+    <string name="submit">Submit</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
     <string name="it_number">numbers of IT</string>
+    <string name="upload_by">Uploaded by</string>
 
     <!-- ItDateTime -->
     <string name="second_ago">second ago</string>

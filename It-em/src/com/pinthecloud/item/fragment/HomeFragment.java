@@ -69,7 +69,7 @@ public class HomeFragment extends MainTabFragment {
 
 
 	private void setRefreshLayout(){
-		mListRefresh.setColorSchemeResources(R.color.brand_color, R.color.brand_color_dark, R.color.accent_color);
+		mListRefresh.setColorSchemeResources(R.color.accent_color);
 		mListRefresh.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override

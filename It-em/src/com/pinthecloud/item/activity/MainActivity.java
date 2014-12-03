@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.MainFragment;
@@ -46,15 +45,11 @@ public class MainActivity extends ItActivity{
 
 	private void setToolbar(){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_toolbar);
-		View toolbarShadow = findViewById(R.id.activity_toolbar_shadow);
-
-//		toolbar.setLogo(R.drawable.appbar_logo);
-		toolbarShadow.setVisibility(View.GONE);
-
 		setSupportActionBar(toolbar);
-		
+
 		ActionBar actionBar = getSupportActionBar();
-		actionBar.setLogo(R.drawable.appbar_logo);
+		actionBar.setDisplayShowHomeEnabled(true);
+		toolbar.setNavigationIcon(R.drawable.appbar_logo);
 	}
 
 

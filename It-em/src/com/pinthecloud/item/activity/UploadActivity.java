@@ -3,6 +3,7 @@ package com.pinthecloud.item.activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
@@ -22,6 +23,10 @@ public class UploadActivity extends ItActivity {
 	private void setToolbar(){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_toolbar);
 		setSupportActionBar(toolbar);
+
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayShowHomeEnabled(true);
+		toolbar.setNavigationIcon(R.drawable.appbar_close_ic);
 	}
 
 

@@ -2,9 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
+    android:background="@android:color/white"
     android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_shadow_height"
+        android:background="@drawable/toolbar_shadow" />
 
     <ProgressBar
         android:id="@+id/reply_frag_progress_bar"
@@ -12,54 +16,51 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <LinearLayout
-        android:id="@+id/reply_frag_previous_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <ProgressBar
-            android:id="@+id/reply_frag_previous_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/reply_frag_previous_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/previous_reply" />
-    </LinearLayout>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reply_frag_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/reply_frag_reply_layout"
-        android:layout_below="@+id/reply_frag_previous_layout" />
+        android:layout_above="@+id/reply_frag_reply_layout" />
 
     <LinearLayout
         android:id="@+id/reply_frag_reply_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/reply_input_height"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/content_margin"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingRight="@dimen/content_margin"
+        android:paddingStart="@dimen/content_margin" >
 
         <EditText
             android:id="@+id/reply_frag_reply_text"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:ems="10"
             android:inputType="textMultiLine"
-            android:maxLines="4" />
+            android:maxLines="4"
+            android:textColor="@color/my_page_tab_title"
+            android:textColorHint="@color/line_color"
+            android:textSize="@dimen/font_large" >
+
+            <requestFocus />
+        </EditText>
 
         <Button
             android:id="@+id/reply_frag_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/reply_submit_bottom_margin"
+            android:layout_marginLeft="@dimen/content_margin"
+            android:layout_marginStart="@dimen/content_margin"
+            android:enabled="false"
+            android:text="@string/submit"
+            android:textSize="@dimen/font_medium" />
     </LinearLayout>
 
 </RelativeLayout>

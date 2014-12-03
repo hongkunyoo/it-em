@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.pinthecloud.item.R;
@@ -44,10 +43,6 @@ public class UploadFragment extends ItFragment {
 
 	private SquareImageView mImage;
 	private EditText mContent;
-	private Button mUploadButton;
-
-	private boolean mIsTypedContent = false;
-	private boolean mIsTakenImage;
 
 
 	@Override
@@ -66,7 +61,6 @@ public class UploadFragment extends ItFragment {
 		setHasOptionsMenu(true);
 		findComponent(view);
 		setComponent();
-		setButton();
 		setImage();
 		mImageUri = FileUtil.getMediaUri(mThisFragment, mMediaType);
 		return view;
@@ -76,7 +70,7 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(!mIsTakenImage){
+		if(mImageBitmap == null){
 			mImage.setImageResource(R.drawable.ic_launcher);
 		} else{
 			mImage.setImageBitmap(mSmallImageBitmap);
@@ -98,9 +92,7 @@ public class UploadFragment extends ItFragment {
 			String imagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
 			mImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
 			mSmallImageBitmap = BitmapUtil.decodeInSampleSize(mImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-
-			mIsTakenImage = true;
-			mUploadButton.setEnabled(isUploadButtonEnable());
+			mActivity.invalidateOptionsMenu();
 		} else{
 			mActivity.finish();
 		}
@@ -115,20 +107,32 @@ public class UploadFragment extends ItFragment {
 
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.upload_close:
+	public void onPrepareOptionsMenu(Menu menu) {
+		MenuItem menuItem = menu.findItem(R.id.upload_submit);
+		menuItem.setEnabled(isSubmitEnable());
+		super.onPrepareOptionsMenu(menu);
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		switch (menuItem.getItemId()) {
+		case android.R.id.home:
 			mActivity.onBackPressed();
 			break;
+		case R.id.upload_submit:
+			ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
+			Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId());
+			uploadItem(item);
+			break;
 		}
-		return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(menuItem);
 	}
 
 
 	private void findComponent(View view){
 		mImage = (SquareImageView)view.findViewById(R.id.upload_frag_image);
 		mContent = (EditText)view.findViewById(R.id.upload_frag_content);
-		mUploadButton = (Button)view.findViewById(R.id.upload_frag_upload);
 	}
 
 
@@ -137,13 +141,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				String nickName = s.toString().trim();
-				if(nickName.length() < 1){
-					mIsTypedContent = false;
-				}else{
-					mIsTypedContent = true;
-				}
-				mUploadButton.setEnabled(isUploadButtonEnable());
+				mActivity.invalidateOptionsMenu();
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -151,21 +149,6 @@ public class UploadFragment extends ItFragment {
 			}
 			@Override
 			public void afterTextChanged(Editable s) {
-			}
-		});
-	}
-
-
-	private void setButton(){
-		mUploadButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mApp.showProgressDialog(mActivity);
-				ItUser me = mObjectPrefHelper.get(ItUser.class);
-				Item item = new Item(mContent.getText().toString(), me.getNickName(), me.getId());
-				mContent.setText("");
-				uploadItem(item);
 			}
 		});
 	}
@@ -186,7 +169,7 @@ public class UploadFragment extends ItFragment {
 
 
 	private String[] getDialogItemList(){
-		if(mIsTakenImage){
+		if(mImageBitmap != null){
 			return getResources().getStringArray(R.array.image_select_delete_string_array);
 		}else{
 			return getResources().getStringArray(R.array.image_select_string_array);
@@ -219,15 +202,15 @@ public class UploadFragment extends ItFragment {
 			}
 		};
 
-		if(mIsTakenImage){
+		if(mImageBitmap != null){
 			callbacks[2] = new ItDialogCallback() {
 
 				@Override
 				public void doPositiveThing(Bundle bundle) {
 					// Set profile image default
 					mImage.setImageResource(R.drawable.ic_launcher);
-					mIsTakenImage = false;
-					mUploadButton.setEnabled(isUploadButtonEnable());
+					mImageBitmap = null;
+					mActivity.invalidateOptionsMenu();
 				}
 				@Override
 				public void doNegativeThing(Bundle bundle) {
@@ -241,6 +224,7 @@ public class UploadFragment extends ItFragment {
 
 
 	private void uploadItem(final Item item){
+		mApp.showProgressDialog(mActivity);
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -274,7 +258,7 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private boolean isUploadButtonEnable(){
-		return mIsTypedContent && mIsTakenImage;
+	private boolean isSubmitEnable(){
+		return mContent.getText().toString().trim().length() > 0 && mImageBitmap != null;
 	}
 }

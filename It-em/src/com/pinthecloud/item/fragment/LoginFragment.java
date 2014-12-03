@@ -34,6 +34,9 @@ public class LoginFragment extends ItFragment {
 	private LoginButton mFacebookButton;
 	private UiLifecycleHelper mUiHelper;
 
+	private boolean mIsProfileImageUploaded = false;
+	private boolean mIsSmallProfileImageUploaded = false;
+
 	private Session.StatusCallback mCallback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
@@ -150,7 +153,6 @@ public class LoginFragment extends ItFragment {
 						mApp.dismissProgressDialog();
 						mObjectPrefHelper.put(entity);
 						itUser.setId(entity.getId());
-						goToNextActivity();
 						AsyncChainer.notifyNext(frag);
 					}
 				});
@@ -163,13 +165,13 @@ public class LoginFragment extends ItFragment {
 
 					@Override
 					protected Bitmap doInBackground(Void... params) {
-						Bitmap bm = null;
+						Bitmap bitmap = null;
 						try {
-							bm = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
+							bitmap = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
 						} catch (IOException e) {
 							ExceptionManager.fireException(new ItException(frag, "facebookLogin", ItException.TYPE.SERVER_ERROR));
 						}
-						return bm;
+						return bitmap;
 					}
 
 					@Override
@@ -185,8 +187,30 @@ public class LoginFragment extends ItFragment {
 				Bitmap profileImage = (Bitmap)params[0];
 				profileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
 				Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), profileImage, null);
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, smallProfileImage, null);
+
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
+						profileImage, new ItEntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						mIsProfileImageUploaded = true;
+						if(mIsSmallProfileImageUploaded){
+							goToNextActivity();
+						}
+					}
+				});
+
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
+						smallProfileImage, new ItEntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						mIsSmallProfileImageUploaded = true;
+						if(mIsProfileImageUploaded){
+							goToNextActivity();	
+						}
+					}
+				});
 			}
 		});
 	}

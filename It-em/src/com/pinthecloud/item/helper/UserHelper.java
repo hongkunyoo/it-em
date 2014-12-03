@@ -46,15 +46,31 @@ public class UserHelper {
 		table.where().field("id").eq(id).execute(new TableQueryCallback<ItUser>() {
 
 			@Override
-			public void onCompleted(List<ItUser> result, int count, Exception exception,
+			public void onCompleted(List<ItUser> entity, int count, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					if (count == 1) {
-						callback.onCompleted(result.get(0));
+						callback.onCompleted(entity.get(0));
 						return;
 					}
 				}
 				ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.SERVER_ERROR, exception));	
+			}
+		});
+	}
+
+
+	public void update(final ItFragment frag, ItUser user, final ItEntityCallback<ItUser> callback) {
+		table.update(user, new TableOperationCallback<ItUser>() {
+
+			@Override
+			public void onCompleted(ItUser entity, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(entity);
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.SERVER_ERROR, exception));
+				}
 			}
 		});
 	}
