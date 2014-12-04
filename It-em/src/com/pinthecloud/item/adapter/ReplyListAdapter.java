@@ -114,8 +114,8 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 	private void setImageView(ViewHolder holder, Reply reply) {
 		Picasso.with(mContext)
 		.load(BlobStorageHelper.getItemImgUrl(reply.getWhoMadeId()))
-		.placeholder(R.drawable.ic_launcher)
-		.error(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
+		.error(R.drawable.launcher)
 		.fit()
 		.into(holder.profileImage);
 	}

@@ -216,13 +216,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	private void setNormalImageView(final NormalViewHolder holder, Item item, int position) {
 		Picasso.with(holder.image.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
-		.placeholder(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(holder.image);
 
 		Picasso.with(holder.profileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(holder.profileImage);
 

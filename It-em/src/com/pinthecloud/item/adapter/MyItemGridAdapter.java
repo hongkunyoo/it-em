@@ -132,7 +132,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private void setNormalImageView(NormalViewHolder holder, Item item) {
 		Picasso.with(holder.image.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
-		.placeholder(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(holder.image);
 	}

@@ -191,7 +191,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
-		.placeholder(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mProfileImage);
 
@@ -238,7 +238,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				mProfileImageBitmap = BitmapUtil.decodeInSampleSize(getResources(), R.drawable.ic_launcher, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
+				mProfileImageBitmap = BitmapUtil.decodeInSampleSize(getResources(), R.drawable.launcher, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
 				mProfileImage.setImageBitmap(mProfileImageBitmap);
 				mIsProfileImageChanged = true;
 			}

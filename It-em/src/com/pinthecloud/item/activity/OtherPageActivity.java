@@ -29,7 +29,8 @@ public class OtherPageActivity extends ItActivity {
 	private void setFragment(){
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		MyPageFragment fragment = MyPageFragment.newInstance(getIntent().getStringExtra(ItUser.INTENT_KEY));
+		MyPageFragment fragment = MyPageFragment.newInstance(
+				getIntent().getStringExtra(ItUser.INTENT_KEY), MyPageFragment.FROM.OTHER.ordinal());
 		fragmentTransaction.add(R.id.activity_container, fragment);
 		fragmentTransaction.commit();
 	}

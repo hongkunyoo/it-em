@@ -131,13 +131,13 @@ public class ItemFragment extends ItFragment {
 	private void setImageView(){
 		Picasso.with(mImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-		.placeholder(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mImage);
 
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mProfileImage);
 	}

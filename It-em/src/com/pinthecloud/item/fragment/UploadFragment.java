@@ -71,7 +71,7 @@ public class UploadFragment extends ItFragment {
 	public void onStart() {
 		super.onStart();
 		if(mImageBitmap == null){
-			mImage.setImageResource(R.drawable.ic_launcher);
+			mImage.setImageResource(R.drawable.launcher);
 		} else{
 			mImage.setImageBitmap(mSmallImageBitmap);
 		}
@@ -208,7 +208,7 @@ public class UploadFragment extends ItFragment {
 				@Override
 				public void doPositiveThing(Bundle bundle) {
 					// Set profile image default
-					mImage.setImageResource(R.drawable.ic_launcher);
+					mImage.setImageResource(R.drawable.launcher);
 					mImageBitmap = null;
 					mActivity.invalidateOptionsMenu();
 				}

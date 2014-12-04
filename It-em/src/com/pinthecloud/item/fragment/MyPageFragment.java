@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,6 +42,12 @@ import com.squareup.picasso.Picasso;
 
 public class MyPageFragment extends MainTabFragment {
 
+	public enum FROM{
+		MAIN,
+		OTHER
+	};
+
+	public static final String FROM_KEY = "FROM_KEY";
 	public static int mTabHeight;
 
 	private ProgressBar mProgressBar;
@@ -61,12 +68,14 @@ public class MyPageFragment extends MainTabFragment {
 	private ItUser mItUser;
 
 	private boolean[] mIsUpdatedTabs;
+	private int from;
 
 
-	public static MyPageFragment newInstance(String itUserId) {
+	public static MyPageFragment newInstance(String itUserId, int from) {
 		MyPageFragment fragment = new MyPageFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(ItUser.INTENT_KEY, itUserId);
+		bundle.putInt(FROM_KEY, from);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -76,6 +85,7 @@ public class MyPageFragment extends MainTabFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
+		from = getArguments().getInt(FROM_KEY);
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
@@ -87,6 +97,10 @@ public class MyPageFragment extends MainTabFragment {
 		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 		setHasOptionsMenu(true);
 		findComponent(view);
+		if(from == FROM.OTHER.ordinal()){
+			setActionBar();
+			updateTab();
+		}
 		return view;
 	}
 
@@ -94,13 +108,20 @@ public class MyPageFragment extends MainTabFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.my_page, menu);
+		if(from == FROM.MAIN.ordinal()){
+			inflater.inflate(R.menu.my_page, menu);
+		}
 	}
 
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			if(from == FROM.OTHER.ordinal()){
+				mActivity.onBackPressed();
+			}
+			break;
 		case R.id.my_page_upload:
 			String[] itemList = getResources().getStringArray(R.array.image_select_string_array);
 			ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
@@ -124,6 +145,9 @@ public class MyPageFragment extends MainTabFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
+				mProgressBar.setVisibility(View.GONE);
+				mContainer.setVisibility(View.VISIBLE);
+
 				setComponent();
 				setButton();
 				setImageView();
@@ -132,6 +156,12 @@ public class MyPageFragment extends MainTabFragment {
 				setCustomTabName();
 			}
 		});
+	}
+
+
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 
@@ -151,16 +181,12 @@ public class MyPageFragment extends MainTabFragment {
 
 	private void setItUser(){
 		if(mItUserId.equals(mItUser.getId())){
-			mProgressBar.setVisibility(View.GONE);
-			mContainer.setVisibility(View.VISIBLE);
 			AsyncChainer.notifyNext(mThisFragment);
 		} else {
 			mUserHelper.get(mThisFragment, mItUserId, new ItEntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
-					mProgressBar.setVisibility(View.GONE);
-					mContainer.setVisibility(View.VISIBLE);
 					mItUser = entity;
 					AsyncChainer.notifyNext(mThisFragment);
 				}
@@ -192,7 +218,7 @@ public class MyPageFragment extends MainTabFragment {
 	private void setImageView(){
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.ic_launcher)
+		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mProfileImage);
 	}

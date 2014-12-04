@@ -60,7 +60,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 			break;
 		case 2:
 			ItUser itUser = ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class);
-			fragment = MyPageFragment.newInstance(itUser.getId());
+			fragment = MyPageFragment.newInstance(itUser.getId(), MyPageFragment.FROM.MAIN.ordinal());
 			break;
 		}
 
