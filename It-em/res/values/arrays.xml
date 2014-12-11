@@ -2,11 +2,6 @@
 <resources>
 
     <!-- Main -->
-    <string-array name="main_tab_title_string_array">
-        <item>Home</item>
-        <item>Hot</item>
-        <item>My Page</item>
-    </string-array>
     <string-array name="my_page_tab_title_string_array">
         <item>IT:EM</item>
         <item>IT</item>

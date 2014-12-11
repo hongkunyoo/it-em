@@ -34,7 +34,7 @@ public class ItItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	public ItItemGridAdapter(Context context, List<Item> itemList) {
 		this.mContext = context;
 		this.mItemList = itemList;
-		this.mGridColumnNum = mContext.getResources().getInteger(R.integer.my_page_item_grid_column_num);
+		this.mGridColumnNum = mContext.getResources().getInteger(R.integer.it_user_page_item_grid_column_num);
 	}
 
 

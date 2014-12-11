@@ -169,7 +169,7 @@ public class HomeDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, ItUserPageActivity.class);
-				intent.putExtra(ItUser.INTENT_KEY, myItUser);
+				intent.putExtra(ItUser.INTENT_KEY, myItUser.getId());
 				mContext.startActivity(intent);
 			}
 		});
@@ -181,9 +181,16 @@ public class HomeDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	private void setNormalViewHolder(NormalViewHolder holder, HomeDrawerMenu menu) {
+	private void setNormalViewHolder(final NormalViewHolder holder, HomeDrawerMenu menu) {
 		holder.menuImage.setImageResource(menu.getMenuImage());
 		holder.menuName.setText(menu.getMenuName());
+		
+		holder.view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+			}
+		});
 	}
 
 

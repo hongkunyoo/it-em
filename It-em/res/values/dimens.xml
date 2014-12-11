@@ -21,12 +21,12 @@
     <!-- Hot -->
     <dimen name="hot_item_header_height">48dp</dimen>
 
-    <!-- My Page -->
-    <dimen name="my_page_profile_height">200dp</dimen>
-    <dimen name="my_page_profile_content_margin">12dp</dimen>
-    <dimen name="my_page_header_height">249dp</dimen>
-    <dimen name="my_page_profile_top_margin">24dp</dimen>
-    <dimen name="my_page_tab_number_margin">6dp</dimen>
+    <!-- It User Page -->
+    <dimen name="it_user_page_profile_height">200dp</dimen>
+    <dimen name="it_user_page_profile_content_margin">12dp</dimen>
+    <dimen name="it_user_page_header_height">249dp</dimen>
+    <dimen name="it_user_page_profile_top_margin">24dp</dimen>
+    <dimen name="it_user_page_tab_number_margin">6dp</dimen>
 
     <!-- My Item -->
     <dimen name="my_item_progress_bar_bottom_margin">100dp</dimen>

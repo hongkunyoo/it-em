@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -47,7 +47,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	private boolean mIsItUserUpdated = false;
 	private boolean mIsProfileImageUpdated = false;
 	private boolean mIsSmallProfileImageUpdated = false;
-	
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -154,7 +154,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-//		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 
@@ -355,7 +355,8 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void goToNextActivity(){
 		mApp.dismissProgressDialog();
-		Intent intent = new Intent(mActivity, MainActivity.class);
+		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+		intent.putExtra(ItUser.INTENT_KEY, mMyItUser.getId());
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}

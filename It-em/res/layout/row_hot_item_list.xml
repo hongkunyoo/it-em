@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/home_item_content_margin"
-            android:textColor="@color/my_page_tab_title"
+            android:textColor="@color/it_user_page_tab_title"
             android:textSize="@dimen/font_medium" />
 
         <RelativeLayout
@@ -97,7 +97,7 @@
                 android:layout_toEndOf="@+id/row_hot_item_list_it_button"
                 android:layout_toRightOf="@+id/row_hot_item_list_it_button"
                 android:text="@string/plus"
-                android:textColor="@color/my_page_tab_number"
+                android:textColor="@color/it_user_page_tab_number"
                 android:textSize="@dimen/font_small" />
 
             <TextView
@@ -107,7 +107,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/row_hot_item_list_it_number_plus"
                 android:layout_toRightOf="@+id/row_hot_item_list_it_number_plus"
-                android:textColor="@color/my_page_tab_number"
+                android:textColor="@color/it_user_page_tab_number"
                 android:textSize="@dimen/font_small" />
 
             <Button

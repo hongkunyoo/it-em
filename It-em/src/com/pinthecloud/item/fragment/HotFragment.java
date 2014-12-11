@@ -23,7 +23,7 @@ import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.Item;
 
-public class HotFragment extends MainTabFragment {
+public class HotFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mListRefresh;
@@ -44,29 +44,8 @@ public class HotFragment extends MainTabFragment {
 		findComponent(view);
 		setRefreshLayout();
 		setList();
+		updateList();
 		return view;
-	}
-
-
-	@Override
-	public void updateTab(){
-		mAimHelper.getRank10(mThisFragment, currentDate, new ItListCallback<Item>() {
-
-			@Override
-			public void onCompleted(List<Item> list, int count) {
-				if(list.size() < 1){
-					currentDate = currentDate.getYesterday();
-					updateTab();
-				} else {
-					mProgressBar.setVisibility(View.GONE);
-					mListRefresh.setRefreshing(false);
-					mListRefresh.setVisibility(View.VISIBLE);
-
-					mItemList.clear();
-					mListAdapter.addAll(list);
-				}
-			}
-		});
 	}
 
 
@@ -84,7 +63,7 @@ public class HotFragment extends MainTabFragment {
 			@Override
 			public void onRefresh() {
 				currentDate = ItDateTime.getToday();
-				updateTab();
+				updateList();
 			}
 		});
 	}
@@ -118,6 +97,27 @@ public class HotFragment extends MainTabFragment {
 
 				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
 					addNextItemList();
+				}
+			}
+		});
+	}
+
+
+	public void updateList(){
+		mAimHelper.getRank10(mThisFragment, currentDate, new ItListCallback<Item>() {
+
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				if(list.size() < 1){
+					currentDate = currentDate.getYesterday();
+					updateList();
+				} else {
+					mProgressBar.setVisibility(View.GONE);
+					mListRefresh.setRefreshing(false);
+					mListRefresh.setVisibility(View.VISIBLE);
+
+					mItemList.clear();
+					mListAdapter.addAll(list);
 				}
 			}
 		});

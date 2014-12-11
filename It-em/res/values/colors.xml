@@ -8,13 +8,11 @@
     <color name="line_color">#20000000</color>
     <color name="toolbar_shadow_start_color">#000000</color>
 
-    <!-- Main -->
-    <color name="main_tab_pressed">#6633B5E5</color>
-    
-    <!-- My Page -->
-    <color name="my_page_tab_selected">#0A000000</color>
-    <color name="my_page_tab_title">#de000000</color>
-    <color name="my_page_tab_number">#90a4ae</color>
+    <!-- It User Page -->
+    <color name="it_user_page_tab_pressed">#6633B5E5</color>
+    <color name="it_user_page_tab_selected">#0A000000</color>
+    <color name="it_user_page_tab_title">#de000000</color>
+    <color name="it_user_page_tab_number">#90a4ae</color>
     
     <!-- My Item -->
     <color name="my_item_it_reply_number">#deffffff</color>

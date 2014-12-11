@@ -10,6 +10,7 @@ import com.pinthecloud.item.fragment.HomeDrawerFragment;
 public class HomeActivity extends ItActivity implements HomeDrawerFragment.DrawerCallbacks {
 
 	private Toolbar toolbar;
+	private DrawerLayout mDrawerLayout;
 	private HomeDrawerFragment mhomeDrawerFragment;
 
 
@@ -34,7 +35,8 @@ public class HomeActivity extends ItActivity implements HomeDrawerFragment.Drawe
 
 
 	private void setDrawer(){
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
 		mhomeDrawerFragment = (HomeDrawerFragment) getFragmentManager().findFragmentById(R.id.home_drawer);
-		mhomeDrawerFragment.setUp(R.id.home_drawer, (DrawerLayout) findViewById(R.id.home_drawer_layout), toolbar);
+		mhomeDrawerFragment.setUp(R.id.home_drawer, mDrawerLayout, toolbar);
 	}
 }

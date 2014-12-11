@@ -59,7 +59,7 @@
                             android:id="@+id/item_frag_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/my_page_tab_title"
+                            android:textColor="@color/it_user_page_tab_title"
                             android:textSize="@dimen/font_large" />
                     </LinearLayout>
 
@@ -72,14 +72,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/upload_date"
-                            android:textColor="@color/my_page_tab_number"
+                            android:textColor="@color/it_user_page_tab_number"
                             android:textSize="@dimen/font_small" />
 
                         <TextView
                             android:id="@+id/item_frag_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/my_page_tab_number"
+                            android:textColor="@color/it_user_page_tab_number"
                             android:textSize="@dimen/font_small" />
                     </LinearLayout>
 
@@ -92,14 +92,14 @@
                             android:id="@+id/item_frag_it_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/my_page_tab_number"
+                            android:textColor="@color/it_user_page_tab_number"
                             android:textSize="@dimen/font_medium" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/it_number"
-                            android:textColor="@color/my_page_tab_number"
+                            android:textColor="@color/it_user_page_tab_number"
                             android:textSize="@dimen/font_medium" />
                     </LinearLayout>
                 </LinearLayout>
@@ -140,7 +140,7 @@
                 android:layout_height="@dimen/item_profile_height"
                 android:gravity="center_vertical"
                 android:text="@string/upload_by"
-                android:textColor="@color/my_page_tab_number"
+                android:textColor="@color/it_user_page_tab_number"
                 android:textSize="@dimen/font_medium" />
 
             <LinearLayout
@@ -164,7 +164,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/content_margin"
                     android:layout_marginStart="@dimen/content_margin"
-                    android:textColor="@color/my_page_tab_title"
+                    android:textColor="@color/it_user_page_tab_title"
                     android:textSize="@dimen/font_large" />
             </LinearLayout>
         </LinearLayout>

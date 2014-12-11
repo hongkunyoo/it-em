@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.activity.HomeActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -248,7 +248,7 @@ public class UploadFragment extends ItFragment {
 					@Override
 					public void onCompleted(String entity) {
 						mApp.dismissProgressDialog();
-						Intent intent = new Intent(mActivity, MainActivity.class);
+						Intent intent = new Intent(mActivity, HomeActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 					}

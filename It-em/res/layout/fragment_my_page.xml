@@ -24,20 +24,20 @@
         <LinearLayout
             android:id="@+id/my_page_frag_header_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/my_page_header_height"
+            android:layout_height="@dimen/it_user_page_header_height"
             android:orientation="vertical" >
 
             <RelativeLayout
                 android:id="@+id/my_page_frag_profile_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/my_page_profile_height"
+                android:layout_height="@dimen/it_user_page_profile_height"
                 android:background="@android:color/white"
                 android:paddingBottom="@dimen/content_margin"
                 android:paddingEnd="@dimen/content_margin"
                 android:paddingLeft="@dimen/content_margin"
                 android:paddingRight="@dimen/content_margin"
                 android:paddingStart="@dimen/content_margin"
-                android:paddingTop="@dimen/my_page_profile_top_margin" >
+                android:paddingTop="@dimen/it_user_page_profile_top_margin" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/content_margin"
                             android:layout_marginStart="@dimen/content_margin"
-                            android:textColor="@color/my_page_tab_title"
+                            android:textColor="@color/it_user_page_tab_title"
                             android:textSize="@dimen/font_large" />
                     </LinearLayout>
 
@@ -72,16 +72,16 @@
                         android:id="@+id/my_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/my_page_profile_content_margin"
-                        android:textColor="@color/my_page_tab_number"
+                        android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
+                        android:textColor="@color/it_user_page_tab_number"
                         android:textSize="@dimen/font_small" />
 
                     <TextView
                         android:id="@+id/my_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/my_page_profile_content_margin"
-                        android:textColor="@color/my_page_tab_number"
+                        android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
+                        android:textColor="@color/it_user_page_tab_number"
                         android:textSize="@dimen/font_small" />
                 </LinearLayout>
 

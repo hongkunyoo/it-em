@@ -18,7 +18,7 @@ import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 
-public class ItItemFragment extends MyPageTabFragment {
+public class ItItemFragment extends ItUserPageTabFragment {
 
 	private ProgressBar mProgressBar;
 	private RecyclerView mGridView;
@@ -28,7 +28,7 @@ public class ItItemFragment extends MyPageTabFragment {
 	private boolean mIsAdding = false;
 
 
-	public static MyPageTabFragment newInstance(int position, ItUser itUser) {
+	public static ItUserPageTabFragment newInstance(int position, ItUser itUser) {
 		ItItemFragment fragment = new ItItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
@@ -61,7 +61,7 @@ public class ItItemFragment extends MyPageTabFragment {
 	public void adjustScroll(final int scrollHeight) {
 		int findFirstVisibleItemPosition = mGridLayoutManager.findFirstVisibleItemPosition();
 		int spanCount = mGridLayoutManager.getSpanCount();
-		if (scrollHeight - MyPageFragment.mTabHeight != 0 || findFirstVisibleItemPosition < spanCount) {
+		if (scrollHeight - ItUserPageFragment.mTabHeight != 0 || findFirstVisibleItemPosition < spanCount) {
 			mGridLayoutManager.scrollToPositionWithOffset(spanCount, scrollHeight);
 		}
 	}
@@ -78,7 +78,7 @@ public class ItItemFragment extends MyPageTabFragment {
 
 				mItemList.clear();
 				mGridAdapter.addAll(list);
-				mMyPageTabHolder.updateTabNumber(mPosition, mItemList.size());
+				mItUserPageTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
 	}
@@ -93,7 +93,7 @@ public class ItItemFragment extends MyPageTabFragment {
 	private void setGrid(LayoutInflater inflater){
 		mGridView.setHasFixedSize(true);
 
-		mGridLayoutManager = new GridLayoutManager(mActivity, getResources().getInteger(R.integer.my_page_item_grid_column_num));
+		mGridLayoutManager = new GridLayoutManager(mActivity, getResources().getInteger(R.integer.it_user_page_item_grid_column_num));
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
@@ -107,8 +107,8 @@ public class ItItemFragment extends MyPageTabFragment {
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 				// Scroll Header
-				if (mMyPageTabHolder != null){
-					mMyPageTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
+				if (mItUserPageTabHolder != null){
+					mItUserPageTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
 				}
 
 				// Add more item

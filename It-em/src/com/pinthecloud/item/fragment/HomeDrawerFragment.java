@@ -26,7 +26,6 @@ public class HomeDrawerFragment extends ItFragment {
 
 	private DrawerCallbacks mCallbacks;
 	private ActionBarDrawerToggle mDrawerToggle;
-
 	private DrawerLayout mDrawerLayout;
 	private View mFragmentContainerView;
 

@@ -18,7 +18,7 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.activity.HomeActivity;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -217,7 +217,7 @@ public class LoginFragment extends ItFragment {
 
 
 	private void goToNextActivity(){
-		Intent intent = new Intent(mActivity, MainActivity.class);
+		Intent intent = new Intent(mActivity, HomeActivity.class);
 		startActivity(intent);
 		mActivity.finish();
 	}

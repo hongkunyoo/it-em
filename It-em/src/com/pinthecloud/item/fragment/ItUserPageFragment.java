@@ -30,7 +30,7 @@ import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.MyPageTabHolder;
+import com.pinthecloud.item.interfaces.ItUserPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -40,14 +40,8 @@ import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
 
-public class MyPageFragment extends MainTabFragment {
+public class ItUserPageFragment extends ItFragment {
 
-	public enum FROM{
-		MAIN,
-		OTHER
-	};
-
-	public static final String FROM_KEY = "FROM_KEY";
 	public static int mTabHeight;
 
 	private ProgressBar mProgressBar;
@@ -68,24 +62,12 @@ public class MyPageFragment extends MainTabFragment {
 	private ItUser mItUser;
 
 	private boolean[] mIsUpdatedTabs;
-	private int from;
-
-
-	public static MyPageFragment newInstance(String itUserId, int from) {
-		MyPageFragment fragment = new MyPageFragment();
-		Bundle bundle = new Bundle();
-		bundle.putString(ItUser.INTENT_KEY, itUserId);
-		bundle.putInt(FROM_KEY, from);
-		fragment.setArguments(bundle);
-		return fragment;
-	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
-		from = getArguments().getInt(FROM_KEY);
+		mItUserId = mActivity.getIntent().getStringExtra(ItUser.INTENT_KEY);
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
@@ -97,44 +79,7 @@ public class MyPageFragment extends MainTabFragment {
 		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 		setHasOptionsMenu(true);
 		findComponent(view);
-		if(from == FROM.OTHER.ordinal()){
-			setActionBar();
-			updateTab();
-		}
-		return view;
-	}
-
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		if(from == FROM.MAIN.ordinal()){
-			inflater.inflate(R.menu.my_page, menu);
-		}
-	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			if(from == FROM.OTHER.ordinal()){
-				mActivity.onBackPressed();
-			}
-			break;
-		case R.id.my_page_upload:
-			String[] itemList = getResources().getStringArray(R.array.image_select_string_array);
-			ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
-			ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-			listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-
-	@Override
-	public void updateTab() {
+		
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -148,6 +93,7 @@ public class MyPageFragment extends MainTabFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
 
+				setActionBar();
 				setComponent();
 				setButton();
 				setImageView();
@@ -156,12 +102,26 @@ public class MyPageFragment extends MainTabFragment {
 				setCustomTabName();
 			}
 		});
+		
+		return view;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			mActivity.onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(mItUser.getNickName());
 	}
 
 
@@ -226,7 +186,7 @@ public class MyPageFragment extends MainTabFragment {
 
 	private void setViewPager(){
 		mViewPagerAdapter = new MyPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
-		mViewPagerAdapter.setMyPageTabHolder(new MyPageTabHolder() {
+		mViewPagerAdapter.setMyPageTabHolder(new ItUserPageTabHolder() {
 
 			@Override
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
@@ -262,8 +222,8 @@ public class MyPageFragment extends MainTabFragment {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-				SparseArrayCompat<MyPageTabHolder> myPageTabHolders = mViewPagerAdapter.getMyPageTabHolders();
-				MyPageTabHolder fragmentContent = myPageTabHolders.valueAt(position);
+				SparseArrayCompat<ItUserPageTabHolder> myPageTabHolders = mViewPagerAdapter.getMyPageTabHolders();
+				ItUserPageTabHolder fragmentContent = myPageTabHolders.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 				if(!mIsUpdatedTabs[position]){
 					fragmentContent.updateTab();

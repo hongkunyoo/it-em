@@ -1,11 +1,11 @@
 package com.pinthecloud.item.activity;
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.SettingsFragment;
 
 public class SettingsActivity extends ItActivity {
@@ -26,10 +26,9 @@ public class SettingsActivity extends ItActivity {
 
 
 	private void setFragment(){
-		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		SettingsFragment fragment = new SettingsFragment();
-		fragmentTransaction.add(R.id.activity_container, fragment);
-		fragmentTransaction.commit();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		ItFragment fragment = new SettingsFragment();
+		transaction.add(R.id.activity_container, fragment);
+		transaction.commit();
 	}
 }

@@ -33,7 +33,7 @@
                     android:id="@+id/row_reply_list_nick_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/my_page_tab_title"
+                    android:textColor="@color/it_user_page_tab_title"
                     android:textSize="@dimen/font_medium" />
 
                 <TextView
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/my_page_tab_number"
+                    android:textColor="@color/it_user_page_tab_number"
                     android:textSize="@dimen/font_small" />
             </RelativeLayout>
 
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/reply_nick_name_margin"
-                android:textColor="@color/my_page_tab_title"
+                android:textColor="@color/it_user_page_tab_title"
                 android:textSize="@dimen/font_small" />
         </LinearLayout>
     </LinearLayout>

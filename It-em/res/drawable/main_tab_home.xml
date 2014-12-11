@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_shortAnimTime">
-
-    <item android:drawable="@drawable/tabbar_home_highlight_ic" android:state_selected="true"/>
-    <item android:drawable="@drawable/tabbar_home_ic"/>
-
-</selector>
