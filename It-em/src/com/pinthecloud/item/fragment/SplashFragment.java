@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,9 +9,9 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.HomeActivity;
 import com.pinthecloud.item.activity.HongkunTestActivity;
 import com.pinthecloud.item.activity.LoginActivity;
-import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.model.ItUser;
 
 public class SplashFragment extends ItFragment {
@@ -46,7 +47,7 @@ public class SplashFragment extends ItFragment {
 					intent.setClass(mActivity, LoginActivity.class);
 				} else{
 					// Has Loggined
-					intent.setClass(mActivity, MainActivity.class);			
+					intent.setClass(mActivity, HomeActivity.class);			
 				}
 				startActivity(intent);
 			}

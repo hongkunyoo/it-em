@@ -19,7 +19,7 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItemActivity;
-import com.pinthecloud.item.activity.OtherPageActivity;
+import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
@@ -166,7 +166,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, OtherPageActivity.class);
+				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
 				mActivity.startActivity(intent);
 			}

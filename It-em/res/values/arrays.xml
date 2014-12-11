@@ -12,6 +12,16 @@
         <item>IT</item>
     </string-array>
 
+    <!-- Home Drawer -->
+    <string-array name="home_drawer_menu_string_array">
+        <item>Home</item>
+        <item>Account</item>
+        <item>Purchases</item>
+        <item>More</item>
+        <item>Be Pro</item>
+        <item>Settings</item>
+    </string-array>
+
     <!-- Profile Settings -->
     <string-array name="image_select_delete_string_array">
         <item>Select from Album</item>

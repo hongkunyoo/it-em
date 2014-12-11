@@ -66,7 +66,6 @@ public class HongkunTestFragment extends ItFragment {
 					
 					@Override
 					public void onCompleted(List<Item> list, int count) {
-						// TODO Auto-generated method stub
 						ItLog.log(list);
 					}
 				});

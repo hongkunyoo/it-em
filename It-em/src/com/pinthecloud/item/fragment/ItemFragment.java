@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.OtherPageActivity;
+import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
@@ -120,7 +120,7 @@ public class ItemFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, OtherPageActivity.class);
+				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
 				startActivity(intent);
 			}

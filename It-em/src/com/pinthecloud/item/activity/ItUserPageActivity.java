@@ -9,7 +9,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.MyPageFragment;
 import com.pinthecloud.item.model.ItUser;
 
-public class OtherPageActivity extends ItActivity {
+public class ItUserPageActivity extends ItActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

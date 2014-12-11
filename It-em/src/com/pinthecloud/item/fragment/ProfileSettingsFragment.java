@@ -154,7 +154,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 
