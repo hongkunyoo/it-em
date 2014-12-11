@@ -9,8 +9,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,9 +22,7 @@ import android.widget.TextView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.activity.UploadActivity;
-import com.pinthecloud.item.adapter.MyPagePagerAdapter;
-import com.pinthecloud.item.dialog.ItAlertListDialog;
-import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
@@ -56,7 +52,7 @@ public class ItUserPageFragment extends ItFragment {
 
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
-	private MyPagePagerAdapter mViewPagerAdapter;
+	private ItUserPagePagerAdapter mViewPagerAdapter;
 
 	private String mItUserId;
 	private ItUser mItUser;
@@ -79,7 +75,7 @@ public class ItUserPageFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 		setHasOptionsMenu(true);
 		findComponent(view);
-		
+
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -102,7 +98,7 @@ public class ItUserPageFragment extends ItFragment {
 				setCustomTabName();
 			}
 		});
-		
+
 		return view;
 	}
 
@@ -185,7 +181,7 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setViewPager(){
-		mViewPagerAdapter = new MyPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
+		mViewPagerAdapter = new ItUserPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
 		mViewPagerAdapter.setMyPageTabHolder(new ItUserPageTabHolder() {
 
 			@Override

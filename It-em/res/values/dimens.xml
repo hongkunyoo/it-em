@@ -8,10 +8,6 @@
     <dimen name="toolbar_title_margin">72dp</dimen>
     <dimen name="drawer_width">280dp</dimen>
 
-    <!-- Main -->
-    <dimen name="main_tab_indicator_height">4dp</dimen>
-    <dimen name="main_tab_height">48dp</dimen>
-
     <!-- Home -->
     <dimen name="home_item_profile_height">56dp</dimen>
     <dimen name="home_item_profile_image_width">38dp</dimen>
@@ -27,6 +23,7 @@
     <dimen name="it_user_page_header_height">249dp</dimen>
     <dimen name="it_user_page_profile_top_margin">24dp</dimen>
     <dimen name="it_user_page_tab_number_margin">6dp</dimen>
+    <dimen name="it_user_page_tab_height">48dp</dimen>
 
     <!-- My Item -->
     <dimen name="my_item_progress_bar_bottom_margin">100dp</dimen>

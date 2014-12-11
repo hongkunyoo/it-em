@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Main -->
-    <string-array name="my_page_tab_title_string_array">
-        <item>IT:EM</item>
-        <item>IT</item>
-    </string-array>
-
-    <!-- Home Drawer -->
-    <string-array name="home_drawer_menu_string_array">
+    <!-- Main Drawer -->
+    <string-array name="main_drawer_menu_string_array">
         <item>Home</item>
         <item>Account</item>
         <item>Purchases</item>
         <item>More</item>
         <item>Be Pro</item>
         <item>Settings</item>
+    </string-array>
+
+    <!-- It User Page -->
+    <string-array name="it_user_page_tab_title_string_array">
+        <item>IT:EM</item>
+        <item>IT</item>
     </string-array>
 
     <!-- Profile Settings -->

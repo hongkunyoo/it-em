@@ -14,15 +14,14 @@
     <string name="facebook_login">Login with facebook in an instant</string>
 
     <!-- Main -->
-    <string name="settings">Settings</string>
-
-    <!-- Home -->
-    <string name="plus">+</string>
-    <string name="home">Home</string>
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
-    
-    <!-- Home Drawer -->
+
+    <!-- Home -->
+    <string name="home">Home</string>
+    <string name="plus">+</string>
+
+    <!-- Main Drawer -->
     <string name="image">Image</string>
 
     <!-- Hot -->
@@ -51,6 +50,7 @@
 
     <!-- Settings -->
     <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
 
     <!-- Reply -->
     <string name="reply">Comment</string>

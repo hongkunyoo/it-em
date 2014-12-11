@@ -1,6 +1,5 @@
 package com.pinthecloud.item.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -17,13 +16,16 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
+import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.fragment.MainDrawerFragment;
+import com.pinthecloud.item.fragment.MainDrawerFragment.MainDrawerMenu;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
-public class HomeDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private enum VIEW_TYPE{
 		PROFILE,
@@ -32,21 +34,14 @@ public class HomeDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 	private Context mContext;
-	private List<HomeDrawerMenu> mMenuList;
+	private ItFragment mfrag; 
+	private List<MainDrawerMenu> mMenuList;
 
 
-	public HomeDrawerMenuListAdapter(Context context) {
+	public MainDrawerMenuListAdapter(Context context, ItFragment frag, List<MainDrawerMenu> menuList) {
 		this.mContext = context;
-
-		String[] menuList = context.getResources().getStringArray(R.array.home_drawer_menu_string_array);
-		this.mMenuList = new ArrayList<HomeDrawerMenu>();
-		mMenuList.add(new HomeDrawerMenu(0, ""));
-		mMenuList.add(new HomeDrawerMenu(R.drawable.launcher, menuList[0]));
-		mMenuList.add(new HomeDrawerMenu(0, menuList[1]));
-		mMenuList.add(new HomeDrawerMenu(R.drawable.launcher, menuList[2]));
-		mMenuList.add(new HomeDrawerMenu(0, menuList[3]));
-		mMenuList.add(new HomeDrawerMenu(R.drawable.launcher, menuList[4]));
-		mMenuList.add(new HomeDrawerMenu(R.drawable.launcher, menuList[5]));
+		this.mfrag = frag;
+		this.mMenuList = menuList;
 	}
 
 
@@ -113,7 +108,7 @@ public class HomeDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, final int position) {
-		HomeDrawerMenu menu = mMenuList.get(position);
+		MainDrawerMenu menu = mMenuList.get(position);
 		int viewType = getItemViewType(position);
 
 		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
@@ -144,7 +139,7 @@ public class HomeDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 	@Override
 	public int getItemViewType(int position) {
-		HomeDrawerMenu menu = mMenuList.get(position);
+		MainDrawerMenu menu = mMenuList.get(position);
 		if(position == 0){
 			return VIEW_TYPE.PROFILE.ordinal();
 		} else if (menu.getMenuImage() == 0){
@@ -176,39 +171,22 @@ public class HomeDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	private void setHeaderViewHolder(HeaderViewHolder holder, HomeDrawerMenu menu) {
+	private void setHeaderViewHolder(HeaderViewHolder holder, MainDrawerMenu menu) {
 		holder.headerText.setText(menu.getMenuName());
 	}
 
 
-	private void setNormalViewHolder(final NormalViewHolder holder, HomeDrawerMenu menu) {
+	private void setNormalViewHolder(final NormalViewHolder holder, final MainDrawerMenu menu) {
+		holder.view.setActivated(menu.isActivated());
 		holder.menuImage.setImageResource(menu.getMenuImage());
 		holder.menuName.setText(menu.getMenuName());
-		
+
 		holder.view.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
+				((MainDrawerFragment)mfrag).selectItem(menu);
 			}
 		});
-	}
-
-
-	private class HomeDrawerMenu {
-		private int menuImage;
-		private String menuName;
-
-		public int getMenuImage() {
-			return menuImage;
-		}
-		public String getMenuName() {
-			return menuName;
-		}
-
-		public HomeDrawerMenu(int menuImage, String menuName) {
-			super();
-			this.menuImage = menuImage;
-			this.menuName = menuName;
-		}
 	}
 }

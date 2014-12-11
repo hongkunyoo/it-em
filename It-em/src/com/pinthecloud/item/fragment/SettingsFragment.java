@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ public class SettingsFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
-		setHasOptionsMenu(true);
 		setActionBar();
 		findComponent(view);
 		setButton();
@@ -34,20 +32,9 @@ public class SettingsFragment extends ItFragment {
 	}
 
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			mActivity.onBackPressed();
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getResources().getString(R.string.settings));
 	}
 
 

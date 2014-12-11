@@ -14,27 +14,27 @@ import com.pinthecloud.item.interfaces.ItUserPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.CustomTabProvider;
 
-public class MyPagePagerAdapter extends FragmentStatePagerAdapter implements CustomTabProvider {
+public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements CustomTabProvider {
 
 	private String[] mTitles;
-	private SparseArrayCompat<ItUserPageTabHolder> mMyPageTabHolders;
-	private ItUserPageTabHolder mMyPageTabHolder;
+	private SparseArrayCompat<ItUserPageTabHolder> mItUserPageTabHolders;
+	private ItUserPageTabHolder mItUserPageTabHolder;
 	private ItUser mItUser;
 
 
-	public MyPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
+	public ItUserPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
 		super(fm);
-		this.mTitles = context.getResources().getStringArray(R.array.my_page_tab_title_string_array);
-		this.mMyPageTabHolders = new SparseArrayCompat<ItUserPageTabHolder>();
+		this.mTitles = context.getResources().getStringArray(R.array.it_user_page_tab_title_string_array);
+		this.mItUserPageTabHolders = new SparseArrayCompat<ItUserPageTabHolder>();
 		this.mItUser = itUser;
 	}
 
 
-	public void setMyPageTabHolder(ItUserPageTabHolder myPageTabHolder) {
-		this.mMyPageTabHolder = myPageTabHolder;
+	public void setMyPageTabHolder(ItUserPageTabHolder itUserPageTabHolder) {
+		this.mItUserPageTabHolder = itUserPageTabHolder;
 	}
 	public SparseArrayCompat<ItUserPageTabHolder> getMyPageTabHolders() {
-		return mMyPageTabHolders;
+		return mItUserPageTabHolders;
 	}
 
 
@@ -62,8 +62,8 @@ public class MyPagePagerAdapter extends FragmentStatePagerAdapter implements Cus
 			break;
 		}
 
-		mMyPageTabHolders.put(position, fragment);
-		if (mMyPageTabHolder != null) fragment.setMyPageTabHolder(mMyPageTabHolder);
+		mItUserPageTabHolders.put(position, fragment);
+		if (mItUserPageTabHolder != null) fragment.setMyPageTabHolder(mItUserPageTabHolder);
 		return fragment;
 	}
 
