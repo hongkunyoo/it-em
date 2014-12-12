@@ -14,6 +14,7 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 	private Toolbar toolbar;
 	private DrawerLayout mDrawerLayout;
 	private MainDrawerFragment mDrawerFragment;
+	private int mCurrentSelectedPosition;
 
 
 	@Override
@@ -27,19 +28,19 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 
 	@Override
 	public void onBackPressed() {
-		if (getFragmentManager().getBackStackEntryCount() == 1) {
+		if(mCurrentSelectedPosition == MainDrawerFragment.HOME_POSITION){
 			super.onBackPressed();
 		} else {
-			getFragmentManager().popBackStack();
+			mDrawerFragment.selectItem(MainDrawerFragment.HOME_POSITION);
 		}
 	}
 
 
 	@Override
-	public void onDrawerItemSelected(ItFragment fragment) {
+	public void onDrawerItemSelected(int position, ItFragment fragment) {
+		mCurrentSelectedPosition = position;
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		transaction.replace(R.id.main_container, fragment);
-		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 

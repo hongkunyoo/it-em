@@ -23,6 +23,8 @@ import com.pinthecloud.item.adapter.MainDrawerMenuListAdapter;
 
 public class MainDrawerFragment extends ItFragment {
 
+	public static final int HOME_POSITION = 1;
+
 	private RecyclerView mListView;
 	private MainDrawerMenuListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
@@ -40,7 +42,7 @@ public class MainDrawerFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_main_drawer, container, false);
 		setList(view);
-		selectItem(mMenuList.get(1));	// Home Fragment as a first screen.
+		selectItem(HOME_POSITION);	// Home Fragment as a first screen.
 		return view;
 	}
 
@@ -133,33 +135,36 @@ public class MainDrawerFragment extends ItFragment {
 	}
 
 
-	public void selectItem(MainDrawerMenu menu) {
+	public void selectItem(int position) {
+		MainDrawerMenu menu = mMenuList.get(position);
+
+		// Activate selected menu with view
+		// Deactivate other menu
+		for(int i=0 ; i<mMenuList.size() ; i++){
+
+			if(i == position){
+
+				menu.setActivated(true);
+				mListAdapter.notifyItemChanged(i);
+			} else if(mMenuList.get(i).isActivated()) {
+
+				mMenuList.get(i).setActivated(false);
+				mListAdapter.notifyItemChanged(i);
+			}
+		}
+
 		if (mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
 		}
 
-		if(!menu.isActivated){
-			// Activate selected menu with view
-			for(int i=0 ; i<mMenuList.size() ; i++){
-				if(i == mMenuList.indexOf(menu)){
-					menu.setActivated(true);
-					mListAdapter.notifyItemChanged(i);
-				} else if(mMenuList.get(i).isActivated()) {
-					mMenuList.get(i).setActivated(false);
-					mListAdapter.notifyItemChanged(i);
-				}
-			}
-
-			// Fragment Transaction
-			if (mCallbacks != null) {
-				mCallbacks.onDrawerItemSelected(menu.getFragment());
-			}
+		if (mCallbacks != null) {
+			mCallbacks.onDrawerItemSelected(position, menu.getFragment());
 		}
 	}
 
 
 	public static interface DrawerCallbacks {
-		void onDrawerItemSelected(ItFragment fragment);
+		void onDrawerItemSelected(int position, ItFragment fragment);
 	}
 
 

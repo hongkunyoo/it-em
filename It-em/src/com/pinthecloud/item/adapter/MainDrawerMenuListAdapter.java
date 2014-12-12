@@ -185,7 +185,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 			@Override
 			public void onClick(View v) {
-				((MainDrawerFragment)mfrag).selectItem(menu);
+				((MainDrawerFragment)mfrag).selectItem(mMenuList.indexOf(menu));
 			}
 		});
 	}
