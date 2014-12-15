@@ -226,17 +226,6 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.CAMERA);
-			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-			}
-		};
-
-		callbacks[2] = new ItDialogCallback() {
-
-			@Override
-			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
 				mProfileImageBitmap = BitmapUtil.decodeInSampleSize(getResources(), R.drawable.launcher, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
 				mProfileImage.setImageBitmap(mProfileImageBitmap);
@@ -247,7 +236,6 @@ public class ProfileSettingsFragment extends ItFragment {
 			}
 		};
 
-		callbacks[itemList.length-1] = null;
 		return callbacks;
 	}
 

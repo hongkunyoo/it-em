@@ -43,7 +43,7 @@
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/it_lower"
-                android:src="@drawable/card_it_btn" />
+                android:src="@drawable/home_item_list_it_button" />
 
             <TextView
                 android:id="@+id/row_home_item_list_it_number_plus"
@@ -70,6 +70,14 @@
 
             <Button
                 android:id="@+id/row_home_item_list_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/row_home_item_list_product_tag"
+                android:layout_toStartOf="@+id/row_home_item_list_product_tag" />
+
+            <Button
+                android:id="@+id/row_home_item_list_product_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

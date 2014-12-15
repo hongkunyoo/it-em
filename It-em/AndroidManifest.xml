@@ -41,6 +41,7 @@
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.ItUserPageActivity" />
         <activity android:name=".activity.ItemActivity" />
+        <activity android:name=".activity.ProductTagActivity" />
         <activity
             android:name=".activity.UploadActivity"
             android:label="@string/item_upload"

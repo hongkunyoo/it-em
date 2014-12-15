@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -12,10 +13,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.interfaces.ItListCallback;
 import com.pinthecloud.item.model.Item;
@@ -24,6 +28,8 @@ public class HomeFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mListRefresh;
+	private Button mUploadButton;
+
 	private RecyclerView mListView;
 	private HomeItemListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
@@ -40,6 +46,7 @@ public class HomeFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 		setActionBar();
 		findComponent(view);
+		setButton();
 		setRefreshLayout();
 		setList();
 		updateList();
@@ -56,7 +63,20 @@ public class HomeFragment extends ItFragment {
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.home_frag_progress_bar);
 		mListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
+		mUploadButton = (Button)view.findViewById(R.id.home_frag_upload_button);
 		mListView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
+	}
+
+
+	private void setButton(){
+		mUploadButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, UploadActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 

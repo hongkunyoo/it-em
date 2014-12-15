@@ -150,7 +150,6 @@ public class LoginFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(ItUser entity) {
-						mApp.dismissProgressDialog();
 						mObjectPrefHelper.put(entity);
 						itUser.setId(entity.getId());
 						AsyncChainer.notifyNext(frag);
@@ -217,6 +216,7 @@ public class LoginFragment extends ItFragment {
 
 
 	private void goToNextActivity(){
+		mApp.dismissProgressDialog();
 		Intent intent = new Intent(mActivity, MainActivity.class);
 		startActivity(intent);
 		mActivity.finish();

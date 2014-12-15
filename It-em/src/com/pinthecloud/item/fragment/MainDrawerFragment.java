@@ -140,16 +140,18 @@ public class MainDrawerFragment extends ItFragment {
 
 		// Activate selected menu with view
 		// Deactivate other menu
-		for(int i=0 ; i<mMenuList.size() ; i++){
+		if(mListView != null){
+			for(int i=0 ; i<mMenuList.size() ; i++){
 
-			if(i == position){
+				if(i == position){
 
-				menu.setActivated(true);
-				mListAdapter.notifyItemChanged(i);
-			} else if(mMenuList.get(i).isActivated()) {
+					menu.setActivated(true);
+					mListAdapter.notifyItemChanged(i);
+				} else if(mMenuList.get(i).isActivated()) {
 
-				mMenuList.get(i).setActivated(false);
-				mListAdapter.notifyItemChanged(i);
+					mMenuList.get(i).setActivated(false);
+					mListAdapter.notifyItemChanged(i);
+				}
 			}
 		}
 

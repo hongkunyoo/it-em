@@ -20,6 +20,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
+import com.pinthecloud.item.activity.ProductTagActivity;
 import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
@@ -65,6 +66,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public ImageButton itButton;
 		public TextView itNumber;
 		public Button reply;
+		public Button productTag;
 
 		public RelativeLayout profileLayout;
 		public CircleImageView profileImage;
@@ -79,6 +81,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
 			this.reply = (Button)view.findViewById(R.id.row_home_item_list_reply);
+			this.productTag = (Button)view.findViewById(R.id.row_home_item_list_product_tag);
 
 			this.profileLayout = (RelativeLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
@@ -206,6 +209,16 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ReplyActivity.class);
+				intent.putExtra(Item.INTENT_KEY, item);
+				mActivity.startActivity(intent);
+			}
+		});
+		
+		holder.productTag.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, ProductTagActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
 				mActivity.startActivity(intent);
 			}

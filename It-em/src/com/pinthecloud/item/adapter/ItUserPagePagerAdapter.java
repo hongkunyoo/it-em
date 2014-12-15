@@ -46,7 +46,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	@Override
 	public int getPageLayoutResId(int position) {
-		return R.layout.tab_my_page;
+		return R.layout.tab_it_user_page;
 	}
 
 

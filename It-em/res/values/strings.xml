@@ -38,6 +38,7 @@
     <!-- Upload -->
     <string name="item_upload">IT:EM Upload</string>
     <string name="upload">Upload</string>
+    <string name="uploaded">The item is uploaded.</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">Profile edit</string>

@@ -21,17 +21,14 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
-import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.interfaces.ItUserPageTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
-import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
@@ -259,39 +256,5 @@ public class ItUserPageFragment extends ItFragment {
 		}
 
 		return -c.getTop() + (findFirstVisibleItemPosition / spanCount) * c.getHeight() + headerHeight;
-	}
-
-
-	private ItDialogCallback[] getDialogCallbacks(String[] itemList){
-		final Intent intent = new Intent(mActivity, UploadActivity.class);
-		ItDialogCallback[] callbacks = new ItDialogCallback[itemList.length];
-		callbacks[0] = new ItDialogCallback() {
-
-			@Override
-			public void doPositiveThing(Bundle bundle) {
-				// Get image from gallery
-				intent.putExtra(UploadFragment.MEDIA_KEY, FileUtil.GALLERY);
-				startActivity(intent);
-			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-			}
-		};
-
-		callbacks[1] = new ItDialogCallback() {
-
-			@Override
-			public void doPositiveThing(Bundle bundle) {
-				// Get image from camera
-				intent.putExtra(UploadFragment.MEDIA_KEY, FileUtil.CAMERA);
-				startActivity(intent);
-			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-			}
-		};
-
-		callbacks[itemList.length-1] = null;
-		return callbacks;
 	}
 }

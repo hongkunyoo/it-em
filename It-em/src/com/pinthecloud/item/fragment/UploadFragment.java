@@ -15,13 +15,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.ItDialogCallback;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
 import com.pinthecloud.item.model.ItUser;
@@ -34,23 +34,12 @@ import com.pinthecloud.item.view.SquareImageView;
 
 public class UploadFragment extends ItFragment {
 
-	public static final String MEDIA_KEY = "MEDIA_KEY";
-	private int mMediaType;
-
 	private Uri mImageUri;
 	private Bitmap mImageBitmap;
 	private Bitmap mSmallImageBitmap;
 
 	private SquareImageView mImage;
 	private EditText mContent;
-
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Intent intent = mActivity.getIntent();
-		mMediaType = intent.getIntExtra(MEDIA_KEY, PrefHelper.DEFAULT_INT);
-	}
 
 
 	@Override
@@ -62,7 +51,7 @@ public class UploadFragment extends ItFragment {
 		findComponent(view);
 		setComponent();
 		setImage();
-		mImageUri = FileUtil.getMediaUri(mThisFragment, mMediaType);
+		mImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
 		return view;
 	}
 
@@ -191,19 +180,8 @@ public class UploadFragment extends ItFragment {
 			}
 		};
 
-		callbacks[1] = new ItDialogCallback() {
-
-			@Override
-			public void doPositiveThing(Bundle bundle) {
-				mImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.CAMERA);
-			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-			}
-		};
-
 		if(mImageBitmap != null){
-			callbacks[2] = new ItDialogCallback() {
+			callbacks[1] = new ItDialogCallback() {
 
 				@Override
 				public void doPositiveThing(Bundle bundle) {
@@ -218,7 +196,6 @@ public class UploadFragment extends ItFragment {
 			};
 		}
 
-		callbacks[itemList.length-1] = null;
 		return callbacks;
 	}
 
@@ -248,6 +225,7 @@ public class UploadFragment extends ItFragment {
 					@Override
 					public void onCompleted(String entity) {
 						mApp.dismissProgressDialog();
+						Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
 						Intent intent = new Intent(mActivity, MainActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);

@@ -158,7 +158,6 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 			public void doNegativeThing(Bundle bundle) {
 			}
 		};
-		callbacks[itemList.length-1] = null;
 		return callbacks;
 	}
 
