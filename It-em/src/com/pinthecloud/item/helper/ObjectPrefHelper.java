@@ -3,22 +3,14 @@ package com.pinthecloud.item.helper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import android.content.Context;
-
 import com.pinthecloud.item.ItApplication;
 
 public class ObjectPrefHelper {
 
-	private PrefHelper pref;
+	private PrefHelper mPrefHelper;
 
-	public ObjectPrefHelper(Context context) {
-		pref = ItApplication.getInstance().getPrefHelper();
-		if (pref == null)
-			pref = new PrefHelper(context);
-	}
-
-	public ObjectPrefHelper() {
-		pref = ItApplication.getInstance().getPrefHelper();
+	public ObjectPrefHelper(ItApplication app) {
+		mPrefHelper = app.getPrefHelper();
 	}
 
 	public <E> void put(E obj) {
@@ -26,7 +18,7 @@ public class ObjectPrefHelper {
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
 			if (!isGetter(method)) continue;
-			pref.put(removePrefix(method.getName()), invokeGetMethod(obj, method));
+			mPrefHelper.put(removePrefix(method.getName()), invokeGetMethod(obj, method));
 		}
 	}
 
@@ -42,7 +34,7 @@ public class ObjectPrefHelper {
 		for (Method method : methods) {
 			if (!isSetter(method)) continue;
 			Class<?> paramClazz = method.getParameterTypes()[0];
-			invokeSetMethod(obj, method, pref.get(removePrefix(method.getName()), paramClazz));
+			invokeSetMethod(obj, method, mPrefHelper.get(removePrefix(method.getName()), paramClazz));
 		}
 		return obj;
 	}

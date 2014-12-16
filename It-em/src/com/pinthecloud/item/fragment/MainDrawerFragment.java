@@ -23,6 +23,7 @@ import com.pinthecloud.item.adapter.MainDrawerMenuListAdapter;
 
 public class MainDrawerFragment extends ItFragment {
 
+	public static final int PROFILE_POSITION = 0;
 	public static final int HOME_POSITION = 1;
 
 	private RecyclerView mListView;
@@ -44,6 +45,13 @@ public class MainDrawerFragment extends ItFragment {
 		setList(view);
 		selectItem(HOME_POSITION);	// Home Fragment as a first screen.
 		return view;
+	}
+
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		mListAdapter.notifyItemChanged(PROFILE_POSITION);
 	}
 
 

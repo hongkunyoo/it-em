@@ -136,4 +136,14 @@ public class FileUtil {
 		}
 		return imagePath;
 	}
+	
+	
+	public static void deleteDirectoryTree(File fileOrDirectory) {
+	    if (fileOrDirectory.isDirectory()) {
+	        for (File child : fileOrDirectory.listFiles()) {
+	            deleteDirectoryTree(child);
+	        }
+	    }
+	    fileOrDirectory.delete();
+	}
 }

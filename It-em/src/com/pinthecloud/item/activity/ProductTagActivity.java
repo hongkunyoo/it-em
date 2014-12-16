@@ -28,7 +28,7 @@ public class ProductTagActivity extends ItActivity {
 	private void setFragment(){
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		ItFragment fragment = new ProductTagFragment();
-		transaction.add(R.id.activity_container, fragment);
+		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}
 }

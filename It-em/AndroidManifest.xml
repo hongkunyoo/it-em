@@ -41,12 +41,14 @@
         <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.ItUserPageActivity"
-            android:launchMode="singleTop" />
-        <activity android:name=".activity.ItemActivity" />
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.ItemActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".activity.ProductTagActivity" />
         <activity
             android:name=".activity.UploadActivity"
-            android:label="@string/item_upload"
+            android:label="@string/upload"
             android:theme="@style/LightActionBarAppTheme" />
         <activity
             android:name=".activity.ProfileSettingsActivity"

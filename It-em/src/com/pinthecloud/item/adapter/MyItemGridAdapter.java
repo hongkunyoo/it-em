@@ -40,7 +40,6 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	private static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
-		public TextView rank;
 		public SquareImageView image;
 		public TextView itNumber;
 		public TextView reply;
@@ -48,7 +47,6 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.rank = (TextView)view.findViewById(R.id.row_my_item_grid_rank);
 			this.image = (SquareImageView)view.findViewById(R.id.row_my_item_grid_image);
 			this.itNumber = (TextView)view.findViewById(R.id.row_my_item_grid_it_number);
 			this.reply = (TextView)view.findViewById(R.id.row_my_item_grid_reply);

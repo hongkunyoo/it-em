@@ -15,6 +15,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -26,10 +27,14 @@ public class BlobStorageHelper {
 			"DefaultEndpointsProtocol=http;AccountName=athere;AccountKey=ldhgydlWndSIl7XfiaAQ+sibsNtVZ1Psebba1RpBKxMbyFVYUCMvvuQir0Ty7f0+8TnNLfFKc9yFlYpP6ZSuQQ==";
 	public static final String USER_PROFILE = "item-user-profile";
 	public static final String ITEM_IMAGE = "item-image-container";
-	protected CloudBlobClient blobClient;
+
+	private ItApplication mApp;
+	private CloudBlobClient blobClient;
 
 
-	public BlobStorageHelper() {
+	public BlobStorageHelper(ItApplication app) {
+		this.mApp = app;
+
 		CloudStorageAccount account = null;
 		try {
 			account = CloudStorageAccount.parse(storageConnectionString);
@@ -38,7 +43,7 @@ public class BlobStorageHelper {
 		} catch (URISyntaxException e) {
 			ExceptionManager.fireException(new ItException(null, "BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
 		}
-		blobClient = account.createCloudBlobClient();
+		this.blobClient = account.createCloudBlobClient();
 	}
 
 
@@ -137,6 +142,11 @@ public class BlobStorageHelper {
 
 
 	public void uploadBitmapAsync(final ItFragment frag, final String containerName, String id, final Bitmap bitmap, final ItEntityCallback<String> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "uploadBitmapSync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
 		(new AsyncTask<String, Void, String>() {
 
 			@Override
@@ -148,15 +158,18 @@ public class BlobStorageHelper {
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-				if (callback != null){
-					callback.onCompleted(result);
-				}
+				callback.onCompleted(result);
 			}
 		}).execute(id);
 	}
 
 
 	public void downloadBitmapAsync(final ItFragment frag, final String containerName, String id, final ItEntityCallback<Bitmap> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "downloadBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
 		(new AsyncTask<String, Void, Bitmap>() {
 
 			@Override
@@ -168,15 +181,18 @@ public class BlobStorageHelper {
 			@Override
 			protected void onPostExecute(Bitmap result) {
 				super.onPostExecute(result);
-				if (callback != null){
-					callback.onCompleted(result);
-				}
+				callback.onCompleted(result);
 			}
 		}).execute(id);
 	}
 
 
 	public void downloadToFileAsync(final ItFragment frag, final String containerName, String id, final String path, final ItEntityCallback<String> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "downloadToFileAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
 		(new AsyncTask<String, Void, String>() {
 
 			@Override
@@ -188,15 +204,18 @@ public class BlobStorageHelper {
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-				if (callback != null){
-					callback.onCompleted(result);
-				}
+				callback.onCompleted(result);
 			}
 		}).execute(id);
 	}
 
 
 	public void deleteBitmapAsync(final ItFragment frag, final String containerName, String id, final ItEntityCallback<Boolean> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "deleteBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
 		(new AsyncTask<String, Void, Boolean>() {
 
 			@Override
@@ -208,9 +227,7 @@ public class BlobStorageHelper {
 			@Override
 			protected void onPostExecute(Boolean result) {
 				super.onPostExecute(result);
-				if (callback != null){
-					callback.onCompleted(result);
-				}
+				callback.onCompleted(result);
 			}
 		}).execute(id);
 	}

@@ -24,10 +24,6 @@
     <!-- Main Drawer -->
     <string name="image">Image</string>
 
-    <!-- Hot -->
-    <string name="today">Today</string>
-    <string name="yesterday">Yesterday</string>
-
     <!-- It User Page -->
     <string name="zero">0</string>
 
@@ -36,7 +32,6 @@
     <string name="reply_lower">comment</string>
 
     <!-- Upload -->
-    <string name="item_upload">IT:EM Upload</string>
     <string name="upload">Upload</string>
     <string name="uploaded">The item is uploaded.</string>
 
@@ -63,11 +58,13 @@
     <string name="upload_date">Uploaded on</string>
     <string name="it_number">numbers of IT</string>
     <string name="upload_by">Uploaded by</string>
+    <string name="of">\'s</string>
 
     <!-- ItDateTime -->
     <string name="second_ago">second ago</string>
     <string name="minute_ago">minute ago</string>
     <string name="hour_ago">hour ago</string>
     <string name="day_ago">day ago</string>
+    <string name="yesterday">Yesterday</string>
 
 </resources>

@@ -24,7 +24,7 @@ public class LoginActivity extends ItActivity {
 	private void setFragment(){
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		fragment = new LoginFragment();
-		transaction.add(R.id.activity_container, fragment);
+		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}
 

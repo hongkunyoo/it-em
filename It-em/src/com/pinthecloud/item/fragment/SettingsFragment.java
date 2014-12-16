@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 
 import com.facebook.LoginActivity;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.helper.PrefHelper;
 
 public class SettingsFragment extends ItFragment {
 
@@ -50,7 +49,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mProgressBar.setVisibility(View.VISIBLE);
-				mPrefHelper.remove(PrefHelper.IS_LOGIN_KEY);
+				// TODO remove user preference
 
 				Intent intent = new Intent(mActivity, LoginActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

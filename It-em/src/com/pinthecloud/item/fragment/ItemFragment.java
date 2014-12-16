@@ -57,8 +57,22 @@ public class ItemFragment extends ItFragment {
 		findComponent(view);
 		setText();
 		setButton();
-		setImageView();
 		return view;
+	}
+
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		setImageView();
+	}
+
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mImage.setImageBitmap(null);
+		mProfileImage.setImageBitmap(null);
 	}
 
 
@@ -76,6 +90,7 @@ public class ItemFragment extends ItFragment {
 			mActivity.onBackPressed();
 			break;
 		case R.id.item_it:
+			// TODO do like it
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -85,6 +100,8 @@ public class ItemFragment extends ItFragment {
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 
+				+ " " + getResources().getString(R.string.app_name));
 	}
 
 
@@ -109,12 +126,16 @@ public class ItemFragment extends ItFragment {
 
 
 	private void setButton(){
-		mDelete.setOnClickListener(new OnClickListener() {
+		if(mItem.getWhoMadeId().equals(mObjectPrefHelper.get(ItUser.class).getId())){
+			mDelete.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-			}
-		});
+				@Override
+				public void onClick(View v) {
+				}
+			});
+		} else {
+			mDelete.setVisibility(View.GONE);
+		}
 
 		mProfileLayout.setOnClickListener(new OnClickListener() {
 

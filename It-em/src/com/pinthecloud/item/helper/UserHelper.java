@@ -2,6 +2,8 @@ package com.pinthecloud.item.helper;
 
 import java.util.List;
 
+import org.apache.http.HttpStatus;
+
 import com.google.gson.Gson;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
@@ -18,17 +20,24 @@ import com.pinthecloud.item.model.ItUser;
 
 public class UserHelper {
 
+	private ItApplication mApp;
 	private MobileServiceClient mClient;
 	private MobileServiceTable<ItUser> table;
 
 
-	public UserHelper(ItApplication context) {
-		this.mClient = context.getMobileClient();
+	public UserHelper(ItApplication app) {
+		this.mApp = app;
+		this.mClient = app.getMobileClient();
 		this.table = mClient.getTable(ItUser.class);
 	}
 
 
 	public void add(final ItFragment frag, ItUser user, final ItPairEntityCallback<ItUser, Exception> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
 		table.insert(user, new TableOperationCallback<ItUser>() {
 
 			@Override
@@ -36,7 +45,7 @@ public class UserHelper {
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					callback.onCompleted(entity, exception);
-				} else if(response.getStatus().getStatusCode() == 403) {
+				} else if(response.getStatus().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
 					callback.onCompleted((ItUser)new Gson().fromJson(response.getContent(), ItUser.class), exception);
 				}else {
 					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, exception));
@@ -47,6 +56,11 @@ public class UserHelper {
 
 
 	public void get(final ItFragment frag, String id, final ItEntityCallback<ItUser> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+		
 		table.where().field("id").eq(id).execute(new TableQueryCallback<ItUser>() {
 
 			@Override
@@ -67,6 +81,11 @@ public class UserHelper {
 
 
 	public void update(final ItFragment frag, ItUser user, final ItEntityCallback<ItUser> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+		
 		table.update(user, new TableOperationCallback<ItUser>() {
 
 			@Override
