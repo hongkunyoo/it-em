@@ -61,15 +61,15 @@ public class ItUserPageFragment extends ItFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mItUserId = mActivity.getIntent().getStringExtra(ItUser.INTENT_KEY);
-		mItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
+
 		setHasOptionsMenu(true);
 		findComponent(view);
 
@@ -77,7 +77,7 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				setItUser();				
+				setItUser();
 			}
 		}, new Chainable(){
 
@@ -87,9 +87,8 @@ public class ItUserPageFragment extends ItFragment {
 				mContainer.setVisibility(View.VISIBLE);
 
 				setActionBar();
-				setComponent();
 				setButton();
-				setImageView();
+				setComponent();
 				setViewPager();
 				setTab();
 				setCustomTabName();
@@ -97,6 +96,20 @@ public class ItUserPageFragment extends ItFragment {
 		});
 
 		return view;
+	}
+
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		setProfileImage();
+	}
+
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mProfileImage.setImageBitmap(null);
 	}
 
 
@@ -133,7 +146,10 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setItUser(){
-		if(!mItUserId.equals(mItUser.getId())){
+		mItUser = mObjectPrefHelper.get(ItUser.class);
+		if(mItUserId.equals(mItUser.getId())){
+			AsyncChainer.notifyNext(mThisFragment);
+		} else {
 			mUserHelper.get(mThisFragment, mItUserId, new ItEntityCallback<ItUser>() {
 
 				@Override
@@ -142,8 +158,6 @@ public class ItUserPageFragment extends ItFragment {
 					AsyncChainer.notifyNext(mThisFragment);
 				}
 			});
-		} else {
-			AsyncChainer.notifyNext(mThisFragment);
 		}
 	}
 
@@ -157,22 +171,22 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setButton(){
-		if(!mItUser.isMe()){
+		if(mItUser.isMe()){
+			mProfileSettings.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
+					startActivity(intent);
+				}
+			});
+		} else {
 			mProfileSettings.setVisibility(View.GONE);
 		}
-
-		mProfileSettings.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
-				startActivity(intent);
-			}
-		});
 	}
 
 
-	private void setImageView(){
+	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)

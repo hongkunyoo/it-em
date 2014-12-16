@@ -18,8 +18,8 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
+import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.ProductTagActivity;
 import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -232,7 +232,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(holder.image);
-
+		
 		Picasso.with(holder.profileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)

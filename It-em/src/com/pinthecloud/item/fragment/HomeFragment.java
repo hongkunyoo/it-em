@@ -54,6 +54,13 @@ public class HomeFragment extends ItFragment {
 	}
 
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		mListAdapter.notifyDataSetChanged();
+	}
+
+
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setTitle(getResources().getString(R.string.home));

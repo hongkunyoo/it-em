@@ -30,12 +30,12 @@ import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.PicassoTools;
 
 public class ProfileSettingsFragment extends ItFragment {
 
 	private Uri mProfileImageUri;
 	private Bitmap mProfileImageBitmap;
-	private Bitmap mSmallProfileImageBitmap;
 	private CircleImageView mProfileImage;
 
 	private EditText mNickName;
@@ -43,10 +43,12 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mWebsite;
 
 	private ItUser mMyItUser;
+	
 	private boolean mIsProfileImageChanged = false;
 	private boolean mIsItUserUpdated = false;
 	private boolean mIsProfileImageUpdated = false;
 	private boolean mIsSmallProfileImageUpdated = false;
+	private boolean mIsUpdating = false;
 
 
 	@Override
@@ -65,7 +67,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		setActionBar();
 		findComponent(view);
 		setComponent();
-		setProfileImage();
+		setProfileImageEvent();
 		return view;
 	}
 
@@ -73,14 +75,18 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		mProfileImage.setImageBitmap(mProfileImageBitmap);
+		if(mProfileImageBitmap == null){
+			setProfileImage();
+		} else {
+			mProfileImage.setImageBitmap(mProfileImageBitmap);	
+		}
 	}
 
 
 	@Override
 	public void onStop() {
-		mProfileImage.setImageBitmap(null);
 		super.onStop();
+		mProfileImage.setImageBitmap(null);
 	}
 
 
@@ -117,7 +123,13 @@ public class ProfileSettingsFragment extends ItFragment {
 			mActivity.onBackPressed();
 			break;
 		case R.id.profile_settings_done:
+			if(mIsUpdating){
+				break;
+			}
+			
+			mIsUpdating = true;
 			mApp.showProgressDialog(mActivity);
+			
 			trimProfileSettings();
 
 			// If there is no change, return
@@ -195,7 +207,10 @@ public class ProfileSettingsFragment extends ItFragment {
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mProfileImage);
+	}
 
+
+	private void setProfileImageEvent(){
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -327,9 +342,9 @@ public class ProfileSettingsFragment extends ItFragment {
 			}
 		});
 
-		mSmallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+		Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
-				mSmallProfileImageBitmap, new ItEntityCallback<String>() {
+				smallProfileImageBitmap, new ItEntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
@@ -344,6 +359,11 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void goToNextActivity(){
 		mApp.dismissProgressDialog();
+
+		// Clear profile image cache
+		PicassoTools.clearCache(Picasso.with(mActivity));
+		FileUtil.deleteDirectoryTree(mApp.getCacheDir());
+
 		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, mMyItUser.getId());
 		startActivity(intent);
