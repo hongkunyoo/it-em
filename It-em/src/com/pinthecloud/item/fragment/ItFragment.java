@@ -55,7 +55,7 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 		String message = null;
 		if(ex.getType().equals(ItException.TYPE.INTERNET_NOT_CONNECTED)){
 			message = getResources().getString(R.string.internet_not_connected_message);
-		} else{
+		} else {
 			title = ex.getType().toString();
 			message = ex.toString();
 		}

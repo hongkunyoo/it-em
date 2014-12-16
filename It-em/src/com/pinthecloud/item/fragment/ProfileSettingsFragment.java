@@ -118,15 +118,16 @@ public class ProfileSettingsFragment extends ItFragment {
 			break;
 		case R.id.profile_settings_done:
 			mApp.showProgressDialog(mActivity);
-
 			trimProfileSettings();
+
+			// If there is no change, return
 			if(!isProfileSettingsChanged() && !mIsProfileImageChanged){
 				mApp.dismissProgressDialog();
 				mActivity.onBackPressed();
 				break;
 			}
 
-
+			// Update profile settings change
 			if(isProfileSettingsChanged()){
 				String message = checkProfileSettings();
 				if(!message.equals("")){
@@ -139,7 +140,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				mIsItUserUpdated = true;
 			}
 
-
+			// Update profile image change
 			if(mIsProfileImageChanged){
 				updateProfileImage();
 			} else {
@@ -345,7 +346,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		mApp.dismissProgressDialog();
 		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, mMyItUser.getId());
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
+		mActivity.finish();
 	}
 }

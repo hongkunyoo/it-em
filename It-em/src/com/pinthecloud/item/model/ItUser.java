@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.helper.PrefHelper;
 
 public class ItUser implements Parcelable {
@@ -21,9 +22,18 @@ public class ItUser implements Parcelable {
 	@com.google.gson.annotations.SerializedName("webPage")
 	private String webPage;
 
+	
 	public ItUser() {
 		super();
 	}
+	public ItUser(String itUserId, String nickName, String selfIntro, String webPage) {
+		super();
+		this.itUserId = itUserId;
+		this.nickName = nickName;
+		this.selfIntro = selfIntro;
+		this.webPage = webPage;
+	}
+
 
 	public String getId() {
 		return id;
@@ -72,6 +82,11 @@ public class ItUser implements Parcelable {
 
 	public boolean isLoggedIn() {
 		return (this.id != null && !this.id.equals(PrefHelper.DEFAULT_STRING)); 
+	}
+
+
+	public boolean isMe(){
+		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.id);
 	}
 
 

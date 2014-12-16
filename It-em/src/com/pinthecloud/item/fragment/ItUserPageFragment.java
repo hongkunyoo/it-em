@@ -69,7 +69,7 @@ public class ItUserPageFragment extends ItFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_my_page, container, false);
+		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 		setHasOptionsMenu(true);
 		findComponent(view);
 
@@ -77,7 +77,7 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				setItUser();
+				setItUser();				
 			}
 		}, new Chainable(){
 
@@ -119,23 +119,21 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mContainer = (RelativeLayout)view.findViewById(R.id.my_page_frag_container_layout);
-		mProgressBar = (ProgressBar)view.findViewById(R.id.my_page_frag_progress_bar);
-		mHeader = (LinearLayout)view.findViewById(R.id.my_page_frag_header_layout);
-		mProfileImage = (CircleImageView)view.findViewById(R.id.my_page_frag_profile_image);
-		mNickName = (TextView)view.findViewById(R.id.my_page_frag_nick_name);
-		mDescription = (TextView)view.findViewById(R.id.my_page_frag_description);
-		mWebsite = (TextView)view.findViewById(R.id.my_page_frag_website);
-		mProfileSettings = (ImageButton)view.findViewById(R.id.my_page_frag_profile_settings);
-		mViewPager = (ViewPager)view.findViewById(R.id.my_page_frag_pager);
-		mTab = (PagerSlidingTabStrip)view.findViewById(R.id.my_page_frag_tab);
+		mContainer = (RelativeLayout)view.findViewById(R.id.it_user_page_frag_container_layout);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
+		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
+		mProfileImage = (CircleImageView)view.findViewById(R.id.it_user_page_frag_profile_image);
+		mNickName = (TextView)view.findViewById(R.id.it_user_page_frag_nick_name);
+		mDescription = (TextView)view.findViewById(R.id.it_user_page_frag_description);
+		mWebsite = (TextView)view.findViewById(R.id.it_user_page_frag_website);
+		mProfileSettings = (ImageButton)view.findViewById(R.id.it_user_page_frag_profile_settings);
+		mViewPager = (ViewPager)view.findViewById(R.id.it_user_page_frag_pager);
+		mTab = (PagerSlidingTabStrip)view.findViewById(R.id.it_user_page_frag_tab);
 	}
 
 
 	private void setItUser(){
-		if(mItUserId.equals(mItUser.getId())){
-			AsyncChainer.notifyNext(mThisFragment);
-		} else {
+		if(!mItUserId.equals(mItUser.getId())){
 			mUserHelper.get(mThisFragment, mItUserId, new ItEntityCallback<ItUser>() {
 
 				@Override
@@ -144,6 +142,8 @@ public class ItUserPageFragment extends ItFragment {
 					AsyncChainer.notifyNext(mThisFragment);
 				}
 			});
+		} else {
+			AsyncChainer.notifyNext(mThisFragment);
 		}
 	}
 
@@ -157,6 +157,10 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setButton(){
+		if(!mItUser.isMe()){
+			mProfileSettings.setVisibility(View.GONE);
+		}
+
 		mProfileSettings.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -179,7 +183,7 @@ public class ItUserPageFragment extends ItFragment {
 
 	private void setViewPager(){
 		mViewPagerAdapter = new ItUserPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
-		mViewPagerAdapter.setMyPageTabHolder(new ItUserPageTabHolder() {
+		mViewPagerAdapter.setItUserPageTabHolder(new ItUserPageTabHolder() {
 
 			@Override
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
@@ -215,7 +219,7 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-				SparseArrayCompat<ItUserPageTabHolder> myPageTabHolders = mViewPagerAdapter.getMyPageTabHolders();
+				SparseArrayCompat<ItUserPageTabHolder> myPageTabHolders = mViewPagerAdapter.getItUserPageTabHolders();
 				ItUserPageTabHolder fragmentContent = myPageTabHolders.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 				if(!mIsUpdatedTabs[position]){

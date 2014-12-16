@@ -130,6 +130,7 @@ public class AimHelper {
 			JsonObject jo = new JsonObject();
 			jo.addProperty("table", obj.getClass().getSimpleName());
 			jo.addProperty("refId", itemId);
+
 			mClient.invokeApi(AIM_LIST, jo, new ApiJsonOperationCallback() {
 
 				@SuppressWarnings("unchecked")
@@ -142,7 +143,7 @@ public class AimHelper {
 						for (int i = 0 ; i < arr.size() ; i++) {
 							list.add((E)new Gson().fromJson(arr.get(i), obj.getClass()));
 						}
-						callback.onCompleted(list, list.size());
+						callback.onCompleted(list, list.size());	
 					} else {
 						ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.SERVER_ERROR, response));
 					}
@@ -164,7 +165,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
+					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, response));
 				}
@@ -180,7 +181,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(_json.getAsBoolean());
+					callback.onCompleted(_json.getAsBoolean());	
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "del", ItException.TYPE.SERVER_ERROR, response));
 				}
@@ -197,7 +198,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
+					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.SERVER_ERROR, response));
 				}
@@ -213,7 +214,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(_json.getAsBoolean());
+					callback.onCompleted(_json.getAsBoolean());	
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.SERVER_ERROR, response));
 				}

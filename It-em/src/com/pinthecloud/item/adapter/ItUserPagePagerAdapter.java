@@ -30,10 +30,10 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 	}
 
 
-	public void setMyPageTabHolder(ItUserPageTabHolder itUserPageTabHolder) {
+	public void setItUserPageTabHolder(ItUserPageTabHolder itUserPageTabHolder) {
 		this.mItUserPageTabHolder = itUserPageTabHolder;
 	}
-	public SparseArrayCompat<ItUserPageTabHolder> getMyPageTabHolders() {
+	public SparseArrayCompat<ItUserPageTabHolder> getItUserPageTabHolders() {
 		return mItUserPageTabHolders;
 	}
 
@@ -63,7 +63,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 		}
 
 		mItUserPageTabHolders.put(position, fragment);
-		if (mItUserPageTabHolder != null) fragment.setMyPageTabHolder(mItUserPageTabHolder);
+		if (mItUserPageTabHolder != null) fragment.setItUserPageTabHolder(mItUserPageTabHolder);
 		return fragment;
 	}
 

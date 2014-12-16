@@ -1,6 +1,5 @@
 package com.pinthecloud.item.exception;
 
-import com.google.gson.Gson;
 import com.pinthecloud.item.fragment.ItFragment;
 
 public class ItException extends RuntimeException {
@@ -52,7 +51,13 @@ public class ItException extends RuntimeException {
 
 	@Override
 	public String toString() {
-		return new Gson().toJson(this);
+		if (super.getMessage() == null) {
+			return "{ type : " + type + "," +
+					" from : " + from.getClass().getSimpleName()  + "," +
+					" method : " + methodName + " }";	
+		} else {
+			return "{ message : " + super.getMessage() + " }";
+		}
 	}
 
 	public enum TYPE {

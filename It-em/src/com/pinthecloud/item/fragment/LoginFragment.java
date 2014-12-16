@@ -23,6 +23,7 @@ import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.ItPairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -136,23 +137,26 @@ public class LoginFragment extends ItFragment {
 	private void facebookLogin(final GraphUser user){
 		mApp.showProgressDialog(mActivity);
 
-		final ItUser itUser = new ItUser();
-		itUser.setItUserId(user.getId());
-		itUser.setNickName(user.getFirstName());
-		itUser.setSelfIntro("");
-		itUser.setWebPage(""); // e.g. https://athere.blob.core.windows.net/userprofile/ID
-
+		final ItUser itUser = new ItUser(user.getId(), user.getFirstName(), "", "");
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				mUserHelper.add(frag, itUser, new ItEntityCallback<ItUser>() {
+				mUserHelper.add(frag, itUser, new ItPairEntityCallback<ItUser, Exception>() {
 
 					@Override
-					public void onCompleted(ItUser entity) {
+					public void onCompleted(ItUser entity, Exception exception) {
 						mObjectPrefHelper.put(entity);
-						itUser.setId(entity.getId());
-						AsyncChainer.notifyNext(frag);
+						
+						// If new user, add it and get profile image.
+						// Otherwise, go to next activity.
+						if(exception == null){
+							itUser.setId(entity.getId());
+							AsyncChainer.notifyNext(frag);
+						} else {
+							goToNextActivity();
+							AsyncChainer.clearChain(frag);
+						}
 					}
 				});
 			}

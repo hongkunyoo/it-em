@@ -12,7 +12,7 @@ public abstract class ItUserPageTabFragment extends ItFragment implements ItUser
 	protected ItUser mItUser;
 
 	protected ItUserPageTabHolder mItUserPageTabHolder;
-	public void setMyPageTabHolder(ItUserPageTabHolder itUserPageTabHolder) {
+	public void setItUserPageTabHolder(ItUserPageTabHolder itUserPageTabHolder) {
 		mItUserPageTabHolder = itUserPageTabHolder;
 	}
 
