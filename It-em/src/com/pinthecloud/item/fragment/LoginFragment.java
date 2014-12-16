@@ -141,79 +141,93 @@ public class LoginFragment extends ItFragment {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				mUserHelper.add(frag, itUser, new ItPairEntityCallback<ItUser, Exception>() {
-
-					@Override
-					public void onCompleted(ItUser entity, Exception exception) {
-						mObjectPrefHelper.put(entity);
-						
-						// If new user, add it and get profile image.
-						// Otherwise, go to next activity.
-						if(exception == null){
-							itUser.setId(entity.getId());
-							AsyncChainer.notifyNext(frag);
-						} else {
-							goToNextActivity();
-							AsyncChainer.clearChain(frag);
-						}
-					}
-				});
+			public void doNext(ItFragment frag, Object... params) {
+				addItUser(frag, itUser);
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				new AsyncTask<Void,Void,Bitmap>(){
-
-					@Override
-					protected Bitmap doInBackground(Void... params) {
-						Bitmap bitmap = null;
-						try {
-							bitmap = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
-						} catch (IOException e) {
-							ExceptionManager.fireException(new ItException(frag, "facebookLogin", ItException.TYPE.SERVER_ERROR));
-						}
-						return bitmap;
-					}
-
-					@Override
-					protected void onPostExecute(Bitmap result) {
-						AsyncChainer.notifyNext(frag, (Object)result);
-					};
-				}.execute();
+			public void doNext(ItFragment frag, Object... params) {
+				getProfileImageFromFacebook(frag, user);
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				Bitmap profileImage = (Bitmap)params[0];
-				profileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
-				Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+			public void doNext(ItFragment frag, Object... params) {
+				uploadProfileImage(frag, itUser, (Bitmap)params[0]);
+			}
+		});
+	}
 
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
-						profileImage, new ItEntityCallback<String>() {
 
-					@Override
-					public void onCompleted(String entity) {
-						mIsProfileImageUploaded = true;
-						if(mIsSmallProfileImageUploaded){
-							goToNextActivity();
-						}
-					}
-				});
+	private void addItUser(final ItFragment frag, final ItUser itUser){
+		mUserHelper.add(frag, itUser, new ItPairEntityCallback<ItUser, Exception>() {
 
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
-						smallProfileImage, new ItEntityCallback<String>() {
+			@Override
+			public void onCompleted(ItUser entity, Exception exception) {
+				mObjectPrefHelper.put(entity);
 
-					@Override
-					public void onCompleted(String entity) {
-						mIsSmallProfileImageUploaded = true;
-						if(mIsProfileImageUploaded){
-							goToNextActivity();	
-						}
-					}
-				});
+				// If new user, add it and get profile image.
+				// Otherwise, go to next activity.
+				if(exception == null){
+					itUser.setId(entity.getId());
+					AsyncChainer.notifyNext(frag);
+				} else {
+					goToNextActivity();
+					AsyncChainer.clearChain(frag);
+				}
+			}
+		});
+	}
+
+
+	private void getProfileImageFromFacebook(final ItFragment frag, final GraphUser user){
+		(new AsyncTask<Void,Void,Bitmap>(){
+
+			@Override
+			protected Bitmap doInBackground(Void... params) {
+				Bitmap bitmap = null;
+				try {
+					bitmap = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
+				} catch (IOException e) {
+					ExceptionManager.fireException(new ItException(frag, "facebookLogin", ItException.TYPE.SERVER_ERROR));
+				}
+				return bitmap;
+			}
+
+			@Override
+			protected void onPostExecute(Bitmap result) {
+				AsyncChainer.notifyNext(frag, (Object)result);
+			};
+		}).execute();
+	}
+
+
+	private void uploadProfileImage(ItFragment frag, ItUser itUser, Bitmap profileImage){
+		profileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
+		Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+
+		blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
+				profileImage, new ItEntityCallback<String>() {
+
+			@Override
+			public void onCompleted(String entity) {
+				mIsProfileImageUploaded = true;
+				if(mIsSmallProfileImageUploaded){
+					goToNextActivity();
+				}
+			}
+		});
+
+		blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
+				smallProfileImage, new ItEntityCallback<String>() {
+
+			@Override
+			public void onCompleted(String entity) {
+				mIsSmallProfileImageUploaded = true;
+				if(mIsProfileImageUploaded){
+					goToNextActivity();	
+				}
 			}
 		});
 	}

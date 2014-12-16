@@ -33,7 +33,7 @@ public class UploadActivity extends ItActivity {
 	private void setFragment(){
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		ItFragment fragment = new UploadFragment();
-		transaction.add(R.id.activity_container, fragment);
+		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}
 }

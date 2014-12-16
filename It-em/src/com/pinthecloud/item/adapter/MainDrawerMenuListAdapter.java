@@ -92,13 +92,13 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
 		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
-			view = inflater.inflate(R.layout.row_home_drawer_menu_list_profile, parent, false);
+			view = inflater.inflate(R.layout.row_main_drawer_menu_list_profile, parent, false);
 			viewHolder = new ProfileViewHolder(view);
 		} else if(viewType == VIEW_TYPE.Header.ordinal()){
-			view = inflater.inflate(R.layout.row_home_drawer_menu_list_header, parent, false);
+			view = inflater.inflate(R.layout.row_main_drawer_menu_list_header, parent, false);
 			viewHolder = new HeaderViewHolder(view);
 		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
-			view = inflater.inflate(R.layout.row_home_drawer_menu_list, parent, false);
+			view = inflater.inflate(R.layout.row_main_drawer_menu_list, parent, false);
 			viewHolder = new NormalViewHolder(view);
 		}
 
@@ -151,14 +151,13 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 
 	private void setProfileViewHolder(ProfileViewHolder holder, final ItUser myItUser) {
-		holder.nickName.setText(myItUser.getNickName());
-
 		Picasso.with(holder.profileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(myItUser.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(holder.profileImage);
 
+		holder.nickName.setText(myItUser.getNickName());
 		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override

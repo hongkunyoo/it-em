@@ -64,7 +64,7 @@ public class ItUserPageFragment extends ItFragment {
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

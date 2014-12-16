@@ -85,7 +85,7 @@ public class ItApplication extends Application {
 		aimHelper = new AimHelper(app);
 		userHelper = new UserHelper(app);
 		aimDBHelper = new AimDBHelper(app);
-		blobStorageHelper = new BlobStorageHelper();
+		blobStorageHelper = new BlobStorageHelper(app);
 	}
 
 

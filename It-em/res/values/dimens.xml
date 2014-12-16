@@ -28,7 +28,6 @@
     <!-- My Item -->
     <dimen name="my_item_progress_bar_bottom_margin">100dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
-    <dimen name="my_item_rank_margin">10dp</dimen>
     <dimen name="my_item_it_reply_number_height">40dp</dimen>
     <dimen name="my_item_it_reply_number_margin">12dp</dimen>
 

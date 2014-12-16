@@ -238,22 +238,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(holder.profileImage);
-
-		//		BlobStorageHelper blobStorageHelper = ItApplication.getInstance().getBlobStorageHelper();
-		//		blobStorageHelper.downloadBitmapAsync(mFrag, BlobStorageHelper.ITEM_IMAGE, item.getId(), new ItEntityCallback<Bitmap>() {
-		//
-		//			@Override
-		//			public void onCompleted(Bitmap entity) {
-		//				holder.image.setImageBitmap(entity);
-		//			}
-		//		});
-		//		blobStorageHelper.downloadBitmapAsync(mFrag, BlobStorageHelper.USER_PROFILE, item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX, new ItEntityCallback<Bitmap>() {
-		//
-		//			@Override
-		//			public void onCompleted(Bitmap entity) {
-		//				holder.profileImage.setImageBitmap(entity);
-		//			}
-		//		});
 	}
 
 

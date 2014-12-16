@@ -1,6 +1,7 @@
 package com.pinthecloud.item.activity;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
@@ -19,6 +20,13 @@ public class ItUserPageActivity extends ItActivity {
 	}
 
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setFragment();
+	}
+
+
 	private void setToolbar(){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_toolbar);
 		setSupportActionBar(toolbar);
@@ -28,7 +36,7 @@ public class ItUserPageActivity extends ItActivity {
 	private void setFragment(){
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		ItFragment fragment = new ItUserPageFragment();
-		transaction.add(R.id.activity_container, fragment);
+		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}
 }
