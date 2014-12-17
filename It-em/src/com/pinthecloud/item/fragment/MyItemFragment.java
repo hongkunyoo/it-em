@@ -14,11 +14,11 @@ import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
-import com.pinthecloud.item.interfaces.ItListCallback;
+import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 
-public class MyItemFragment extends ItUserPageTabFragment {
+public class MyItemFragment extends ItUserPageScrollTabFragment {
 
 	private ProgressBar mProgressBar;
 	private RecyclerView mGridView;
@@ -28,7 +28,7 @@ public class MyItemFragment extends ItUserPageTabFragment {
 	private boolean mIsAdding = false;
 
 
-	public static ItUserPageTabFragment newInstance(int position, ItUser itUser) {
+	public static ItUserPageScrollTabFragment newInstance(int position, ItUser itUser) {
 		MyItemFragment fragment = new MyItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
@@ -67,7 +67,7 @@ public class MyItemFragment extends ItUserPageTabFragment {
 
 	@Override
 	public void updateTab() {
-		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ItListCallback<Item>() {
+		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
@@ -76,7 +76,7 @@ public class MyItemFragment extends ItUserPageTabFragment {
 
 				mItemList.clear();
 				mGridAdapter.addAll(list);
-				mItUserPageTabHolder.updateTabNumber(mPosition, mItemList.size());
+				mItUserPageScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
 	}
@@ -105,8 +105,8 @@ public class MyItemFragment extends ItUserPageTabFragment {
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 				// Scroll Header
-				if (mItUserPageTabHolder != null){
-					mItUserPageTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
+				if (mItUserPageScrollTabHolder != null){
+					mItUserPageScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
 				}
 
 				// Add more item

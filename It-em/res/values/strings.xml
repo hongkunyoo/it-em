@@ -43,6 +43,7 @@
     <string name="done">Done</string>
     <string name="min_nick_name_message">Please type in more than 1 letter.</string>
     <string name="bad_nick_name_message">Special letter is not good as nick name.</string>
+    <string name="profile_edited">Profile is edited.</string>
 
     <!-- Settings -->
     <string name="logout">Logout</string>

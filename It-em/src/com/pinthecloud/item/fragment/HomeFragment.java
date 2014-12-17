@@ -17,16 +17,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
-import com.pinthecloud.item.interfaces.ItListCallback;
+import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.Item;
 
 public class HomeFragment extends ItFragment {
 
 	private ProgressBar mProgressBar;
+	private RelativeLayout mLayout;
 	private SwipeRefreshLayout mListRefresh;
 	private Button mUploadButton;
 
@@ -69,6 +71,7 @@ public class HomeFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.home_frag_progress_bar);
+		mLayout = (RelativeLayout)view.findViewById(R.id.home_frag_layout);
 		mListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
 		mUploadButton = (Button)view.findViewById(R.id.home_frag_upload_button);
 		mListView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
@@ -127,13 +130,13 @@ public class HomeFragment extends ItFragment {
 
 
 	public void updateList() {
-		mAimHelper.listItem(mThisFragment, 0, new ItListCallback<Item>() {
+		mAimHelper.listItem(mThisFragment, 0, new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mListRefresh.setRefreshing(false);
-				mListRefresh.setVisibility(View.VISIBLE);
+				mLayout.setVisibility(View.VISIBLE);
 
 				mItemList.clear();
 				mListAdapter.addAll(list);
@@ -147,7 +150,7 @@ public class HomeFragment extends ItFragment {
 		mListAdapter.setHasFooter(true);
 		mListAdapter.notifyItemInserted(mItemList.size());
 
-		mAimHelper.listItem(mThisFragment, ++page, new ItListCallback<Item>() {
+		mAimHelper.listItem(mThisFragment, ++page, new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

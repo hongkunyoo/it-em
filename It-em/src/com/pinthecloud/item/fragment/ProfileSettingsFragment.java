@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
@@ -23,8 +24,8 @@ import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.ItDialogCallback;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
@@ -43,7 +44,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mWebsite;
 
 	private ItUser mMyItUser;
-	
+
 	private boolean mIsProfileImageChanged = false;
 	private boolean mIsItUserUpdated = false;
 	private boolean mIsProfileImageUpdated = false;
@@ -126,10 +127,10 @@ public class ProfileSettingsFragment extends ItFragment {
 			if(mIsUpdating){
 				break;
 			}
-			
+
 			mIsUpdating = true;
 			mApp.showProgressDialog(mActivity);
-			
+
 			trimProfileSettings();
 
 			// If there is no change, return
@@ -215,8 +216,8 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				String[] itemList = getResources().getStringArray(R.array.image_select_delete_string_array);
-				ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
+				String[] itemList = getResources().getStringArray(R.array.profile_image_select_string_array);
+				DialogCallback[] callbacks = getDialogCallbacks(itemList);
 				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
 				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
@@ -224,10 +225,10 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private ItDialogCallback[] getDialogCallbacks(String[] itemList){
-		ItDialogCallback[] callbacks = new ItDialogCallback[itemList.length];
+	private DialogCallback[] getDialogCallbacks(String[] itemList){
+		DialogCallback[] callbacks = new DialogCallback[itemList.length];
 
-		callbacks[0] = new ItDialogCallback() {
+		callbacks[0] = new DialogCallback() {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
@@ -238,7 +239,18 @@ public class ProfileSettingsFragment extends ItFragment {
 			}
 		};
 
-		callbacks[1] = new ItDialogCallback() {
+		callbacks[1] = new DialogCallback() {
+
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.CAMERA);
+			}
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+			}
+		};
+
+		callbacks[2] = new DialogCallback() {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
@@ -297,7 +309,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void showAlertDialog(String message){
-		ItAlertDialog dialog = new ItAlertDialog(null, message, null, null, false, new ItDialogCallback() {
+		ItAlertDialog dialog = new ItAlertDialog(null, message, null, null, false, new DialogCallback() {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
@@ -315,7 +327,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
 		mMyItUser.setWebPage(mWebsite.getText().toString());
 
-		mUserHelper.update(mThisFragment, mMyItUser, new ItEntityCallback<ItUser>() {
+		mUserHelper.update(mThisFragment, mMyItUser, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
@@ -331,7 +343,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void updateProfileImage(){
 		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
-				mProfileImageBitmap, new ItEntityCallback<String>() {
+				mProfileImageBitmap, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
@@ -344,7 +356,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 		Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
-				smallProfileImageBitmap, new ItEntityCallback<String>() {
+				smallProfileImageBitmap, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
@@ -363,7 +375,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		// Clear profile image cache
 		PicassoTools.clearCache(Picasso.with(mActivity));
 		FileUtil.deleteDirectoryTree(mApp.getCacheDir());
-
+		Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
 		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, mMyItUser.getId());
 		startActivity(intent);

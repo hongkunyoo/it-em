@@ -22,8 +22,8 @@ import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.ItDialogCallback;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
@@ -149,7 +149,7 @@ public class UploadFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				String[] itemList = getDialogItemList();
-				ItDialogCallback[] callbacks = getDialogCallbacks(itemList);
+				DialogCallback[] callbacks = getDialogCallbacks(itemList);
 				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
 				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
@@ -159,17 +159,17 @@ public class UploadFragment extends ItFragment {
 
 	private String[] getDialogItemList(){
 		if(mImageBitmap != null){
-			return getResources().getStringArray(R.array.image_select_delete_string_array);
+			return getResources().getStringArray(R.array.upload_image_select_delete_string_array);
 		}else{
-			return getResources().getStringArray(R.array.image_select_string_array);
+			return getResources().getStringArray(R.array.upload_image_select_string_array);
 		}
 	}
 
 
-	private ItDialogCallback[] getDialogCallbacks(String[] itemList){
-		ItDialogCallback[] callbacks = new ItDialogCallback[itemList.length];
+	private DialogCallback[] getDialogCallbacks(String[] itemList){
+		DialogCallback[] callbacks = new DialogCallback[itemList.length];
 
-		callbacks[0] = new ItDialogCallback() {
+		callbacks[0] = new DialogCallback() {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
@@ -181,7 +181,7 @@ public class UploadFragment extends ItFragment {
 		};
 
 		if(mImageBitmap != null){
-			callbacks[1] = new ItDialogCallback() {
+			callbacks[1] = new DialogCallback() {
 
 				@Override
 				public void doPositiveThing(Bundle bundle) {
@@ -206,7 +206,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				mAimHelper.add(frag, item, new ItEntityCallback<Item>() {
+				mAimHelper.add(frag, item, new EntityCallback<Item>() {
 
 					@Override
 					public void onCompleted(Item entity) {
@@ -220,7 +220,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new ItEntityCallback<String>() {
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {

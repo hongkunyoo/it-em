@@ -31,7 +31,7 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 		if(mCurrentSelectedPosition == MainDrawerFragment.HOME_POSITION){
 			super.onBackPressed();
 		} else {
-			mDrawerFragment.selectItem(MainDrawerFragment.HOME_POSITION);
+			mDrawerFragment.selectMenu(MainDrawerFragment.HOME_POSITION);
 		}
 	}
 

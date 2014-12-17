@@ -15,7 +15,7 @@ import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
-import com.pinthecloud.item.interfaces.ItDialogCallback;
+import com.pinthecloud.item.interfaces.DialogCallback;
 
 public class ItFragment extends Fragment implements ExceptionManager.Handler {
 
@@ -60,7 +60,7 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 			message = ex.toString();
 		}
 
-		ItAlertDialog exceptionDialog = new ItAlertDialog(title, message, null, null, false, new ItDialogCallback() {
+		ItAlertDialog exceptionDialog = new ItAlertDialog(title, message, null, null, false, new DialogCallback() {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				android.os.Process.killProcess(android.os.Process.myPid());

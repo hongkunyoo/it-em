@@ -15,8 +15,8 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.ItListCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.Item;
 
@@ -42,7 +42,7 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void listItem(final ItFragment frag, int page, final ItListCallback<Item> callback) {
+	public<E extends AbstractItemModel<E>> void listItem(final ItFragment frag, int page, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "listItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -94,7 +94,7 @@ public class AimHelper {
 	//	}
 
 
-	public void listMyItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
+	public void listMyItem(final ItFragment frag, String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -120,7 +120,7 @@ public class AimHelper {
 	}
 
 
-	public void listItItem(final ItFragment frag, String userId, final ItListCallback<Item> callback) {
+	public void listItItem(final ItFragment frag, String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "listItItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -146,7 +146,7 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void list(final ItFragment frag, Class<E> clazz, String itemId, final ItListCallback<E> callback) {
+	public<E extends AbstractItemModel<E>> void list(final ItFragment frag, Class<E> clazz, String itemId, final ListCallback<E> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -184,7 +184,7 @@ public class AimHelper {
 	}
 
 
-	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final ItEntityCallback<E> callback) {
+	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -206,7 +206,7 @@ public class AimHelper {
 	}
 
 
-	public <E extends AbstractItemModel<E>> void del(final ItFragment frag, E obj, final ItEntityCallback<Boolean> callback) {
+	public <E extends AbstractItemModel<E>> void del(final ItFragment frag, E obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "del", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -227,7 +227,7 @@ public class AimHelper {
 	}
 
 
-	public <E extends AbstractItemModel<E>> void get(final ItFragment frag, final E obj, final ItEntityCallback<E> callback) {
+	public <E extends AbstractItemModel<E>> void get(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -249,7 +249,7 @@ public class AimHelper {
 	}
 
 
-	public <E extends AbstractItemModel<E>> void update(final ItFragment frag, E obj, final ItEntityCallback<Boolean> callback) {
+	public <E extends AbstractItemModel<E>> void update(final ItFragment frag, E obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;

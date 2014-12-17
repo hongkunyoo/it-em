@@ -136,7 +136,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/item_profile_height"
+                android:layout_height="@dimen/item_profile_text_height"
                 android:gravity="center_vertical"
                 android:text="@string/upload_by"
                 android:textColor="@color/it_user_page_tab_number"

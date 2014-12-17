@@ -5,17 +5,17 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.pinthecloud.item.interfaces.ItDialogCallback;
+import com.pinthecloud.item.interfaces.DialogCallback;
 
 
 public class ItAlertListDialog extends ItDialogFragment{
 
-	protected ItDialogCallback[] mCallbacks;
+	protected DialogCallback[] mCallbacks;
 	private String mTitle;
 	private String[] mItemList;
 
 
-	public ItAlertListDialog(String title, String[] list, ItDialogCallback[] itCallbacks) {
+	public ItAlertListDialog(String title, String[] list, DialogCallback[] itCallbacks) {
 		super();
 		this.mCallbacks = itCallbacks;
 		this.mTitle = title;

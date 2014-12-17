@@ -43,7 +43,7 @@ public class MainDrawerFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_main_drawer, container, false);
 		setList(view);
-		selectItem(HOME_POSITION);	// Home Fragment as a first screen.
+		selectMenu(HOME_POSITION);	// Home Fragment as a first screen.
 		return view;
 	}
 
@@ -143,32 +143,34 @@ public class MainDrawerFragment extends ItFragment {
 	}
 
 
-	public void selectItem(int position) {
+	public void selectMenu(int position) {
 		MainDrawerMenu menu = mMenuList.get(position);
+		activateSelectedMenu(position);
+		closeDrawer();
+		if (mCallbacks != null) {
+			mCallbacks.onDrawerItemSelected(position, menu.getFragment());
+		}
+	}
 
-		// Activate selected menu with view
-		// Deactivate other menu
+
+	private void activateSelectedMenu(int position){
 		if(mListView != null){
 			for(int i=0 ; i<mMenuList.size() ; i++){
-
 				if(i == position){
-
-					menu.setActivated(true);
+					mMenuList.get(i).setActivated(true);
 					mListAdapter.notifyItemChanged(i);
 				} else if(mMenuList.get(i).isActivated()) {
-
 					mMenuList.get(i).setActivated(false);
 					mListAdapter.notifyItemChanged(i);
 				}
 			}
 		}
+	}
 
+
+	public void closeDrawer() {
 		if (mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
-		}
-
-		if (mCallbacks != null) {
-			mCallbacks.onDrawerItemSelected(position, menu.getFragment());
 		}
 	}
 

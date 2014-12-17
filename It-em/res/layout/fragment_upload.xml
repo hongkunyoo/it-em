@@ -17,8 +17,8 @@
 
         <com.pinthecloud.item.view.SquareImageView
             android:id="@+id/upload_frag_image"
-            android:layout_width="@dimen/toolbar_title_margin"
-            android:layout_height="@dimen/toolbar_title_margin"
+            android:layout_width="@dimen/upload_image_width"
+            android:layout_height="@dimen/upload_image_width"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
 

@@ -5,11 +5,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.pinthecloud.item.interfaces.ItDialogCallback;
+import com.pinthecloud.item.interfaces.DialogCallback;
 
 public class ItAlertDialog extends ItDialogFragment{
 
-	private ItDialogCallback mCallback;
+	private DialogCallback mCallback;
 	private String mTitle;
 	private String mMessage;
 	private String mOkMessage;
@@ -17,7 +17,7 @@ public class ItAlertDialog extends ItDialogFragment{
 	private boolean mCancel;
 
 
-	public ItAlertDialog(String title, String message, String okMessage, String cancelMessage, boolean cancel, ItDialogCallback callback) {
+	public ItAlertDialog(String title, String message, String okMessage, String cancelMessage, boolean cancel, DialogCallback callback) {
 		super();
 		this.mCallback = callback;
 		this.mTitle = title;

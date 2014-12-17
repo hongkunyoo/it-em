@@ -22,8 +22,8 @@ import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.ItListCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
@@ -144,7 +144,7 @@ public class ReplyFragment extends ItFragment {
 
 
 	private void loadReplyList() {
-		mAimHelper.list(mThisFragment, Reply.class, mItem.getId(), new ItListCallback<Reply>() {
+		mAimHelper.list(mThisFragment, Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
@@ -158,7 +158,7 @@ public class ReplyFragment extends ItFragment {
 	private void submitReply(final Reply reply){
 		mListAdapter.add(mReplyList.size(), reply);
 		mListView.smoothScrollToPosition(mReplyList.indexOf(reply));
-		mAimHelper.add(mThisFragment, reply, new ItEntityCallback<Reply>() {
+		mAimHelper.add(mThisFragment, reply, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {

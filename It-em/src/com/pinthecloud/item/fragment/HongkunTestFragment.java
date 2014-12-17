@@ -15,7 +15,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.AimHelper;
-import com.pinthecloud.item.interfaces.ItListCallback;
+import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItDateTime;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
@@ -62,7 +62,7 @@ public class HongkunTestFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				aimHelper.listMyItem(mThisFragment, user.getId(), new ItListCallback<Item>() {
+				aimHelper.listMyItem(mThisFragment, user.getId(), new ListCallback<Item>() {
 					
 					@Override
 					public void onCompleted(List<Item> list, int count) {

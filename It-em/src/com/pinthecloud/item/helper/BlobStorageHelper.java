@@ -19,7 +19,7 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 
 public class BlobStorageHelper {
 
@@ -141,7 +141,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public void uploadBitmapAsync(final ItFragment frag, final String containerName, String id, final Bitmap bitmap, final ItEntityCallback<String> callback) {
+	public void uploadBitmapAsync(final ItFragment frag, final String containerName, String id, final Bitmap bitmap, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "uploadBitmapSync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -164,7 +164,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public void downloadBitmapAsync(final ItFragment frag, final String containerName, String id, final ItEntityCallback<Bitmap> callback) {
+	public void downloadBitmapAsync(final ItFragment frag, final String containerName, String id, final EntityCallback<Bitmap> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "downloadBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -187,7 +187,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public void downloadToFileAsync(final ItFragment frag, final String containerName, String id, final String path, final ItEntityCallback<String> callback) {
+	public void downloadToFileAsync(final ItFragment frag, final String containerName, String id, final String path, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "downloadToFileAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -210,7 +210,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public void deleteBitmapAsync(final ItFragment frag, final String containerName, String id, final ItEntityCallback<Boolean> callback) {
+	public void deleteBitmapAsync(final ItFragment frag, final String containerName, String id, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "deleteBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;

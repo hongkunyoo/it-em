@@ -23,8 +23,8 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.ItUserPageTabHolder;
+import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -89,6 +89,7 @@ public class ItUserPageFragment extends ItFragment {
 				setActionBar();
 				setButton();
 				setComponent();
+				setProfileImageEvent();
 				setViewPager();
 				setTab();
 				setCustomTabName();
@@ -150,7 +151,7 @@ public class ItUserPageFragment extends ItFragment {
 		if(mItUserId.equals(mItUser.getId())){
 			AsyncChainer.notifyNext(mThisFragment);
 		} else {
-			mUserHelper.get(mThisFragment, mItUserId, new ItEntityCallback<ItUser>() {
+			mUserHelper.get(mThisFragment, mItUserId, new EntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
@@ -195,9 +196,19 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
+	private void setProfileImageEvent(){
+		mProfileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+			}
+		});
+	}
+
+
 	private void setViewPager(){
 		mViewPagerAdapter = new ItUserPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
-		mViewPagerAdapter.setItUserPageTabHolder(new ItUserPageTabHolder() {
+		mViewPagerAdapter.setItUserPageScrollTabHolder(new ItUserPageScrollTabHolder() {
 
 			@Override
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
@@ -233,8 +244,8 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-				SparseArrayCompat<ItUserPageTabHolder> myPageTabHolders = mViewPagerAdapter.getItUserPageTabHolders();
-				ItUserPageTabHolder fragmentContent = myPageTabHolders.valueAt(position);
+				SparseArrayCompat<ItUserPageScrollTabHolder> myPageTabHolders = mViewPagerAdapter.getItUserPageScrollTabHolderList();
+				ItUserPageScrollTabHolder fragmentContent = myPageTabHolders.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 				if(!mIsUpdatedTabs[position]){
 					fragmentContent.updateTab();

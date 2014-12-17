@@ -22,8 +22,8 @@ import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.ItPairEntityCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -161,7 +161,7 @@ public class LoginFragment extends ItFragment {
 
 
 	private void addItUser(final ItFragment frag, final ItUser itUser){
-		mUserHelper.add(frag, itUser, new ItPairEntityCallback<ItUser, Exception>() {
+		mUserHelper.add(frag, itUser, new PairEntityCallback<ItUser, Exception>() {
 
 			@Override
 			public void onCompleted(ItUser entity, Exception exception) {
@@ -208,7 +208,7 @@ public class LoginFragment extends ItFragment {
 		Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 
 		blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
-				profileImage, new ItEntityCallback<String>() {
+				profileImage, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
@@ -220,7 +220,7 @@ public class LoginFragment extends ItFragment {
 		});
 
 		blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
-				smallProfileImage, new ItEntityCallback<String>() {
+				smallProfileImage, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {

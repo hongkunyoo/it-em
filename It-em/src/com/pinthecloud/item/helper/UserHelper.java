@@ -14,8 +14,8 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.exception.ExceptionManager;
 import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
-import com.pinthecloud.item.interfaces.ItPairEntityCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 
 public class UserHelper {
@@ -32,7 +32,7 @@ public class UserHelper {
 	}
 
 
-	public void add(final ItFragment frag, ItUser user, final ItPairEntityCallback<ItUser, Exception> callback) {
+	public void add(final ItFragment frag, ItUser user, final PairEntityCallback<ItUser, Exception> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -55,7 +55,7 @@ public class UserHelper {
 	}
 
 
-	public void get(final ItFragment frag, String id, final ItEntityCallback<ItUser> callback) {
+	public void get(final ItFragment frag, String id, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
@@ -80,7 +80,7 @@ public class UserHelper {
 	}
 
 
-	public void update(final ItFragment frag, ItUser user, final ItEntityCallback<ItUser> callback) {
+	public void update(final ItFragment frag, ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;

@@ -25,7 +25,7 @@ import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
@@ -194,7 +194,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 				LikeIt likeIt = new LikeIt(item.getWhoMade(), item.getWhoMadeId(), item.getId());
 				AimHelper mAimHelper = ItApplication.getInstance().getAimHelper();
-				mAimHelper.add(mFrag, likeIt, new ItEntityCallback<LikeIt>() {
+				mAimHelper.add(mFrag, likeIt, new EntityCallback<LikeIt>() {
 
 					@Override
 					public void onCompleted(LikeIt entity) {

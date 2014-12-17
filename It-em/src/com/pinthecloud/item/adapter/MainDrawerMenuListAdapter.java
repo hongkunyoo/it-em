@@ -162,6 +162,8 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 			@Override
 			public void onClick(View v) {
+				((MainDrawerFragment)mfrag).closeDrawer();
+
 				Intent intent = new Intent(mContext, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, myItUser.getId());
 				mContext.startActivity(intent);
@@ -184,7 +186,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 			@Override
 			public void onClick(View v) {
-				((MainDrawerFragment)mfrag).selectItem(mMenuList.indexOf(menu));
+				((MainDrawerFragment)mfrag).selectMenu(mMenuList.indexOf(menu));
 			}
 		});
 	}

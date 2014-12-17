@@ -18,8 +18,8 @@ import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.ItDialogCallback;
-import com.pinthecloud.item.interfaces.ItEntityCallback;
+import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.view.CircleImageView;
@@ -99,7 +99,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 				@Override
 				public boolean onLongClick(View v) {
 					String[] itemList = mContext.getResources().getStringArray(R.array.reply_long_click_string_array);
-					ItDialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
+					DialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
 					ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
 					listDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
 					return false;
@@ -146,9 +146,9 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 	}
 
 
-	private ItDialogCallback[] getDialogCallbacks(String[] itemList, final Reply reply){
-		ItDialogCallback[] callbacks = new ItDialogCallback[itemList.length];
-		callbacks[0] = new ItDialogCallback() {
+	private DialogCallback[] getDialogCallbacks(String[] itemList, final Reply reply){
+		DialogCallback[] callbacks = new DialogCallback[itemList.length];
+		callbacks[0] = new DialogCallback() {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
@@ -164,7 +164,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 
 	private void deleteReply(final Reply reply){
 		AimHelper aimHelper = ItApplication.getInstance().getAimHelper();
-		aimHelper.del(mFrag, reply, new ItEntityCallback<Boolean>() {
+		aimHelper.del(mFrag, reply, new EntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {
