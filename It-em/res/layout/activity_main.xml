@@ -19,6 +19,11 @@
             android:minHeight="?attr/actionBarSize"
             toolbar:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_shadow_height"
+            android:background="@drawable/toolbar_shadow" />
+
         <FrameLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"

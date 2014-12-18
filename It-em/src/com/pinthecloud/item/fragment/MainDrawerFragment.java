@@ -50,13 +50,6 @@ public class MainDrawerFragment extends ItFragment {
 
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		mListAdapter.notifyItemChanged(PROFILE_POSITION);
-	}
-
-
-	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mCallbacks = (DrawerCallbacks) activity;
@@ -136,7 +129,7 @@ public class MainDrawerFragment extends ItFragment {
 		mMenuList.add(new MainDrawerMenu(0, menuNameList[1], null, false));
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[2], null, false));
 		mMenuList.add(new MainDrawerMenu(0, menuNameList[3], null, false));
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[4], null, false));
+		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[4], new ProFragment(), false));
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[5], new SettingsFragment(), false));
 
 		mListAdapter = new MainDrawerMenuListAdapter(mThisFragment, mMenuList);

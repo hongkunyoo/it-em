@@ -79,10 +79,7 @@ public class ItUserPageFragment extends ItFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
-
-		setHasOptionsMenu(true);
-		findComponent(view);	
+		final View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
@@ -101,6 +98,8 @@ public class ItUserPageFragment extends ItFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
 
+				setHasOptionsMenu(true);
+				findComponent(view);
 				setActionBar();
 				setComponent();
 				setButton();

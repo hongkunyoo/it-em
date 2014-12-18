@@ -42,6 +42,15 @@ public class HomeFragment extends ItFragment {
 
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if(mItemList == null){
+			mItemList = new ArrayList<Item>();
+		}
+	}
+
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -51,15 +60,14 @@ public class HomeFragment extends ItFragment {
 		setButton();
 		setRefreshLayout();
 		setList();
-		updateList();
+
+		if(mItemList.size() < 1){
+			mProgressBar.setVisibility(View.VISIBLE);
+			mLayout.setVisibility(View.GONE);
+			updateList();
+		}
+
 		return view;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mListAdapter.notifyDataSetChanged();
 	}
 
 
@@ -109,7 +117,6 @@ public class HomeFragment extends ItFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mItemList = new ArrayList<Item>();
 		mListAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
 		mListView.setAdapter(mListAdapter);
 
@@ -135,8 +142,8 @@ public class HomeFragment extends ItFragment {
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
-				mListRefresh.setRefreshing(false);
 				mLayout.setVisibility(View.VISIBLE);
+				mListRefresh.setRefreshing(false);
 
 				mItemList.clear();
 				mListAdapter.addAll(list);
