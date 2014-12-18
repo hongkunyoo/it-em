@@ -1,8 +1,8 @@
 package com.pinthecloud.item.activity;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -22,7 +22,7 @@ public class LoginActivity extends ItActivity {
 
 
 	private void setFragment(){
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		fragment = new LoginFragment();
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();

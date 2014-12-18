@@ -1,7 +1,7 @@
 package com.pinthecloud.item.activity;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
@@ -27,7 +27,7 @@ public class ItUserPageActivity extends ItActivity {
 
 
 	private void setFragment(){
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		ItFragment fragment = ItUserPageFragment.newInstance(getIntent().getStringExtra(ItUser.INTENT_KEY));
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();

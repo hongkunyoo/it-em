@@ -1,7 +1,7 @@
 package com.pinthecloud.item.activity;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
@@ -31,7 +31,7 @@ public class UploadActivity extends ItActivity {
 
 
 	private void setFragment(){
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		ItFragment fragment = new UploadFragment();
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();

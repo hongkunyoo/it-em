@@ -1,8 +1,8 @@
 package com.pinthecloud.item.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HongkunTestFragment;
@@ -19,7 +19,7 @@ public class HongkunTestActivity extends ItActivity {
 	
 	
 	private void setFragment(){
-		FragmentManager fragmentManager = getFragmentManager();
+		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		ItFragment fragment = new HongkunTestFragment();
 		fragmentTransaction.add(R.id.activity_container, fragment);

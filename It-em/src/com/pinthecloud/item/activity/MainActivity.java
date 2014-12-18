@@ -1,7 +1,7 @@
 package com.pinthecloud.item.activity;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 
@@ -39,7 +39,7 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 	@Override
 	public void onDrawerItemSelected(int position, ItFragment fragment) {
 		mCurrentSelectedPosition = position;
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.main_container, fragment);
 		transaction.commit();
 	}
@@ -53,7 +53,7 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 
 	private void setDrawer(){
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-		mDrawerFragment = (MainDrawerFragment) getFragmentManager().findFragmentById(R.id.main_drawer);
+		mDrawerFragment = (MainDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.main_drawer);
 		mDrawerFragment.setUp(R.id.main_drawer, mDrawerLayout, toolbar);
 	}
 }

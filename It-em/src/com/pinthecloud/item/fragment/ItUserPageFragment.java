@@ -218,7 +218,7 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setViewPager(){
-		mViewPagerAdapter = new ItUserPagePagerAdapter(getFragmentManager(), mActivity, mItUser);
+		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), mActivity, mItUser);
 		mViewPagerAdapter.setItUserPageScrollTabHolder(new ItUserPageScrollTabHolder() {
 
 			@Override
@@ -243,13 +243,13 @@ public class ItUserPageFragment extends ItFragment {
 			public void updateTab() {
 			}
 		});
-
 		mViewPager.setAdapter(mViewPagerAdapter);
-		mIsUpdatedTabList = new boolean[mViewPagerAdapter.getCount()];
 	}
 
 
 	private void setTab(){
+		mIsUpdatedTabList = new boolean[mViewPagerAdapter.getCount()];
+
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 
