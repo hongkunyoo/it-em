@@ -19,6 +19,7 @@ public abstract class ItUserPageScrollTabFragment extends ItFragment implements 
 	@Override
 	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 	}
+	
 	@Override
 	public void updateTabNumber(int position, int number) {
 	}

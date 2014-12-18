@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainDrawerMenuListAdapter;
+import com.pinthecloud.item.model.ItUser;
 
 public class MainDrawerFragment extends ItFragment {
 
@@ -130,7 +131,7 @@ public class MainDrawerFragment extends ItFragment {
 
 		String[] menuNameList = getResources().getStringArray(R.array.main_drawer_menu_string_array);
 		mMenuList = new ArrayList<MainDrawerMenu>();
-		mMenuList.add(new MainDrawerMenu(0, "", null, false));
+		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(mObjectPrefHelper.get(ItUser.class).getId()), false));
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[0], new HomeFragment(), false));
 		mMenuList.add(new MainDrawerMenu(0, menuNameList[1], null, false));
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[2], null, false));
@@ -138,7 +139,7 @@ public class MainDrawerFragment extends ItFragment {
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[4], null, false));
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[5], new SettingsFragment(), false));
 
-		mListAdapter = new MainDrawerMenuListAdapter(mActivity, mThisFragment, mMenuList);
+		mListAdapter = new MainDrawerMenuListAdapter(mThisFragment, mMenuList);
 		mListView.setAdapter(mListAdapter);
 	}
 

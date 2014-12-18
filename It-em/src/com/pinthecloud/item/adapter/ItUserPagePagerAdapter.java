@@ -12,6 +12,7 @@ import com.pinthecloud.item.fragment.ItUserPageScrollTabFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
 import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.CustomTabProvider;
 
 public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements CustomTabProvider {
@@ -52,6 +53,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	@Override
 	public Fragment getItem(int position) {
+		ItLog.log("getItem");
 		ItUserPageScrollTabFragment fragment = null;
 		switch(position){
 		case 0:
@@ -74,4 +76,23 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 	public int getCount() {
 		return this.mTitles.length;
 	}
+
+
+	//	@Override
+	//	public int getItemPosition(Object object) {
+	//		return POSITION_NONE;
+	//	}
+	//
+	//
+	//	@Override
+	//	public void destroyItem(ViewGroup container, int position, Object object) {
+	//		super.destroyItem(container, position, object);
+	//
+	//		if (position <= getCount()) {
+	//			FragmentManager manager = ((Fragment) object).getFragmentManager();
+	//			FragmentTransaction trans = manager.beginTransaction();
+	//			trans.remove((Fragment) object);
+	//			trans.commit();
+	//		}
+	//	}
 }

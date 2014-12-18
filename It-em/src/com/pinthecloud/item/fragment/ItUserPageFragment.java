@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
@@ -33,6 +34,8 @@ import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
 
+
+
 public class ItUserPageFragment extends ItFragment {
 
 	public static int mTabHeight;
@@ -54,13 +57,21 @@ public class ItUserPageFragment extends ItFragment {
 	private String mItUserId;
 	private ItUser mItUser;
 
-	private boolean[] mIsUpdatedTabs;
+	private boolean[] mIsUpdatedTabList;
+
+	public static ItUserPageFragment newInstance(String itUserId) {
+		ItUserPageFragment fragment = new ItUserPageFragment();
+		Bundle args = new Bundle();
+		args.putString(ItUser.INTENT_KEY, itUserId);
+		fragment.setArguments(args);
+		return fragment;
+	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mItUserId = mActivity.getIntent().getStringExtra(ItUser.INTENT_KEY);
+		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
 	}
 
 
@@ -71,13 +82,17 @@ public class ItUserPageFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 
 		setHasOptionsMenu(true);
-		findComponent(view);
+		findComponent(view);	
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				setItUser();
+				if(mItUser == null){
+					setItUser(frag);
+				} else {
+					AsyncChainer.notifyNext(frag);
+				}
 			}
 		}, new Chainable(){
 
@@ -87,9 +102,8 @@ public class ItUserPageFragment extends ItFragment {
 				mContainer.setVisibility(View.VISIBLE);
 
 				setActionBar();
-				setButton();
 				setComponent();
-				setProfileImageEvent();
+				setButton();
 				setViewPager();
 				setTab();
 				setCustomTabName();
@@ -146,17 +160,17 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setItUser(){
+	private void setItUser(final ItFragment frag){
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItUserId.equals(mItUser.getId())){
-			AsyncChainer.notifyNext(mThisFragment);
+			AsyncChainer.notifyNext(frag);
 		} else {
 			mUserHelper.get(mThisFragment, mItUserId, new EntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
 					mItUser = entity;
-					AsyncChainer.notifyNext(mThisFragment);
+					AsyncChainer.notifyNext(frag);
 				}
 			});
 		}
@@ -184,6 +198,13 @@ public class ItUserPageFragment extends ItFragment {
 		} else {
 			mProfileSettings.setVisibility(View.GONE);
 		}
+
+		mProfileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+			}
+		});
 	}
 
 
@@ -193,16 +214,6 @@ public class ItUserPageFragment extends ItFragment {
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mProfileImage);
-	}
-
-
-	private void setProfileImageEvent(){
-		mProfileImage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-			}
-		});
 	}
 
 
@@ -221,7 +232,7 @@ public class ItUserPageFragment extends ItFragment {
 			@Override
 			public void updateTabNumber(int position, int number) {
 				View tab = mTab.getTab(position);
-				TextView numberText = (TextView)tab.findViewById(R.id.tab_my_page_number);
+				TextView numberText = (TextView)tab.findViewById(R.id.tab_it_user_page_number);
 				numberText.setText(""+number);
 			}
 
@@ -234,7 +245,7 @@ public class ItUserPageFragment extends ItFragment {
 		});
 
 		mViewPager.setAdapter(mViewPagerAdapter);
-		mIsUpdatedTabs = new boolean[mViewPagerAdapter.getCount()];
+		mIsUpdatedTabList = new boolean[mViewPagerAdapter.getCount()];
 	}
 
 
@@ -244,12 +255,12 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-				SparseArrayCompat<ItUserPageScrollTabHolder> myPageTabHolders = mViewPagerAdapter.getItUserPageScrollTabHolderList();
-				ItUserPageScrollTabHolder fragmentContent = myPageTabHolders.valueAt(position);
+				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
+				ItUserPageScrollTabHolder fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
-				if(!mIsUpdatedTabs[position]){
+				if(!mIsUpdatedTabList[position]){
 					fragmentContent.updateTab();
-					mIsUpdatedTabs[position] = true;
+					mIsUpdatedTabList[position] = true;
 				}
 			}
 			@Override
@@ -265,7 +276,7 @@ public class ItUserPageFragment extends ItFragment {
 	private void setCustomTabName(){
 		for(int i=0 ; i<mViewPagerAdapter.getCount() ; i++){
 			View tab = mTab.getTab(i);
-			TextView name = (TextView)tab.findViewById(R.id.tab_my_page_name);
+			TextView name = (TextView)tab.findViewById(R.id.tab_it_user_page_name);
 			name.setText(mViewPagerAdapter.getPageTitle(i));
 		}
 	}

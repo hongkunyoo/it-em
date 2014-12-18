@@ -2,8 +2,6 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.MainDrawerFragment;
 import com.pinthecloud.item.fragment.MainDrawerFragment.MainDrawerMenu;
@@ -33,13 +30,11 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		NORMAL
 	}
 
-	private Context mContext;
 	private ItFragment mfrag; 
 	private List<MainDrawerMenu> mMenuList;
 
 
-	public MainDrawerMenuListAdapter(Context context, ItFragment frag, List<MainDrawerMenu> menuList) {
-		this.mContext = context;
+	public MainDrawerMenuListAdapter(ItFragment frag, List<MainDrawerMenu> menuList) {
 		this.mfrag = frag;
 		this.mMenuList = menuList;
 	}
@@ -114,8 +109,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
 
 			ProfileViewHolder profileViewHolder = (ProfileViewHolder)holder;
-			ItUser myItUser = ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class);
-			setProfileViewHolder(profileViewHolder, myItUser);
+			setProfileViewHolder(profileViewHolder, position);
 
 		} else if (viewType == VIEW_TYPE.Header.ordinal()){
 
@@ -150,7 +144,9 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	private void setProfileViewHolder(ProfileViewHolder holder, final ItUser myItUser) {
+	private void setProfileViewHolder(ProfileViewHolder holder, final int position) {
+		ItUser myItUser = ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class);
+
 		Picasso.with(holder.profileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(myItUser.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
@@ -162,11 +158,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 			@Override
 			public void onClick(View v) {
-				((MainDrawerFragment)mfrag).closeDrawer();
-
-				Intent intent = new Intent(mContext, ItUserPageActivity.class);
-				intent.putExtra(ItUser.INTENT_KEY, myItUser.getId());
-				mContext.startActivity(intent);
+				((MainDrawerFragment)mfrag).selectMenu(position);
 			}
 		});
 	}
@@ -177,7 +169,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	private void setNormalViewHolder(final NormalViewHolder holder, final MainDrawerMenu menu) {
+	private void setNormalViewHolder(NormalViewHolder holder, final MainDrawerMenu menu) {
 		holder.view.setActivated(menu.isActivated());
 		holder.menuImage.setImageResource(menu.getMenuImage());
 		holder.menuName.setText(menu.getMenuName());

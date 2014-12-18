@@ -5,7 +5,7 @@
     android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/tab_my_page_name"
+        android:id="@+id/tab_it_user_page_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -13,14 +13,14 @@
         android:textSize="@dimen/font_medium" />
 
     <TextView
-        android:id="@+id/tab_my_page_number"
+        android:id="@+id/tab_it_user_page_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/it_user_page_tab_number_margin"
         android:layout_marginStart="@dimen/it_user_page_tab_number_margin"
-        android:layout_toEndOf="@+id/tab_my_page_name"
-        android:layout_toRightOf="@+id/tab_my_page_name"
+        android:layout_toEndOf="@+id/tab_it_user_page_name"
+        android:layout_toRightOf="@+id/tab_it_user_page_name"
         android:text="@string/zero"
         android:textColor="@color/it_user_page_tab_number"
         android:textSize="@dimen/font_medium" />

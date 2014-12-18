@@ -45,9 +45,10 @@ public class UserHelper {
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					callback.onCompleted(entity, exception);
-				} else if(response.getStatus().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
-					callback.onCompleted((ItUser)new Gson().fromJson(response.getContent(), ItUser.class), exception);
-				}else {
+				} else if(response.getStatus().getStatusCode() == HttpStatus.SC_FORBIDDEN) {	// Duplicate user
+					ItUser itUser = (ItUser) new Gson().fromJson(response.getContent(), ItUser.class);
+					callback.onCompleted(itUser, exception);
+				} else {
 					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, exception));
 				}
 			}
@@ -60,7 +61,7 @@ public class UserHelper {
 			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
-		
+
 		table.where().field("id").eq(id).execute(new TableQueryCallback<ItUser>() {
 
 			@Override
@@ -85,7 +86,7 @@ public class UserHelper {
 			ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
-		
+
 		table.update(user, new TableOperationCallback<ItUser>() {
 
 			@Override

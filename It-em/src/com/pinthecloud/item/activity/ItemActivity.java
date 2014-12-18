@@ -1,7 +1,6 @@
 package com.pinthecloud.item.activity;
 
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
@@ -16,13 +15,6 @@ public class ItemActivity extends ItActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_toolbar_frame);
 		setToolbar();
-		setFragment();
-	}
-
-
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
 		setFragment();
 	}
 

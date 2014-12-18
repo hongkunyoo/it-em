@@ -167,9 +167,9 @@ public class LoginFragment extends ItFragment {
 			public void onCompleted(ItUser entity, Exception exception) {
 				mObjectPrefHelper.put(entity);
 
-				// If new user, add it and get profile image.
+				// If a new user, add it and get profile image.
 				// Otherwise, go to next activity.
-				if(exception == null){
+				if(exception == null) {
 					itUser.setId(entity.getId());
 					AsyncChainer.notifyNext(frag);
 				} else {
