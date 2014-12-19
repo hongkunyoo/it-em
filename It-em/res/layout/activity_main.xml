@@ -19,19 +19,25 @@
             android:minHeight="?attr/actionBarSize"
             toolbar:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_shadow_height"
-            android:background="@drawable/toolbar_shadow" />
-
         <FrameLayout
-            android:id="@+id/main_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+            <View
+                android:id="@+id/main_toolbar_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_shadow_height"
+                android:background="@drawable/toolbar_shadow" />
+
+            <FrameLayout
+                android:id="@+id/main_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
     </LinearLayout>
 
     <fragment
-        android:id="@+id/main_drawer"
+        android:id="@+id/main_drawer_fragment"
         android:name="com.pinthecloud.item.fragment.MainDrawerFragment"
         android:layout_width="@dimen/drawer_width"
         android:layout_height="match_parent"

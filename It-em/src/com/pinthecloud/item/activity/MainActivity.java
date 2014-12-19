@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -48,12 +49,15 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 	private void setToolbar(){
 		toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 		setSupportActionBar(toolbar);
+
+		View shadow = findViewById(R.id.main_toolbar_shadow);
+		shadow.bringToFront();
 	}
 
 
 	private void setDrawer(){
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-		mDrawerFragment = (MainDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.main_drawer);
-		mDrawerFragment.setUp(R.id.main_drawer, mDrawerLayout, toolbar);
+		mDrawerFragment = (MainDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.main_drawer_fragment);
+		mDrawerFragment.setUp(R.id.main_drawer_fragment, mDrawerLayout, toolbar);
 	}
 }
