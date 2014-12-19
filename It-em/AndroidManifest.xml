@@ -40,6 +40,7 @@
             android:label="@string/app_name" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.ItUserPageActivity" />
+        <activity android:name=".activity.ProfileImageActivity" />
         <activity android:name=".activity.ItemActivity" />
         <activity android:name=".activity.ProductTagActivity" />
         <activity

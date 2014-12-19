@@ -31,12 +31,11 @@ import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.PicassoTools;
 
 public class ProfileSettingsFragment extends ItFragment {
 
 	private Uri mProfileImageUri;
-	private Bitmap mProfileImageBitmap;
+	//	private Bitmap mProfileImageBitmap;
 	private CircleImageView mProfileImage;
 
 	private EditText mNickName;
@@ -45,11 +44,9 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private ItUser mMyItUser;
 
-	private boolean mIsProfileImageChanged = false;
-	private boolean mIsItUserUpdated = false;
+	private boolean mIsUpdating = false;
 	private boolean mIsProfileImageUpdated = false;
 	private boolean mIsSmallProfileImageUpdated = false;
-	private boolean mIsUpdating = false;
 
 
 	@Override
@@ -76,11 +73,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(mProfileImageBitmap == null){
-			setProfileImage();
-		} else {
-			mProfileImage.setImageBitmap(mProfileImageBitmap);	
-		}
+		setProfileImage();
 	}
 
 
@@ -96,8 +89,8 @@ public class ProfileSettingsFragment extends ItFragment {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK){
 			String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
-			mProfileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
-			mIsProfileImageChanged = true;
+			Bitmap profileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
+			updateProfileImage(profileImageBitmap);
 		}
 	}
 
@@ -124,41 +117,20 @@ public class ProfileSettingsFragment extends ItFragment {
 			mActivity.onBackPressed();
 			break;
 		case R.id.profile_settings_done:
-			if(mIsUpdating){
-				break;
-			}
+			if(!mIsUpdating){
+				mIsUpdating = true;
 
-			mIsUpdating = true;
-			mApp.showProgressDialog(mActivity);
-
-			trimProfileSettings();
-
-			// If there is no change, return
-			if(!isProfileSettingsChanged() && !mIsProfileImageChanged){
-				mApp.dismissProgressDialog();
-				mActivity.onBackPressed();
-				break;
-			}
-
-			// Update profile settings change
-			if(isProfileSettingsChanged()){
-				String message = checkProfileSettings();
-				if(!message.equals("")){
-					mApp.dismissProgressDialog();
-					showAlertDialog(message);
-					break;
+				trimProfileSettings();
+				if(isProfileSettingsChanged()){
+					String message = checkProfileSettings();
+					if(message.equals("")){
+						updateProfileSettings();
+					} else {
+						showAlertDialog(message);						
+					}
+				} else {
+					mActivity.onBackPressed();
 				}
-				updateProfileSettings();
-			} else {
-				mIsItUserUpdated = true;
-			}
-
-			// Update profile image change
-			if(mIsProfileImageChanged){
-				updateProfileImage();
-			} else {
-				mIsProfileImageUpdated = true;
-				mIsSmallProfileImageUpdated = true;
 			}
 			break;
 		}
@@ -204,7 +176,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mProfileImage);
@@ -255,9 +227,8 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				mProfileImageBitmap = BitmapUtil.decodeInSampleSize(getResources(), R.drawable.launcher, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
-				mProfileImage.setImageBitmap(mProfileImageBitmap);
-				mIsProfileImageChanged = true;
+				Bitmap profileImageBitmap = BitmapUtil.decodeInSampleSize(getResources(), R.drawable.launcher, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
+				updateProfileImage(profileImageBitmap);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -323,6 +294,8 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void updateProfileSettings(){
+		mApp.showProgressDialog(mActivity);
+
 		mMyItUser.setNickName(mNickName.getText().toString());
 		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
 		mMyItUser.setWebPage(mWebsite.getText().toString());
@@ -332,50 +305,54 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void onCompleted(ItUser entity) {
 				mObjectPrefHelper.put(entity);
-				mIsItUserUpdated = true;
-				if(mIsProfileImageUpdated && mIsSmallProfileImageUpdated){
-					goToNextActivity();	
-				}
+				showSuccessToast(getResources().getString(R.string.profile_edited));
+				goToNextActivity();
 			}
 		});
 	}
 
 
-	private void updateProfileImage(){
+	private void updateProfileImage(final Bitmap profileImageBitmap){
+		mApp.showProgressDialog(mActivity);
+
 		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
-				mProfileImageBitmap, new EntityCallback<String>() {
+				profileImageBitmap, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
 				mIsProfileImageUpdated = true;
-				if(mIsItUserUpdated && mIsSmallProfileImageUpdated){
-					goToNextActivity();
+				if(mIsSmallProfileImageUpdated){
+					FileUtil.clearCache();
+					setProfileImage();
+					showSuccessToast(getResources().getString(R.string.profile_image_edited));
 				}
 			}
 		});
 
-		Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(mProfileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+		Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
 				smallProfileImageBitmap, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
 				mIsSmallProfileImageUpdated = true;
-				if(mIsItUserUpdated && mIsProfileImageUpdated){
-					goToNextActivity();
+				if(mIsProfileImageUpdated){
+					FileUtil.clearCache();
+					setProfileImage();
+					showSuccessToast(getResources().getString(R.string.profile_image_edited));
 				}
 			}
 		});
 	}
 
 
-	private void goToNextActivity(){
+	private void showSuccessToast(String message){
 		mApp.dismissProgressDialog();
+		Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+	}
 
-		// Clear profile image cache
-		PicassoTools.clearCache(Picasso.with(mActivity));
-		FileUtil.deleteDirectoryTree(mApp.getCacheDir());
-		Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
+
+	private void goToNextActivity(){
 		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, mMyItUser.getId());
 		startActivity(intent);

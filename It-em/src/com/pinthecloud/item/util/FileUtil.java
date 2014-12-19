@@ -16,7 +16,10 @@ import android.provider.MediaStore.Images.Media;
 import android.text.format.Time;
 
 import com.pinthecloud.item.GlobalVariable;
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.fragment.ItFragment;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.PicassoTools;
 
 public class FileUtil {
 
@@ -136,14 +139,21 @@ public class FileUtil {
 		}
 		return imagePath;
 	}
-	
-	
+
+
 	public static void deleteDirectoryTree(File fileOrDirectory) {
-	    if (fileOrDirectory.isDirectory()) {
-	        for (File child : fileOrDirectory.listFiles()) {
-	            deleteDirectoryTree(child);
-	        }
-	    }
-	    fileOrDirectory.delete();
+		if (fileOrDirectory.isDirectory()) {
+			for (File child : fileOrDirectory.listFiles()) {
+				deleteDirectoryTree(child);
+			}
+		}
+		fileOrDirectory.delete();
+	}
+
+
+	public static void clearCache(){
+		ItApplication app = ItApplication.getInstance();
+		PicassoTools.clearCache(Picasso.with(app));
+		deleteDirectoryTree(app.getCacheDir());
 	}
 }

@@ -30,7 +30,7 @@
      <string-array name="profile_image_select_string_array">
         <item>Album</item>
         <item>Camera</item>
-        <item>Default</item>
+        <item>Delete</item>
     </string-array>
     
     <!-- Reply -->

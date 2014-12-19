@@ -17,7 +17,6 @@ import com.pinthecloud.item.adapter.MyItemGridAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.ItLog;
 
 public class MyItemFragment extends ItUserPageScrollTabFragment {
 
@@ -30,7 +29,6 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 
 
 	public static ItUserPageScrollTabFragment newInstance(int position, ItUser itUser) {
-		ItLog.log("newInstance");
 		MyItemFragment fragment = new MyItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
@@ -53,23 +51,14 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
-		ItLog.log("onCreateView");
 		findComponent(view);
 		setGrid(inflater);
 		return view;
-	}
-	
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		ItLog.log("onDestroy");
 	}
 
 
 	@Override
 	public void adjustScroll(final int scrollHeight) {
-		ItLog.log("adjustScroll");
 		if (scrollHeight - ItUserPageFragment.mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
 		}

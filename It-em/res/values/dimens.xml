@@ -47,7 +47,6 @@
     <dimen name="reply_submit_bottom_margin">4dp</dimen>
     
     <!-- Profile Settings -->
-    <dimen name="profile_settings_profile_image">128dp</dimen>
     <dimen name="profile_settings_margin">8dp</dimen>
     
     <!-- Font -->

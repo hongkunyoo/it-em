@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ProfileImageActivity;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -80,7 +81,10 @@ public class ItUserPageFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		final View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
-
+		
+		setHasOptionsMenu(true);
+		findComponent(view);
+		
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -98,8 +102,6 @@ public class ItUserPageFragment extends ItFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
 
-				setHasOptionsMenu(true);
-				findComponent(view);
 				setActionBar();
 				setComponent();
 				setButton();
@@ -202,6 +204,9 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, ProfileImageActivity.class);
+				intent.putExtra(ItUser.INTENT_KEY, mItUser.getId());
+				startActivity(intent);
 			}
 		});
 	}

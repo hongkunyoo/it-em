@@ -1,61 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/content_margin" >
 
-    <View
+    <com.pinthecloud.item.view.CircleImageView
+        xmlns:civ="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_settings_frag_profile_image"
+        android:layout_width="@dimen/item_profile_image_width"
+        android:layout_height="@dimen/item_profile_image_width"
+        android:layout_gravity="center_horizontal"
+        civ:border_color="@color/line_color"
+        civ:border_width="@dimen/line_width" />
+
+    <EditText
+        android:id="@+id/profile_settings_frag_nick_name"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_shadow_height"
-        android:background="@drawable/toolbar_shadow" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_margin"
+        android:ems="10"
+        android:hint="@string/nick_name"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/line_color"
+        android:textSize="@dimen/font_large" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/profile_settings_frag_description"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/content_margin" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_settings_margin"
+        android:ems="10"
+        android:hint="@string/description"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/line_color"
+        android:textSize="@dimen/font_large" />
 
-        <com.pinthecloud.item.view.CircleImageView
-            xmlns:civ="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_settings_frag_profile_image"
-            android:layout_width="@dimen/profile_settings_profile_image"
-            android:layout_height="@dimen/profile_settings_profile_image"
-            android:layout_gravity="center_horizontal"
-            civ:border_color="@color/line_color"
-            civ:border_width="@dimen/line_width" />
+    <EditText
+        android:id="@+id/profile_settings_frag_website"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_settings_margin"
+        android:ems="10"
+        android:hint="@string/website"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/line_color"
+        android:textSize="@dimen/font_large" />
 
-        <EditText
-            android:id="@+id/profile_settings_frag_nick_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin"
-            android:ems="10"
-            android:hint="@string/nick_name"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/line_color"
-            android:textSize="@dimen/font_large" />
-
-        <EditText
-            android:id="@+id/profile_settings_frag_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/profile_settings_margin"
-            android:ems="10"
-            android:hint="@string/description"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/line_color"
-            android:textSize="@dimen/font_large" />
-
-        <EditText
-            android:id="@+id/profile_settings_frag_website"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/profile_settings_margin"
-            android:ems="10"
-            android:hint="@string/website"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/line_color"
-            android:textSize="@dimen/font_large" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
