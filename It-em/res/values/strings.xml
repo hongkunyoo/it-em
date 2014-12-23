@@ -27,6 +27,9 @@
     <!-- It User Page -->
     <string name="zero">0</string>
 
+    <!-- Pro-->
+    <string name="pro">Pro</string>
+    
     <!-- My Item -->
     <string name="it_lower">it</string>
     <string name="reply_lower">comment</string>

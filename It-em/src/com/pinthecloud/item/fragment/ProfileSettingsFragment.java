@@ -305,7 +305,10 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void onCompleted(ItUser entity) {
 				mObjectPrefHelper.put(entity);
-				showSuccessToast(getResources().getString(R.string.profile_edited));
+
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
+
 				goToNextActivity();
 			}
 		});
@@ -324,7 +327,9 @@ public class ProfileSettingsFragment extends ItFragment {
 				if(mIsSmallProfileImageUpdated){
 					FileUtil.clearCache();
 					setProfileImage();
-					showSuccessToast(getResources().getString(R.string.profile_image_edited));
+
+					mApp.dismissProgressDialog();
+					Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -339,16 +344,12 @@ public class ProfileSettingsFragment extends ItFragment {
 				if(mIsProfileImageUpdated){
 					FileUtil.clearCache();
 					setProfileImage();
-					showSuccessToast(getResources().getString(R.string.profile_image_edited));
+
+					mApp.dismissProgressDialog();
+					Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
 				}
 			}
 		});
-	}
-
-
-	private void showSuccessToast(String message){
-		mApp.dismissProgressDialog();
-		Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
 	}
 
 
