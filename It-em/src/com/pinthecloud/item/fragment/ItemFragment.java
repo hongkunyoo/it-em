@@ -19,6 +19,7 @@ import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
@@ -84,16 +85,20 @@ public class ItemFragment extends ItFragment {
 
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+	public boolean onOptionsItemSelected(MenuItem menu) {
+		switch (menu.getItemId()) {
 		case android.R.id.home:
 			mActivity.onBackPressed();
 			break;
 		case R.id.item_it:
-			// TODO do like it
+			int likeItNum = (Integer.parseInt(mItNumber.getText().toString().trim()) + 1);
+			mItNumber.setText(String.valueOf(likeItNum));
+
+			LikeIt likeIt = new LikeIt(mItem.getWhoMade(), mItem.getWhoMadeId(), mItem.getId());
+			mAimHelper.add(mThisFragment, likeIt, null);
 			break;
 		}
-		return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(menu);
 	}
 
 

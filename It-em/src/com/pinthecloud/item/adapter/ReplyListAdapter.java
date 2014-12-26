@@ -3,16 +3,19 @@ package com.pinthecloud.item.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -22,6 +25,7 @@ import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Reply;
+import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
@@ -81,8 +85,16 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 	}
 
 
-	private void setText(ViewHolder holder, Reply reply){
+	private void setText(ViewHolder holder, final Reply reply){
 		holder.nickName.setText(reply.getWhoMade());
+		holder.nickName.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				goToItUserPageActivity(reply.getWhoMadeId());
+			}
+		});
+
 		holder.content.setText(reply.getContent());
 		if(reply.getRawCreateDateTime() != null){
 			holder.time.setText(reply.getCreateDateTime().getElapsedDateTimeString());
@@ -111,13 +123,20 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 	}
 
 
-	private void setImageView(ViewHolder holder, Reply reply) {
-		Picasso.with(mContext)
-		.load(BlobStorageHelper.getItemImgUrl(reply.getWhoMadeId()))
+	private void setImageView(ViewHolder holder, final Reply reply) {
+		Picasso.with(holder.profileImage.getContext())
+		.load(BlobStorageHelper.getUserProfileImgUrl(reply.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
-		.error(R.drawable.launcher)
 		.fit()
 		.into(holder.profileImage);
+
+		holder.profileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				goToItUserPageActivity(reply.getWhoMadeId());
+			}
+		});
 	}
 
 
@@ -171,5 +190,12 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.View
 				remove(reply);
 			}
 		});
+	}
+
+
+	private void goToItUserPageActivity(String itUserId){
+		Intent intent = new Intent(mContext, ItUserPageActivity.class);
+		intent.putExtra(ItUser.INTENT_KEY, itUserId);
+		mContext.startActivity(intent);
 	}
 }

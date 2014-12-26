@@ -197,7 +197,9 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
+					if(callback != null){
+						callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
+					}
 				} else {
 					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, response));
 				}

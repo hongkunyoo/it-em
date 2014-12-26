@@ -2,7 +2,9 @@ package com.pinthecloud.item.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,6 +29,25 @@ public class ProductTagFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_product_tag, container, false);
+		setHasOptionsMenu(true);
+		setActionBar();
 		return view;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menu) {
+		switch (menu.getItemId()) {
+		case android.R.id.home:
+			mActivity.onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(menu);
+	}
+
+
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 }

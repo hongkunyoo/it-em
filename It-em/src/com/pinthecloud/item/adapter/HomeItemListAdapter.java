@@ -2,6 +2,7 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -11,13 +12,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.ProductTagActivity;
@@ -25,7 +26,6 @@ import com.pinthecloud.item.activity.ReplyActivity;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
@@ -41,7 +41,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		FOOTER
 	}
 
-	private ItActivity mActivity;
+	private Context mContext;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 	private boolean hasFooter = false;
@@ -51,8 +51,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	public HomeItemListAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
-		this.mActivity = activity;
+	public HomeItemListAdapter(Context context, ItFragment frag, List<Item> itemList) {
+		this.mContext = context;
 		this.mFrag = frag;
 		this.mItemList = itemList;
 	}
@@ -61,6 +61,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
+		public LinearLayout layout;
 		public SquareImageView image;
 		public TextView content;
 		public ImageButton itButton;
@@ -76,6 +77,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			super(view);
 			this.view = view;
 
+			this.layout = (LinearLayout)view.findViewById(R.id.row_home_item_list_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
@@ -126,7 +128,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position);
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
-			setNormalText(normalViewHolder, item);
+			setNormalComponent(normalViewHolder, item);
 			setNormalButton(normalViewHolder, item);
 			setNormalImageView(normalViewHolder, item, position);
 		}
@@ -157,10 +159,19 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	private void setNormalText(NormalViewHolder holder, Item item){
+	private void setNormalComponent(NormalViewHolder holder, Item item){
 		holder.content.setText(item.getContent());
 		holder.itNumber.setText(""+item.getLikeItCount());
 		holder.nickName.setText(item.getWhoMade());
+
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+		if(mItemList.indexOf(item) < mItemList.size()-1){
+			layoutParams.setMargins(0, 0, 0, mContext.getResources().getDimensionPixelSize(R.dimen.content_margin));		
+		} else {
+			layoutParams.setMargins(0, 0, 0, 0);
+		}
+		holder.layout.setLayoutParams(layoutParams);	
 	}
 
 
@@ -169,9 +180,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+				Intent intent = new Intent(mContext, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
-				mActivity.startActivity(intent);
+				mContext.startActivity(intent);
 			}
 		});
 
@@ -179,9 +190,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ItemActivity.class);
+				Intent intent = new Intent(mContext, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.startActivity(intent);
+				mContext.startActivity(intent);
 			}
 		});
 
@@ -194,12 +205,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 				LikeIt likeIt = new LikeIt(item.getWhoMade(), item.getWhoMadeId(), item.getId());
 				AimHelper mAimHelper = ItApplication.getInstance().getAimHelper();
-				mAimHelper.add(mFrag, likeIt, new EntityCallback<LikeIt>() {
-
-					@Override
-					public void onCompleted(LikeIt entity) {
-					}
-				});
+				mAimHelper.add(mFrag, likeIt, null);
 			}
 		});
 
@@ -208,19 +214,19 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ReplyActivity.class);
+				Intent intent = new Intent(mContext, ReplyActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.startActivity(intent);
+				mContext.startActivity(intent);
 			}
 		});
-		
+
 		holder.productTag.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ProductTagActivity.class);
+				Intent intent = new Intent(mContext, ProductTagActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.startActivity(intent);
+				mContext.startActivity(intent);
 			}
 		});
 	}
@@ -232,7 +238,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(holder.image);
-		
+
 		Picasso.with(holder.profileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)

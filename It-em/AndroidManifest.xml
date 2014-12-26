@@ -50,9 +50,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ItemActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activity.ProductTagActivity"
+            android:label="@string/product_tag"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UploadActivity"
@@ -67,7 +69,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ReplyActivity"
-            android:label="@string/reply"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".activity.HongkunTestActivity" />

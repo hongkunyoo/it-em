@@ -82,7 +82,7 @@ public class ReplyFragment extends ItFragment {
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(actionBar.getTitle() + " " + mItem.getReplyCount());
+		actionBar.setTitle(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
 	}
 
 
@@ -144,11 +144,16 @@ public class ReplyFragment extends ItFragment {
 
 
 	private void loadReplyList() {
+		mProgressBar.setVisibility(View.VISIBLE);
+		mListView.setVisibility(View.GONE);
+
 		mAimHelper.list(mThisFragment, Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
+				mListView.setVisibility(View.VISIBLE);
+
 				mListAdapter.addAll(0, list);
 			}
 		});

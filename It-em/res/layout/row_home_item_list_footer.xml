@@ -6,7 +6,11 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <ProgressBar
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_width"
+        android:background="@color/line_color" />
+    <ProgressBar
         android:id="@+id/row_home_item_list_footer_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

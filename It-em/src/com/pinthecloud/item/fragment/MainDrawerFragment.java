@@ -24,7 +24,6 @@ import com.pinthecloud.item.model.ItUser;
 
 public class MainDrawerFragment extends ItFragment {
 
-	private static final int PROFILE_POSITION = 0;
 	public static final int HOME_POSITION = 1;
 
 	private RecyclerView mListView;
@@ -53,13 +52,6 @@ public class MainDrawerFragment extends ItFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mCallbacks = (DrawerCallbacks) activity;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mListAdapter.notifyItemChanged(PROFILE_POSITION);
 	}
 
 

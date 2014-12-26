@@ -56,7 +56,6 @@
     <!-- Reply -->
     <string name="reply">Comment</string>
     <string name="delete">Delete</string>
-    <string name="previous_reply">See previous comment</string>
     <string name="submit">Submit</string>
 
     <!-- Item -->
@@ -65,6 +64,9 @@
     <string name="upload_by">Uploaded by</string>
     <string name="of">\'s</string>
 
+    <!-- Product Tag -->
+    <string name="product_tag">Product Tag</string>
+    
     <!-- ItDateTime -->
     <string name="second_ago">second ago</string>
     <string name="minute_ago">minute ago</string>
