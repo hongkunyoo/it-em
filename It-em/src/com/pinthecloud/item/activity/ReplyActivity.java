@@ -8,6 +8,7 @@ import android.view.View;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.ReplyFragment;
+import com.pinthecloud.item.model.Item;
 
 public class ReplyActivity extends ItActivity {
 
@@ -30,8 +31,10 @@ public class ReplyActivity extends ItActivity {
 
 
 	private void setFragment(){
+		Item item = getIntent().getParcelableExtra(Item.INTENT_KEY);
+		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		ItFragment fragment = new ReplyFragment();
+		ItFragment fragment = ReplyFragment.newInstance(item);
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}

@@ -3,7 +3,6 @@ package com.pinthecloud.item.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -39,16 +38,24 @@ public class ReplyFragment extends ItFragment {
 	private LinearLayoutManager mListLayoutManager;
 	private List<Reply> mReplyList;
 
-	private ItUser myItUser;
+	private ItUser mMyItUser;
 	private Item mItem;
+
+
+	public static ReplyFragment newInstance(Item item) {
+		ReplyFragment fragment = new ReplyFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(Item.INTENT_KEY, item);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = mActivity.getIntent();
-		myItUser = mObjectPrefHelper.get(ItUser.class);
-		mItem = intent.getParcelableExtra(Item.INTENT_KEY);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mItem = getArguments().getParcelable(Item.INTENT_KEY);
 	}
 
 
@@ -99,12 +106,8 @@ public class ReplyFragment extends ItFragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				String nickName = s.toString().trim();
-				if(nickName.length() < 1){
-					mSubmitButton.setEnabled(false);
-				}else{
-					mSubmitButton.setEnabled(true);
-				}
+				String reply = s.toString().trim();
+				mSubmitButton.setEnabled(reply.length() > 0);
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -122,7 +125,7 @@ public class ReplyFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				Reply reply = new Reply(mReplyText.getText().toString(), myItUser.getNickName(), myItUser.getId(), mItem.getId());
+				Reply reply = new Reply(mReplyText.getText().toString(), mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
 				mReplyText.setText("");
 				submitReply(reply);
 			}
@@ -138,7 +141,7 @@ public class ReplyFragment extends ItFragment {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mReplyList = new ArrayList<Reply>();
-		mListAdapter = new ReplyListAdapter(mActivity, mThisFragment, myItUser, mReplyList);
+		mListAdapter = new ReplyListAdapter(mActivity, mThisFragment, mMyItUser, mReplyList);
 		mListView.setAdapter(mListAdapter);
 	}
 

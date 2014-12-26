@@ -100,13 +100,11 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <fragment
+        <FrameLayout
             android:id="@+id/item_frag_reply_frag"
-            android:name="com.pinthecloud.item.fragment.ReplyFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/content_margin"
-            tools:layout="@layout/fragment_reply" />
+            android:layout_marginBottom="@dimen/content_margin" />
 
         <LinearLayout
             android:id="@+id/item_frag_profile_layout"

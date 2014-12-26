@@ -2,6 +2,7 @@ package com.pinthecloud.item.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,6 +59,7 @@ public class ItemFragment extends ItFragment {
 		findComponent(view);
 		setText();
 		setButton();
+		setReplyFragment();
 		return view;
 	}
 
@@ -151,6 +153,14 @@ public class ItemFragment extends ItFragment {
 				startActivity(intent);
 			}
 		});
+	}
+
+
+	private void setReplyFragment(){
+		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+		ItFragment fragment = ReplyFragment.newInstance(mItem);
+		transaction.replace(R.id.item_frag_reply_frag, fragment);
+		transaction.commit();
 	}
 
 
