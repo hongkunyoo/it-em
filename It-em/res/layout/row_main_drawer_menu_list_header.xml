@@ -10,9 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_width"
-        android:background="@color/line_color" />
+    <include layout="@layout/custom_line" />
 
 </LinearLayout>

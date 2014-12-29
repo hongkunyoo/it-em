@@ -3,6 +3,7 @@ package com.pinthecloud.item.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HongkunTestFragment;
@@ -15,6 +16,12 @@ public class HongkunTestActivity extends ItActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_frame);
 		setFragment();
+	}
+	
+	
+	@Override
+	public Toolbar getToolbar() {
+		return null;
 	}
 	
 	

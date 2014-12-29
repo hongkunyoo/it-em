@@ -67,10 +67,6 @@
             android:label="@string/profile_settings"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.ReplyActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".activity.HongkunTestActivity" />
     </application>
 

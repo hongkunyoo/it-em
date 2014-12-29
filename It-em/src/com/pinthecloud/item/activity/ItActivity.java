@@ -1,12 +1,13 @@
 package com.pinthecloud.item.activity;
 
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 
-public class ItActivity extends ActionBarActivity {
+public abstract class ItActivity extends ActionBarActivity {
 
 	protected ItApplication mApp;
 	protected ItActivity mThisActivity;
@@ -15,6 +16,7 @@ public class ItActivity extends ActionBarActivity {
 
 
 	public ItActivity(){
+		super();
 		mApp = ItApplication.getInstance();
 		mThisActivity = this;
 		mUserHabitHelper = mApp.getUserHabitHelper();
@@ -36,4 +38,6 @@ public class ItActivity extends ActionBarActivity {
 		mUserHabitHelper.activityStop(mThisActivity);
 		mGaHelper.reportActivityStop(mThisActivity);
 	}
+	
+	public abstract Toolbar getToolbar();
 }

@@ -27,9 +27,9 @@
     <!-- It User Page -->
     <string name="zero">0</string>
 
-    <!-- Pro-->
+    <!-- Pro -->
     <string name="pro">Pro</string>
-    
+
     <!-- My Item -->
     <string name="it_lower">it</string>
     <string name="reply_lower">comment</string>
@@ -57,6 +57,7 @@
     <string name="reply">Comment</string>
     <string name="delete">Delete</string>
     <string name="submit">Submit</string>
+    <string name="previous_reply">All comments</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
@@ -66,7 +67,7 @@
 
     <!-- Product Tag -->
     <string name="product_tag">Product Tag</string>
-    
+
     <!-- ItDateTime -->
     <string name="second_ago">second ago</string>
     <string name="minute_ago">minute ago</string>

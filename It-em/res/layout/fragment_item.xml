@@ -1,40 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pinthecloud.item.view.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/brand_color"
-    android:scrollbars="none" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
+    <com.pinthecloud.item.view.SquareImageView
+        android:id="@+id/item_frag_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:adjustViewBounds="true"
+        android:background="@android:color/white"
+        android:scaleType="centerCrop" />
 
-        <com.pinthecloud.item.view.SquareImageView
-            android:id="@+id/item_frag_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="@android:color/white"
-            android:scaleType="centerCrop" />
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+        android:id="@+id/item_frag_scroll_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/content_margin"
-            android:background="@android:color/white" >
+            android:orientation="vertical" >
 
-            <View
-                android:id="@+id/item_frag_image_divider"
+            <com.pinthecloud.item.view.SquareImageView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/line_width"
-                android:background="@color/line_color" />
+                android:layout_height="match_parent" />
+
+            <include layout="@layout/custom_line" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_frag_image_divider"
+                android:background="@android:color/white"
                 android:padding="@dimen/content_margin" >
 
                 <LinearLayout
@@ -98,61 +95,111 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
-        </RelativeLayout>
 
-        <fragment
-            android:id="@+id/item_frag_reply_frag"
-            android:name="com.pinthecloud.item.fragment.ReplyFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/content_margin"
-            tools:layout="@layout/fragment_reply" />
-
-        <LinearLayout
-            android:id="@+id/item_frag_profile_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/content_margin"
-            android:paddingEnd="@dimen/content_margin"
-            android:paddingLeft="@dimen/content_margin"
-            android:paddingRight="@dimen/content_margin"
-            android:paddingStart="@dimen/content_margin" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/item_profile_text_height"
-                android:gravity="center_vertical"
-                android:text="@string/upload_by"
-                android:textColor="@color/it_user_page_tab_number"
-                android:textSize="@dimen/font_medium" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/content_margin"
+                android:background="@color/brand_color" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:background="@android:color/white"
+                android:orientation="vertical" >
 
-                <com.pinthecloud.item.view.CircleImageView
-                    xmlns:civ="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/item_frag_profile_image"
-                    android:layout_width="@dimen/item_profile_image_width"
-                    android:layout_height="@dimen/item_profile_image_width"
-                    android:layout_marginTop="@dimen/item_profile_image_top_margin"
-                    civ:border_color="@color/line_color"
-                    civ:border_width="@dimen/line_width" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/content_margin" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reply" />
+
+                    <TextView
+                        android:id="@+id/item_frag_reply_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <include layout="@layout/custom_line" />
+
+                <RelativeLayout
+                    android:id="@+id/item_frag_reply_list_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <include
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        layout="@layout/custom_progress_bar"
+                        android:visibility="gone" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/item_frag_reply_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <include layout="@layout/custom_inputbar" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/content_margin"
+                android:background="@color/brand_color" />
+
+            <LinearLayout
+                android:id="@+id/item_frag_profile_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/content_margin"
+                android:paddingEnd="@dimen/content_margin"
+                android:paddingLeft="@dimen/content_margin"
+                android:paddingRight="@dimen/content_margin"
+                android:paddingStart="@dimen/content_margin" >
 
                 <TextView
-                    android:id="@+id/item_frag_nick_name"
                     android:layout_width="wrap_content"
+                    android:layout_height="@dimen/item_profile_text_height"
+                    android:gravity="center_vertical"
+                    android:text="@string/upload_by"
+                    android:textColor="@color/it_user_page_tab_number"
+                    android:textSize="@dimen/font_medium" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/content_margin"
-                    android:layout_marginStart="@dimen/content_margin"
-                    android:textColor="@color/it_user_page_tab_title"
-                    android:textSize="@dimen/font_large" />
+                    android:orientation="horizontal" >
+
+                    <com.pinthecloud.item.view.CircleImageView
+                        xmlns:civ="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/item_frag_profile_image"
+                        android:layout_width="@dimen/item_profile_image_width"
+                        android:layout_height="@dimen/item_profile_image_width"
+                        android:layout_marginTop="@dimen/item_profile_image_top_margin"
+                        civ:border_color="@color/line_color"
+                        civ:border_width="@dimen/line_width" />
+
+                    <TextView
+                        android:id="@+id/item_frag_nick_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/content_margin"
+                        android:layout_marginStart="@dimen/content_margin"
+                        android:textColor="@color/it_user_page_tab_title"
+                        android:textSize="@dimen/font_large" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
-</com.pinthecloud.item.view.ParallaxScrollView>
+</FrameLayout>

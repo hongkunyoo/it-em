@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +21,8 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.ProductTagActivity;
-import com.pinthecloud.item.activity.ReplyActivity;
+import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -44,10 +44,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	private Context mContext;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
-	private boolean hasFooter = false;
+	private boolean mHasFooter = false;
 
 	public void setHasFooter(boolean hasFooter) {
-		this.hasFooter = hasFooter;
+		this.mHasFooter = hasFooter;
 	}
 
 
@@ -93,13 +93,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
 	public static class FooterViewHolder extends RecyclerView.ViewHolder {
-		public View mView;
-		public ProgressBar mProgressBar;
-
 		public FooterViewHolder(View view) {
 			super(view);
-			this.mView = view;
-			this.mProgressBar = (ProgressBar)view.findViewById(R.id.row_home_item_list_footer_progress_bar);
 		}
 	}
 
@@ -137,7 +132,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	@Override
 	public int getItemCount() {
-		if(hasFooter){
+		if(mHasFooter){
 			return mItemList.size()+1;
 		} else{
 			return mItemList.size();
@@ -147,7 +142,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	@Override
 	public int getItemViewType(int position) {
-		if(hasFooter){
+		if(mHasFooter){
 			if (position < getItemCount()-1) {
 				return VIEW_TYPE.NORMAL.ordinal();
 			} else{
@@ -214,9 +209,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mContext, ReplyActivity.class);
-				intent.putExtra(Item.INTENT_KEY, item);
-				mContext.startActivity(intent);
+				ReplyDialog replyDialog = new ReplyDialog(mFrag, item);
+				replyDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 

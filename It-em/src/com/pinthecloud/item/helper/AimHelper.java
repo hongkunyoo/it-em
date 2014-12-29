@@ -23,14 +23,14 @@ import com.pinthecloud.item.model.Item;
 public class AimHelper {
 
 	//	private static final String RANK_ITEM = "rank_10";
-	private final String AIM_LIST = "aim_list";
-	private final String AIM_ITEM_LIST = "aim_item_list";
 	private final String AIM_GET = "aim_get";
 	private final String AIM_ADD = "aim_add";
 	private final String AIM_UPDATE = "aim_update";
 	private final String AIM_DELETE = "aim_delete";
-	private final String MY_UPLOAD_ITEM = "my_upload_item";
-	private final String MY_IT_ITEM = "my_it_item";
+	private final String AIM_LIST = "aim_list";
+	private final String AIM_LIST_ITEM = "aim_list_item";
+	private final String AIM_LIST_MY_ITEM = "aim_list_my_item";
+	private final String AIM_LIST_IT_ITEM = "aim_list_it_item";
 
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
@@ -51,7 +51,7 @@ public class AimHelper {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("page", page);
 
-		mClient.invokeApi(AIM_ITEM_LIST, jo, new ApiJsonOperationCallback() {
+		mClient.invokeApi(AIM_LIST_ITEM, jo, new ApiJsonOperationCallback() {
 
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
@@ -103,7 +103,7 @@ public class AimHelper {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("userId", userId);
 
-		mClient.invokeApi(MY_UPLOAD_ITEM, jo, new ApiJsonOperationCallback() {
+		mClient.invokeApi(AIM_LIST_MY_ITEM, jo, new ApiJsonOperationCallback() {
 
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
@@ -129,7 +129,7 @@ public class AimHelper {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("userId", userId);
 
-		mClient.invokeApi(MY_IT_ITEM, jo, new ApiJsonOperationCallback() {
+		mClient.invokeApi(AIM_LIST_IT_ITEM, jo, new ApiJsonOperationCallback() {
 
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception,
