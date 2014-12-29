@@ -15,9 +15,9 @@ public class ItAlertListDialog extends ItDialogFragment{
 	private String[] mItemList;
 
 
-	public ItAlertListDialog(String title, String[] list, DialogCallback[] itCallbacks) {
+	public ItAlertListDialog(String title, String[] list, DialogCallback[] callbacks) {
 		super();
-		this.mCallbacks = itCallbacks;
+		this.mCallbacks = callbacks;
 		this.mTitle = title;
 		this.mItemList = list;
 	}

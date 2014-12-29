@@ -4,18 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <android.support.v7.widget.Toolbar
-        xmlns:toolbar="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:minHeight="?attr/actionBarSize" />
+    <include layout="@layout/toolbar_light" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_width"
-        android:background="@color/line_color" />
+    <include layout="@layout/custom_line" />
 
     <FrameLayout
         android:id="@+id/activity_container"

@@ -1,5 +1,7 @@
 package com.pinthecloud.item.model;
 
+import java.util.TimeZone;
+
 import android.text.format.Time;
 
 import com.pinthecloud.item.ItApplication;
@@ -8,13 +10,15 @@ import com.pinthecloud.item.exception.ItException;
 
 // 20141113014345 --> 2014-11-13 01:43:45
 public class ItDateTime {
+
 	private Time dateTime;
 
 	public ItDateTime(String rawDateTime) {
 		if (rawDateTime.length() != 14) {
 			throw new ItException(ItException.TYPE.FORMATE_ERROR);
 		}
-		dateTime = new Time();
+		
+		dateTime = new Time(Time.TIMEZONE_UTC);
 		int year = Integer.parseInt(rawDateTime.substring(0, 4));
 		int month = Integer.parseInt(rawDateTime.substring(4, 6));
 		int date = Integer.parseInt(rawDateTime.substring(6, 8));
@@ -22,6 +26,7 @@ public class ItDateTime {
 		int minute = Integer.parseInt(rawDateTime.substring(10, 12));
 		int second = Integer.parseInt(rawDateTime.substring(12, 14));
 		dateTime.set(second, minute, hour, date, month-1, year);
+		dateTime.switchTimezone(TimeZone.getDefault().getID());
 	}
 
 	public static ItDateTime getToday() {
@@ -60,8 +65,8 @@ public class ItDateTime {
 		int itJulianDay = Time.getJulianDay(dateTime.normalize(true), dateTime.gmtoff);
 		return nowJulianDay - itJulianDay;
 	}
-	
-	public String getElapsedDateTimeString() {
+
+	public String getElapsedDateTime() {
 		Time nowTime = new Time();
 		nowTime.setToNow();
 
@@ -69,7 +74,9 @@ public class ItDateTime {
 		if(dateTime.year == nowTime.year && dateTime.month == nowTime.month && dateTime.monthDay == nowTime.monthDay){
 			if(dateTime.hour == nowTime.hour){
 				if(dateTime.minute == nowTime.minute){
-					return (nowTime.second-dateTime.second) + app.getResources().getString(R.string.second_ago);
+					int elapsedSecond = nowTime.second-dateTime.second;
+					if(elapsedSecond < 0)	elapsedSecond = 0;
+					return elapsedSecond + app.getResources().getString(R.string.second_ago);
 				} else {
 					return (nowTime.minute-dateTime.minute) + app.getResources().getString(R.string.minute_ago);
 				}

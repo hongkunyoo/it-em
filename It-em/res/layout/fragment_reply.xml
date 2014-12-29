@@ -1,43 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reply_frag_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
-
-    <ProgressBar
-        android:id="@+id/reply_frag_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/reply_frag_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/reply_frag_reply_layout" />
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/reply_frag_reply_layout"
+        android:id="@+id/reply_frag_toolbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/reply_input_height"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <include layout="@layout/toolbar_light" />
+
+        <include layout="@layout/custom_line" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/reply_frag_inputbar"
+        android:layout_below="@+id/reply_frag_toolbar_layout" >
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            layout="@layout/custom_progress_bar"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reply_frag_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/reply_frag_inputbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:paddingEnd="@dimen/content_margin"
-        android:paddingLeft="@dimen/content_margin"
-        android:paddingRight="@dimen/content_margin"
-        android:paddingStart="@dimen/content_margin" >
+        android:orientation="horizontal" >
 
         <EditText
-            android:id="@+id/reply_frag_reply_text"
+            android:id="@+id/reply_frag_inputbar_text"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
             android:ems="10"
             android:inputType="textMultiLine"
             android:maxLines="4"
+            android:paddingEnd="@dimen/content_margin"
+            android:paddingLeft="@dimen/content_margin"
+            android:paddingRight="@dimen/content_margin"
+            android:paddingStart="@dimen/content_margin"
             android:textColor="@color/it_user_page_tab_title"
             android:textColorHint="@color/line_color"
             android:textSize="@dimen/font_large" >
@@ -46,13 +66,10 @@
         </EditText>
 
         <Button
-            android:id="@+id/reply_frag_submit"
+            android:id="@+id/reply_frag_inputbar_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/reply_submit_bottom_margin"
-            android:layout_marginLeft="@dimen/content_margin"
-            android:layout_marginStart="@dimen/content_margin"
             android:enabled="false"
             android:text="@string/submit"
             android:textSize="@dimen/font_medium" />

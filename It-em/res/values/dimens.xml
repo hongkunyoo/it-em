@@ -43,8 +43,6 @@
     <!-- Reply -->
     <dimen name="reply_row_height">72dp</dimen>
     <dimen name="reply_nick_name_margin">10dp</dimen>
-    <dimen name="reply_input_height">56dp</dimen>
-    <dimen name="reply_submit_bottom_margin">4dp</dimen>
     
     <!-- Profile Settings -->
     <dimen name="profile_settings_margin">8dp</dimen>

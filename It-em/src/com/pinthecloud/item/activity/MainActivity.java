@@ -47,10 +47,10 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 
 
 	private void setToolbar(){
-		toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		View shadow = findViewById(R.id.main_toolbar_shadow);
+		View shadow = findViewById(R.id.toolbar_shadow);
 		shadow.bringToFront();
 	}
 

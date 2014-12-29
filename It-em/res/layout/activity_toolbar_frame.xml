@@ -4,24 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <android.support.v7.widget.Toolbar
-        xmlns:toolbar="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        toolbar:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <include layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <View
-            android:id="@+id/activity_toolbar_shadow"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_shadow_height"
-            android:background="@drawable/toolbar_shadow" />
+        <include layout="@layout/toolbar_shadow" />
 
         <FrameLayout
             android:id="@+id/activity_container"

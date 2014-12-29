@@ -30,6 +30,7 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 	protected BlobStorageHelper blobStorageHelper;
 
 	public ItFragment(){
+		super();
 		mApp = ItApplication.getInstance();
 		mThisFragment = this;
 

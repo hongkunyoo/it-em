@@ -15,6 +15,7 @@ public class ItActivity extends ActionBarActivity {
 
 
 	public ItActivity(){
+		super();
 		mApp = ItApplication.getInstance();
 		mThisActivity = this;
 		mUserHabitHelper = mApp.getUserHabitHelper();

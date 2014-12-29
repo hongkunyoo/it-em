@@ -22,10 +22,10 @@ public class ItUserPageActivity extends ItActivity {
 
 	
 	private void setToolbar(){
-		Toolbar toolbar = (Toolbar) findViewById(R.id.activity_toolbar);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		
-		View shadow = findViewById(R.id.activity_toolbar_shadow);
+		View shadow = findViewById(R.id.toolbar_shadow);
 		shadow.bringToFront();
 	}
 
