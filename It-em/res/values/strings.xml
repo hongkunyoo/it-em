@@ -57,7 +57,7 @@
     <string name="reply">Comment</string>
     <string name="delete">Delete</string>
     <string name="submit">Submit</string>
-    <string name="previous_reply">Previous Reply</string>
+    <string name="previous_reply">All comments</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>

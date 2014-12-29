@@ -11,6 +11,9 @@ import com.pinthecloud.item.fragment.UploadFragment;
 
 public class UploadActivity extends ItActivity {
 
+	private Toolbar mToolbar;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,13 +23,19 @@ public class UploadActivity extends ItActivity {
 	}
 
 
+	@Override
+	public Toolbar getToolbar() {
+		return mToolbar;
+	}
+	
+	
 	private void setToolbar(){
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_light);
-		setSupportActionBar(toolbar);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar_light);
+		setSupportActionBar(mToolbar);
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowHomeEnabled(true);
-		toolbar.setNavigationIcon(R.drawable.appbar_close_ic);
+		mToolbar.setNavigationIcon(R.drawable.appbar_close_ic);
 	}
 
 

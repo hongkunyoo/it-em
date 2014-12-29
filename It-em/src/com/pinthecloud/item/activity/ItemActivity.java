@@ -13,6 +13,7 @@ import com.pinthecloud.item.model.Item;
 
 public class ItemActivity extends ItActivity {
 
+	private Toolbar mToolbar;
 	private Item mItem;
 
 
@@ -27,13 +28,19 @@ public class ItemActivity extends ItActivity {
 	}
 
 
+	@Override
+	public Toolbar getToolbar() {
+		return mToolbar;
+	}
+
+
 	private void setToolbar(){
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
 
 		View shadow = findViewById(R.id.toolbar_shadow);
 		shadow.bringToFront();
-
+		
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 

@@ -3,7 +3,7 @@
 
     <gradient
         android:angle="90"
-        android:endColor="@color/toolbar_shadow_start_color"
+        android:endColor="@android:color/black"
         android:startColor="@android:color/transparent" />
 
 </shape>

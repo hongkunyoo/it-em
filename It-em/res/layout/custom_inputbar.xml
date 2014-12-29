@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_inputbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <EditText
+        android:id="@+id/custom_inputbar_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:paddingEnd="@dimen/content_margin"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingRight="@dimen/content_margin"
+        android:paddingStart="@dimen/content_margin"
+        android:textColor="@color/it_user_page_tab_title"
+        android:textColorHint="@color/line_color"
+        android:textSize="@dimen/font_large" />
+
+    <Button
+        android:id="@+id/custom_inputbar_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:enabled="false"
+        android:text="@string/submit"
+        android:textSize="@dimen/font_medium" />
+
+</LinearLayout>

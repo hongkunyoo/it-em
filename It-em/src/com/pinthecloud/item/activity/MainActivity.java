@@ -12,7 +12,7 @@ import com.pinthecloud.item.fragment.MainDrawerFragment;
 
 public class MainActivity extends ItActivity implements MainDrawerFragment.DrawerCallbacks {
 
-	private Toolbar toolbar;
+	private Toolbar mToolbar;
 	private DrawerLayout mDrawerLayout;
 	private MainDrawerFragment mDrawerFragment;
 	private int mCurrentSelectedPosition;
@@ -46,9 +46,15 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 	}
 
 
+	@Override
+	public Toolbar getToolbar() {
+		return mToolbar;
+	}
+	
+	
 	private void setToolbar(){
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
 
 		View shadow = findViewById(R.id.toolbar_shadow);
 		shadow.bringToFront();
@@ -58,6 +64,6 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 	private void setDrawer(){
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
 		mDrawerFragment = (MainDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.main_drawer_fragment);
-		mDrawerFragment.setUp(R.id.main_drawer_fragment, mDrawerLayout, toolbar);
+		mDrawerFragment.setUp(R.id.main_drawer_fragment, mDrawerLayout, mToolbar);
 	}
 }

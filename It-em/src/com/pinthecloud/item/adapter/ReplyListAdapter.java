@@ -14,17 +14,15 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
-import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
-import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
@@ -41,13 +39,19 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	private Context mContext;
 	private ItFragment mFrag;
-	private List<Reply> mReplyList;
 	private ItUser mMyItUser;
 	private Item mItem;
+	private List<Reply> mReplyList;
+
+	private ReplyCallback mReplyCallback;
 	private boolean mHasPrevious = false;
 
 	public void setHasPrevious(boolean hasPrevious) {
 		this.mHasPrevious = hasPrevious;
+	}
+
+	public void setReplyCallback(ReplyCallback replyCallback) {
+		this.mReplyCallback = replyCallback;
 	}
 
 
@@ -113,7 +117,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			PreviousViewHolder preiousViewHolder = (PreviousViewHolder)holder;
 			setPreviousButton(preiousViewHolder);
 		} else if (viewType == VIEW_TYPE.NORMAL.ordinal()){
-			if(mHasPrevious) --position;
+			if(mHasPrevious) position--;
 			Reply reply = mReplyList.get(position);
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
 			setNoramlText(normalViewHolder, reply);
@@ -229,12 +233,14 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	public void remove(Reply reply) {
 		int position = mReplyList.indexOf(reply);
 		mReplyList.remove(position);
+		if(mHasPrevious) position++;
 		notifyItemRemoved(position);
 	}
 
 
 	public void replace(int position, Reply reply){
 		mReplyList.set(position, reply);
+		if(mHasPrevious) position++;
 		notifyItemChanged(position);
 	}
 
@@ -245,25 +251,13 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				deleteReply(reply);
+				mReplyCallback.deleteReply(reply);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
 			}
 		};
 		return callbacks;
-	}
-
-
-	private void deleteReply(final Reply reply){
-		AimHelper aimHelper = ItApplication.getInstance().getAimHelper();
-		aimHelper.del(mFrag, reply, new EntityCallback<Boolean>() {
-
-			@Override
-			public void onCompleted(Boolean entity) {
-				remove(reply);
-			}
-		});
 	}
 
 

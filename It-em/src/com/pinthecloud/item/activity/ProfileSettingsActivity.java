@@ -11,6 +11,9 @@ import com.pinthecloud.item.fragment.ProfileSettingsFragment;
 
 public class ProfileSettingsActivity extends ItActivity {
 
+	private Toolbar mToolbar;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,9 +23,15 @@ public class ProfileSettingsActivity extends ItActivity {
 	}
 
 
+	@Override
+	public Toolbar getToolbar() {
+		return mToolbar;
+	}
+	
+	
 	private void setToolbar(){
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
 		
 		View shadow = findViewById(R.id.toolbar_shadow);
 		shadow.bringToFront();

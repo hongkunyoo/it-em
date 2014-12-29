@@ -19,16 +19,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
+import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
 
-public class ReplyDialog extends ItDialogFragment {
+public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 	private ItFragment mFrag;
 	private Item mItem;
@@ -72,30 +75,37 @@ public class ReplyDialog extends ItDialogFragment {
 		setHasOptionsMenu(true);
 
 		findComponent(view);
-		setToolbar();
 		setComponent();
 		setButton();
 		setList();
-
-		if(mItem.getReplyCount() > 0){
-			updateList();
-		}
+		refreshList();
 
 		return view;
 	}
 
 
-	private void findComponent(View view){
-		mToolbar = (Toolbar)view.findViewById(R.id.toolbar_light);
-		mProgressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
-		mInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
-		mInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
+	@Override
+	public void deleteReply(final Reply reply){
+		AimHelper aimHelper = ItApplication.getInstance().getAimHelper();
+		aimHelper.del(mFrag, reply, new EntityCallback<Boolean>() {
+
+			@Override
+			public void onCompleted(Boolean entity) {
+				mListAdapter.remove(reply);
+
+				mItem.setReplyCount(mItem.getReplyCount()-1);
+				setToolbarTitle();
+			}
+		});
 	}
 
 
-	private void setToolbar(){
-		mToolbar.setTitle(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
+	private void findComponent(View view){
+		mToolbar = (Toolbar)view.findViewById(R.id.toolbar_light);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
+		mInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
+		mInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
 	}
 
 
@@ -140,6 +150,7 @@ public class ReplyDialog extends ItDialogFragment {
 
 		mReplyList = new ArrayList<Reply>();
 		mListAdapter = new ReplyListAdapter(mActivity, mFrag, mMyItUser, mItem, mReplyList);
+		mListAdapter.setReplyCallback(this);
 		mListView.setAdapter(mListAdapter);
 	}
 
@@ -155,10 +166,23 @@ public class ReplyDialog extends ItDialogFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mListView.setVisibility(View.VISIBLE);
 
+				mItem.setReplyCount(count);
+				setToolbarTitle();
+
 				mReplyList.clear();
 				mListAdapter.addAll(list);
 			}
 		});
+	}
+
+
+	private void refreshList(){
+		if(mItem.getReplyCount() > 0){
+			updateList();
+		} else {
+			mReplyList.clear();
+			mListAdapter.notifyDataSetChanged();
+		}
 	}
 
 
@@ -170,7 +194,15 @@ public class ReplyDialog extends ItDialogFragment {
 			@Override
 			public void onCompleted(Reply entity) {
 				mListAdapter.replace(mReplyList.indexOf(reply), entity);
+
+				mItem.setReplyCount(mItem.getReplyCount()+1);
+				setToolbarTitle();
 			}
 		});
+	}
+
+
+	private void setToolbarTitle(){
+		mToolbar.setTitle(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
 	}
 }
