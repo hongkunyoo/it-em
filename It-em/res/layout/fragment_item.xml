@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.pinthecloud.item.view.SquareImageView
-        android:id="@+id/item_frag_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:background="@android:color/white"
-        android:scaleType="centerCrop" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <com.pinthecloud.item.view.SquareImageView
+            android:id="@+id/item_frag_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"
+            android:scaleType="centerCrop" />
+
+        <include layout="@layout/custom_line" />
+    </LinearLayout>
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/my_item_progress_bar_bottom_margin"
+        layout="@layout/custom_progress_bar"
+        android:visibility="gone" />
 
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
         android:id="@+id/item_frag_scroll_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fillViewport="true"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -24,9 +42,12 @@
 
             <com.pinthecloud.item.view.SquareImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
 
-            <include layout="@layout/custom_line" />
+            <include
+                layout="@layout/custom_line"
+                android:visibility="invisible" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -59,6 +80,11 @@
                             android:textSize="@dimen/font_small" />
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/space" />
+
+                        <TextView
                             android:id="@+id/item_frag_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -77,6 +103,11 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/it_user_page_tab_number"
                             android:textSize="@dimen/font_medium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/space" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -110,7 +141,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@android:color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="@dimen/content_margin" >
@@ -121,24 +151,39 @@
                         android:text="@string/reply" />
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/space" />
+
+                    <TextView
                         android:id="@+id/item_frag_reply_count"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@string/zero" />
                 </LinearLayout>
-
-                <include layout="@layout/custom_line" />
 
                 <RelativeLayout
                     android:id="@+id/item_frag_reply_list_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
 
-                    <include
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        layout="@layout/custom_progress_bar"
-                        android:visibility="gone" />
+                    <LinearLayout
+                        android:id="@+id/item_frag_reply_list_empty_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/reply_row_height"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingEnd="@dimen/content_margin"
+                        android:paddingLeft="@dimen/content_margin"
+                        android:paddingRight="@dimen/content_margin"
+                        android:paddingStart="@dimen/content_margin"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/first_reply" />
+                    </LinearLayout>
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/item_frag_reply_list"
@@ -202,4 +247,4 @@
         </LinearLayout>
     </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
-</FrameLayout>
+</RelativeLayout>

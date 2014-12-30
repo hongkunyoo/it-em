@@ -35,6 +35,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/space" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/it_lower"
             android:textColor="@color/my_item_it_reply_number"
             android:textSize="@dimen/font_small" />
@@ -47,6 +52,11 @@
             android:layout_marginStart="@dimen/my_item_it_reply_number_margin"
             android:textColor="@color/my_item_it_reply_number"
             android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/space" />
 
         <TextView
             android:layout_width="wrap_content"

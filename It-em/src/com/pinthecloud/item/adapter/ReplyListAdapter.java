@@ -46,6 +46,10 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private ReplyCallback mReplyCallback;
 	private boolean mHasPrevious = false;
 
+	public boolean isHasPrevious() {
+		return mHasPrevious;
+	}
+
 	public void setHasPrevious(boolean hasPrevious) {
 		this.mHasPrevious = hasPrevious;
 	}
@@ -220,6 +224,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	public void add(int position, Reply reply) {
 		mReplyList.add(position, reply);
+		if(mHasPrevious) position++;
 		notifyItemInserted(position);
 	}
 

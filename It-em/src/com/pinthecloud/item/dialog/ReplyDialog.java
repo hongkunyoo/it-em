@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,7 +16,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
@@ -37,14 +38,13 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	private Item mItem;
 	private ItUser mMyItUser;
 
-	private Toolbar mToolbar;
-
+	private TextView mTitle;
 	private ProgressBar mProgressBar;
 	private RecyclerView mListView;
 	private ReplyListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
 	private List<Reply> mReplyList;
-
+	private LinearLayout mListEmptyView;
 	private EditText mInputText;
 	private Button mInputSubmit;
 
@@ -72,13 +72,12 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 				| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-		setHasOptionsMenu(true);
 
 		findComponent(view);
 		setComponent();
 		setButton();
 		setList();
-		refreshList();
+		updateList();
 
 		return view;
 	}
@@ -91,19 +90,21 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				mListAdapter.remove(reply);
-
 				mItem.setReplyCount(mItem.getReplyCount()-1);
-				setToolbarTitle();
+				setTitle();
+				showReplyList(mItem.getReplyCount());
+
+				mListAdapter.remove(reply);
 			}
 		});
 	}
 
 
 	private void findComponent(View view){
-		mToolbar = (Toolbar)view.findViewById(R.id.toolbar_light);
-		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mTitle = (TextView)view.findViewById(R.id.reply_frag_title);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_progress_bar);
 		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
+		mListEmptyView = (LinearLayout)view.findViewById(R.id.reply_frag_list_empty_view);
 		mInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
 		mInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
 	}
@@ -167,7 +168,8 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 				mListView.setVisibility(View.VISIBLE);
 
 				mItem.setReplyCount(count);
-				setToolbarTitle();
+				showReplyList(mItem.getReplyCount());
+				setTitle();
 
 				mReplyList.clear();
 				mListAdapter.addAll(list);
@@ -176,33 +178,35 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	}
 
 
-	private void refreshList(){
-		if(mItem.getReplyCount() > 0){
-			updateList();
+	private void showReplyList(int replyCount){
+		if(replyCount > 0){
+			mListEmptyView.setVisibility(View.GONE);
+			mListView.setVisibility(View.VISIBLE);
 		} else {
-			mReplyList.clear();
-			mListAdapter.notifyDataSetChanged();
+			mListEmptyView.setVisibility(View.VISIBLE);
+			mListView.setVisibility(View.GONE);
 		}
 	}
 
 
 	private void submitReply(final Reply reply){
+		showReplyList(mItem.getReplyCount()+1);
 		mListAdapter.add(mReplyList.size(), reply);
-		mListView.smoothScrollToPosition(mReplyList.indexOf(reply));
+
 		mAimHelper.add(mFrag, reply, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {
-				mListAdapter.replace(mReplyList.indexOf(reply), entity);
-
 				mItem.setReplyCount(mItem.getReplyCount()+1);
-				setToolbarTitle();
+				setTitle();
+
+				mListAdapter.replace(mReplyList.indexOf(reply), entity);
 			}
 		});
 	}
 
 
-	private void setToolbarTitle(){
-		mToolbar.setTitle(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
+	private void setTitle(){
+		mTitle.setText(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
 	}
 }

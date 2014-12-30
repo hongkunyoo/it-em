@@ -88,7 +88,7 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 
 
 	private void findComponent(View view){
-		mProgressBar = (ProgressBar)view.findViewById(R.id.it_item_frag_progress_bar);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mGridView = (RecyclerView)view.findViewById(R.id.it_item_frag_grid);
 	}
 

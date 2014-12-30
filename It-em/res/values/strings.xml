@@ -6,6 +6,7 @@
 
     <!-- Common Word -->
     <string name="app_name">IT:EM</string>
+    <string name="space">&#160;</string>
 
     <!-- Common Sentence -->
     <string name="internet_not_connected_message">Internet is unavailable. Please check network status.</string>
@@ -57,7 +58,8 @@
     <string name="reply">Comment</string>
     <string name="delete">Delete</string>
     <string name="submit">Submit</string>
-    <string name="previous_reply">All comments</string>
+    <string name="previous_reply">See all comments</string>
+    <string name="first_reply">Write first comment</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>

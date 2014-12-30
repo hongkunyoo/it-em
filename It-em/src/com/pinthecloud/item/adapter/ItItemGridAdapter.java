@@ -109,8 +109,8 @@ public class ItItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 	private void setNormalText(NormalViewHolder holder, Item item){
-		holder.itNumber.setText(item.getLikeItCount() + " ");
-		holder.reply.setText(item.getReplyCount() + " ");
+		holder.itNumber.setText(""+item.getLikeItCount());
+		holder.reply.setText(""+item.getReplyCount());
 	}
 
 

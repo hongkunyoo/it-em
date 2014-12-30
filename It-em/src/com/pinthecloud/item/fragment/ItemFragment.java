@@ -40,6 +40,8 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.model.Reply;
+import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
@@ -55,14 +57,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mDate;
 	private TextView mItNumber;
 	private Button mDelete;
+	private ProgressBar mProgressBar;
 
 	private TextView mReplyCount;
 	private RelativeLayout mReplyListLayout;
-	private ProgressBar mReplyProgressBar;
 	private RecyclerView mReplyListView;
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
 	private List<Reply> mReplyList;
+	private LinearLayout mReplyListEmptyView;
 	private EditText mReplyInputText;
 	private Button mReplyInputSubmit;
 
@@ -103,9 +106,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		setButton();
 		setScrollView();
 		setReplyList();
-
 		setText();
-		refreshReplyList(mItem.getReplyCount());
+
+		updateItemFrag();
 
 		return view;
 	}
@@ -140,7 +143,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			mActivity.onBackPressed();
 			break;
 		case R.id.item_it:
-			int likeItNum = (Integer.parseInt(mItNumber.getText().toString().trim()) + 1);
+			int likeItNum = (Integer.parseInt(mItNumber.getText().toString()) + 1);
 			mItNumber.setText(String.valueOf(likeItNum));
 
 			LikeIt likeIt = new LikeIt(mItem.getWhoMade(), mItem.getWhoMadeId(), mItem.getId());
@@ -158,10 +161,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				mReplyListAdapter.remove(reply);
-
 				mItem.setReplyCount(mItem.getReplyCount()-1);
-				mReplyCount.setText(" " + mItem.getReplyCount());
+				mReplyCount.setText(""+mItem.getReplyCount());
+				resizeReplyListLayoutHeight(mItem.getReplyCount());
+				showReplyList(mItem.getReplyCount());
+
+				mReplyListAdapter.remove(reply);
 			}
 		});
 	}
@@ -177,8 +182,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		mReplyCount = (TextView)view.findViewById(R.id.item_frag_reply_count);
 		mReplyListLayout = (RelativeLayout)view.findViewById(R.id.item_frag_reply_list_layout);
-		mReplyProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mReplyListView = (RecyclerView)view.findViewById(R.id.item_frag_reply_list);
+		mReplyListEmptyView = (LinearLayout)view.findViewById(R.id.item_frag_reply_list_empty_view);
 		mReplyInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
 		mReplyInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
 
@@ -275,57 +281,83 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setText(){
 		mContent.setText(mItem.getContent());
-		mDate.setText(" " + mItem.getCreateDateTime().getElapsedDateTime());
-		mItNumber.setText(mItem.getLikeItCount() + " ");
+		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime());
+		mItNumber.setText(""+mItem.getLikeItCount());
 		mNickName.setText(mItem.getWhoMade());
 	}
 
 
-	private void resizeReplyListLayoutHeight(int replyCount){
-		int replyRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_height);
-		int replyPreviousRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
+	private void updateItemFrag(){
+		mScrollView.setVisibility(View.GONE);
+		mProgressBar.setVisibility(View.VISIBLE);
 
-		int height = replyRowHeight * Math.min(replyCount, DISPLAY_REPLY_COUNT);
-		if(replyCount > DISPLAY_REPLY_COUNT){
-			height += replyPreviousRowHeight;
-		}
-		mReplyListLayout.getLayoutParams().height = height;
-	}
-
-
-	private void updateRecentReplyList() {
-		mReplyProgressBar.setVisibility(View.VISIBLE);
-		mReplyListView.setVisibility(View.GONE);
-
-		mAimHelper.list(mThisFragment, Reply.class, mItem.getId(), new ListCallback<Reply>() {
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void onCompleted(List<Reply> list, int count) {
-				mReplyProgressBar.setVisibility(View.GONE);
-				mReplyListView.setVisibility(View.VISIBLE);
+			public void doNext(final ItFragment frag, Object... params) {
+				updateRecentReplyList(frag);
+			}
+		}, new Chainable(){
 
-				mItem.setReplyCount(count);
-				mReplyCount.setText(" " + mItem.getReplyCount());
-
-				mReplyList.clear();
-				mReplyListAdapter.addAll(list);
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				mScrollView.setVisibility(View.VISIBLE);
+				mProgressBar.setVisibility(View.GONE);
 			}
 		});
 	}
 
 
-	private void refreshReplyList(int replyCount){
-		resizeReplyListLayoutHeight(replyCount);
-		if(mItem.getReplyCount() > 0){
-			if(mItem.getReplyCount() > DISPLAY_REPLY_COUNT){
-				mReplyListAdapter.setHasPrevious(true);
-			} else {
-				mReplyListAdapter.setHasPrevious(false);
+	private void updateRecentReplyList(final ItFragment frag) {
+		mAimHelper.list(mThisFragment, Reply.class, mItem.getId(), new ListCallback<Reply>() {
+
+			@Override
+			public void onCompleted(List<Reply> list, int count) {
+				mItem.setReplyCount(count);
+
+				if(mItem.getReplyCount() > DISPLAY_REPLY_COUNT){
+					mReplyListAdapter.setHasPrevious(true);
+				} else {
+					mReplyListAdapter.setHasPrevious(false);
+				}
+				resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), DISPLAY_REPLY_COUNT+1));
+				showReplyList(mItem.getReplyCount());
+				mReplyCount.setText(""+mItem.getReplyCount());
+
+				mReplyList.clear();
+				mReplyListAdapter.addAll(list);
+
+				AsyncChainer.notifyNext(frag);
 			}
-			updateRecentReplyList();
+		});
+	}
+
+
+	private void resizeReplyListLayoutHeight(int rowCount){
+		int replyRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_height);
+		int replyPreviousRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
+
+		int height = 0;
+		if(rowCount <= 0){
+			height = replyRowHeight;
+		} else if(!mReplyListAdapter.isHasPrevious()) {
+			height = replyRowHeight * rowCount;
 		} else {
-			mReplyList.clear();
-			mReplyListAdapter.notifyDataSetChanged();
+			height = replyRowHeight * (rowCount - 1);
+			height += replyPreviousRowHeight;
+		}
+
+		mReplyListLayout.getLayoutParams().height = height;
+	}
+
+
+	private void showReplyList(int replyCount){
+		if(replyCount > 0){
+			mReplyListEmptyView.setVisibility(View.GONE);
+			mReplyListView.setVisibility(View.VISIBLE);
+		} else {
+			mReplyListEmptyView.setVisibility(View.VISIBLE);
+			mReplyListView.setVisibility(View.GONE);
 		}
 	}
 
@@ -346,16 +378,18 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void submitReply(final Reply reply){
-		mReplyListAdapter.remove(mReplyList.get(0));
+		resizeReplyListLayoutHeight(mItem.getReplyCount()+1);
+		showReplyList(mItem.getReplyCount()+1);
 		mReplyListAdapter.add(mReplyList.size(), reply);
+
 		mAimHelper.add(mThisFragment, reply, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {
-				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
-
 				mItem.setReplyCount(mItem.getReplyCount()+1);
-				mReplyCount.setText(" " + mItem.getReplyCount());
+				mReplyCount.setText(""+mItem.getReplyCount());
+
+				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
 			}
 		});
 	}

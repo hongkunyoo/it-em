@@ -1,29 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/reply_row_previous_height"
-    android:orientation="vertical" >
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/content_margin"
+    android:paddingLeft="@dimen/content_margin"
+    android:paddingRight="@dimen/content_margin"
+    android:paddingStart="@dimen/content_margin" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingEnd="@dimen/content_margin"
-        android:paddingLeft="@dimen/content_margin"
-        android:paddingRight="@dimen/content_margin"
-        android:paddingStart="@dimen/content_margin" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/previous_reply" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/previous_reply" />
-    </RelativeLayout>
-
-    <include
-        android:id="@+id/row_reply_list_previous_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_width"
-        android:layout_alignParentBottom="true"
-        layout="@layout/custom_line" />
-
-</RelativeLayout>
+</LinearLayout>
