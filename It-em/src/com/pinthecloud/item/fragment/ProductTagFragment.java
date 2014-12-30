@@ -1,8 +1,6 @@
 package com.pinthecloud.item.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +14,19 @@ public class ProductTagFragment extends ItFragment {
 	private Item mItem;
 
 
+	public static ProductTagFragment newInstance(Item item) {
+		ProductTagFragment fragment = new ProductTagFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(Item.INTENT_KEY, item);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = mActivity.getIntent();
-		mItem = intent.getParcelableExtra(Item.INTENT_KEY);
+		mItem = getArguments().getParcelable(Item.INTENT_KEY);
 	}
 
 
@@ -30,7 +36,6 @@ public class ProductTagFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_product_tag, container, false);
 		setHasOptionsMenu(true);
-		setActionBar();
 		return view;
 	}
 
@@ -43,11 +48,5 @@ public class ProductTagFragment extends ItFragment {
 			break;
 		}
 		return super.onOptionsItemSelected(menu);
-	}
-
-
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 }

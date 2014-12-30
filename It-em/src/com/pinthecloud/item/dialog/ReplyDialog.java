@@ -72,7 +72,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 				| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
+	    
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -105,8 +105,8 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_progress_bar);
 		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
 		mListEmptyView = (LinearLayout)view.findViewById(R.id.reply_frag_list_empty_view);
-		mInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
-		mInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
+		mInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
+		mInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 	}
 
 

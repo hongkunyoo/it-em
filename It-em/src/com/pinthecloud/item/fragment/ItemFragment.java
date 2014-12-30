@@ -19,9 +19,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
@@ -59,8 +59,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private Button mDelete;
 	private ProgressBar mProgressBar;
 
-	private TextView mReplyCount;
-	private RelativeLayout mReplyListLayout;
+	private TextView mReplyTitle;
+	private View mReplyTitlebarDivider;
+	private FrameLayout mReplyListLayout;
 	private RecyclerView mReplyListView;
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
@@ -162,7 +163,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			@Override
 			public void onCompleted(Boolean entity) {
 				mItem.setReplyCount(mItem.getReplyCount()-1);
-				mReplyCount.setText(""+mItem.getReplyCount());
+				setReplyTitle();
 				resizeReplyListLayoutHeight(mItem.getReplyCount());
 				showReplyList(mItem.getReplyCount());
 
@@ -179,14 +180,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 		mDelete = (Button)view.findViewById(R.id.item_frag_delete);
-
-		mReplyCount = (TextView)view.findViewById(R.id.item_frag_reply_count);
-		mReplyListLayout = (RelativeLayout)view.findViewById(R.id.item_frag_reply_list_layout);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mReplyListView = (RecyclerView)view.findViewById(R.id.item_frag_reply_list);
-		mReplyListEmptyView = (LinearLayout)view.findViewById(R.id.item_frag_reply_list_empty_view);
-		mReplyInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
-		mReplyInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
+
+		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
+		mReplyTitlebarDivider = view.findViewById(R.id.reply_frag_titlebar_divider);
+		mReplyListLayout = (FrameLayout)view.findViewById(R.id.reply_frag_list_layout);
+		mReplyListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
+		mReplyListEmptyView = (LinearLayout)view.findViewById(R.id.reply_frag_list_empty_view);
+		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
+		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
 		mProfileLayout = (LinearLayout)view.findViewById(R.id.item_frag_profile_layout);
 		mProfileImage = (CircleImageView)view.findViewById(R.id.item_frag_profile_image);
@@ -195,6 +197,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
+		mReplyTitlebarDivider.setVisibility(View.GONE);
+		
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -322,7 +326,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				}
 				resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), DISPLAY_REPLY_COUNT+1));
 				showReplyList(mItem.getReplyCount());
-				mReplyCount.setText(""+mItem.getReplyCount());
+				setReplyTitle();
 
 				mReplyList.clear();
 				mReplyListAdapter.addAll(list);
@@ -387,10 +391,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			@Override
 			public void onCompleted(Reply entity) {
 				mItem.setReplyCount(mItem.getReplyCount()+1);
-				mReplyCount.setText(""+mItem.getReplyCount());
+				setReplyTitle();
 
 				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
 			}
 		});
+	}
+
+
+	private void setReplyTitle(){
+		mReplyTitle.setText(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
 	}
 }
