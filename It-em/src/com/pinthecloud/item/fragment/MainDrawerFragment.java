@@ -123,13 +123,18 @@ public class MainDrawerFragment extends ItFragment {
 
 		String[] menuNameList = getResources().getStringArray(R.array.main_drawer_menu_string_array);
 		mMenuList = new ArrayList<MainDrawerMenu>();
+		
+		// Profile
+		// Home
 		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(mObjectPrefHelper.get(ItUser.class).getId()), false));
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[0], new HomeFragment(), false));
+		
+		// More Header
+		// Be Pro
+		// Settings
 		mMenuList.add(new MainDrawerMenu(0, menuNameList[1], null, false));
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[2], null, false));
-		mMenuList.add(new MainDrawerMenu(0, menuNameList[3], null, false));
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[4], new ProFragment(), false));
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[5], new SettingsFragment(), false));
+		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[2], new ProFragment(), false));
+		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[3], new SettingsFragment(), false));
 
 		mListAdapter = new MainDrawerMenuListAdapter(mThisFragment, mMenuList);
 		mListView.setAdapter(mListAdapter);

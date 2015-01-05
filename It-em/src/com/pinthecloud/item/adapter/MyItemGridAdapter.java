@@ -31,7 +31,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private int mGridColumnNum;
 
 
-	public MyItemGridAdapter(Context context,  List<Item> itemList) {
+	public MyItemGridAdapter(Context context, List<Item> itemList) {
 		this.mContext = context;
 		this.mItemList = itemList;
 		this.mGridColumnNum = mContext.getResources().getInteger(R.integer.it_user_page_item_grid_column_num);
@@ -80,7 +80,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, final int position) {
+	public void onBindViewHolder(ViewHolder holder, int position) {
 		int viewType = getItemViewType(position);
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position-mGridColumnNum);

@@ -19,8 +19,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItUserPageActivity;
-import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -35,7 +33,6 @@ import com.squareup.picasso.Picasso;
 public class ProfileSettingsFragment extends ItFragment {
 
 	private Uri mProfileImageUri;
-	//	private Bitmap mProfileImageBitmap;
 	private CircleImageView mProfileImage;
 
 	private EditText mNickName;
@@ -87,10 +84,14 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == Activity.RESULT_OK){
-			String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
-			Bitmap profileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
-			updateProfileImage(profileImageBitmap);
+		switch(requestCode){
+		case FileUtil.GALLERY | FileUtil.CAMERA:
+			if (resultCode == Activity.RESULT_OK){
+				String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
+				Bitmap profileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
+				updateProfileImage(profileImageBitmap);
+			}
+			break;
 		}
 	}
 
@@ -119,14 +120,14 @@ public class ProfileSettingsFragment extends ItFragment {
 		case R.id.profile_settings_done:
 			if(!mIsUpdating){
 				mIsUpdating = true;
-
 				trimProfileSettings();
 				if(isProfileSettingsChanged()){
 					String message = checkProfileSettings();
 					if(message.equals("")){
 						updateProfileSettings();
 					} else {
-						showAlertDialog(message);						
+						mIsUpdating = false;
+						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
 					}
 				} else {
 					mActivity.onBackPressed();
@@ -279,42 +280,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void showAlertDialog(String message){
-		ItAlertDialog dialog = new ItAlertDialog(null, message, null, null, false, new DialogCallback() {
-
-			@Override
-			public void doPositiveThing(Bundle bundle) {
-			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-			}
-		});
-		dialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-	}
-
-
-	private void updateProfileSettings(){
-		mApp.showProgressDialog(mActivity);
-
-		mMyItUser.setNickName(mNickName.getText().toString());
-		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
-		mMyItUser.setWebPage(mWebsite.getText().toString());
-
-		mUserHelper.update(mThisFragment, mMyItUser, new EntityCallback<ItUser>() {
-
-			@Override
-			public void onCompleted(ItUser entity) {
-				mObjectPrefHelper.put(entity);
-
-				mApp.dismissProgressDialog();
-				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
-
-				goToNextActivity();
-			}
-		});
-	}
-
-
 	private void updateProfileImage(final Bitmap profileImageBitmap){
 		mApp.showProgressDialog(mActivity);
 
@@ -353,10 +318,27 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void goToNextActivity(){
-		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
-		intent.putExtra(ItUser.INTENT_KEY, mMyItUser.getId());
-		startActivity(intent);
-		mActivity.finish();
+	private void updateProfileSettings(){
+		mApp.showProgressDialog(mActivity);
+
+		mMyItUser.setNickName(mNickName.getText().toString());
+		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
+		mMyItUser.setWebPage(mWebsite.getText().toString());
+
+		mUserHelper.update(mThisFragment, mMyItUser, new EntityCallback<ItUser>() {
+
+			@Override
+			public void onCompleted(ItUser entity) {
+				mObjectPrefHelper.put(entity);
+
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
+
+				Intent intent = new Intent();
+				intent.putExtra(ItUser.INTENT_KEY, entity);
+				mActivity.setResult(Activity.RESULT_OK, intent);
+				mActivity.finish();
+			}
+		});
 	}
 }

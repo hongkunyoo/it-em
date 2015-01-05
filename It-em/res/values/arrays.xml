@@ -4,8 +4,6 @@
     <!-- Main Drawer -->
     <string-array name="main_drawer_menu_string_array">
         <item>Home</item>
-        <item>Account</item>
-        <item>Purchases</item>
         <item>More</item>
         <item>Be Pro</item>
         <item>Settings</item>

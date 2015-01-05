@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +28,8 @@ import com.pinthecloud.item.model.Item;
 
 public class HomeFragment extends ItFragment {
 
+	private final int UPLOAD = 0;
+	
 	private ProgressBar mProgressBar;
 	private RelativeLayout mLayout;
 	private SwipeRefreshLayout mListRefresh;
@@ -55,6 +58,7 @@ public class HomeFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
+		
 		setActionBar();
 		findComponent(view);
 		setButton();
@@ -71,6 +75,21 @@ public class HomeFragment extends ItFragment {
 	}
 
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode){
+		case UPLOAD:
+			if (resultCode == Activity.RESULT_OK){
+				Item item = data.getParcelableExtra(Item.INTENT_KEY);
+				mListAdapter.add(0, item);
+				mListView.smoothScrollToPosition(0);
+			}
+			break;
+		}
+	}
+	
+	
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setTitle(getResources().getString(R.string.home));
@@ -92,7 +111,7 @@ public class HomeFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, UploadActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent, UPLOAD);
 			}
 		});
 	}
@@ -128,7 +147,7 @@ public class HomeFragment extends ItFragment {
 				int lastVisibleItem = mListLayoutManager.findLastVisibleItemPosition();
 				int totalItemCount = mListLayoutManager.getItemCount();
 
-				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
+				if (lastVisibleItem >= totalItemCount-1 && !mIsAdding) {
 					addNextItemList();
 				}
 			}
@@ -137,7 +156,8 @@ public class HomeFragment extends ItFragment {
 
 
 	public void updateList() {
-		mAimHelper.listItem(mThisFragment, 0, new ListCallback<Item>() {
+		page = 0;
+		mAimHelper.listItem(mThisFragment, page, new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

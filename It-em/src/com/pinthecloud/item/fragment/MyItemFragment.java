@@ -25,7 +25,6 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 	private MyItemGridAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
-	private boolean mIsAdding = false;
 
 
 	public static ItUserPageScrollTabFragment newInstance(int position, ItUser itUser) {
@@ -69,7 +68,7 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 	public void updateTab() {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mGridView.setVisibility(View.GONE);
-		
+
 		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ListCallback<Item>() {
 
 			@Override
@@ -79,6 +78,7 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 
 				mItemList.clear();
 				mGridAdapter.addAll(list);
+				mGridView.scrollToPosition(0);
 				mItUserPageScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
@@ -111,22 +111,7 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 				if (mItUserPageScrollTabHolder != null){
 					mItUserPageScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
 				}
-
-				// Add more item
-				int lastVisibleItem = mGridLayoutManager.findLastVisibleItemPosition();
-				int totalItemCount = mGridLayoutManager.getItemCount();
-				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
-					addNextItemList();
-				}
 			}
 		});
-	}
-
-
-	private void addNextItemList() {
-		mIsAdding = true;
-
-		mIsAdding = false;
-		mGridAdapter.notifyDataSetChanged();
 	}
 }

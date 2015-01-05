@@ -245,4 +245,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		mItemList.addAll(itemList);
 		notifyDataSetChanged();
 	}
+
+
+	public void add(int position, Item item) {
+		mItemList.add(position, item);
+		notifyItemInserted(position);
+	}
 }

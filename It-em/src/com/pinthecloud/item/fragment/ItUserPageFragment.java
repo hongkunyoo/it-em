@@ -1,6 +1,7 @@
 package com.pinthecloud.item.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
@@ -40,7 +41,9 @@ import com.squareup.picasso.Picasso;
 public class ItUserPageFragment extends ItFragment {
 
 	public static int mTabHeight;
+	private final int PROFILE_SETTINGS = 0;
 
+	private ActionBar mActionBar;
 	private ProgressBar mProgressBar;
 	private RelativeLayout mContainer;
 
@@ -59,6 +62,7 @@ public class ItUserPageFragment extends ItFragment {
 	private ItUser mItUser;
 
 	private boolean[] mIsUpdatedTabList;
+
 
 	public static ItUserPageFragment newInstance(String itUserId) {
 		ItUserPageFragment fragment = new ItUserPageFragment();
@@ -81,19 +85,21 @@ public class ItUserPageFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		final View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
-		
+
 		setHasOptionsMenu(true);
 		findComponent(view);
-		
+
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mTabHeight = getResources().getDimensionPixelSize(R.dimen.it_user_page_tab_height);
+
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				if(mItUser == null){
-					setItUser(frag);
-				} else {
-					AsyncChainer.notifyNext(frag);
-				}
+				mProgressBar.setVisibility(View.VISIBLE);
+				mContainer.setVisibility(View.GONE);
+
+				setItUser(frag);
 			}
 		}, new Chainable(){
 
@@ -102,16 +108,29 @@ public class ItUserPageFragment extends ItFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
 
-				setActionBar();
-				setComponent();
+				setProfile();
 				setButton();
 				setViewPager();
 				setTab();
-				setCustomTabName();
+				setTabName();
 			}
 		});
 
 		return view;
+	}
+
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode){
+		case PROFILE_SETTINGS:
+			if (resultCode == Activity.RESULT_OK){
+				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
+				setProfile();
+			}
+			break;
+		}
 	}
 
 
@@ -140,14 +159,8 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(mItUser.getNickName());
-	}
-
-
 	private void findComponent(View view){
+		mActionBar = mActivity.getSupportActionBar();
 		mContainer = (RelativeLayout)view.findViewById(R.id.it_user_page_frag_container_layout);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
@@ -178,8 +191,8 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setComponent(){
-		mTabHeight = mTab.getHeight();
+	private void setProfile(){
+		mActionBar.setTitle(mItUser.getNickName());
 		mNickName.setText(mItUser.getNickName());
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());
@@ -193,7 +206,7 @@ public class ItUserPageFragment extends ItFragment {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
-					startActivity(intent);
+					startActivityForResult(intent, PROFILE_SETTINGS);
 				}
 			});
 		} else {
@@ -259,13 +272,29 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+				// Get scroll tab holder interface
 				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
 				ItUserPageScrollTabHolder fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
-				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
+				
+				// Update current tab fragment
 				if(!mIsUpdatedTabList[position]){
 					fragmentContent.updateTab();
 					mIsUpdatedTabList[position] = true;
 				}
+				
+				// Scroll grid view items of tab fragment
+				int currentItem = mViewPager.getCurrentItem();
+	            if (positionOffsetPixels > 0) {
+	                if (position < currentItem) {
+	                    // Revealed the previous page
+	                	fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
+	                } else {
+	                    // Revealed the next page
+	                	fragmentContent = itUserPageScrollTabHolderList.valueAt(position + 1);
+	                }
+	                
+	                fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
+	            }
 			}
 			@Override
 			public void onPageSelected(int position) {
@@ -277,7 +306,7 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setCustomTabName(){
+	private void setTabName(){
 		for(int i=0 ; i<mViewPagerAdapter.getCount() ; i++){
 			View tab = mTab.getTab(i);
 			TextView name = (TextView)tab.findViewById(R.id.tab_it_user_page_name);

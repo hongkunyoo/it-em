@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -47,11 +46,14 @@ public class UploadFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_upload, container, false);
+
 		setHasOptionsMenu(true);
 		findComponent(view);
 		setComponent();
 		setImage();
+
 		mImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
+
 		return view;
 	}
 
@@ -211,6 +213,7 @@ public class UploadFragment extends ItFragment {
 					@Override
 					public void onCompleted(Item entity) {
 						item.setId(entity.getId());
+						item.setRawCreateDateTime(entity.getRawCreateDateTime());
 						AsyncChainer.notifyNext(frag);
 					}
 				});
@@ -226,9 +229,15 @@ public class UploadFragment extends ItFragment {
 					public void onCompleted(String entity) {
 						mApp.dismissProgressDialog();
 						Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
-						Intent intent = new Intent(mActivity, MainActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
+
+						Intent intent = new Intent();
+						intent.putExtra(Item.INTENT_KEY, item);
+						mActivity.setResult(Activity.RESULT_OK, intent);
+						mActivity.finish();
+
+						//						Intent intent = new Intent(mActivity, MainActivity.class);
+						//						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+						//						startActivity(intent);
 					}
 				});
 			}

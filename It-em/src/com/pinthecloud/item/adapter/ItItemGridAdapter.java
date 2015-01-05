@@ -80,7 +80,7 @@ public class ItItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, final int position) {
+	public void onBindViewHolder(ViewHolder holder, int position) {
 		int viewType = getItemViewType(position);
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position-mGridColumnNum);

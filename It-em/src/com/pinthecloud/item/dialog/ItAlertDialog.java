@@ -19,12 +19,12 @@ public class ItAlertDialog extends ItDialogFragment{
 
 	public ItAlertDialog(String title, String message, String okMessage, String cancelMessage, boolean cancel, DialogCallback callback) {
 		super();
-		this.mCallback = callback;
 		this.mTitle = title;
 		this.mMessage = message;
 		this.mOkMessage = okMessage;
 		this.mCancelMessage = cancelMessage;
 		this.mCancel = cancel;
+		this.mCallback = callback;
 	}
 
 

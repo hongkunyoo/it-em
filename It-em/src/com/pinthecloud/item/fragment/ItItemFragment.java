@@ -25,7 +25,6 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 	private ItItemGridAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
-	private boolean mIsAdding = false;
 
 
 	public static ItUserPageScrollTabFragment newInstance(int position, ItUser itUser) {
@@ -59,10 +58,8 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 
 	@Override
 	public void adjustScroll(final int scrollHeight) {
-		int findFirstVisibleItemPosition = mGridLayoutManager.findFirstVisibleItemPosition();
-		int spanCount = mGridLayoutManager.getSpanCount();
-		if (scrollHeight - ItUserPageFragment.mTabHeight != 0 || findFirstVisibleItemPosition < spanCount) {
-			mGridLayoutManager.scrollToPositionWithOffset(spanCount, scrollHeight);
+		if (scrollHeight - ItUserPageFragment.mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
+			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
 		}
 	}
 
@@ -71,7 +68,7 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 	public void updateTab() {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mGridView.setVisibility(View.GONE);
-		
+
 		mAimHelper.listItItem(mThisFragment, mItUser.getId(), new ListCallback<Item>() {
 
 			@Override
@@ -81,6 +78,7 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 
 				mItemList.clear();
 				mGridAdapter.addAll(list);
+				mGridView.scrollToPosition(0);
 				mItUserPageScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
@@ -113,22 +111,7 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 				if (mItUserPageScrollTabHolder != null){
 					mItUserPageScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
 				}
-
-				// Add more item
-				int lastVisibleItem = mGridLayoutManager.findLastVisibleItemPosition();
-				int totalItemCount = mGridLayoutManager.getItemCount();
-				if (lastVisibleItem >= totalItemCount-3 && !mIsAdding) {
-					addNextItemList();
-				}
 			}
 		});
-	}
-
-
-	private void addNextItemList() {
-		mIsAdding = true;
-
-		mIsAdding = false;
-		mGridAdapter.notifyDataSetChanged();
 	}
 }

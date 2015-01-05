@@ -8,13 +8,13 @@
         android:id="@+id/it_user_page_frag_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/it_user_page_frag_container_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" >
+        android:layout_height="match_parent" >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/it_user_page_frag_pager"
