@@ -27,7 +27,9 @@ public class AimHelper {
 	private final String AIM_ADD = "aim_add";
 	private final String AIM_UPDATE = "aim_update";
 	private final String AIM_DELETE = "aim_delete";
+	private final String AIM_DELETE_ITEM = "aim_delete_item";
 	private final String AIM_LIST = "aim_list";
+	private final String AIM_LIST_RECENT = "aim_list_recent";
 	private final String AIM_LIST_ITEM = "aim_list_item";
 	private final String AIM_LIST_MY_ITEM = "aim_list_my_item";
 	private final String AIM_LIST_IT_ITEM = "aim_list_it_item";
@@ -184,6 +186,44 @@ public class AimHelper {
 	}
 
 
+	public<E extends AbstractItemModel<E>> void listRecent(final ItFragment frag, Class<E> clazz, String itemId, final ListCallback<E> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "listRecent", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
+		try {
+			final E obj = clazz.newInstance();
+			JsonObject jo = new JsonObject();
+			jo.addProperty("table", obj.getClass().getSimpleName());
+			jo.addProperty("refId", itemId);
+
+			mClient.invokeApi(AIM_LIST_RECENT, jo, new ApiJsonOperationCallback() {
+
+				@SuppressWarnings("unchecked")
+				@Override
+				public void onCompleted(JsonElement _json, Exception exception,
+						ServiceFilterResponse response) {
+					if(exception == null){
+						JsonArray arr = _json.getAsJsonArray();
+						List<E> list = new ArrayList<E>();
+						for (int i = 0 ; i < arr.size() ; i++) {
+							list.add((E)new Gson().fromJson(arr.get(i), obj.getClass()));
+						}
+						callback.onCompleted(list, list.size());
+					} else {
+						ExceptionManager.fireException(new ItException(frag, "listRecent", ItException.TYPE.SERVER_ERROR, response));
+					}
+				}
+			});
+		} catch (InstantiationException e) {
+			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+		} catch (IllegalAccessException e) {
+			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+		}
+	}
+	
+	
 	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.INTERNET_NOT_CONNECTED));
@@ -229,6 +269,27 @@ public class AimHelper {
 	}
 
 
+	public void delItem(final ItFragment frag, Item obj, final EntityCallback<Boolean> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "delItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
+		mClient.invokeApi(AIM_DELETE_ITEM, obj.toJson(), new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(_json.getAsBoolean());	
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "delItem", ItException.TYPE.SERVER_ERROR, response));
+				}
+			}
+		});
+	}
+	
+	
 	public <E extends AbstractItemModel<E>> void get(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));

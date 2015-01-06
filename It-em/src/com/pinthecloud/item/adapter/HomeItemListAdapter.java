@@ -2,7 +2,6 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.ProductTagActivity;
@@ -41,7 +41,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		FOOTER
 	}
 
-	private Context mContext;
+	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 	private boolean mHasFooter = false;
@@ -51,8 +51,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	public HomeItemListAdapter(Context context, ItFragment frag, List<Item> itemList) {
-		this.mContext = context;
+	public HomeItemListAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
+		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mItemList = itemList;
 	}
@@ -162,7 +162,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 		if(mItemList.indexOf(item) < mItemList.size()-1){
-			layoutParams.setMargins(0, 0, 0, mContext.getResources().getDimensionPixelSize(R.dimen.content_margin));		
+			layoutParams.setMargins(0, 0, 0, mActivity.getResources().getDimensionPixelSize(R.dimen.content_margin));		
 		} else {
 			layoutParams.setMargins(0, 0, 0, 0);
 		}
@@ -175,9 +175,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mContext, ItUserPageActivity.class);
+				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
-				mContext.startActivity(intent);
+				mActivity.startActivity(intent);
 			}
 		});
 
@@ -185,9 +185,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mContext, ItemActivity.class);
+				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				mContext.startActivity(intent);
+				mActivity.startActivity(intent);
 			}
 		});
 
@@ -218,9 +218,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mContext, ProductTagActivity.class);
+				Intent intent = new Intent(mActivity, ProductTagActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				mContext.startActivity(intent);
+				mActivity.startActivity(intent);
 			}
 		});
 	}

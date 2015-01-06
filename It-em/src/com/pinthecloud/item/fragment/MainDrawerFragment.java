@@ -133,7 +133,7 @@ public class MainDrawerFragment extends ItFragment {
 		// Be Pro
 		// Settings
 		mMenuList.add(new MainDrawerMenu(0, menuNameList[1], null, false));
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[2], new ProFragment(), false));
+		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[2], new BeProFragment(), false));
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[3], new SettingsFragment(), false));
 
 		mListAdapter = new MainDrawerMenuListAdapter(mThisFragment, mMenuList);

@@ -35,9 +35,6 @@ public class LoginFragment extends ItFragment {
 	private LoginButton mFacebookButton;
 	private UiLifecycleHelper mUiHelper;
 
-	private boolean mIsProfileImageUploaded = false;
-	private boolean mIsSmallProfileImageUploaded = false;
-
 	private Session.StatusCallback mCallback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
@@ -203,31 +200,40 @@ public class LoginFragment extends ItFragment {
 	}
 
 
-	private void uploadProfileImage(ItFragment frag, ItUser itUser, Bitmap profileImage){
-		profileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
-		Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+	private void uploadProfileImage(ItFragment frag, final ItUser itUser, Bitmap profileImage){
+		final Bitmap bigProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
+		final Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
 
-		blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
-				profileImage, new EntityCallback<String>() {
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void onCompleted(String entity) {
-				mIsProfileImageUploaded = true;
-				if(mIsSmallProfileImageUploaded){
-					goToNextActivity();
-				}
+			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
+
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
+						bigProfileImage, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+
+				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
+						smallProfileImage, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
 			}
-		});
 
-		blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
-				smallProfileImage, new EntityCallback<String>() {
+		}, new Chainable(){
 
 			@Override
-			public void onCompleted(String entity) {
-				mIsSmallProfileImageUploaded = true;
-				if(mIsProfileImageUploaded){
-					goToNextActivity();	
-				}
+			public void doNext(ItFragment frag, Object... params) {
+				goToNextActivity();
 			}
 		});
 	}

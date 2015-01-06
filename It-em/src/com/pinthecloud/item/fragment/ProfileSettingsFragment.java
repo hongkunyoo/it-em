@@ -25,8 +25,10 @@ import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
@@ -42,8 +44,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	private ItUser mMyItUser;
 
 	private boolean mIsUpdating = false;
-	private boolean mIsProfileImageUpdated = false;
-	private boolean mIsSmallProfileImageUpdated = false;
 
 
 	@Override
@@ -282,37 +282,41 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void updateProfileImage(final Bitmap profileImageBitmap){
 		mApp.showProgressDialog(mActivity);
-
-		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
-				profileImageBitmap, new EntityCallback<String>() {
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void onCompleted(String entity) {
-				mIsProfileImageUpdated = true;
-				if(mIsSmallProfileImageUpdated){
-					FileUtil.clearCache();
-					setProfileImage();
+			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
 
-					mApp.dismissProgressDialog();
-					Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
-				}
+				blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
+						profileImageBitmap, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+
+				Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+				blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
+						smallProfileImageBitmap, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
 			}
-		});
 
-		Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-		blobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
-				smallProfileImageBitmap, new EntityCallback<String>() {
+		}, new Chainable(){
 
 			@Override
-			public void onCompleted(String entity) {
-				mIsSmallProfileImageUpdated = true;
-				if(mIsProfileImageUpdated){
-					FileUtil.clearCache();
-					setProfileImage();
+			public void doNext(ItFragment frag, Object... params) {
+				FileUtil.clearCache();
+				setProfileImage();
 
-					mApp.dismissProgressDialog();
-					Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
-				}
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
 			}
 		});
 	}

@@ -27,12 +27,14 @@ import android.widget.TextView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
-import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
+import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
-import com.pinthecloud.item.helper.AimHelper;
+import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
@@ -157,8 +159,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	@Override
 	public void deleteReply(final Reply reply){
-		AimHelper aimHelper = ItApplication.getInstance().getAimHelper();
-		aimHelper.del(mThisFragment, reply, new EntityCallback<Boolean>() {
+		mAimHelper.del(mThisFragment, reply, new EntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {
@@ -198,7 +199,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setComponent(){
 		mReplyTitlebarDivider.setVisibility(View.GONE);
-		
+
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -223,6 +224,18 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 				@Override
 				public void onClick(View v) {
+					String message = getResources().getString(R.string.delete_item);
+					ItAlertDialog dialog = new ItAlertDialog(null, message, null, null, true, new DialogCallback() {
+
+						@Override
+						public void doPositiveThing(Bundle bundle) {
+							deleteItem(mItem);
+						}
+						@Override
+						public void doNegativeThing(Bundle bundle) {
+						}
+					});
+					dialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 				}
 			});
 		} else {
@@ -313,7 +326,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void updateRecentReplyList(final ItFragment frag) {
-		mAimHelper.list(mThisFragment, Reply.class, mItem.getId(), new ListCallback<Reply>() {
+		mAimHelper.listRecent(mThisFragment, Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
@@ -394,6 +407,46 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				setReplyTitle();
 
 				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
+			}
+		});
+	}
+
+
+	private void deleteItem(final Item item){
+		mApp.showProgressDialog(mActivity);
+		
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
+				
+				mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+
+				blobStorageHelper.deleteBitmapAsync(mThisFragment, BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+			}
+
+		}, new Chainable(){
+
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				mApp.dismissProgressDialog();
+
+				Intent intent = new Intent(mActivity, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
 			}
 		});
 	}

@@ -234,10 +234,6 @@ public class UploadFragment extends ItFragment {
 						intent.putExtra(Item.INTENT_KEY, item);
 						mActivity.setResult(Activity.RESULT_OK, intent);
 						mActivity.finish();
-
-						//						Intent intent = new Intent(mActivity, MainActivity.class);
-						//						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-						//						startActivity(intent);
 					}
 				});
 			}

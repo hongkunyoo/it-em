@@ -2,7 +2,6 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Item;
@@ -26,15 +26,15 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		HEADER
 	}
 
-	private Context mContext;
+	private ItActivity mActivity;
 	private List<Item> mItemList;
 	private int mGridColumnNum;
 
 
-	public MyItemGridAdapter(Context context, List<Item> itemList) {
-		this.mContext = context;
+	public MyItemGridAdapter(ItActivity activity, List<Item> itemList) {
+		this.mActivity = activity;
 		this.mItemList = itemList;
-		this.mGridColumnNum = mContext.getResources().getInteger(R.integer.it_user_page_item_grid_column_num);
+		this.mGridColumnNum = mActivity.getResources().getInteger(R.integer.it_user_page_item_grid_column_num);
 	}
 
 
@@ -119,9 +119,9 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mContext, ItemActivity.class);
+				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				mContext.startActivity(intent);
+				mActivity.startActivity(intent);
 			}
 		});
 	}
