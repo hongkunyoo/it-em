@@ -32,6 +32,8 @@ import com.squareup.picasso.Picasso;
 
 public class LoginFragment extends ItFragment {
 
+	public static final String FACEBOOK = "facebook";
+	
 	private LoginButton mFacebookButton;
 	private UiLifecycleHelper mUiHelper;
 
@@ -134,7 +136,7 @@ public class LoginFragment extends ItFragment {
 	private void facebookLogin(final GraphUser user){
 		mApp.showProgressDialog(mActivity);
 
-		final ItUser itUser = new ItUser(user.getId(), user.getFirstName(), "", "");
+		final ItUser itUser = new ItUser(user.getId(), FACEBOOK, user.getFirstName(), "", "");
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override

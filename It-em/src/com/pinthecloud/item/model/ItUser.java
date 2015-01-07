@@ -15,6 +15,8 @@ public class ItUser implements Parcelable {
 	private String id;
 	@com.google.gson.annotations.SerializedName("itUserId")
 	private String itUserId;
+	@com.google.gson.annotations.SerializedName("platform")
+	private String platform;
 	@com.google.gson.annotations.SerializedName("nickName")
 	private String nickName;
 	@com.google.gson.annotations.SerializedName("selfIntro")
@@ -26,9 +28,10 @@ public class ItUser implements Parcelable {
 	public ItUser() {
 		super();
 	}
-	public ItUser(String itUserId, String nickName, String selfIntro, String webPage) {
+	public ItUser(String itUserId, String platform, String nickName, String selfIntro, String webPage) {
 		super();
 		this.itUserId = itUserId;
+		this.platform = platform;
 		this.nickName = nickName;
 		this.selfIntro = selfIntro;
 		this.webPage = webPage;
@@ -46,6 +49,12 @@ public class ItUser implements Parcelable {
 	}
 	public void setItUserId(String itUserId) {
 		this.itUserId = itUserId;
+	}
+	public String getPlatform() {
+		return platform;
+	}
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 	public String getNickName() {
 		return nickName;
@@ -68,6 +77,7 @@ public class ItUser implements Parcelable {
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
+		this.setPlatform(itUser.getPlatform());
 		this.setNickName(itUser.getNickName());
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());

@@ -81,6 +81,31 @@ public class UserHelper {
 	}
 
 
+	public void getByNickName(final ItFragment frag, String nickName, final EntityCallback<ItUser> callback) {
+		if(!mApp.isOnline()){
+			ExceptionManager.fireException(new ItException(frag, "getByNickName", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			return;
+		}
+
+		table.where().field("nickName").eq(nickName).execute(new TableQueryCallback<ItUser>() {
+
+			@Override
+			public void onCompleted(List<ItUser> entity, int count, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					if(count == 0){
+						callback.onCompleted(null);
+					} else {
+						callback.onCompleted(entity.get(0));
+					}
+				} else {
+					ExceptionManager.fireException(new ItException(frag, "getByNickName", ItException.TYPE.SERVER_ERROR, exception));	
+				}
+			}
+		});
+	}
+
+
 	public void update(final ItFragment frag, ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.INTERNET_NOT_CONNECTED));

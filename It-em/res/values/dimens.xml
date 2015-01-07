@@ -11,8 +11,8 @@
     <!-- Home -->
     <dimen name="home_item_profile_height">56dp</dimen>
     <dimen name="home_item_profile_image_width">38dp</dimen>
+    <dimen name="home_item_information_height">48dp</dimen>
     <dimen name="home_item_content_margin">12dp</dimen>
-    <dimen name="home_item_reply_margin">6dp</dimen>
 
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>
@@ -33,11 +33,6 @@
     <dimen name="my_item_it_reply_number_margin">12dp</dimen>
 
     <!-- Item -->
-    <dimen name="item_content_margin">14dp</dimen>
-    <dimen name="item_it_number_margin">24dp</dimen>
-    <dimen name="item_rank_margin">10dp</dimen>
-    <dimen name="item_profile_text_height">48dp</dimen>
-    <dimen name="item_profile_image_top_margin">2dp</dimen>
     <dimen name="item_profile_image_width">56dp</dimen>
     
     <!-- Reply -->

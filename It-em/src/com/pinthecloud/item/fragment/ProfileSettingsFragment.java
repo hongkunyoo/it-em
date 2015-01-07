@@ -26,9 +26,9 @@ import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
@@ -105,9 +105,9 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
 		MenuItem menuItem = menu.findItem(R.id.profile_settings_done);
 		menuItem.setEnabled(mNickName.getText().toString().trim().length() > 0);
-		super.onPrepareOptionsMenu(menu);
 	}
 
 
@@ -122,13 +122,27 @@ public class ProfileSettingsFragment extends ItFragment {
 				mIsUpdating = true;
 				trimProfileSettings();
 				if(isProfileSettingsChanged()){
-					String message = checkProfileSettings();
-					if(message.equals("")){
-						updateProfileSettings();
-					} else {
-						mIsUpdating = false;
-						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
-					}
+					mApp.showProgressDialog(mActivity);
+					AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+						@Override
+						public void doNext(final ItFragment frag, Object... params) {
+							checkNickName(frag, mNickName.getText().toString());
+						}
+					}, new Chainable(){
+
+						@Override
+						public void doNext(ItFragment frag, Object... params) {
+							String message = params[0].toString();
+							if(message.equals("")){
+								updateProfileSettings();
+							} else {
+								mIsUpdating = false;
+								mApp.dismissProgressDialog();
+								Toast.makeText(mActivity, params[0].toString(), Toast.LENGTH_LONG).show();	
+							}
+						}
+					});
 				} else {
 					mActivity.onBackPressed();
 				}
@@ -254,29 +268,30 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private String checkProfileSettings(){
-		String message = checkNickName(mNickName.getText().toString());
-		if(!message.equals("")) return message;
-		message = checkWebsite(mWebsite.getText().toString());
-		return message;
-	}
 
-
-	private String checkNickName(String nickName){
+	private void checkNickName(final ItFragment frag, String nickName){
 		String nickNameRegx = "^[a-zA-Z0-9가-힣_-]{2,10}$";
-		String message = "";
-
 		if(nickName.length() < 2){
-			message = getResources().getString(R.string.min_nick_name_message);
+			AsyncChainer.notifyNext(frag, getResources().getString(R.string.min_nick_name_message));
 		} else if(!nickName.matches(nickNameRegx)){
-			message = getResources().getString(R.string.bad_nick_name_message);
-		} 
-		return message;
-	}
+			AsyncChainer.notifyNext(frag, getResources().getString(R.string.bad_nick_name_message));
+		} else {
+			mUserHelper.getByNickName(mThisFragment, nickName, new EntityCallback<ItUser>() {
 
-
-	private String checkWebsite(String website){
-		return "";
+				@Override
+				public void onCompleted(ItUser entity) {
+					if(entity == null){
+						AsyncChainer.notifyNext(frag, "");
+					} else {
+						if(entity.getId().equals(mMyItUser.getId())){
+							AsyncChainer.notifyNext(frag, "");
+						} else {
+							AsyncChainer.notifyNext(frag, getResources().getString(R.string.duplicated_nick_name_message));
+						}
+					}
+				}
+			});
+		}
 	}
 
 
@@ -323,8 +338,6 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void updateProfileSettings(){
-		mApp.showProgressDialog(mActivity);
-
 		mMyItUser.setNickName(mNickName.getText().toString());
 		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
 		mMyItUser.setWebPage(mWebsite.getText().toString());
@@ -335,6 +348,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void onCompleted(ItUser entity) {
 				mObjectPrefHelper.put(entity);
 
+				mIsUpdating = false;
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
 

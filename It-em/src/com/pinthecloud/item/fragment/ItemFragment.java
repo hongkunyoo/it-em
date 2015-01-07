@@ -20,8 +20,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
@@ -30,11 +32,9 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.activity.ProductTagActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
-import com.pinthecloud.item.dialog.ItAlertDialog;
-import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
@@ -53,13 +53,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private final int DISPLAY_REPLY_COUNT = 2;
 
+	private ProgressBar mProgressBar;
 	private ObservableScrollView mScrollView;
 	private SquareImageView mImage;
 	private TextView mContent;
 	private TextView mDate;
+	private ImageButton mItButton;
 	private TextView mItNumber;
-	private Button mDelete;
-	private ProgressBar mProgressBar;
+	private RelativeLayout mProductTag;
 
 	private TextView mReplyTitle;
 	private View mReplyTitlebarDivider;
@@ -140,17 +141,21 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		MenuItem deleteMenuItem = menu.findItem(R.id.item_delete);
+		deleteMenuItem.setVisible(mItem.getWhoMadeId().equals(mMyItUser.getId()));
+	}
+
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem menu) {
 		switch (menu.getItemId()) {
 		case android.R.id.home:
 			mActivity.onBackPressed();
 			break;
-		case R.id.item_it:
-			int likeItNum = (Integer.parseInt(mItNumber.getText().toString()) + 1);
-			mItNumber.setText(String.valueOf(likeItNum));
-
-			LikeIt likeIt = new LikeIt(mItem.getWhoMade(), mItem.getWhoMadeId(), mItem.getId());
-			mAimHelper.add(mThisFragment, likeIt, null);
+		case R.id.item_delete:
+			deleteItem(mItem);
 			break;
 		}
 		return super.onOptionsItemSelected(menu);
@@ -175,13 +180,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
+		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mScrollView = (ObservableScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 		mImage = (SquareImageView)view.findViewById(R.id.item_frag_image);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
+		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
-		mDelete = (Button)view.findViewById(R.id.item_frag_delete);
-		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mProductTag = (RelativeLayout)view.findViewById(R.id.item_frag_product_tag);
 
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyTitlebarDivider = view.findViewById(R.id.reply_frag_titlebar_divider);
@@ -219,29 +225,28 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setButton(){
-		if(mItem.getWhoMadeId().equals(mMyItUser.getId())){
-			mDelete.setOnClickListener(new OnClickListener() {
+		mItButton.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					String message = getResources().getString(R.string.delete_item);
-					ItAlertDialog dialog = new ItAlertDialog(null, message, null, null, true, new DialogCallback() {
+			@Override
+			public void onClick(View v) {
+				int likeItNum = (Integer.parseInt(mItNumber.getText().toString()) + 1);
+				mItNumber.setText(String.valueOf(likeItNum));
 
-						@Override
-						public void doPositiveThing(Bundle bundle) {
-							deleteItem(mItem);
-						}
-						@Override
-						public void doNegativeThing(Bundle bundle) {
-						}
-					});
-					dialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-				}
-			});
-		} else {
-			mDelete.setVisibility(View.GONE);
-		}
+				LikeIt likeIt = new LikeIt(mItem.getWhoMade(), mItem.getWhoMadeId(), mItem.getId());
+				mAimHelper.add(mThisFragment, likeIt, null);
+			}
+		});
 
+		mProductTag.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, ProductTagActivity.class);
+				intent.putExtra(Item.INTENT_KEY, mItem);
+				mActivity.startActivity(intent);
+			}
+		});
+		
 		mReplyInputSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -414,13 +419,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void deleteItem(final Item item){
 		mApp.showProgressDialog(mActivity);
-		
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
-				
+
 				mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
 
 					@Override
@@ -453,6 +457,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setReplyTitle(){
-		mReplyTitle.setText(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
+		mReplyTitle.setText(getResources().getString(R.string.comments) + " " + mItem.getReplyCount());
 	}
 }

@@ -26,7 +26,6 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 	private enum VIEW_TYPE{
 		PROFILE,
-		Header,
 		NORMAL
 	}
 
@@ -54,18 +53,6 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	public static class HeaderViewHolder extends RecyclerView.ViewHolder {
-		public View view;
-		public TextView headerText;
-
-		public HeaderViewHolder(View view) {
-			super(view);
-			this.view = view;
-			this.headerText = (TextView)view.findViewById(R.id.row_home_drawer_menu_list_header_text);
-		}
-	}
-
-
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public ImageView menuImage;
@@ -89,9 +76,6 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
 			view = inflater.inflate(R.layout.row_main_drawer_menu_list_profile, parent, false);
 			viewHolder = new ProfileViewHolder(view);
-		} else if(viewType == VIEW_TYPE.Header.ordinal()){
-			view = inflater.inflate(R.layout.row_main_drawer_menu_list_header, parent, false);
-			viewHolder = new HeaderViewHolder(view);
 		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			view = inflater.inflate(R.layout.row_main_drawer_menu_list, parent, false);
 			viewHolder = new NormalViewHolder(view);
@@ -105,22 +89,12 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	public void onBindViewHolder(ViewHolder holder, final int position) {
 		MainDrawerMenu menu = mMenuList.get(position);
 		int viewType = getItemViewType(position);
-
 		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
-
 			ProfileViewHolder profileViewHolder = (ProfileViewHolder)holder;
 			setProfileViewHolder(profileViewHolder, position);
-
-		} else if (viewType == VIEW_TYPE.Header.ordinal()){
-
-			HeaderViewHolder headerViewHolder = (HeaderViewHolder)holder;
-			setHeaderViewHolder(headerViewHolder, menu);
-
 		} else if (viewType == VIEW_TYPE.NORMAL.ordinal()){
-
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
 			setNormalViewHolder(normalViewHolder, menu);
-
 		}
 	}
 
@@ -133,11 +107,8 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 	@Override
 	public int getItemViewType(int position) {
-		MainDrawerMenu menu = mMenuList.get(position);
 		if(position == 0){
 			return VIEW_TYPE.PROFILE.ordinal();
-		} else if (menu.getMenuImage() == 0){
-			return VIEW_TYPE.Header.ordinal();
 		} else {
 			return VIEW_TYPE.NORMAL.ordinal();
 		}
@@ -161,11 +132,6 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 				((MainDrawerFragment)mfrag).selectMenu(position);
 			}
 		});
-	}
-
-
-	private void setHeaderViewHolder(HeaderViewHolder holder, MainDrawerMenu menu) {
-		holder.headerText.setText(menu.getMenuName());
 	}
 
 

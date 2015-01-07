@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -61,33 +60,37 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
+		public RelativeLayout profileLayout;
+		public CircleImageView profileImage;
+		public TextView nickName;
+
 		public LinearLayout layout;
 		public SquareImageView image;
 		public TextView content;
 		public ImageButton itButton;
 		public TextView itNumber;
-		public Button reply;
-		public Button productTag;
-
-		public RelativeLayout profileLayout;
-		public CircleImageView profileImage;
-		public TextView nickName;
+		public LinearLayout reply;
+		public TextView replyNumber;
+		public LinearLayout productTag;
+		public TextView productTagNumber;
 
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
+
+			this.profileLayout = (RelativeLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 
 			this.layout = (LinearLayout)view.findViewById(R.id.row_home_item_list_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
-			this.reply = (Button)view.findViewById(R.id.row_home_item_list_reply);
-			this.productTag = (Button)view.findViewById(R.id.row_home_item_list_product_tag);
-
-			this.profileLayout = (RelativeLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
-			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
-			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
+			this.reply = (LinearLayout)view.findViewById(R.id.row_home_item_list_reply);
+			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_list_reply_number);
+			this.productTag = (LinearLayout)view.findViewById(R.id.row_home_item_list_product_tag);
+			this.productTagNumber = (TextView)view.findViewById(R.id.row_home_item_list_product_tag_number);
 		}
 	}
 
@@ -204,7 +207,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 
-		holder.reply.setText(""+item.getReplyCount());
+		holder.replyNumber.setText(""+item.getReplyCount());
 		holder.reply.setOnClickListener(new OnClickListener() {
 
 			@Override

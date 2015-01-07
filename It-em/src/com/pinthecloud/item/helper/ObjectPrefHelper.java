@@ -18,7 +18,7 @@ public class ObjectPrefHelper {
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
 			if (!isGetter(method)) continue;
-			mPrefHelper.put(removePrefix(method.getName()), invokeGetMethod(obj, method));
+			mPrefHelper.put(clazz.getName()+removePrefix(method.getName()), invokeGetMethod(obj, method));
 		}
 	}
 
@@ -34,9 +34,17 @@ public class ObjectPrefHelper {
 		for (Method method : methods) {
 			if (!isSetter(method)) continue;
 			Class<?> paramClazz = method.getParameterTypes()[0];
-			invokeSetMethod(obj, method, mPrefHelper.get(removePrefix(method.getName()), paramClazz));
+			invokeSetMethod(obj, method, mPrefHelper.get(clazz.getName()+removePrefix(method.getName()), paramClazz));
 		}
 		return obj;
+	}
+
+	public <E> void remove(Class<E> clazz) {
+		Method[] methods = clazz.getMethods();
+		for (Method method : methods) {
+			if (!isGetter(method)) continue;
+			mPrefHelper.remove(clazz.getName()+removePrefix(method.getName()));
+		}
 	}
 
 	private Object invokeGetMethod(Object obj, Method method) {

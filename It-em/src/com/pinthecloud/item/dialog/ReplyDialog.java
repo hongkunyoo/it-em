@@ -207,6 +207,6 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 
 	private void setTitle(){
-		mTitle.setText(getResources().getString(R.string.reply) + " " + mItem.getReplyCount());
+		mTitle.setText(getResources().getString(R.string.comments) + " " + mItem.getReplyCount());
 	}
 }

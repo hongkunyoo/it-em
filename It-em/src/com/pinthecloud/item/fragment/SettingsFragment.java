@@ -8,14 +8,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
-import com.facebook.LoginActivity;
+import com.facebook.Session;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.LoginActivity;
+import com.pinthecloud.item.model.ItUser;
 
 public class SettingsFragment extends ItFragment {
 
-	private ProgressBar mProgressBar;
 	private Button mLogoutButton;
 
 
@@ -38,7 +38,6 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mProgressBar = (ProgressBar)view.findViewById(R.id.settings_frag_progress_bar);
 		mLogoutButton = (Button)view.findViewById(R.id.settings_frag_logout_button);
 	}
 
@@ -48,13 +47,31 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mProgressBar.setVisibility(View.VISIBLE);
-				// TODO remove user preference
+				ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
+				if(myItUser.getPlatform().equals(LoginFragment.FACEBOOK)){
+					facebookLogout();
+				}
+
+				mObjectPrefHelper.remove(ItUser.class);
 
 				Intent intent = new Intent(mActivity, LoginActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
 			}
 		});
+	}
+
+
+	private void facebookLogout(){
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			if (!session.isClosed()) {
+				session.closeAndClearTokenInformation();
+			}
+		} else {
+			session = new Session(mActivity);
+			Session.setActiveSession(session);
+			session.closeAndClearTokenInformation();
+		}
 	}
 }
