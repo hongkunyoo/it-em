@@ -72,7 +72,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 				| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-	    
+
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -164,15 +164,17 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
-				mProgressBar.setVisibility(View.GONE);
-				mListView.setVisibility(View.VISIBLE);
+				if(isAdded()){
+					mProgressBar.setVisibility(View.GONE);
+					mListView.setVisibility(View.VISIBLE);
 
-				mItem.setReplyCount(count);
-				showReplyList(mItem.getReplyCount());
-				setTitle();
+					mItem.setReplyCount(count);
+					showReplyList(mItem.getReplyCount());
+					setTitle();
 
-				mReplyList.clear();
-				mListAdapter.addAll(list);
+					mReplyList.clear();
+					mListAdapter.addAll(list);
+				}
 			}
 		});
 	}

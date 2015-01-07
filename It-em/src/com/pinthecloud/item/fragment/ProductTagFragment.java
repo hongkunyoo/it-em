@@ -17,8 +17,10 @@ import android.widget.RelativeLayout;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ProductTagListAdapter;
+import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.SquareImageView;
+import com.squareup.picasso.Picasso;
 
 public class ProductTagFragment extends ItFragment {
 
@@ -64,6 +66,20 @@ public class ProductTagFragment extends ItFragment {
 
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		setImageView();
+	}
+
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mImage.setImageBitmap(null);
+	}
+
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem menu) {
 		switch (menu.getItemId()) {
 		case android.R.id.home:
@@ -103,6 +119,15 @@ public class ProductTagFragment extends ItFragment {
 				mImage.scrollTo(0, scrollY/2);
 			}
 		});
+	}
+
+
+	private void setImageView(){
+		Picasso.with(mImage.getContext())
+		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+		.placeholder(R.drawable.launcher)
+		.fit()
+		.into(mImage);
 	}
 
 

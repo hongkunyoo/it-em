@@ -9,6 +9,11 @@
     <color name="brand_text_color">#de263238</color>
     <color name="brand_text_color_light">#78909c</color>
 
+    <!-- Reply -->
+    <color name="reply_submit_enable">#ffab00</color>
+    <color name="reply_submit_disable">#42ffab00</color>
+    <color name="reply_input_hint">#20263238</color>
+    
     <!-- It User Page -->
     <color name="it_user_page_tab_pressed">#6633B5E5</color>
     <color name="it_user_page_tab_selected">#0A000000</color>

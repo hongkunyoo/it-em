@@ -60,6 +60,7 @@
     <!-- Reply -->
     <string name="delete">Delete</string>
     <string name="submit">Submit</string>
+    <string name="message">Message</string>
     <string name="previous_reply">See all comments</string>
     <string name="first_reply">Write first comment</string>
 

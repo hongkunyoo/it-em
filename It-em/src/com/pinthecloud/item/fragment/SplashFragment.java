@@ -39,7 +39,7 @@ public class SplashFragment extends ItFragment {
 			hongTent.setClass(mActivity, HongkunTestActivity.class);
 			startActivity(hongTent);
 		} catch (ClassNotFoundException e) {
-			if(mThisFragment.isAdded()){
+			if(isAdded()){
 				Intent intent = new Intent();
 				if (!mObjectPrefHelper.get(ItUser.class).isLoggedIn()){
 					// New User
