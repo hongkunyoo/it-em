@@ -29,6 +29,7 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
@@ -84,14 +85,12 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		switch(requestCode){
-		case FileUtil.GALLERY | FileUtil.CAMERA:
+		if(requestCode == FileUtil.GALLERY || requestCode == FileUtil.CAMERA){
 			if (resultCode == Activity.RESULT_OK){
 				String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
 				Bitmap profileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
 				updateProfileImage(profileImageBitmap);
 			}
-			break;
 		}
 	}
 
@@ -219,6 +218,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
+				ItLog.log("getDialogCallbacks 0");
 				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
 			}
 			@Override

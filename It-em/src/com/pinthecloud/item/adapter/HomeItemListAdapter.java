@@ -50,7 +50,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
-
 	private boolean mHasFooter = false;
 
 	public void setHasFooter(boolean hasFooter) {
@@ -194,7 +193,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 
-		if(item.isMine()){
+		if(item.checkIsMine()){
 			holder.more.setVisibility(View.VISIBLE);
 			holder.more.setOnClickListener(new OnClickListener() {
 
@@ -225,12 +224,21 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
+				final int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
 				holder.itNumber.setText(String.valueOf(likeItNum));
 
-				LikeIt likeIt = new LikeIt(item.getWhoMade(), item.getWhoMadeId(), item.getId());
-				AimHelper mAimHelper = ItApplication.getInstance().getAimHelper();
-				mAimHelper.add(mFrag, likeIt, null);
+				ItApplication app = ItApplication.getInstance();
+				AimHelper mAimHelper = app.getAimHelper();
+				ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
+
+				LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
+				mAimHelper.add(mFrag, likeIt, new EntityCallback<LikeIt>() {
+
+					@Override
+					public void onCompleted(LikeIt entity) {
+						item.setLikeItCount(likeItNum);
+					}
+				});
 			}
 		});
 

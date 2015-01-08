@@ -18,24 +18,40 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
 
+    <!-- Main Drawer -->
+    <string name="image">Image</string>
+
     <!-- Home -->
     <string name="home">Home</string>
     <string name="plus">+</string>
     <string name="comments">Comments</string>
     <string name="tags">Tags</string>
 
-    <!-- Main Drawer -->
-    <string name="image">Image</string>
+    <!-- Item -->
+    <string name="upload_date">Uploaded on</string>
+    <string name="it_number">numbers of IT</string>
+    <string name="upload_by">Uploaded by</string>
+    <string name="of">\'s</string>
+    <string name="go_to_buy">Go to buy item in this picture</string>
+
+    <!-- Reply -->
+    <string name="delete">Delete</string>
+    <string name="submit">SUBMIT</string>
+    <string name="message">Message</string>
+    <string name="previous_reply">See all comments</string>
+    <string name="first_reply">Write first comment</string>
 
     <!-- It User Page -->
     <string name="zero">0</string>
 
-    <!-- Pro -->
-    <string name="pro">Pro</string>
-
     <!-- My Item -->
     <string name="it_lower">it</string>
     <string name="reply_lower">comments</string>
+    <string name="first_item">Upload your item</string>
+    <string name="first_it">Do IT your favorite item</string>
+
+    <!-- Pro -->
+    <string name="pro">Pro</string>
 
     <!-- Upload -->
     <string name="upload">Upload</string>
@@ -57,20 +73,6 @@
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
 
-    <!-- Reply -->
-    <string name="delete">Delete</string>
-    <string name="submit">SUBMIT</string>
-    <string name="message">Message</string>
-    <string name="previous_reply">See all comments</string>
-    <string name="first_reply">Write first comment</string>
-
-    <!-- Item -->
-    <string name="upload_date">Uploaded on</string>
-    <string name="it_number">numbers of IT</string>
-    <string name="upload_by">Uploaded by</string>
-    <string name="of">\'s</string>
-    <string name="go_to_buy">Go to buy item in this picture</string>
-
     <!-- Product Tag -->
     <string name="product_tag">Product Tag</string>
     <string name="no_product_tag">There is no product tag.</string>
@@ -84,8 +86,8 @@
 
     <!-- Purchase -->
     <string name="purchase">Purchase</string>
-    
+
     <!-- Commission -->
     <string name="commission">Commission</string>
-    
+
 </resources>

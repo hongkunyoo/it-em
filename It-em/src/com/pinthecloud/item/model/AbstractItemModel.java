@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.util.RandomUtil;
 
 public class AbstractItemModel<T> {
@@ -54,12 +55,15 @@ public class AbstractItemModel<T> {
 	public void setRefId(String refId) {
 		this.refId = refId;
 	}
-
 	public ItDateTime getCreateDateTime() {
 		return new ItDateTime(this.rawCreateDateTime);
 	}
 	public void setCreateDateTime(ItDateTime dateTime) {
 		this.rawCreateDateTime = dateTime.toString();
+	}
+
+	public boolean checkIsMine(){
+		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.whoMadeId);
 	}
 
 	@Override

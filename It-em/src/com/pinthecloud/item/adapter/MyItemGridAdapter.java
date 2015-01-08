@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
@@ -31,25 +30,21 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private int mGridColumnNum;
 
 
-	public MyItemGridAdapter(ItActivity activity, List<Item> itemList) {
+	public MyItemGridAdapter(ItActivity activity, int gridColumnNum, List<Item> itemList) {
 		this.mActivity = activity;
 		this.mItemList = itemList;
-		this.mGridColumnNum = mActivity.getResources().getInteger(R.integer.it_user_page_item_grid_column_num);
+		this.mGridColumnNum = gridColumnNum;
 	}
 
 
 	private static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public SquareImageView image;
-		public TextView itNumber;
-		public TextView reply;
 
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
 			this.image = (SquareImageView)view.findViewById(R.id.row_my_item_grid_image);
-			this.itNumber = (TextView)view.findViewById(R.id.row_my_item_grid_it_number);
-			this.reply = (TextView)view.findViewById(R.id.row_my_item_grid_reply);
 		}
 	}
 
@@ -85,7 +80,6 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position-mGridColumnNum);
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
-			setNormalText(normalViewHolder, item);
 			setNormalButton(normalViewHolder, item);
 			setNormalImageView(normalViewHolder, item);
 		}
@@ -105,12 +99,6 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		} else{
 			return VIEW_TYPE.NORMAL.ordinal();
 		}
-	}
-
-
-	private void setNormalText(NormalViewHolder holder, Item item){
-		holder.itNumber.setText(""+item.getLikeItCount());
-		holder.reply.setText(""+item.getReplyCount());
 	}
 
 

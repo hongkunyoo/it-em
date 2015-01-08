@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="it_user_page_item_grid_column_num">3</integer>
+    <integer name="my_item_grid_column_num">3</integer>
     <integer name="nick_name_max_length">10</integer>
 </resources>

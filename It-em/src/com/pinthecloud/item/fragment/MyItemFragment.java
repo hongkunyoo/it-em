@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
@@ -21,6 +23,8 @@ import com.pinthecloud.item.model.Item;
 public class MyItemFragment extends ItUserPageScrollTabFragment {
 
 	private ProgressBar mProgressBar;
+	private RelativeLayout mGridLayout;
+	private TextView mGridEmptyView;
 	private RecyclerView mGridView;
 	private MyItemGridAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
@@ -51,6 +55,7 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
 		findComponent(view);
+		setComponent();
 		setGrid(inflater);
 		return view;
 	}
@@ -67,14 +72,22 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 	@Override
 	public void updateTab() {
 		mProgressBar.setVisibility(View.VISIBLE);
-		mGridView.setVisibility(View.GONE);
+		mGridLayout.setVisibility(View.GONE);
 
 		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
-				mGridView.setVisibility(View.VISIBLE);
+				mGridLayout.setVisibility(View.VISIBLE);
+
+				if(count <= 0){
+					mGridEmptyView.setVisibility(View.VISIBLE);
+					mGridView.setVisibility(View.GONE);
+				} else {
+					mGridEmptyView.setVisibility(View.GONE);
+					mGridView.setVisibility(View.VISIBLE);
+				}
 
 				mItemList.clear();
 				mGridAdapter.addAll(list);
@@ -87,19 +100,27 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mGridLayout = (RelativeLayout)view.findViewById(R.id.my_item_frag_grid_layout);
+		mGridEmptyView = (TextView)view.findViewById(R.id.my_item_frag_grid_empty_view);
 		mGridView = (RecyclerView)view.findViewById(R.id.my_item_frag_grid);
 	}
 
 
+	private void setComponent(){
+		mGridEmptyView.setText(getResources().getString(R.string.first_item));
+	}
+	
+	
 	private void setGrid(LayoutInflater inflater){
 		mGridView.setHasFixedSize(true);
 
-		mGridLayoutManager = new GridLayoutManager(mActivity, getResources().getInteger(R.integer.it_user_page_item_grid_column_num));
+		int gridColumnNum = getResources().getInteger(R.integer.my_item_grid_column_num);
+		mGridLayoutManager = new GridLayoutManager(mActivity, gridColumnNum);
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = new ArrayList<Item>();
-		mGridAdapter = new MyItemGridAdapter(mActivity, mItemList);
+		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {

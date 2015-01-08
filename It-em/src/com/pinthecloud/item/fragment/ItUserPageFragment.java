@@ -109,6 +109,7 @@ public class ItUserPageFragment extends ItFragment {
 				mContainer.setVisibility(View.VISIBLE);
 
 				setProfile();
+				setProfileImage();
 				setButton();
 				setViewPager();
 				setTab();
@@ -137,7 +138,9 @@ public class ItUserPageFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		setProfileImage();
+		if(mItUserId.equals(mItUser.getId())){
+			setProfileImage();	
+		}
 	}
 
 
@@ -275,26 +278,26 @@ public class ItUserPageFragment extends ItFragment {
 				// Get scroll tab holder interface
 				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
 				ItUserPageScrollTabHolder fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
-				
+
 				// Update current tab fragment
 				if(!mIsUpdatedTabList[position]){
 					fragmentContent.updateTab();
 					mIsUpdatedTabList[position] = true;
 				}
-				
+
 				// Scroll grid view items of tab fragment
 				int currentItem = mViewPager.getCurrentItem();
-	            if (positionOffsetPixels > 0) {
-	                if (position < currentItem) {
-	                    // Revealed the previous page
-	                	fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
-	                } else {
-	                    // Revealed the next page
-	                	fragmentContent = itUserPageScrollTabHolderList.valueAt(position + 1);
-	                }
-	                
-	                fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
-	            }
+				if (positionOffsetPixels > 0) {
+					if (position < currentItem) {
+						// Revealed the previous page
+						fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
+					} else {
+						// Revealed the next page
+						fragmentContent = itUserPageScrollTabHolderList.valueAt(position + 1);
+					}
+
+					fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
+				}
 			}
 			@Override
 			public void onPageSelected(int position) {

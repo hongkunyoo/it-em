@@ -150,7 +150,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mReplyList = new ArrayList<Reply>();
-		mListAdapter = new ReplyListAdapter(mActivity, mFrag, mMyItUser, mItem, mReplyList);
+		mListAdapter = new ReplyListAdapter(mActivity, mFrag, mItem, mReplyList);
 		mListAdapter.setReplyCallback(this);
 		mListView.setAdapter(mListAdapter);
 	}

@@ -22,7 +22,6 @@
     <color name="it_user_page_tab_number_selected">#ffab00</color>
 
     <!-- My Item -->
-    <color name="my_item_it_reply_number">#deffffff</color>
-    <color name="my_item_it_reply_number_background">#4c000000</color>
+    <color name="my_item_grid_background">#eceff1</color>
 
 </resources>

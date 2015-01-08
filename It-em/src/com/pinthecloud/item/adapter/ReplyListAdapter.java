@@ -39,7 +39,6 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	private ItActivity mActivity;
 	private ItFragment mFrag;
-	private ItUser mMyItUser;
 	private Item mItem;
 	private List<Reply> mReplyList;
 
@@ -59,10 +58,9 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 
-	public ReplyListAdapter(ItActivity activity, ItFragment frag, ItUser myItUser, Item item, List<Reply> replyList) {
+	public ReplyListAdapter(ItActivity activity, ItFragment frag, Item item, List<Reply> replyList) {
 		this.mActivity = activity;
 		this.mFrag = frag;
-		this.mMyItUser = myItUser;
 		this.mItem = item;
 		this.mReplyList = replyList;
 	}
@@ -187,7 +185,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 	private void setNormalButton(NormalViewHolder holder, final Reply reply){
-		if(reply.getWhoMadeId().equals(mMyItUser.getId())){
+		if(reply.checkIsMine()){
 			holder.view.setOnLongClickListener(new OnLongClickListener() {
 
 				@Override

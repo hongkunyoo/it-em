@@ -125,7 +125,6 @@ public class MainDrawerFragment extends ItFragment {
 		mMenuList = new ArrayList<MainDrawerMenu>();
 
 		// Profile
-
 		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(mObjectPrefHelper.get(ItUser.class).getId()), false));
 		// Home
 		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[0], new HomeFragment(), false));

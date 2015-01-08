@@ -144,7 +144,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		MenuItem deleteMenuItem = menu.findItem(R.id.item_delete);
-		deleteMenuItem.setVisible(mItem.isMine());
+		deleteMenuItem.setVisible(mItem.checkIsMine());
 	}
 
 
@@ -229,16 +229,22 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				int likeItNum = (Integer.parseInt(mItNumber.getText().toString()) + 1);
+				final int likeItNum = (Integer.parseInt(mItNumber.getText().toString()) + 1);
 				mItNumber.setText(String.valueOf(likeItNum));
 
-				LikeIt likeIt = new LikeIt(mItem.getWhoMade(), mItem.getWhoMadeId(), mItem.getId());
-				mAimHelper.add(mThisFragment, likeIt, null);
+				LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+				mAimHelper.add(mThisFragment, likeIt, new EntityCallback<LikeIt>() {
+
+					@Override
+					public void onCompleted(LikeIt entity) {
+						mItem.setLikeItCount(likeItNum);
+					}
+				});
 			}
 		});
 
 		mProductTag.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ProductTagActivity.class);
@@ -246,7 +252,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				mActivity.startActivity(intent);
 			}
 		});
-		
+
 		mReplyInputSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -295,7 +301,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mReplyListView.setItemAnimator(new DefaultItemAnimator());
 
 		mReplyList = new ArrayList<Reply>();
-		mReplyListAdapter = new ReplyListAdapter(mActivity, mThisFragment, mMyItUser, mItem, mReplyList);
+		mReplyListAdapter = new ReplyListAdapter(mActivity, mThisFragment, mItem, mReplyList);
 		mReplyListAdapter.setReplyCallback(this);
 		mReplyListView.setAdapter(mReplyListAdapter);
 	}

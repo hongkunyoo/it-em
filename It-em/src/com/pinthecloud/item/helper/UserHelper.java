@@ -68,7 +68,7 @@ public class UserHelper {
 			public void onCompleted(List<ItUser> entity, int count, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					if(count == 0){
+					if(entity.size() == 0){
 						callback.onCompleted(null);	
 					} else {
 						callback.onCompleted(entity.get(0));	
@@ -93,7 +93,7 @@ public class UserHelper {
 			public void onCompleted(List<ItUser> entity, int count, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					if(count == 0){
+					if(entity.size() == 0){
 						callback.onCompleted(null);
 					} else {
 						callback.onCompleted(entity.get(0));

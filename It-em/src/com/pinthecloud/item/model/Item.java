@@ -6,7 +6,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
-import com.pinthecloud.item.ItApplication;
 
 public class Item extends AbstractItemModel<Item> implements Parcelable {
 
@@ -81,11 +80,6 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public Item rand(boolean hasId) {
 		Item item = super.rand(hasId);
 		return item;
-	}
-
-
-	public boolean isMine(){
-		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.whoMadeId);
 	}
 	
 	
