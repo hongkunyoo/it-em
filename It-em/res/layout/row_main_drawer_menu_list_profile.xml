@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/home_item_information_height"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingEnd="@dimen/content_margin"
-    android:paddingLeft="@dimen/content_margin"
-    android:paddingRight="@dimen/content_margin"
-    android:paddingStart="@dimen/content_margin" >
+    android:layout_height="@dimen/home_item_information_height" >
 
     <com.pinthecloud.item.view.CircleImageView
-        xmlns:civ="http://schemas.android.com/apk/res-auto"
         android:id="@+id/row_home_drawer_menu_list_profile_image"
         android:layout_width="@dimen/home_item_profile_image_width"
         android:layout_height="@dimen/home_item_profile_image_width"
-        civ:border_color="@color/line_color"
-        civ:border_width="@dimen/line_width" />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/main_drawer_menu_profile_image_left_margin"
+        android:layout_marginStart="@dimen/main_drawer_menu_profile_image_left_margin"
+        app:border_color="@color/line_color"
+        app:border_width="@dimen/line_width" />
 
-    <TextView
+    <com.pinthecloud.item.view.CustomTextView
         android:id="@+id/row_home_drawer_menu_list_profile_nick_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/content_margin"
-        android:layout_marginStart="@dimen/content_margin"
-        android:textColor="@android:color/white" />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/main_drawer_menu_name_left_margin"
+        android:layout_marginStart="@dimen/main_drawer_menu_name_left_margin"
+        android:textColor="@color/main_drawer_menu_profile_nick_name"
+        app:textType="body" />
 
-</LinearLayout>
+</RelativeLayout>

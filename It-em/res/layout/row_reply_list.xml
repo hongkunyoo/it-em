@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/reply_row_height"
     android:gravity="center_vertical"
@@ -27,27 +28,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
+            <com.pinthecloud.item.view.CustomTextView
                 android:id="@+id/row_reply_list_nick_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/brand_text_color" />
+                android:textColor="@color/brand_text_color"
+                app:textType="subhead" />
 
-            <TextView
+            <com.pinthecloud.item.view.CustomTextView
                 android:id="@+id/row_reply_list_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/brand_text_color_light" />
+                android:textColor="@color/brand_text_color_light"
+                app:textType="caption" />
         </RelativeLayout>
 
-        <TextView
+        <com.pinthecloud.item.view.CustomTextView
             android:id="@+id/row_reply_list_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/home_item_content_margin"
-            android:textColor="@color/brand_text_color" />
+            android:textColor="@color/brand_text_color"
+            app:textType="body" />
     </LinearLayout>
 
 </RelativeLayout>

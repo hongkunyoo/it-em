@@ -100,13 +100,16 @@
                         android:ems="10"
                         android:hint="@string/message"
                         android:inputType="textMultiLine"
+                        android:lineSpacingExtra="@dimen/font_xx_large"
+                        android:lineSpacingMultiplier="0"
                         android:maxLines="4"
                         android:paddingEnd="@dimen/content_margin"
                         android:paddingLeft="@dimen/content_margin"
                         android:paddingRight="@dimen/content_margin"
                         android:paddingStart="@dimen/content_margin"
                         android:textColor="@color/brand_text_color"
-                        android:textColorHint="@color/reply_input_hint" />
+                        android:textColorHint="@color/reply_input_hint"
+                        android:textSize="@dimen/font_large" />
 
                     <Button
                         android:id="@+id/reply_frag_inputbar_submit"
@@ -117,7 +120,8 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:text="@string/submit"
-                        android:textColor="@color/reply_submit_color" />
+                        android:textColor="@color/reply_submit_color"
+                        android:textSize="@dimen/font_medium" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

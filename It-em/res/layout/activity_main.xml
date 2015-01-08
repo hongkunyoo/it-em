@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/main_drawer_fragment"
         android:name="com.pinthecloud.item.fragment.MainDrawerFragment"
-        android:layout_width="@dimen/drawer_width"
+        android:layout_width="@dimen/main_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         tools:layout="@layout/fragment_main_drawer" />

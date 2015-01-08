@@ -144,7 +144,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		MenuItem deleteMenuItem = menu.findItem(R.id.item_delete);
-		deleteMenuItem.setVisible(mItem.getWhoMadeId().equals(mMyItUser.getId()));
+		deleteMenuItem.setVisible(mItem.isMine());
 	}
 
 
@@ -425,7 +425,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
+				mAimHelper.delItem(mThisFragment, item, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -433,7 +433,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					}
 				});
 
-				blobStorageHelper.deleteBitmapAsync(mThisFragment, BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+				mBlobStorageHelper.deleteBitmapAsync(mThisFragment, BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

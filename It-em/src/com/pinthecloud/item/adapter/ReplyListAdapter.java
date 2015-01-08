@@ -2,7 +2,6 @@ package com.pinthecloud.item.adapter;
 
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -37,7 +37,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		NORMAL
 	}
 
-	private Context mContext;
+	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private ItUser mMyItUser;
 	private Item mItem;
@@ -59,8 +59,8 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 
-	public ReplyListAdapter(Context context, ItFragment frag, ItUser myItUser, Item item, List<Reply> replyList) {
-		this.mContext = context;
+	public ReplyListAdapter(ItActivity activity, ItFragment frag, ItUser myItUser, Item item, List<Reply> replyList) {
+		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mMyItUser = myItUser;
 		this.mItem = item;
@@ -192,7 +192,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 				@Override
 				public boolean onLongClick(View v) {
-					String[] itemList = mContext.getResources().getStringArray(R.array.reply_long_click_string_array);
+					String[] itemList = mActivity.getResources().getStringArray(R.array.reply_long_click_string_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
 					ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
 					listDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
@@ -267,8 +267,8 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 	private void goToItUserPageActivity(String itUserId){
-		Intent intent = new Intent(mContext, ItUserPageActivity.class);
+		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, itUserId);
-		mContext.startActivity(intent);
+		mActivity.startActivity(intent);
 	}
 }

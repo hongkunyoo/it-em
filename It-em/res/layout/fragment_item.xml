@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -58,12 +59,13 @@
                 android:orientation="vertical"
                 android:padding="@dimen/content_margin" >
 
-                <TextView
+                <com.pinthecloud.item.view.CustomTextView
                     android:id="@+id/item_frag_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/home_item_content_margin"
-                    android:textColor="@color/brand_text_color" />
+                    android:textColor="@color/brand_text_color"
+                    app:textType="subhead" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,23 +73,26 @@
                     android:layout_marginBottom="@dimen/content_margin"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/upload_date"
-                        android:textColor="@color/brand_text_color_light" />
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/space"
-                        android:textColor="@color/brand_text_color_light" />
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:id="@+id/item_frag_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/brand_text_color_light" />
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -104,19 +109,21 @@
                         android:contentDescription="@string/it_lower"
                         android:src="@drawable/home_item_list_it_button" />
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/home_item_content_margin"
                         android:layout_marginStart="@dimen/home_item_content_margin"
                         android:text="@string/plus"
-                        android:textColor="@color/brand_text_color_light" />
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:id="@+id/item_frag_it_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/brand_text_color_light" />
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -130,12 +137,13 @@
                 android:paddingRight="@dimen/content_margin"
                 android:paddingStart="@dimen/content_margin" >
 
-                <TextView
+                <com.pinthecloud.item.view.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/go_to_buy"
-                    android:textColor="@color/brand_text_color" />
+                    android:textColor="@color/brand_text_color"
+                    app:textType="body" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -174,12 +182,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/home_item_information_height" >
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/upload_by"
-                        android:textColor="@color/brand_text_color_light" />
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="body" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -199,16 +208,17 @@
                         android:id="@+id/item_frag_profile_image"
                         android:layout_width="@dimen/item_profile_image_width"
                         android:layout_height="@dimen/item_profile_image_width"
-                        civ:border_color="@color/line_color"
-                        civ:border_width="@dimen/line_width" />
+                        app:border_color="@color/line_color"
+                        app:border_width="@dimen/line_width" />
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:id="@+id/item_frag_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/content_margin"
                         android:layout_marginStart="@dimen/content_margin"
-                        android:textColor="@color/brand_text_color" />
+                        android:textColor="@color/brand_text_color"
+                        app:textType="subhead" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

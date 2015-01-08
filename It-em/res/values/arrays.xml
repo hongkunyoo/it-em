@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Reply -->
+    <string-array name="home_more_string_array">
+        <item>Delete</item>
+    </string-array>
+    
     <!-- Main Drawer -->
     <string-array name="main_drawer_menu_string_array">
         <item>Home</item>

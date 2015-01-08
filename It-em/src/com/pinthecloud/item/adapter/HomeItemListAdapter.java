@@ -3,12 +3,14 @@ package com.pinthecloud.item.adapter;
 import java.util.List;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,14 +22,19 @@ import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.activity.ProductTagActivity;
+import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
@@ -43,6 +50,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
+
 	private boolean mHasFooter = false;
 
 	public void setHasFooter(boolean hasFooter) {
@@ -63,6 +71,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public RelativeLayout profileLayout;
 		public CircleImageView profileImage;
 		public TextView nickName;
+		public Button more;
 
 		public LinearLayout layout;
 		public SquareImageView image;
@@ -81,6 +90,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			this.profileLayout = (RelativeLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
+			this.more = (Button)view.findViewById(R.id.row_home_item_list_more);
 
 			this.layout = (LinearLayout)view.findViewById(R.id.row_home_item_list_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
@@ -184,6 +194,23 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 
+		if(item.isMine()){
+			holder.more.setVisibility(View.VISIBLE);
+			holder.more.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					String[] itemList = mActivity.getResources().getStringArray(R.array.home_more_string_array);
+					DialogCallback[] callbacks = getDialogCallbacks(itemList, item);
+					ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
+					listDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				}
+			});
+		} else {
+			holder.more.setVisibility(View.GONE);
+			holder.more.setOnClickListener(null);
+		}
+
 		holder.image.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -244,6 +271,60 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
+	private DialogCallback[] getDialogCallbacks(String[] itemList, final Item item){
+		DialogCallback[] callbacks = new DialogCallback[itemList.length];
+		callbacks[0] = new DialogCallback() {
+
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+				deleteItem(item);
+			}
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+			}
+		};
+		return callbacks;
+	}
+
+
+	private void deleteItem(final Item item){
+		AsyncChainer.asyncChain(mFrag, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
+
+				ItApplication app = ItApplication.getInstance();
+				AimHelper aimHelper = app.getAimHelper();
+				BlobStorageHelper blobStorageHelper = app.getBlobStorageHelper();
+
+				aimHelper.delItem(mFrag, item, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+
+				blobStorageHelper.deleteBitmapAsync(mFrag, BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+			}
+
+		}, new Chainable(){
+
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				remove(item);
+			}
+		});
+	}
+
+
 	public void addAll(List<Item> itemList) {
 		mItemList.addAll(itemList);
 		notifyDataSetChanged();
@@ -253,5 +334,12 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public void add(int position, Item item) {
 		mItemList.add(position, item);
 		notifyItemInserted(position);
+	}
+
+
+	public void remove(Item item) {
+		int position = mItemList.indexOf(item);
+		mItemList.remove(position);
+		notifyItemRemoved(position);
 	}
 }

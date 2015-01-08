@@ -6,8 +6,14 @@
     <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="content_margin">16dp</dimen>
     <dimen name="toolbar_title_margin">72dp</dimen>
-    <dimen name="drawer_width">280dp</dimen>
 
+    <!-- Main Drawer -->
+    <dimen name="main_drawer_width">280dp</dimen>
+    <dimen name="main_drawer_menu_top_margin">56dp</dimen>
+    <dimen name="main_drawer_menu_profile_image_left_margin">38dp</dimen>
+    <dimen name="main_drawer_menu_image_left_margin">40dp</dimen>
+    <dimen name="main_drawer_menu_name_left_margin">92dp</dimen>
+    
     <!-- Home -->
     <dimen name="home_item_profile_height">56dp</dimen>
     <dimen name="home_item_profile_image_width">38dp</dimen>
@@ -19,12 +25,12 @@
 
     <!-- It User Page -->
     <dimen name="it_user_page_profile_height">200dp</dimen>
-    <dimen name="it_user_page_profile_content_margin">12dp</dimen>
-    <dimen name="it_user_page_header_height">249dp</dimen>
-    <dimen name="it_user_page_profile_top_margin">24dp</dimen>
-    <dimen name="it_user_page_tab_number_margin">6dp</dimen>
+    <dimen name="it_user_page_profile_nick_name_margin">12dp</dimen>
+    <dimen name="it_user_page_profile_content_margin">10dp</dimen>
+    <dimen name="it_user_page_header_height">248dp</dimen>
     <dimen name="it_user_page_tab_height">48dp</dimen>
-    <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
+    <dimen name="it_user_page_tab_number_margin">6dp</dimen>
+    <dimen name="it_user_page_tab_indicator_height">2dp</dimen>
 
     <!-- My Item -->
     <dimen name="my_item_progress_bar_bottom_margin">100dp</dimen>
@@ -44,6 +50,8 @@
     <dimen name="profile_settings_margin">8dp</dimen>
     
     <!-- Font -->
+    <dimen name="font_xx_large">24sp</dimen>
+    <dimen name="font_x_large">20sp</dimen>
     <dimen name="font_large">16sp</dimen>
     <dimen name="font_medium">14sp</dimen>
     <dimen name="font_small">12sp</dimen>

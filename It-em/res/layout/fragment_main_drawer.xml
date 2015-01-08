@@ -8,6 +8,7 @@
         android:id="@+id/main_drawer_frag_menu_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/main_drawer_menu_top_margin"
         android:scrollbars="none" />
 
 </RelativeLayout>

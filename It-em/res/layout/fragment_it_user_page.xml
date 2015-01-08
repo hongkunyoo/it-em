@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -32,57 +32,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/it_user_page_profile_height"
                 android:background="@android:color/white"
-                android:paddingBottom="@dimen/content_margin"
-                android:paddingEnd="@dimen/content_margin"
-                android:paddingLeft="@dimen/content_margin"
-                android:paddingRight="@dimen/content_margin"
-                android:paddingStart="@dimen/content_margin"
-                android:paddingTop="@dimen/it_user_page_profile_top_margin" >
+                android:padding="@dimen/content_margin" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/it_user_page_profile_content_margin" >
 
-                    <LinearLayout
+                    <com.pinthecloud.item.view.CircleImageView
+                        android:id="@+id/it_user_page_frag_profile_image"
+                        android:layout_width="@dimen/item_profile_image_width"
+                        android:layout_height="@dimen/item_profile_image_width"
+                        app:border_color="@color/line_color"
+                        app:border_width="@dimen/line_width" />
+
+                    <com.pinthecloud.item.view.CustomTextView
+                        android:id="@+id/it_user_page_frag_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:layout_marginTop="@dimen/content_margin"
+                        android:textColor="@color/brand_text_color"
+                        app:textType="subhead" />
 
-                        <com.pinthecloud.item.view.CircleImageView
-                            xmlns:civ="http://schemas.android.com/apk/res-auto"
-                            android:id="@+id/it_user_page_frag_profile_image"
-                            android:layout_width="@dimen/item_profile_image_width"
-                            android:layout_height="@dimen/item_profile_image_width"
-                            app:border_color="@color/line_color"
-                            app:border_width="@dimen/line_width" />
-
-                        <TextView
-                            android:id="@+id/it_user_page_frag_nick_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/content_margin"
-                            android:layout_marginStart="@dimen/content_margin"
-                            android:textColor="@color/it_user_page_tab_title"
-                            android:textSize="@dimen/font_large" />
-                    </LinearLayout>
-
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:id="@+id/it_user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
-                        android:textColor="@color/it_user_page_tab_number"
-                        android:textSize="@dimen/font_small" />
+                        android:layout_marginTop="@dimen/it_user_page_profile_nick_name_margin"
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
 
-                    <TextView
+                    <com.pinthecloud.item.view.CustomTextView
                         android:id="@+id/it_user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
-                        android:textColor="@color/it_user_page_tab_number"
-                        android:textSize="@dimen/font_small" />
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
                 </LinearLayout>
 
                 <ImageButton
@@ -103,10 +91,9 @@
                 android:layout_height="@dimen/it_user_page_tab_height"
                 android:background="@android:color/white"
                 psts:pstsDividerColor="@android:color/transparent"
-                psts:pstsIndicatorColor="@color/brand_color"
+                psts:pstsIndicatorColor="@color/accent_color"
                 psts:pstsIndicatorHeight="@dimen/it_user_page_tab_indicator_height"
                 psts:pstsShouldExpand="true"
-                psts:pstsTabBackground="@drawable/it_user_page_tab_background"
                 psts:pstsTabSwitch="true"
                 psts:pstsUnderlineColor="@color/line_color"
                 psts:pstsUnderlineHeight="@dimen/line_width" />

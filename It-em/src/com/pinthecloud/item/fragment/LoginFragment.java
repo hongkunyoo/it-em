@@ -212,7 +212,7 @@ public class LoginFragment extends ItFragment {
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
 						bigProfileImage, new EntityCallback<String>() {
 
 					@Override
@@ -221,7 +221,7 @@ public class LoginFragment extends ItFragment {
 					}
 				});
 
-				blobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
+				mBlobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
 						smallProfileImage, new EntityCallback<String>() {
 
 					@Override
