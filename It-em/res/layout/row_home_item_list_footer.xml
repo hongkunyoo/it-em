@@ -1,15 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:gravity="center"
-    android:orientation="vertical" >
-
-    <include layout="@layout/custom_line" />
-    <ProgressBar
-        android:id="@+id/row_home_item_list_footer_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>

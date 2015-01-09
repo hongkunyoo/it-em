@@ -10,7 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +29,15 @@ import com.pinthecloud.item.model.Item;
 public class HomeFragment extends ItFragment {
 
 	private final int UPLOAD = 0;
-	
+
 	private ProgressBar mProgressBar;
 	private RelativeLayout mLayout;
-	private SwipeRefreshLayout mListRefresh;
+	private SwipeRefreshLayout mRefresh;
 	private Button mUploadButton;
 
-	private RecyclerView mListView;
-	private HomeItemListAdapter mListAdapter;
-	private LinearLayoutManager mListLayoutManager;
+	private RecyclerView mGridView;
+	private HomeItemListAdapter mGridAdapter;
+	private GridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
 
 	private boolean mIsAdding = false;
@@ -58,7 +58,7 @@ public class HomeFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
-		
+
 		setActionBar();
 		findComponent(view);
 		setButton();
@@ -82,14 +82,14 @@ public class HomeFragment extends ItFragment {
 		case UPLOAD:
 			if (resultCode == Activity.RESULT_OK){
 				Item item = data.getParcelableExtra(Item.INTENT_KEY);
-				mListAdapter.add(0, item);
-				mListView.smoothScrollToPosition(0);
+				mGridAdapter.add(0, item);
+				mGridView.smoothScrollToPosition(0);
 			}
 			break;
 		}
 	}
-	
-	
+
+
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setTitle(getResources().getString(R.string.home));
@@ -99,9 +99,9 @@ public class HomeFragment extends ItFragment {
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mLayout = (RelativeLayout)view.findViewById(R.id.home_frag_layout);
-		mListRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
+		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
 		mUploadButton = (Button)view.findViewById(R.id.home_frag_upload_button);
-		mListView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
+		mGridView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
 	}
 
 
@@ -118,8 +118,8 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setRefreshLayout(){
-		mListRefresh.setColorSchemeResources(R.color.accent_color);
-		mListRefresh.setOnRefreshListener(new OnRefreshListener() {
+		mRefresh.setColorSchemeResources(R.color.accent_color);
+		mRefresh.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
 			public void onRefresh() {
@@ -130,24 +130,25 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setList(){
-		mListView.setHasFixedSize(true);
+		mGridView.setHasFixedSize(true);
 
-		mListLayoutManager = new LinearLayoutManager(mActivity);
-		mListView.setLayoutManager(mListLayoutManager);
-		mListView.setItemAnimator(new DefaultItemAnimator());
+		int gridColumnNum = getResources().getInteger(R.integer.home_grid_column_num);
+		mGridLayoutManager = new GridLayoutManager(mActivity, gridColumnNum);
+		mGridView.setLayoutManager(mGridLayoutManager);
+		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mListAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
-		mListView.setAdapter(mListAdapter);
+		mGridAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
+		mGridView.setAdapter(mGridAdapter);
 
-		mListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-				int lastVisibleItem = mListLayoutManager.findLastVisibleItemPosition();
-				int totalItemCount = mListLayoutManager.getItemCount();
+				int lastVisibleItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
+				int totalItemCount = mGridLayoutManager.getItemCount();
 
-				if (lastVisibleItem >= totalItemCount-1 && !mIsAdding) {
+				if (lastVisibleItemPosition >= totalItemCount-1 && !mIsAdding) {
 					addNextItemList();
 				}
 			}
@@ -163,10 +164,10 @@ public class HomeFragment extends ItFragment {
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mLayout.setVisibility(View.VISIBLE);
-				mListRefresh.setRefreshing(false);
+				mRefresh.setRefreshing(false);
 
 				mItemList.clear();
-				mListAdapter.addAll(list);
+				mGridAdapter.addAll(list);
 			}
 		});
 	}
@@ -174,16 +175,12 @@ public class HomeFragment extends ItFragment {
 
 	private void addNextItemList() {
 		mIsAdding = true;
-		mListAdapter.setHasFooter(true);
-		mListAdapter.notifyItemInserted(mItemList.size());
-
 		mAimHelper.listItem(mThisFragment, ++page, new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mIsAdding = false;
-				mListAdapter.setHasFooter(false);
-				mListAdapter.addAll(list);
+				mGridAdapter.addAll(list);
 			}
 		});
 	}

@@ -235,6 +235,9 @@ public final class BaseRequest {
 
         final HttpURLConnection retConnection = createURLConnection(uri, options, builder, opContext);
         retConnection.setRequestMethod(Constants.HTTP_DELETE);
+        
+        // Note: by default sends Content-Length 0; we must explicitly add this to prevent auth mismatches
+        retConnection.setRequestProperty(Constants.HeaderConstants.CONTENT_LENGTH, "0");
 
         return retConnection;
     }
@@ -459,7 +462,10 @@ public final class BaseRequest {
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
+     * 
+     * @deprecated as of 0.4.0. Use {@link #signRequestForBlobAndQueue} instead.
      */
+    @Deprecated
     public static void signRequestForBlobAndQueueSharedKeyLite(final HttpURLConnection request,
             final Credentials credentials, final Long contentLength, final OperationContext opContext)
             throws InvalidKeyException, StorageException {
@@ -523,7 +529,10 @@ public final class BaseRequest {
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
+     * 
+     * @deprecated as of 0.4.0. Use {@link #signRequestForTableSharedKey} instead.
      */
+    @Deprecated
     public static void signRequestForTableSharedKeyLite(final HttpURLConnection request, final Credentials credentials,
             final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());

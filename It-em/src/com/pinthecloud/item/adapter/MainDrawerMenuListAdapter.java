@@ -39,7 +39,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	public static class ProfileViewHolder extends RecyclerView.ViewHolder {
+	private static class ProfileViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public CircleImageView profileImage;
 		public TextView nickName;
@@ -53,7 +53,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	public static class NormalViewHolder extends RecyclerView.ViewHolder {
+	private static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public ImageView menuImage;
 		public TextView menuName;

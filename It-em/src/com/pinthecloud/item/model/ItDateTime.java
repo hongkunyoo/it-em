@@ -6,7 +6,6 @@ import android.text.format.Time;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.exception.ItException;
 
 // 20141113014345 --> 2014-11-13 01:43:45
 public class ItDateTime {
@@ -14,10 +13,6 @@ public class ItDateTime {
 	private Time dateTime;
 
 	public ItDateTime(String rawDateTime) {
-		if (rawDateTime.length() != 14) {
-			throw new ItException(ItException.TYPE.FORMATE_ERROR);
-		}
-		
 		dateTime = new Time(Time.TIMEZONE_UTC);
 		int year = Integer.parseInt(rawDateTime.substring(0, 4));
 		int month = Integer.parseInt(rawDateTime.substring(4, 6));

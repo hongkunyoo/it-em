@@ -17,7 +17,8 @@
     <RelativeLayout
         android:id="@+id/my_item_frag_grid_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@color/my_item_grid_background" >
 
         <com.pinthecloud.item.view.CustomTextView
             android:id="@+id/my_item_frag_grid_empty_view"
@@ -33,8 +34,7 @@
             android:id="@+id/my_item_frag_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/my_item_spacing"
-            android:background="@color/my_item_grid_background"
+            android:padding="@dimen/my_item_spacing"
             android:scrollbars="none" />
     </RelativeLayout>
 

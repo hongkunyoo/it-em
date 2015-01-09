@@ -75,7 +75,7 @@
 
     <!-- Product Tag -->
     <string name="product_tag">Product Tag</string>
-    <string name="no_product_tag">There is no product tag.</string>
+    <string name="empty_product_tag">There is no product tag.</string>
 
     <!-- ItDateTime -->
     <string name="second_ago">second ago</string>

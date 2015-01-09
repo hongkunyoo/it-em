@@ -64,7 +64,6 @@ public class ItException extends RuntimeException {
 		INTERNET_NOT_CONNECTED,
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
-		NO_SUCH_INSTANCE,
-		FORMATE_ERROR
+		INTERNAL_ERROR
 	}
 }

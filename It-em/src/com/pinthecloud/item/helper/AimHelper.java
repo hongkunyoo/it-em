@@ -179,9 +179,9 @@ public class AimHelper {
 				}
 			});
 		} catch (InstantiationException e) {
-			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
 		} catch (IllegalAccessException e) {
-			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
 		}
 	}
 
@@ -217,13 +217,13 @@ public class AimHelper {
 				}
 			});
 		} catch (InstantiationException e) {
-			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
 		} catch (IllegalAccessException e) {
-			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
 		}
 	}
-	
-	
+
+
 	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.INTERNET_NOT_CONNECTED));
@@ -288,8 +288,8 @@ public class AimHelper {
 			}
 		});
 	}
-	
-	
+
+
 	public <E extends AbstractItemModel<E>> void get(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));

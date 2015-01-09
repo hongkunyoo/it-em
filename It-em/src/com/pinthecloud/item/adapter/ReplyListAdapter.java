@@ -66,7 +66,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 
-	public static class PreviousViewHolder extends RecyclerView.ViewHolder {
+	private static class PreviousViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
 		public PreviousViewHolder(View view) {
@@ -76,7 +76,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 
-	public static class NormalViewHolder extends RecyclerView.ViewHolder {
+	private static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public CircleImageView profileImage;
 		public TextView nickName;

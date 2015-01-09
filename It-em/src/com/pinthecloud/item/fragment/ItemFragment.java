@@ -32,8 +32,9 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
-import com.pinthecloud.item.activity.ProductTagActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
+import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
@@ -247,9 +248,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ProductTagActivity.class);
-				intent.putExtra(Item.INTENT_KEY, mItem);
-				mActivity.startActivity(intent);
+				ProductTagDialog productTagDialog = new ProductTagDialog(mThisFragment, mItem);
+				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 
