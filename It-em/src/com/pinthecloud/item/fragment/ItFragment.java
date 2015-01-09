@@ -51,14 +51,14 @@ public class ItFragment extends Fragment implements ExceptionManager.Handler {
 
 
 	@Override
-	public void handleException(final ItException ex) {
+	public void handleException(ItException exception) {
 		String title = null;
 		String message = null;
-		if(ex.getType().equals(ItException.TYPE.INTERNET_NOT_CONNECTED)){
+		if(exception.getType().equals(ItException.TYPE.INTERNET_NOT_CONNECTED)){
 			message = getResources().getString(R.string.internet_not_connected_message);
 		} else {
-			title = ex.getType().toString();
-			message = ex.toString();
+			title = exception.getType().toString();
+			message = exception.toString();
 		}
 
 		ItAlertDialog exceptionDialog = new ItAlertDialog(title, message, null, null, false, new DialogCallback() {

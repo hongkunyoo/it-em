@@ -8,6 +8,7 @@
     <color name="line_color">#20000000</color>
     <color name="brand_text_color">#de263238</color>
     <color name="brand_text_color_light">#78909c</color>
+    <color name="brand_background">#eceff1</color>
 
     <!-- Main Drawer -->
     <color name="main_drawer_menu_profile_nick_name">#deffffff</color>
@@ -20,8 +21,9 @@
 
     <!-- It User Page -->
     <color name="it_user_page_tab_number_selected">#ffab00</color>
-
-    <!-- My Item -->
-    <color name="my_item_grid_background">#eceff1</color>
+    
+    <!-- Settings -->
+    <color name="settings_logout_text">#deffffff</color>
+    <color name="settings_logout_background">#ef5350</color>
 
 </resources>

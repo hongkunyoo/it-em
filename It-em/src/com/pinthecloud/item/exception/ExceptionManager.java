@@ -20,6 +20,7 @@ public class ExceptionManager {
 		} else {
 			clazz = ex.fromWho().getClass();
 		}
+
 		Handler handler = map.get(clazz.getName());
 		if (handler != null){
 			handler.handleException(ex);

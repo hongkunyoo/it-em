@@ -56,11 +56,12 @@
     <!-- Upload -->
     <string name="upload">Upload</string>
     <string name="uploaded">The item is uploaded.</string>
+    <string name="description">Description</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">Profile edit</string>
     <string name="nick_name">Nick Name</string>
-    <string name="description">Description</string>
+    <string name="information">Information</string>
     <string name="website">Website</string>
     <string name="done">Done</string>
     <string name="min_nick_name_message">Please type in more than 1 letter.</string>
@@ -72,6 +73,7 @@
     <!-- Settings -->
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
+    <string name="alarm">Alarm</string>
 
     <!-- Product Tag -->
     <string name="product_tag">Product Tag</string>

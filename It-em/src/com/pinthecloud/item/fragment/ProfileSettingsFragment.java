@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -43,7 +42,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mWebsite;
 
 	private ItUser mMyItUser;
-
 	private boolean mIsUpdating = false;
 
 
@@ -60,7 +58,6 @@ public class ProfileSettingsFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile_settings, container, false);
 		setHasOptionsMenu(true);
-		setActionBar();
 		findComponent(view);
 		setComponent();
 		setProfileImageEvent();
@@ -149,12 +146,6 @@ public class ProfileSettingsFragment extends ItFragment {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 

@@ -1,14 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/brand_background"
     android:orientation="vertical" >
-    
-    <Button
-        android:id="@+id/settings_frag_logout_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/logout" />
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_row_height"
+        android:background="@android:color/white"
+        android:paddingEnd="@dimen/content_margin"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingRight="@dimen/content_margin"
+        android:paddingStart="@dimen/content_margin" >
+
+        <com.pinthecloud.item.view.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/alarm"
+            android:textColor="@color/brand_text_color_light"
+            app:textType="body" />
+
+        <ImageView
+            android:id="@+id/settings_frag_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/alarm"
+            android:src="@drawable/launcher" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_row_nick_name_height"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/content_margin"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingRight="@dimen/content_margin"
+        android:paddingStart="@dimen/content_margin" >
+
+        <com.pinthecloud.item.view.CustomTextView
+            android:id="@+id/settings_frag_it_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/brand_text_color_light"
+            app:textType="body" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/settings_frag_logout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_row_height"
+        android:background="@color/settings_logout_background"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/content_margin"
+            android:layout_marginStart="@dimen/content_margin"
+            android:contentDescription="@string/logout"
+            android:src="@drawable/launcher" />
+
+        <com.pinthecloud.item.view.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/toolbar_title_margin"
+            android:layout_marginStart="@dimen/toolbar_title_margin"
+            android:text="@string/logout"
+            android:textColor="@color/settings_logout_text"
+            app:textType="body" />
+    </RelativeLayout>
+
+</LinearLayout>

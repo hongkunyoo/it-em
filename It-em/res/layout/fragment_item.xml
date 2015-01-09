@@ -31,7 +31,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+    <ScrollView
         android:id="@+id/item_frag_scroll_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -222,6 +222,6 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+    </ScrollView>
 
 </RelativeLayout>

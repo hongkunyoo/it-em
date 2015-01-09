@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -24,11 +25,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
@@ -55,7 +54,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private final int DISPLAY_REPLY_COUNT = 2;
 
 	private ProgressBar mProgressBar;
-	private ObservableScrollView mScrollView;
+	private ScrollView mScrollView;
 	private SquareImageView mImage;
 	private TextView mContent;
 	private TextView mDate;
@@ -182,7 +181,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mScrollView = (ObservableScrollView)view.findViewById(R.id.item_frag_scroll_layout);
+		mScrollView = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 		mImage = (SquareImageView)view.findViewById(R.id.item_frag_image);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
@@ -276,18 +275,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setScrollView(){
-		mScrollView.setScrollViewCallbacks(new ObservableScrollViewCallbacks() {
+		mScrollView.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
 
 			@Override
-			public void onScrollChanged(int scrollY, boolean firstScroll,
-					boolean dragging) {
-				mImage.scrollTo(0, scrollY/2);
-			}
-			@Override
-			public void onDownMotionEvent() {
-			}
-			@Override
-			public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+			public void onScrollChanged() {
+				mImage.scrollTo(0, mScrollView.getScrollY()/2);
 			}
 		});
 	}

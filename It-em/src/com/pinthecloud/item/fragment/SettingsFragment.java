@@ -7,7 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import com.pinthecloud.item.R;
@@ -16,7 +17,17 @@ import com.pinthecloud.item.model.ItUser;
 
 public class SettingsFragment extends ItFragment {
 
-	private Button mLogoutButton;
+	private TextView mItUserId;
+	private RelativeLayout mLogout;
+
+	private ItUser mMyItUser;
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+	}
 
 
 	@Override
@@ -26,6 +37,7 @@ public class SettingsFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
 		setActionBar();
 		findComponent(view);
+		setComponent();
 		setButton();
 		return view;
 	}
@@ -38,12 +50,18 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mLogoutButton = (Button)view.findViewById(R.id.settings_frag_logout_button);
+		mItUserId = (TextView)view.findViewById(R.id.settings_frag_it_user_id);
+		mLogout = (RelativeLayout)view.findViewById(R.id.settings_frag_logout);
+	}
+
+
+	private void setComponent(){
+		mItUserId.setText(mMyItUser.getItUserId());
 	}
 
 
 	private void setButton(){
-		mLogoutButton.setOnClickListener(new OnClickListener() {
+		mLogout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

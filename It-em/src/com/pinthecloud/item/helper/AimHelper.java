@@ -20,9 +20,10 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.Item;
 
+import de.greenrobot.event.EventBus;
+
 public class AimHelper {
 
-	//	private static final String RANK_ITEM = "rank_10";
 	private final String AIM_GET = "aim_get";
 	private final String AIM_ADD = "aim_add";
 	private final String AIM_UPDATE = "aim_update";
@@ -46,7 +47,7 @@ public class AimHelper {
 
 	public<E extends AbstractItemModel<E>> void listItem(final ItFragment frag, int page, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "listItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException(frag, "listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -68,32 +69,6 @@ public class AimHelper {
 			}
 		});
 	}
-
-
-	//	public void getRank10(final ItFragment frag, ItDateTime date, final ItListCallback<Item> callback) {
-	//		if(!mApp.isOnline()){
-	//			ExceptionManager.fireException(new ItException(frag, "getRank10", ItException.TYPE.INTERNET_NOT_CONNECTED));
-	//			return;
-	//		}
-	//		
-	//		JsonObject jo = new JsonObject();
-	//		jo.addProperty("date", date.toString());
-	//		
-	//		mClient.invokeApi(RANK_ITEM, jo, new ApiJsonOperationCallback() {
-	//
-	//			@Override
-	//			public void onCompleted(JsonElement _json, Exception exception,
-	//					ServiceFilterResponse response) {
-	//				if (exception == null) {
-	//					JsonElement json = _json.getAsJsonArray();
-	//					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
-	//					callback.onCompleted(list, list.size());
-	//				} else {
-	//					ExceptionManager.fireException(new ItException(frag, "getRank10", ItException.TYPE.SERVER_ERROR, response));
-	//				}
-	//			}
-	//		});
-	//	}
 
 
 	public void listMyItem(final ItFragment frag, String userId, final ListCallback<Item> callback) {
