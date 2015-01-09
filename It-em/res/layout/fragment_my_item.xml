@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/my_item_progress_bar_bottom_margin"
+        android:layout_marginBottom="@dimen/my_item_content_bottom_margin"
         layout="@layout/custom_progress_bar"
         android:visibility="gone" />
 
@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/my_item_progress_bar_bottom_margin"
+            android:layout_marginBottom="@dimen/my_item_content_bottom_margin"
+            android:textColor="@color/brand_text_color"
             android:visibility="gone"
             app:textType="body" />
 

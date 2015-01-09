@@ -9,6 +9,7 @@
 
     <!-- Main Drawer -->
     <dimen name="main_drawer_width">280dp</dimen>
+    <dimen name="main_drawer_menu_indicator_width">4dp</dimen>
     <dimen name="main_drawer_menu_top_margin">56dp</dimen>
     <dimen name="main_drawer_menu_profile_image_left_margin">38dp</dimen>
     <dimen name="main_drawer_menu_image_left_margin">40dp</dimen>
@@ -34,7 +35,7 @@
     <dimen name="it_user_page_tab_indicator_height">2dp</dimen>
 
     <!-- My Item -->
-    <dimen name="my_item_progress_bar_bottom_margin">100dp</dimen>
+    <dimen name="my_item_content_bottom_margin">150dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
 
     <!-- Item -->

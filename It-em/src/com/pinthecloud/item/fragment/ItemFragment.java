@@ -164,7 +164,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	@Override
 	public void deleteReply(final Reply reply){
-		mAimHelper.del(mThisFragment, reply, new EntityCallback<Boolean>() {
+		mAimHelper.del(reply, new EntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {
@@ -233,7 +233,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				mItNumber.setText(String.valueOf(likeItNum));
 
 				LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-				mAimHelper.add(mThisFragment, likeIt, new EntityCallback<LikeIt>() {
+				mAimHelper.add(likeIt, new EntityCallback<LikeIt>() {
 
 					@Override
 					public void onCompleted(LikeIt entity) {
@@ -329,7 +329,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void updateRecentReplyList(final ItFragment frag) {
-		mAimHelper.listRecent(mThisFragment, Reply.class, mItem.getId(), new ListCallback<Reply>() {
+		mAimHelper.listRecent(Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
@@ -402,7 +402,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		showReplyList(mItem.getReplyCount()+1);
 		mReplyListAdapter.add(mReplyList.size(), reply);
 
-		mAimHelper.add(mThisFragment, reply, new EntityCallback<Reply>() {
+		mAimHelper.add(reply, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {
@@ -423,7 +423,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				mAimHelper.delItem(mThisFragment, item, new EntityCallback<Boolean>() {
+				mAimHelper.delItem(item, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -431,7 +431,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					}
 				});
 
-				mBlobStorageHelper.deleteBitmapAsync(mThisFragment, BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

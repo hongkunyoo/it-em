@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -16,10 +17,10 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.exception.ExceptionManager;
-import com.pinthecloud.item.exception.ItException;
-import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
+
+import de.greenrobot.event.EventBus;
 
 public class BlobStorageHelper {
 
@@ -39,9 +40,9 @@ public class BlobStorageHelper {
 		try {
 			account = CloudStorageAccount.parse(storageConnectionString);
 		} catch (InvalidKeyException e) {
-			ExceptionManager.fireException(new ItException(null, "BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (URISyntaxException e) {
-			ExceptionManager.fireException(new ItException(null, "BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
 		}
 		this.blobClient = account.createCloudBlobClient();
 	}
@@ -68,7 +69,7 @@ public class BlobStorageHelper {
 
 
 
-	public String uploadBitmapSync(ItFragment frag, String containerName, String id, Bitmap bitmap) {
+	public String uploadBitmapSync(String containerName, String id, Bitmap bitmap) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
@@ -80,17 +81,17 @@ public class BlobStorageHelper {
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
 			baos.close();
 		} catch (URISyntaxException e) {
-			ExceptionManager.fireException(new ItException(frag, "uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (StorageException e) {
-			ExceptionManager.fireException(new ItException(frag, "uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (IOException e) {
-			ExceptionManager.fireException(new ItException(frag, "uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		}
 		return id;
 	}
 
 
-	public Bitmap downloadBitmapSync(ItFragment frag, String containerName, String id) {
+	public Bitmap downloadBitmapSync(String containerName, String id) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		Bitmap bm = null;
@@ -107,25 +108,25 @@ public class BlobStorageHelper {
 	}
 
 
-	public String downloadToFileSync(ItFragment frag, String containerName, String id, String path) {
+	public String downloadToFileSync(Context context, String containerName, String id, String path) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
 			container = blobClient.getContainerReference(containerName);
 			blob = container.getBlockBlobReference(id);
-			blob.downloadToFile(frag.getActivity().getFilesDir() + "/" + path);
+			blob.downloadToFile(context.getFilesDir() + "/" + path);
 		} catch (URISyntaxException e) {
-			ExceptionManager.fireException(new ItException(frag, "downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (StorageException e) {
-			ExceptionManager.fireException(new ItException(frag, "downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (IOException e) {
-			ExceptionManager.fireException(new ItException(frag, "downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		}
-		return frag.getActivity().getFilesDir() + "/" + path;
+		return context.getFilesDir() + "/" + path;
 	}
 
 
-	public boolean deleteBitmapSync(ItFragment frag, String containerName, String id) {
+	public boolean deleteBitmapSync(String containerName, String id) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
@@ -133,7 +134,7 @@ public class BlobStorageHelper {
 			blob = container.getBlockBlobReference(id);
 			blob.delete();
 		} catch (URISyntaxException e) {
-			ExceptionManager.fireException(new ItException(frag, "deleteBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (StorageException e) {
 			return false;
 		}
@@ -141,9 +142,9 @@ public class BlobStorageHelper {
 	}
 
 
-	public void uploadBitmapAsync(final ItFragment frag, final String containerName, String id, final Bitmap bitmap, final EntityCallback<String> callback) {
+	public void uploadBitmapAsync(final String containerName, String id, final Bitmap bitmap, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "uploadBitmapSync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -152,7 +153,7 @@ public class BlobStorageHelper {
 			@Override
 			protected String doInBackground(String... params) {
 				String id = params[0];
-				return uploadBitmapSync(frag, containerName, id, bitmap);
+				return uploadBitmapSync(containerName, id, bitmap);
 			}
 
 			@Override
@@ -164,9 +165,9 @@ public class BlobStorageHelper {
 	}
 
 
-	public void downloadBitmapAsync(final ItFragment frag, final String containerName, String id, final EntityCallback<Bitmap> callback) {
+	public void downloadBitmapAsync(final String containerName, String id, final EntityCallback<Bitmap> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "downloadBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("downloadBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -175,7 +176,7 @@ public class BlobStorageHelper {
 			@Override
 			protected Bitmap doInBackground(String... params) {
 				String id = params[0];
-				return downloadBitmapSync(frag, containerName, id);
+				return downloadBitmapSync(containerName, id);
 			}
 
 			@Override
@@ -187,9 +188,9 @@ public class BlobStorageHelper {
 	}
 
 
-	public void downloadToFileAsync(final ItFragment frag, final String containerName, String id, final String path, final EntityCallback<String> callback) {
+	public void downloadToFileAsync(final Context context, final String containerName, String id, final String path, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "downloadToFileAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("downloadToFileAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -198,7 +199,7 @@ public class BlobStorageHelper {
 			@Override
 			protected String doInBackground(String... params) {
 				String id = params[0];
-				return downloadToFileSync(frag, containerName, id, path);
+				return downloadToFileSync(context, containerName, id, path);
 			}
 
 			@Override
@@ -210,9 +211,9 @@ public class BlobStorageHelper {
 	}
 
 
-	public void deleteBitmapAsync(final ItFragment frag, final String containerName, String id, final EntityCallback<Boolean> callback) {
+	public void deleteBitmapAsync(final String containerName, String id, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "deleteBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("deleteBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -221,7 +222,7 @@ public class BlobStorageHelper {
 			@Override
 			protected Boolean doInBackground(String... params) {
 				String id = params[0];
-				return deleteBitmapSync(frag, containerName, id);
+				return deleteBitmapSync(containerName, id);
 			}
 
 			@Override

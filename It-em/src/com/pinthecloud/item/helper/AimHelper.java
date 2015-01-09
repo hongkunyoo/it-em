@@ -12,9 +12,7 @@ import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.exception.ExceptionManager;
-import com.pinthecloud.item.exception.ItException;
-import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
@@ -45,9 +43,9 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void listItem(final ItFragment frag, int page, final ListCallback<Item> callback) {
+	public<E extends AbstractItemModel<E>> void listItem(int page, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException(frag, "listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -64,16 +62,16 @@ public class AimHelper {
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "listItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("listItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 
 
-	public void listMyItem(final ItFragment frag, String userId, final ListCallback<Item> callback) {
+	public void listMyItem(String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -90,16 +88,16 @@ public class AimHelper {
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 
 
-	public void listItItem(final ItFragment frag, String userId, final ListCallback<Item> callback) {
+	public void listItItem(String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "listItItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listItItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -116,16 +114,16 @@ public class AimHelper {
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 
 
-	public<E extends AbstractItemModel<E>> void list(final ItFragment frag, Class<E> clazz, String itemId, final ListCallback<E> callback) {
+	public<E extends AbstractItemModel<E>> void list(Class<E> clazz, String itemId, final ListCallback<E> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("list", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -149,21 +147,21 @@ public class AimHelper {
 						}
 						callback.onCompleted(list, list.size());	
 					} else {
-						ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.SERVER_ERROR, response));
+						EventBus.getDefault().post(new ItException("list", ItException.TYPE.SERVER_ERROR, response));
 					}
 				}
 			});
 		} catch (InstantiationException e) {
-			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
+			EventBus.getDefault().post(new ItException("list", ItException.TYPE.INTERNAL_ERROR));
 		} catch (IllegalAccessException e) {
-			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
+			EventBus.getDefault().post(new ItException("list", ItException.TYPE.INTERNAL_ERROR));
 		}
 	}
 
 
-	public<E extends AbstractItemModel<E>> void listRecent(final ItFragment frag, Class<E> clazz, String itemId, final ListCallback<E> callback) {
+	public<E extends AbstractItemModel<E>> void listRecent(Class<E> clazz, String itemId, final ListCallback<E> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "listRecent", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -187,21 +185,21 @@ public class AimHelper {
 						}
 						callback.onCompleted(list, list.size());
 					} else {
-						ExceptionManager.fireException(new ItException(frag, "listRecent", ItException.TYPE.SERVER_ERROR, response));
+						EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.SERVER_ERROR, response));
 					}
 				}
 			});
 		} catch (InstantiationException e) {
-			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
+			EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.INTERNAL_ERROR));
 		} catch (IllegalAccessException e) {
-			ExceptionManager.fireException(new ItException(frag, "list", ItException.TYPE.INTERNAL_ERROR));
+			EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.INTERNAL_ERROR));
 		}
 	}
 
 
-	public <E extends AbstractItemModel<E>> void add(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
+	public <E extends AbstractItemModel<E>> void add(final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -216,16 +214,16 @@ public class AimHelper {
 						callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 					}
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("add", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 
 
-	public <E extends AbstractItemModel<E>> void del(final ItFragment frag, E obj, final EntityCallback<Boolean> callback) {
+	public <E extends AbstractItemModel<E>> void del(E obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "del", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("del", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -237,16 +235,16 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "del", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("del", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 
 
-	public void delItem(final ItFragment frag, Item obj, final EntityCallback<Boolean> callback) {
+	public void delItem(Item obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "delItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -258,16 +256,16 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "delItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 
 
-	public <E extends AbstractItemModel<E>> void get(final ItFragment frag, final E obj, final EntityCallback<E> callback) {
+	public <E extends AbstractItemModel<E>> void get(final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("get", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -280,16 +278,16 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("get", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
 	}
 
 
-	public <E extends AbstractItemModel<E>> void update(final ItFragment frag, E obj, final EntityCallback<Boolean> callback) {
+	public <E extends AbstractItemModel<E>> void update(E obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -301,7 +299,7 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("update", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});

@@ -11,12 +11,12 @@ import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.exception.ExceptionManager;
-import com.pinthecloud.item.exception.ItException;
-import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
+
+import de.greenrobot.event.EventBus;
 
 public class UserHelper {
 
@@ -32,9 +32,9 @@ public class UserHelper {
 	}
 
 
-	public void add(final ItFragment frag, ItUser user, final PairEntityCallback<ItUser, Exception> callback) {
+	public void add(ItUser user, final PairEntityCallback<ItUser, Exception> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -49,16 +49,16 @@ public class UserHelper {
 					ItUser itUser = (ItUser) new Gson().fromJson(response.getContent(), ItUser.class);
 					callback.onCompleted(itUser, exception);
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "add", ItException.TYPE.SERVER_ERROR, exception));
+					EventBus.getDefault().post(new ItException("add", ItException.TYPE.SERVER_ERROR, exception));
 				}
 			}
 		});
 	}
 
 
-	public void get(final ItFragment frag, String id, final EntityCallback<ItUser> callback) {
+	public void get(String id, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("get", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -74,16 +74,16 @@ public class UserHelper {
 						callback.onCompleted(entity.get(0));	
 					}
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "get", ItException.TYPE.SERVER_ERROR, exception));	
+					EventBus.getDefault().post(new ItException("get", ItException.TYPE.SERVER_ERROR, exception));	
 				}
 			}
 		});
 	}
 
 
-	public void getByNickName(final ItFragment frag, String nickName, final EntityCallback<ItUser> callback) {
+	public void getByNickName(String nickName, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "getByNickName", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -99,16 +99,16 @@ public class UserHelper {
 						callback.onCompleted(entity.get(0));
 					}
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "getByNickName", ItException.TYPE.SERVER_ERROR, exception));	
+					EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.SERVER_ERROR, exception));
 				}
 			}
 		});
 	}
 
 
-	public void update(final ItFragment frag, ItUser user, final EntityCallback<ItUser> callback) {
+	public void update(ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
-			ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNET_NOT_CONNECTED));
 			return;
 		}
 
@@ -120,7 +120,7 @@ public class UserHelper {
 				if (exception == null) {
 					callback.onCompleted(entity);
 				} else {
-					ExceptionManager.fireException(new ItException(frag, "update", ItException.TYPE.SERVER_ERROR, exception));
+					EventBus.getDefault().post(new ItException("update", ItException.TYPE.SERVER_ERROR, exception));
 				}
 			}
 		});

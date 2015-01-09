@@ -170,7 +170,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
 
 				LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
-				mAimHelper.add(mFrag, likeIt, new EntityCallback<LikeIt>() {
+				mAimHelper.add(likeIt, new EntityCallback<LikeIt>() {
 
 					@Override
 					public void onCompleted(LikeIt entity) {
@@ -243,7 +243,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				AimHelper aimHelper = app.getAimHelper();
 				BlobStorageHelper blobStorageHelper = app.getBlobStorageHelper();
 
-				aimHelper.delItem(mFrag, item, new EntityCallback<Boolean>() {
+				aimHelper.delItem(item, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -251,7 +251,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 					}
 				});
 
-				blobStorageHelper.deleteBitmapAsync(mFrag, BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

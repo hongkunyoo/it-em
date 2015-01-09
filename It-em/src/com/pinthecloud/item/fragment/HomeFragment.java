@@ -158,7 +158,7 @@ public class HomeFragment extends ItFragment {
 
 	public void updateList() {
 		page = 0;
-		mAimHelper.listItem(mThisFragment, page, new ListCallback<Item>() {
+		mAimHelper.listItem(page, new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
@@ -175,7 +175,7 @@ public class HomeFragment extends ItFragment {
 
 	private void addNextItemList() {
 		mIsAdding = true;
-		mAimHelper.listItem(mThisFragment, ++page, new ListCallback<Item>() {
+		mAimHelper.listItem(++page, new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

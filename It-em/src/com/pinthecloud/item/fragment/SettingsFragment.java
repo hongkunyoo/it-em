@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.facebook.Session;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.LoginActivity;
+import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.model.ItUser;
 
 public class SettingsFragment extends ItFragment {
@@ -65,16 +68,26 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
-				if(myItUser.getPlatform().equals(LoginFragment.FACEBOOK)){
-					facebookLogout();
-				}
+				String message = getResources().getString(R.string.logout_message);
+				ItAlertDialog logoutDialog = new ItAlertDialog(null, message, null, null, true, new DialogCallback() {
+					@Override
+					public void doPositiveThing(Bundle bundle) {
+						if(mMyItUser.getPlatform().equals(ItUser.FACEBOOK)){
+							facebookLogout();
+						}
 
-				mObjectPrefHelper.remove(ItUser.class);
+						mObjectPrefHelper.remove(ItUser.class);
 
-				Intent intent = new Intent(mActivity, LoginActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
+						Intent intent = new Intent(mActivity, LoginActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+					}
+					@Override
+					public void doNegativeThing(Bundle bundle) {
+						// Do nothing
+					}
+				}); 
+				logoutDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}

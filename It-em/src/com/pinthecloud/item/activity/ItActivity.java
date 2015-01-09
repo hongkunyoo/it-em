@@ -10,7 +10,7 @@ import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.exception.ItException;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.DialogCallback;
 
 import de.greenrobot.event.EventBus;
@@ -57,6 +57,13 @@ public abstract class ItActivity extends ActionBarActivity {
 	}
 
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		EventBus.getDefault().unregister(mThisActivity);
+	}
+
+
 	public void onEvent(ItException exception) {
 		String title = null;
 		String message = null;
@@ -67,7 +74,7 @@ public abstract class ItActivity extends ActionBarActivity {
 			message = exception.toString();
 		}
 
-		final ItAlertDialog exceptionDialog = new ItAlertDialog(title, message, null, null, false, new DialogCallback() {
+		ItAlertDialog exceptionDialog = new ItAlertDialog(title, message, null, null, false, new DialogCallback() {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				android.os.Process.killProcess(android.os.Process.myPid());

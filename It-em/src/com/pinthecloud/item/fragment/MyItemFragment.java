@@ -74,7 +74,7 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mGridLayout.setVisibility(View.GONE);
 
-		mAimHelper.listMyItem(mThisFragment, mItUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listMyItem(mItUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

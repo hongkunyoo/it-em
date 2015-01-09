@@ -19,8 +19,7 @@ import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
-import com.pinthecloud.item.exception.ExceptionManager;
-import com.pinthecloud.item.exception.ItException;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
@@ -30,10 +29,10 @@ import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.squareup.picasso.Picasso;
 
+import de.greenrobot.event.EventBus;
+
 public class LoginFragment extends ItFragment {
 
-	public static final String FACEBOOK = "facebook";
-	
 	private LoginButton mFacebookButton;
 	private UiLifecycleHelper mUiHelper;
 
@@ -136,7 +135,7 @@ public class LoginFragment extends ItFragment {
 	private void facebookLogin(final GraphUser user){
 		mApp.showProgressDialog(mActivity);
 
-		final ItUser itUser = new ItUser(user.getId(), FACEBOOK, user.getFirstName(), "", "");
+		final ItUser itUser = new ItUser(user.getId(), ItUser.FACEBOOK, user.getFirstName(), "", "");
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -160,7 +159,7 @@ public class LoginFragment extends ItFragment {
 
 
 	private void addItUser(final ItFragment frag, final ItUser itUser){
-		mUserHelper.add(frag, itUser, new PairEntityCallback<ItUser, Exception>() {
+		mUserHelper.add(itUser, new PairEntityCallback<ItUser, Exception>() {
 
 			@Override
 			public void onCompleted(ItUser entity, Exception exception) {
@@ -189,7 +188,7 @@ public class LoginFragment extends ItFragment {
 				try {
 					bitmap = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
 				} catch (IOException e) {
-					ExceptionManager.fireException(new ItException(frag, "facebookLogin", ItException.TYPE.SERVER_ERROR));
+					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.SERVER_ERROR));
 				}
 				return bitmap;
 			}
@@ -212,7 +211,7 @@ public class LoginFragment extends ItFragment {
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				mBlobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId(), 
 						bigProfileImage, new EntityCallback<String>() {
 
 					@Override
@@ -221,7 +220,7 @@ public class LoginFragment extends ItFragment {
 					}
 				});
 
-				mBlobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
 						smallProfileImage, new EntityCallback<String>() {
 
 					@Override

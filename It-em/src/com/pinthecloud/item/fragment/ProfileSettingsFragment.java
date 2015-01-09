@@ -267,7 +267,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		} else if(!nickName.matches(nickNameRegx)){
 			AsyncChainer.notifyNext(frag, getResources().getString(R.string.bad_nick_name_message));
 		} else {
-			mUserHelper.getByNickName(mThisFragment, nickName, new EntityCallback<ItUser>() {
+			mUserHelper.getByNickName(nickName, new EntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
@@ -294,7 +294,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				mBlobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -304,7 +304,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				});
 
 				Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(mThisFragment, BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
 						smallProfileImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -333,7 +333,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
 		mMyItUser.setWebPage(mWebsite.getText().toString());
 
-		mUserHelper.update(mThisFragment, mMyItUser, new EntityCallback<ItUser>() {
+		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
