@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,9 +20,9 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
-import com.pinthecloud.item.activity.ProductTagActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
@@ -40,21 +39,11 @@ import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.SquareImageView;
 import com.squareup.picasso.Picasso;
 
-public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-	private enum VIEW_TYPE{
-		NORMAL,
-		FOOTER
-	}
+public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
 
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
-	private boolean mHasFooter = false;
-
-	public void setHasFooter(boolean hasFooter) {
-		this.mHasFooter = hasFooter;
-	}
 
 
 	public HomeItemListAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
@@ -64,7 +53,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	public static class NormalViewHolder extends RecyclerView.ViewHolder {
+	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
 		public RelativeLayout profileLayout;
@@ -72,7 +61,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public TextView nickName;
 		public Button more;
 
-		public LinearLayout layout;
 		public SquareImageView image;
 		public TextView content;
 		public ImageButton itButton;
@@ -82,7 +70,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public LinearLayout productTag;
 		public TextView productTagNumber;
 
-		public NormalViewHolder(View view) {
+		public ViewHolder(View view) {
 			super(view);
 			this.view = view;
 
@@ -91,7 +79,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 			this.more = (Button)view.findViewById(R.id.row_home_item_list_more);
 
-			this.layout = (LinearLayout)view.findViewById(R.id.row_home_item_list_layout);
 			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
@@ -104,85 +91,36 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	public static class FooterViewHolder extends RecyclerView.ViewHolder {
-		public FooterViewHolder(View view) {
-			super(view);
-		}
-	}
-
-
 	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = null;
-		ViewHolder viewHolder = null;
-		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
-		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
-			view = inflater.inflate(R.layout.row_home_item_list, parent, false);
-			viewHolder = new NormalViewHolder(view);
-		} else if(viewType == VIEW_TYPE.FOOTER.ordinal()){
-			view = inflater.inflate(R.layout.row_home_item_list_footer, parent, false);
-			viewHolder = new FooterViewHolder(view);
-		}
-
-		return viewHolder;
+	public HomeItemListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_item_grid, parent, false);
+		return new ViewHolder(view);
 	}
 
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, final int position) {
-		int viewType = getItemViewType(position);
-		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
-			Item item = mItemList.get(position);
-			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
-			setNormalComponent(normalViewHolder, item);
-			setNormalButton(normalViewHolder, item);
-			setNormalImageView(normalViewHolder, item, position);
-		}
+		Item item = mItemList.get(position);
+		setComponent(holder, item);
+		setButton(holder, item);
+		setImageView(holder, item, position);
 	}
 
 
 	@Override
 	public int getItemCount() {
-		if(mHasFooter){
-			return mItemList.size()+1;
-		} else{
-			return mItemList.size();
-		}
+		return mItemList.size();
 	}
 
 
-	@Override
-	public int getItemViewType(int position) {
-		if(mHasFooter){
-			if (position < getItemCount()-1) {
-				return VIEW_TYPE.NORMAL.ordinal();
-			} else{
-				return VIEW_TYPE.FOOTER.ordinal();
-			}
-		} else{
-			return VIEW_TYPE.NORMAL.ordinal();
-		}
-	}
-
-
-	private void setNormalComponent(NormalViewHolder holder, Item item){
+	private void setComponent(ViewHolder holder, Item item){
 		holder.content.setText(item.getContent());
 		holder.itNumber.setText(""+item.getLikeItCount());
 		holder.nickName.setText(item.getWhoMade());
-
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-		if(mItemList.indexOf(item) < mItemList.size()-1){
-			layoutParams.setMargins(0, 0, 0, mActivity.getResources().getDimensionPixelSize(R.dimen.content_margin));		
-		} else {
-			layoutParams.setMargins(0, 0, 0, 0);
-		}
-		holder.layout.setLayoutParams(layoutParams);	
 	}
 
 
-	private void setNormalButton(final NormalViewHolder holder, final Item item){
+	private void setButton(final ViewHolder holder, final Item item){
 		holder.profileLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -232,7 +170,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
 
 				LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
-				mAimHelper.add(mFrag, likeIt, new EntityCallback<LikeIt>() {
+				mAimHelper.add(likeIt, new EntityCallback<LikeIt>() {
 
 					@Override
 					public void onCompleted(LikeIt entity) {
@@ -256,15 +194,14 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ProductTagActivity.class);
-				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.startActivity(intent);
+				ProductTagDialog productTagDialog = new ProductTagDialog(mFrag, item);
+				productTagDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}
 
 
-	private void setNormalImageView(final NormalViewHolder holder, Item item, int position) {
+	private void setImageView(final ViewHolder holder, Item item, int position) {
 		Picasso.with(holder.image.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
 		.placeholder(R.drawable.launcher)
@@ -306,7 +243,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				AimHelper aimHelper = app.getAimHelper();
 				BlobStorageHelper blobStorageHelper = app.getBlobStorageHelper();
 
-				aimHelper.delItem(mFrag, item, new EntityCallback<Boolean>() {
+				aimHelper.delItem(item, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -314,7 +251,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					}
 				});
 
-				blobStorageHelper.deleteBitmapAsync(mFrag, BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

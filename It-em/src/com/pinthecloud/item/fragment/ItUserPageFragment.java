@@ -25,7 +25,10 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ProfileImageActivity;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
+import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
@@ -182,12 +185,28 @@ public class ItUserPageFragment extends ItFragment {
 		if(mItUserId.equals(mItUser.getId())){
 			AsyncChainer.notifyNext(frag);
 		} else {
-			mUserHelper.get(mThisFragment, mItUserId, new EntityCallback<ItUser>() {
+			mUserHelper.get(mItUserId, new EntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
-					mItUser = entity;
-					AsyncChainer.notifyNext(frag);
+					if(entity == null){
+						String message = getResources().getString(R.string.no_user);
+						ItAlertDialog exceptionDialog = new ItAlertDialog(null, message, null, null, false, new DialogCallback() {
+							@Override
+							public void doPositiveThing(Bundle bundle) {
+								mActivity.finish();
+							}
+							@Override
+							public void doNegativeThing(Bundle bundle) {
+								// Do nothing
+							}
+						}); 
+						exceptionDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+						AsyncChainer.clearChain(frag);
+					} else {
+						mItUser = entity;
+						AsyncChainer.notifyNext(frag);	
+					}
 				}
 			});
 		}

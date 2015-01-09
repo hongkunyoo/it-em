@@ -5,6 +5,11 @@
     android:layout_height="@dimen/home_item_information_height"
     android:background="@drawable/main_drawer_menu_background" >
 
+    <View
+        android:layout_width="@dimen/main_drawer_menu_indicator_width"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_drawer_menu_indicator_background" />
+
     <ImageView
         android:id="@+id/row_home_drawer_menu_list_menu_image"
         android:layout_width="wrap_content"

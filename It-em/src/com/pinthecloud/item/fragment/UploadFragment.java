@@ -208,7 +208,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				mAimHelper.add(frag, item, new EntityCallback<Item>() {
+				mAimHelper.add(item, new EntityCallback<Item>() {
 
 					@Override
 					public void onCompleted(Item entity) {
@@ -223,7 +223,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				mBlobStorageHelper.uploadBitmapAsync(frag, BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new EntityCallback<String>() {
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {

@@ -26,15 +26,14 @@ public class ObjectPrefHelper {
 		E obj = null;
 		try {
 			obj = clazz.newInstance();
+			Method[] methods = clazz.getMethods();
+			for (Method method : methods) {
+				if (!isSetter(method)) continue;
+				Class<?> paramClazz = method.getParameterTypes()[0];
+				invokeSetMethod(obj, method, mPrefHelper.get(clazz.getName()+removePrefix(method.getName()), paramClazz));
+			}
 		} catch (InstantiationException e) {
 		} catch (IllegalAccessException e) {
-		}
-
-		Method[] methods = clazz.getMethods();
-		for (Method method : methods) {
-			if (!isSetter(method)) continue;
-			Class<?> paramClazz = method.getParameterTypes()[0];
-			invokeSetMethod(obj, method, mPrefHelper.get(clazz.getName()+removePrefix(method.getName()), paramClazz));
 		}
 		return obj;
 	}
@@ -48,17 +47,17 @@ public class ObjectPrefHelper {
 	}
 
 	private Object invokeGetMethod(Object obj, Method method) {
+		Object object = null;
 		try {
-			return method.invoke(obj);
+			object = method.invoke(obj);
 		} catch (IllegalAccessException e) {
 		} catch (IllegalArgumentException e) {
 		} catch (InvocationTargetException e) {
 		}
-		return null;
+		return object;
 	}
 
 	private void invokeSetMethod(Object obj, Method method, Object arg) {
-
 		try {
 			method.invoke(obj, arg);
 		} catch (IllegalAccessException e) {

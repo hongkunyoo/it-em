@@ -1,13 +1,11 @@
-package com.pinthecloud.item.exception;
+package com.pinthecloud.item.event;
 
-import com.pinthecloud.item.fragment.ItFragment;
 
 public class ItException extends RuntimeException {
 
 	private static final long serialVersionUID = -5944663372661859514L;
 
 	private ItException.TYPE type;
-	private ItFragment from;
 	private String methodName;
 	private Object parameter;
 
@@ -17,17 +15,14 @@ public class ItException extends RuntimeException {
 
 	public ItException(TYPE type) {
 		this.type = type;
-		this.from = null;
 	}
 
-	public ItException(ItFragment from, String methodName, TYPE type) {
-		this.from = from;
+	public ItException(String methodName, TYPE type) {
 		this.type = type;
 		this.methodName = methodName;
 	}
 
-	public ItException(ItFragment from, String methodName, TYPE type, Object parameter) {
-		this.from = from;
+	public ItException(String methodName, TYPE type, Object parameter) {
 		this.type = type;
 		this.methodName = methodName;
 		this.parameter = parameter;
@@ -35,10 +30,6 @@ public class ItException extends RuntimeException {
 
 	public TYPE getType() {
 		return type;
-	}
-
-	public ItFragment fromWho() {
-		return from;
 	}
 
 	public String getMethodName() {
@@ -53,7 +44,6 @@ public class ItException extends RuntimeException {
 	public String toString() {
 		if (super.getMessage() == null) {
 			return "{ type : " + type + "," +
-					" from : " + from.getClass().getSimpleName()  + "," +
 					" method : " + methodName + " }";	
 		} else {
 			return "{ message : " + super.getMessage() + " }";
@@ -64,7 +54,6 @@ public class ItException extends RuntimeException {
 		INTERNET_NOT_CONNECTED,
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
-		NO_SUCH_INSTANCE,
-		FORMATE_ERROR
+		INTERNAL_ERROR
 	}
 }

@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-import com.pinthecloud.item.exception.ItException;
-
 public class PrefHelper {
 
 	// Default Vaule
@@ -25,29 +23,26 @@ public class PrefHelper {
 	}
 
 	public void put(String key, Object obj) {
-		if (obj instanceof Boolean)
+		if (obj instanceof Boolean){
 			mPref.edit().putBoolean(key, (Boolean) obj).commit();
-		else if (obj instanceof String)
+		} else if (obj instanceof String) {
 			mPref.edit().putString(key, ((String) obj)).commit();
-		else if (obj instanceof Integer)
+		} else if (obj instanceof Integer) {
 			mPref.edit().putInt(key, (Integer) obj).commit();
-		else if (obj instanceof Float)
+		} else if (obj instanceof Float) {
 			mPref.edit().putFloat(key, (Float) obj).commit();
-		else if (obj instanceof Double)
+		} else if (obj instanceof Double) {
 			mPref.edit().putFloat(key, (Float) obj).commit();
-		else if (obj instanceof Character)
+		} else if (obj instanceof Character) {
 			mPref.edit().putString(key, (Character.toString((Character)obj))).commit();
-		else if (obj instanceof Long)
+		} else if (obj instanceof Long) {
 			mPref.edit().putLong(key, (Long) obj).commit();
-		else {
-			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
 		}
 	}
 
 	public Object get(String key, Class<?> clazz) {
 		String className = clazz.getName();
-		if (className.equals("java.lang.String") || className.equals("java.lang.Character")
-				|| className.equals("char")) {
+		if (className.equals("java.lang.String") || className.equals("java.lang.Character") || className.equals("char")) {
 			return mPref.getString(key, DEFAULT_STRING);
 		} else if (className.equals("java.lang.Integer") || className.equals("int")) {
 			return mPref.getInt(key, DEFAULT_INT);
@@ -57,7 +52,7 @@ public class PrefHelper {
 		} else if (className.equals("java.lang.Boolean") || className.equals("boolean")) {
 			return mPref.getBoolean(key, DEFAULT_BOOLEAN);
 		} else {
-			throw new ItException(ItException.TYPE.NO_SUCH_INSTANCE);
+			return null;
 		}
 	}
 

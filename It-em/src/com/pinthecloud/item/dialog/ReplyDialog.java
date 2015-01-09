@@ -86,7 +86,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	@Override
 	public void deleteReply(final Reply reply){
 		AimHelper aimHelper = ItApplication.getInstance().getAimHelper();
-		aimHelper.del(mFrag, reply, new EntityCallback<Boolean>() {
+		aimHelper.del(reply, new EntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {
@@ -160,7 +160,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mListView.setVisibility(View.GONE);
 
-		mAimHelper.list(mFrag, Reply.class, mItem.getId(), new ListCallback<Reply>() {
+		mAimHelper.list(Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
@@ -195,7 +195,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		showReplyList(mItem.getReplyCount()+1);
 		mListAdapter.add(mReplyList.size(), reply);
 
-		mAimHelper.add(mFrag, reply, new EntityCallback<Reply>() {
+		mAimHelper.add(reply, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {

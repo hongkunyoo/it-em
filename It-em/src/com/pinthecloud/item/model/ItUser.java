@@ -10,7 +10,8 @@ import com.pinthecloud.item.helper.PrefHelper;
 public class ItUser implements Parcelable {
 
 	public static final String INTENT_KEY = "IT_USER_INTENT_KEY";
-
+	public static final String FACEBOOK = "facebook";
+	
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
 	@com.google.gson.annotations.SerializedName("itUserId")

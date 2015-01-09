@@ -13,7 +13,6 @@ import android.widget.EditText;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.databases.AimDBHelper;
-import com.pinthecloud.item.exception.ItException;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItDateTime;
@@ -62,8 +61,8 @@ public class HongkunTestFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				aimHelper.listMyItem(mThisFragment, user.getId(), new ListCallback<Item>() {
-					
+				aimHelper.listMyItem(user.getId(), new ListCallback<Item>() {
+
 					@Override
 					public void onCompleted(List<Item> list, int count) {
 						ItLog.log(list);
@@ -82,11 +81,5 @@ public class HongkunTestFragment extends ItFragment {
 				ItLog.log(ii);
 			}
 		});
-	}
-
-
-	@Override
-	public void handleException(ItException ex) {
-		ItLog.log(ex);
 	}
 }

@@ -3,58 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        layout="@layout/custom_progress_bar"
+        android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/product_tag_frag_header_layout"
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/product_tag_frag_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/product_tag_frag_list_empty_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_centerInParent="true"
+            android:text="@string/empty_product_tag"
+            android:visibility="gone" />
 
-            <com.pinthecloud.item.view.SquareImageView
-                android:id="@+id/product_tag_frag_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:background="@android:color/white"
-                android:scaleType="centerCrop" />
-
-            <include layout="@layout/custom_line" />
-        </LinearLayout>
-
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/product_tag_frag_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <RelativeLayout
-                android:id="@+id/product_tag_frag_list_empty_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:visibility="gone" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/no_product_tag" />
-            </RelativeLayout>
-
-            <include
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                layout="@layout/custom_progress_bar"
-                android:visibility="gone" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/product_tag_frag_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" >
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
 
 </RelativeLayout>

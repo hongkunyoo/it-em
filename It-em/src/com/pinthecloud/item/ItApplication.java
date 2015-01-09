@@ -28,7 +28,7 @@ public class ItApplication extends Application {
 
 	// Mobile Service instances
 	private static MobileServiceClient mClient;
-	
+
 	// Application
 	private static ItApplication app;
 	private static ProgressDialog progressDialog;
@@ -50,13 +50,11 @@ public class ItApplication extends Application {
 		app = this;
 	}
 
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		init();
 	}
-
 
 	private void init() {
 		String AZURE_URL;
@@ -87,7 +85,6 @@ public class ItApplication extends Application {
 		aimDBHelper = new AimDBHelper(app);
 		blobStorageHelper = new BlobStorageHelper(app);
 	}
-
 
 	public static ItApplication getInstance(){
 		return app;
@@ -126,13 +123,13 @@ public class ItApplication extends Application {
 		if (blobStorageHelper == null) init();
 		return blobStorageHelper;
 	}
-	
+
 	public boolean isOnline(){
 		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
 	}
-	
+
 	public void showProgressDialog(Context context){
 		progressDialog = new ProgressDialog(context);
 		progressDialog.setCancelable(false);

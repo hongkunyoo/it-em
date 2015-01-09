@@ -1092,7 +1092,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -3003,11 +3003,6 @@ public abstract class CloudBlob implements ListBlobItem {
                 return BlobRequest.setBlobProperties(
                         blob.getTransformedAddress(context).getUri(this.getCurrentLocation()), options, context,
                         accessCondition, blob.properties);
-            }
-
-            @Override
-            public void setHeaders(HttpURLConnection connection, CloudBlob blob, OperationContext context) {
-                BlobRequest.addMetadata(connection, blob.metadata, context);
             }
 
             @Override
