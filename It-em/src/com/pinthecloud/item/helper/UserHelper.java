@@ -34,7 +34,7 @@ public class UserHelper {
 
 	public void add(ItUser user, final PairEntityCallback<ItUser, Exception> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("add", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -58,7 +58,7 @@ public class UserHelper {
 
 	public void get(String id, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("get", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("get", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -83,7 +83,7 @@ public class UserHelper {
 
 	public void getByNickName(String nickName, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -108,7 +108,7 @@ public class UserHelper {
 
 	public void update(ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("update", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 

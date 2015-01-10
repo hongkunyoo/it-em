@@ -9,7 +9,7 @@
     <string name="space">&#160;</string>
 
     <!-- Common Sentence -->
-    <string name="internet_not_connected_message">Internet is unavailable. Please check network status.</string>
+    <string name="network_unavailable_message">Internet is unavailable. Please check network status.</string>
 
     <!-- Login -->
     <string name="facebook_login">Login with facebook in an instant</string>

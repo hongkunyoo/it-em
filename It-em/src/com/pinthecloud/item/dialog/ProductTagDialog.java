@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -43,32 +42,13 @@ public class ProductTagDialog extends ItDialogFragment {
 
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mItem = getArguments().getParcelable(Item.INTENT_KEY);
-	}
-
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_product_tag, container, false);
-		setHasOptionsMenu(true);
 		findComponent(view);
 		setList();
 		return view;
-	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem menu) {
-		switch (menu.getItemId()) {
-		case android.R.id.home:
-			mActivity.onBackPressed();
-			break;
-		}
-		return super.onOptionsItemSelected(menu);
 	}
 
 

@@ -12,10 +12,10 @@ import android.media.ExifInterface;
 
 public class BitmapUtil {
 
-	public static final int ITEM_IMAGE_SIZE = 612;
+	public static final int ITEM_IMAGE_SIZE = 620;
 	public static final int ITEM_IMAGE_SMALL_SIZE = 150;
-	
-	public static final int PROFILE_IMAGE_SIZE = 612;
+
+	public static final int PROFILE_IMAGE_SIZE = 620;
 	public static final int PROFILE_IMAGE_SMALL_SIZE = 75;
 
 	public static final String SMALL_POSTFIX = "_small";
@@ -57,10 +57,13 @@ public class BitmapUtil {
 
 
 	public static Bitmap decodeInSampleSize(Bitmap bitmap, int reqWidth, int reqHeight) {
-		ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayBitmapStream);
-		byte[] b = byteArrayBitmapStream.toByteArray();
-		return decodeInSampleSize(b, reqWidth, reqHeight);
+		if(bitmap.getWidth() >= reqWidth*2 && bitmap.getHeight() >= reqHeight*2){
+			ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+			byte[] byteArray = byteArrayBitmapStream.toByteArray();
+			bitmap = decodeInSampleSize(byteArray, reqWidth, reqHeight);
+		}
+		return bitmap;
 	}
 
 
@@ -119,6 +122,16 @@ public class BitmapUtil {
 
 	public static Bitmap refineItemImageBitmap(Context context, String imagePath){
 		Bitmap bitmap = decodeInSampleSize(context, imagePath, ITEM_IMAGE_SIZE, ITEM_IMAGE_SIZE);
+
+		// Resize
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		if(width >= height && width >= ITEM_IMAGE_SIZE*4){
+			bitmap = decodeInSampleSize(bitmap, ITEM_IMAGE_SIZE*2, 0);
+		} else if(width < height && height >= ITEM_IMAGE_SIZE*4) {
+			bitmap = decodeInSampleSize(bitmap, 0, ITEM_IMAGE_SIZE*2);
+		}
+
 		return rotate(bitmap, getImageOrientation(imagePath));
 	}
 
@@ -142,13 +155,16 @@ public class BitmapUtil {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width >= height){
-			bitmap = Bitmap.createBitmap(bitmap, width/2 - height/2, 0, height, height);
+			bitmap = Bitmap.createBitmap(bitmap, (int)((float)width/2 - (float)height/2), 0, height, height);
 		} else{
-			bitmap = Bitmap.createBitmap(bitmap, 0, height/2 - width/2, width, width);
+			bitmap = Bitmap.createBitmap(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
 		}
 
-		// Resize and Rotate
-		bitmap = Bitmap.createScaledBitmap(bitmap, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE, true);
+		// Resize
+		if(bitmap.getWidth() > PROFILE_IMAGE_SIZE){
+			bitmap = Bitmap.createScaledBitmap(bitmap, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE, true);
+		}
+
 		return rotate(bitmap, getImageOrientation(imagePath));
 	}
 }

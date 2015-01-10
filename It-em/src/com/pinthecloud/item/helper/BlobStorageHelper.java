@@ -68,7 +68,6 @@ public class BlobStorageHelper {
 	}
 
 
-
 	public String uploadBitmapSync(String containerName, String id, Bitmap bitmap) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
@@ -76,7 +75,7 @@ public class BlobStorageHelper {
 			container = blobClient.getContainerReference(containerName);
 			blob = container.getBlockBlobReference(id);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 			blob.getProperties().setCacheControl("only-if-cached,max-age=" + Integer.MAX_VALUE);
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
 			baos.close();
@@ -144,7 +143,7 @@ public class BlobStorageHelper {
 
 	public void uploadBitmapAsync(final String containerName, String id, final Bitmap bitmap, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -167,7 +166,7 @@ public class BlobStorageHelper {
 
 	public void downloadBitmapAsync(final String containerName, String id, final EntityCallback<Bitmap> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("downloadBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("downloadBitmapAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -190,7 +189,7 @@ public class BlobStorageHelper {
 
 	public void downloadToFileAsync(final Context context, final String containerName, String id, final String path, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("downloadToFileAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("downloadToFileAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -213,7 +212,7 @@ public class BlobStorageHelper {
 
 	public void deleteBitmapAsync(final String containerName, String id, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("deleteBitmapAsync", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("deleteBitmapAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 

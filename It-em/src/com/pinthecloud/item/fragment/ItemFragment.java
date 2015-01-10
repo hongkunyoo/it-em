@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -26,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
@@ -51,9 +49,9 @@ import com.squareup.picasso.Picasso;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
-	private ProgressBar mProgressBar;
-	private ScrollView mScrollView;
 	private ImageView mItemImage;
+	private ProgressBar mProgressBar;
+	private LinearLayout mItemLayout;
 	private TextView mContent;
 	private TextView mDate;
 	private ImageButton mItButton;
@@ -106,10 +104,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		findComponent(view);
 		setComponent();
 		setButton();
-		setScrollView();
 		setReplyList();
 		setText();
-
 		updateItemFrag();
 
 		return view;
@@ -178,9 +174,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
-		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mScrollView = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 		mItemImage = (ImageView)view.findViewById(R.id.item_frag_item_image);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mItemLayout = (LinearLayout)view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
@@ -272,17 +268,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setScrollView(){
-		mScrollView.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
-
-			@Override
-			public void onScrollChanged() {
-				mItemImage.scrollTo(0, mScrollView.getScrollY()/2);
-			}
-		});
-	}
-
-
 	private void setReplyList(){
 		mReplyListView.setHasFixedSize(true);
 
@@ -306,8 +291,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void updateItemFrag(){
-		mScrollView.setVisibility(View.GONE);
 		mProgressBar.setVisibility(View.VISIBLE);
+		mItemLayout.setVisibility(View.GONE);
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
@@ -319,8 +304,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				mScrollView.setVisibility(View.VISIBLE);
 				mProgressBar.setVisibility(View.GONE);
+				mItemLayout.setVisibility(View.VISIBLE);
 			}
 		});
 	}
@@ -385,7 +370,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		Picasso.with(mItemImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
 		.placeholder(R.drawable.launcher)
-		.fit()
 		.into(mItemImage);
 
 		Picasso.with(mProfileImage.getContext())
@@ -420,7 +404,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				AsyncChainer.waitChain(2);
+				AsyncChainer.waitChain(3);
 
 				mAimHelper.delItem(item, new EntityCallback<Boolean>() {
 
@@ -431,6 +415,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				});
 
 				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+BitmapUtil.SMALL_POSTFIX, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

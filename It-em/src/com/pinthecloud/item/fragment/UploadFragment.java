@@ -234,7 +234,7 @@ public class UploadFragment extends ItFragment {
 					}
 				});
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, item.getId()+BitmapUtil.SMALL_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+BitmapUtil.SMALL_POSTFIX,
 						smallItemImageBitmap, new EntityCallback<String>() {
 
 					@Override

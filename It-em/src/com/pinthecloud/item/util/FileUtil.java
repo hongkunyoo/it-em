@@ -60,7 +60,7 @@ public class FileUtil {
 		try {
 			file = new File(uri.getPath());
 			FileOutputStream fos = new FileOutputStream(file);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 			fos.close();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {

@@ -51,7 +51,7 @@ public class ItException extends RuntimeException {
 	}
 
 	public enum TYPE {
-		INTERNET_NOT_CONNECTED,
+		NETWORK_UNAVAILABLE,
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
 		INTERNAL_ERROR

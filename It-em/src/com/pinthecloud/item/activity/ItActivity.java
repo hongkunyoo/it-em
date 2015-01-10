@@ -67,8 +67,8 @@ public abstract class ItActivity extends ActionBarActivity {
 	public void onEvent(ItException exception) {
 		String title = null;
 		String message = null;
-		if(exception.getType().equals(ItException.TYPE.INTERNET_NOT_CONNECTED)){
-			message = getResources().getString(R.string.internet_not_connected_message);
+		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)){
+			message = getResources().getString(R.string.network_unavailable_message);
 		} else {
 			title = exception.getType().toString();
 			message = exception.toString();

@@ -120,7 +120,6 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		Picasso.with(holder.itemImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
-		.fit()
 		.into(holder.itemImage);
 	}
 

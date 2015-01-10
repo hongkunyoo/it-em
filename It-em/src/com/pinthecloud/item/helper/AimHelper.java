@@ -45,7 +45,7 @@ public class AimHelper {
 
 	public<E extends AbstractItemModel<E>> void listItem(int page, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -71,7 +71,7 @@ public class AimHelper {
 
 	public void listMyItem(String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -97,7 +97,7 @@ public class AimHelper {
 
 	public void listItItem(String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("listItItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listItItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -123,7 +123,7 @@ public class AimHelper {
 
 	public<E extends AbstractItemModel<E>> void list(Class<E> clazz, String itemId, final ListCallback<E> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("list", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("list", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -161,7 +161,7 @@ public class AimHelper {
 
 	public<E extends AbstractItemModel<E>> void listRecent(Class<E> clazz, String itemId, final ListCallback<E> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -199,7 +199,7 @@ public class AimHelper {
 
 	public <E extends AbstractItemModel<E>> void add(final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("add", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -223,7 +223,7 @@ public class AimHelper {
 
 	public <E extends AbstractItemModel<E>> void del(E obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("del", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("del", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -244,7 +244,7 @@ public class AimHelper {
 
 	public void delItem(Item obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -265,7 +265,7 @@ public class AimHelper {
 
 	public <E extends AbstractItemModel<E>> void get(final E obj, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("get", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("get", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -287,7 +287,7 @@ public class AimHelper {
 
 	public <E extends AbstractItemModel<E>> void update(E obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNET_NOT_CONNECTED));
+			EventBus.getDefault().post(new ItException("update", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 

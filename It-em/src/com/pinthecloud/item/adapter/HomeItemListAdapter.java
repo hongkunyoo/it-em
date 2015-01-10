@@ -205,7 +205,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		Picasso.with(holder.itemImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
-		.fit()
 		.into(holder.itemImage);
 
 		Picasso.with(holder.profileImage.getContext())
@@ -237,7 +236,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				AsyncChainer.waitChain(2);
+				AsyncChainer.waitChain(3);
 
 				ItApplication app = ItApplication.getInstance();
 				AimHelper aimHelper = app.getAimHelper();
@@ -252,6 +251,14 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				});
 
 				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+				
+				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+BitmapUtil.SMALL_POSTFIX, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
