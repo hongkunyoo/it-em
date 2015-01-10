@@ -20,7 +20,7 @@
     <dimen name="home_item_profile_image_width">38dp</dimen>
     <dimen name="home_item_information_height">48dp</dimen>
     <dimen name="home_item_content_margin">12dp</dimen>
-    <dimen name="home_item_spacing">4dp</dimen>
+    <dimen name="home_item_spacing">1dp</dimen>
 
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>

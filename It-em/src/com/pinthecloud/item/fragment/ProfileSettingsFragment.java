@@ -85,7 +85,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		if(requestCode == FileUtil.GALLERY || requestCode == FileUtil.CAMERA){
 			if (resultCode == Activity.RESULT_OK){
 				String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
-				Bitmap profileImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
+				Bitmap profileImageBitmap = BitmapUtil.refineProfileImageBitmap(mActivity, imagePath);
 				updateProfileImage(profileImageBitmap);
 			}
 		}
@@ -181,7 +181,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
 		.placeholder(R.drawable.launcher)
 		.fit()
 		.into(mProfileImage);
@@ -233,7 +233,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				Bitmap profileImageBitmap = BitmapUtil.decodeInSampleSize(getResources(), R.drawable.launcher, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
+				Bitmap profileImageBitmap = BitmapUtil.refineProfileImageBitmap(getResources(), R.drawable.launcher);
 				updateProfileImage(profileImageBitmap);
 			}
 			@Override
@@ -303,7 +303,8 @@ public class ProfileSettingsFragment extends ItFragment {
 					}
 				});
 
-				Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+				Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap,
+						BitmapUtil.PROFILE_IMAGE_SMALL_SIZE, BitmapUtil.PROFILE_IMAGE_SMALL_SIZE);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
 						smallProfileImageBitmap, new EntityCallback<String>() {
 
@@ -313,7 +314,6 @@ public class ProfileSettingsFragment extends ItFragment {
 					}
 				});
 			}
-
 		}, new Chainable(){
 
 			@Override

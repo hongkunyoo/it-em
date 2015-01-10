@@ -12,8 +12,11 @@ import android.media.ExifInterface;
 
 public class BitmapUtil {
 
-	public static final int SMALL_SIZE = 100;
-	public static final int BIG_SIZE = 300;
+	public static final int ITEM_IMAGE_SIZE = 612;
+	public static final int ITEM_IMAGE_SMALL_SIZE = 150;
+	
+	public static final int PROFILE_IMAGE_SIZE = 612;
+	public static final int PROFILE_IMAGE_SMALL_SIZE = 75;
 
 	public static final String SMALL_POSTFIX = "_small";
 
@@ -85,17 +88,19 @@ public class BitmapUtil {
 
 	public static int getImageOrientation(String imagePath) {
 		try {
-			ExifInterface exif = new ExifInterface(imagePath);
-			int orientation = exif.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
-			switch (orientation) {
-			case ExifInterface.ORIENTATION_ROTATE_90:
-				return 90;
-			case ExifInterface.ORIENTATION_ROTATE_180:
-				return 180;
-			case ExifInterface.ORIENTATION_ROTATE_270:
-				return 270;
+			if(imagePath != null){
+				ExifInterface exif = new ExifInterface(imagePath);
+				int orientation = exif.getAttributeInt(
+						ExifInterface.TAG_ORIENTATION,
+						ExifInterface.ORIENTATION_NORMAL);
+				switch (orientation) {
+				case ExifInterface.ORIENTATION_ROTATE_90:
+					return 90;
+				case ExifInterface.ORIENTATION_ROTATE_180:
+					return 180;
+				case ExifInterface.ORIENTATION_ROTATE_270:
+					return 270;
+				}
 			}
 		} catch (IOException e) {
 		}
@@ -112,23 +117,38 @@ public class BitmapUtil {
 	}
 
 
-	public static Bitmap crop(Bitmap bitmap, int xOffset, int yOffset, int width, int height) {
-		return Bitmap.createBitmap(bitmap, xOffset, yOffset, width, height);
+	public static Bitmap refineItemImageBitmap(Context context, String imagePath){
+		Bitmap bitmap = decodeInSampleSize(context, imagePath, ITEM_IMAGE_SIZE, ITEM_IMAGE_SIZE);
+		return rotate(bitmap, getImageOrientation(imagePath));
 	}
 
 
-	public static Bitmap refineImageBitmap(Context context, String imagePath){
-		Bitmap bitmap = decodeInSampleSize(context, imagePath, BIG_SIZE, BIG_SIZE);
+	public static Bitmap refineProfileImageBitmap(Resources resources, int id){
+		Bitmap bitmap = decodeInSampleSize(resources, id, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE);
+		return refineProfileImageBitmap(bitmap, null);
+	}
 
+
+	public static Bitmap refineProfileImageBitmap(Context context, String imagePath){
+		Bitmap bitmap = decodeInSampleSize(context, imagePath, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE);
+		return refineProfileImageBitmap(bitmap, imagePath);
+	}
+
+
+	public static Bitmap refineProfileImageBitmap(Bitmap bitmap, String imagePath){
+		bitmap = BitmapUtil.decodeInSampleSize(bitmap, BitmapUtil.PROFILE_IMAGE_SIZE, BitmapUtil.PROFILE_IMAGE_SIZE);
+
+		// Crop
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width >= height){
-			bitmap = crop(bitmap, width/2 - height/2, 0, height, height);
+			bitmap = Bitmap.createBitmap(bitmap, width/2 - height/2, 0, height, height);
 		} else{
-			bitmap = crop(bitmap, 0, height/2 - width/2, width, width);
+			bitmap = Bitmap.createBitmap(bitmap, 0, height/2 - width/2, width, width);
 		}
 
-		int degree = getImageOrientation(imagePath);
-		return rotate(bitmap, degree);
-	}	
+		// Resize and Rotate
+		bitmap = Bitmap.createScaledBitmap(bitmap, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE, true);
+		return rotate(bitmap, getImageOrientation(imagePath));
+	}
 }

@@ -7,7 +7,7 @@
     android:orientation="vertical" >
 
     <com.pinthecloud.item.view.SquareImageView
-        android:id="@+id/row_my_item_grid_image"
+        android:id="@+id/row_my_item_grid_item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"

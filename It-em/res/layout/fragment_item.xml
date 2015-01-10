@@ -9,13 +9,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <com.pinthecloud.item.view.SquareImageView
-            android:id="@+id/item_frag_image"
+        <ImageView
+            android:id="@+id/item_frag_item_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:background="@android:color/white"
-            android:scaleType="centerCrop" />
+            android:contentDescription="@string/image"
+            android:scaleType="centerInside" />
 
         <include layout="@layout/custom_line" />
 

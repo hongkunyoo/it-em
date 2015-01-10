@@ -201,18 +201,16 @@ public class LoginFragment extends ItFragment {
 	}
 
 
-	private void uploadProfileImage(ItFragment frag, final ItUser itUser, Bitmap profileImage){
-		final Bitmap bigProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.BIG_SIZE, BitmapUtil.BIG_SIZE);
-		final Bitmap smallProfileImage = BitmapUtil.decodeInSampleSize(profileImage, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
-
+	private void uploadProfileImage(ItFragment frag, final ItUser itUser, final Bitmap profileImage){
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
+				Bitmap profileImageBitmap = BitmapUtil.refineProfileImageBitmap(profileImage, null);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId(), 
-						bigProfileImage, new EntityCallback<String>() {
+						profileImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
@@ -220,8 +218,10 @@ public class LoginFragment extends ItFragment {
 					}
 				});
 
+				Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap,
+						BitmapUtil.PROFILE_IMAGE_SMALL_SIZE, BitmapUtil.PROFILE_IMAGE_SMALL_SIZE);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
-						smallProfileImage, new EntityCallback<String>() {
+						smallProfileImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {

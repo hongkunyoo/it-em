@@ -34,8 +34,8 @@ import com.pinthecloud.item.view.SquareImageView;
 public class UploadFragment extends ItFragment {
 
 	private Uri mImageUri;
-	private Bitmap mImageBitmap;
-	private Bitmap mSmallImageBitmap;
+	private Bitmap mItemImageBitmap;
+	private Bitmap mSmallItemImageBitmap;
 
 	private SquareImageView mImage;
 	private EditText mContent;
@@ -61,18 +61,18 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(mImageBitmap == null){
+		if(mSmallItemImageBitmap == null){
 			mImage.setImageResource(R.drawable.launcher);
 		} else{
-			mImage.setImageBitmap(mSmallImageBitmap);
+			mImage.setImageBitmap(mSmallItemImageBitmap);
 		}
 	}
 
 
 	@Override
 	public void onStop() {
-		mImage.setImageBitmap(null);
 		super.onStop();
+		mImage.setImageBitmap(null);
 	}
 
 
@@ -81,8 +81,9 @@ public class UploadFragment extends ItFragment {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK){
 			String imagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
-			mImageBitmap = BitmapUtil.refineImageBitmap(mActivity, imagePath);
-			mSmallImageBitmap = BitmapUtil.decodeInSampleSize(mImageBitmap, BitmapUtil.SMALL_SIZE, BitmapUtil.SMALL_SIZE);
+			mItemImageBitmap = BitmapUtil.refineItemImageBitmap(mActivity, imagePath);
+			mSmallItemImageBitmap = BitmapUtil.decodeInSampleSize(mItemImageBitmap,
+					BitmapUtil.ITEM_IMAGE_SMALL_SIZE, BitmapUtil.ITEM_IMAGE_SMALL_SIZE);
 			mActivity.invalidateOptionsMenu();
 		} else{
 			mActivity.finish();
@@ -114,7 +115,7 @@ public class UploadFragment extends ItFragment {
 		case R.id.upload_submit:
 			ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
 			Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId());
-			uploadItem(item);
+			uploadItem(item, mItemImageBitmap, mSmallItemImageBitmap);
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
@@ -160,7 +161,7 @@ public class UploadFragment extends ItFragment {
 
 
 	private String[] getDialogItemList(){
-		if(mImageBitmap != null){
+		if(mItemImageBitmap != null){
 			return getResources().getStringArray(R.array.upload_image_select_delete_string_array);
 		}else{
 			return getResources().getStringArray(R.array.upload_image_select_string_array);
@@ -182,14 +183,14 @@ public class UploadFragment extends ItFragment {
 			}
 		};
 
-		if(mImageBitmap != null){
+		if(mItemImageBitmap != null){
 			callbacks[1] = new DialogCallback() {
 
 				@Override
 				public void doPositiveThing(Bundle bundle) {
 					// Set profile image default
 					mImage.setImageResource(R.drawable.launcher);
-					mImageBitmap = null;
+					mItemImageBitmap = null;
 					mActivity.invalidateOptionsMenu();
 				}
 				@Override
@@ -202,7 +203,7 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void uploadItem(final Item item){
+	private void uploadItem(final Item item, final Bitmap itemImageBitmap, final Bitmap smallItemImageBitmap){
 		mApp.showProgressDialog(mActivity);
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
@@ -218,30 +219,47 @@ public class UploadFragment extends ItFragment {
 					}
 				});
 			}
-			
+		}, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
+
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(),
+						itemImageBitmap, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, item.getId()+BitmapUtil.SMALL_POSTFIX,
+						smallItemImageBitmap, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+			}
 		}, new Chainable(){
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), mImageBitmap, new EntityCallback<String>() {
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
 
-					@Override
-					public void onCompleted(String entity) {
-						mApp.dismissProgressDialog();
-						Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
-
-						Intent intent = new Intent();
-						intent.putExtra(Item.INTENT_KEY, item);
-						mActivity.setResult(Activity.RESULT_OK, intent);
-						mActivity.finish();
-					}
-				});
+				Intent intent = new Intent();
+				intent.putExtra(Item.INTENT_KEY, item);
+				mActivity.setResult(Activity.RESULT_OK, intent);
+				mActivity.finish();
 			}
 		});
 	}
 
 
 	private boolean isSubmitEnable(){
-		return mContent.getText().toString().trim().length() > 0 && mImageBitmap != null;
+		return mContent.getText().toString().trim().length() > 0 && mItemImageBitmap != null;
 	}
 }

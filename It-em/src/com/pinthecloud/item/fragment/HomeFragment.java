@@ -10,8 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +37,7 @@ public class HomeFragment extends ItFragment {
 
 	private RecyclerView mGridView;
 	private HomeItemListAdapter mGridAdapter;
-	private GridLayoutManager mGridLayoutManager;
+	private StaggeredGridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
 
 	private boolean mIsAdding = false;
@@ -133,7 +133,7 @@ public class HomeFragment extends ItFragment {
 		mGridView.setHasFixedSize(true);
 
 		int gridColumnNum = getResources().getInteger(R.integer.home_grid_column_num);
-		mGridLayoutManager = new GridLayoutManager(mActivity, gridColumnNum);
+		mGridLayoutManager = new StaggeredGridLayoutManager(gridColumnNum, StaggeredGridLayoutManager.VERTICAL);
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
@@ -145,10 +145,10 @@ public class HomeFragment extends ItFragment {
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-				int lastVisibleItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
+				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
 				int totalItemCount = mGridLayoutManager.getItemCount();
 
-				if (lastVisibleItemPosition >= totalItemCount-1 && !mIsAdding) {
+				if (positions[0] >= totalItemCount-1 && !mIsAdding) {
 					addNextItemList();
 				}
 			}

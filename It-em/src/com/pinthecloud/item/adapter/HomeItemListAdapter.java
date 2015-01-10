@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,7 +37,6 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.pinthecloud.item.view.SquareImageView;
 import com.squareup.picasso.Picasso;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
@@ -61,7 +61,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public TextView nickName;
 		public Button more;
 
-		public SquareImageView image;
+		public ImageView itemImage;
 		public TextView content;
 		public ImageButton itButton;
 		public TextView itNumber;
@@ -79,7 +79,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 			this.more = (Button)view.findViewById(R.id.row_home_item_list_more);
 
-			this.image = (SquareImageView)view.findViewById(R.id.row_home_item_list_image);
+			this.itemImage = (ImageView)view.findViewById(R.id.row_home_item_list_item_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
@@ -148,7 +148,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			holder.more.setOnClickListener(null);
 		}
 
-		holder.image.setOnClickListener(new OnClickListener() {
+		holder.itemImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -202,11 +202,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setImageView(final ViewHolder holder, Item item, int position) {
-		Picasso.with(holder.image.getContext())
-		.load(BlobStorageHelper.getItemImgUrl(item.getId()))
+		Picasso.with(holder.itemImage.getContext())
+		.load(BlobStorageHelper.getItemImgUrl(item.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
 		.fit()
-		.into(holder.image);
+		.into(holder.itemImage);
 
 		Picasso.with(holder.profileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))

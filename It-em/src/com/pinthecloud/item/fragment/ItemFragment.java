@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -46,16 +47,13 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.pinthecloud.item.view.SquareImageView;
 import com.squareup.picasso.Picasso;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
-	private final int DISPLAY_REPLY_COUNT = 2;
-
 	private ProgressBar mProgressBar;
 	private ScrollView mScrollView;
-	private SquareImageView mImage;
+	private ImageView mItemImage;
 	private TextView mContent;
 	private TextView mDate;
 	private ImageButton mItButton;
@@ -128,7 +126,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onStop() {
 		super.onStop();
-		mImage.setImageBitmap(null);
+		mItemImage.setImageBitmap(null);
 		mProfileImage.setImageBitmap(null);
 	}
 
@@ -182,7 +180,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mScrollView = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
-		mImage = (SquareImageView)view.findViewById(R.id.item_frag_image);
+		mItemImage = (ImageView)view.findViewById(R.id.item_frag_item_image);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
@@ -279,7 +277,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onScrollChanged() {
-				mImage.scrollTo(0, mScrollView.getScrollY()/2);
+				mItemImage.scrollTo(0, mScrollView.getScrollY()/2);
 			}
 		});
 	}
@@ -335,12 +333,13 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			public void onCompleted(List<Reply> list, int count) {
 				mItem.setReplyCount(count);
 
-				if(mItem.getReplyCount() > DISPLAY_REPLY_COUNT){
+				int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
+				if(mItem.getReplyCount() > displayReplyNum){
 					mReplyListAdapter.setHasPrevious(true);
 				} else {
 					mReplyListAdapter.setHasPrevious(false);
 				}
-				resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), DISPLAY_REPLY_COUNT+1));
+				resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
 				showReplyList(mItem.getReplyCount());
 				setReplyTitle();
 
@@ -383,11 +382,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setImageView(){
-		Picasso.with(mImage.getContext())
+		Picasso.with(mItemImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
 		.placeholder(R.drawable.launcher)
 		.fit()
-		.into(mImage);
+		.into(mItemImage);
 
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))

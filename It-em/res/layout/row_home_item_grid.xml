@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/home_item_spacing"
     android:background="@android:color/white" >
 
     <LinearLayout
@@ -52,12 +51,13 @@
 
         <include layout="@layout/custom_line" />
 
-        <com.pinthecloud.item.view.SquareImageView
-            android:id="@+id/row_home_item_list_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <ImageView
+            android:id="@+id/row_home_item_list_item_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+            android:contentDescription="@string/image"
+            android:scaleType="centerInside" />
 
         <include layout="@layout/custom_line" />
 
