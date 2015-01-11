@@ -10,20 +10,25 @@ import com.google.gson.Gson;
 public class Item extends AbstractItemModel<Item> implements Parcelable {
 
 	public static String INTENT_KEY = "ITEM_INTENT_KEY";
+	public static String INTENT_KEY_IMAGE = "ITEM_INTENT_KEY_IMAGE";
 
 	private List<Reply> replyList;
 	private int replyCount;
 	private List<LikeIt> likeItList;
 	private int likeItCount;
+	private int imageWidth;
+	private int imageHeight;
 
 	public Item() {
 		super();
 	}
-	public Item(String content, String whoMade, String whoMadeId) {
+	public Item(String content, String whoMade, String whoMadeId, int imageWidth, int imageHeight) {
 		super();
 		this.setContent(content);
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
+		this.setImageWidth(imageWidth);
+		this.setImageHeight(imageHeight);
 	}
 
 	public String getRefId() {
@@ -55,6 +60,18 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setLikeItList(List<LikeIt> likeList) {
 		this.likeItList = likeList;
 	}
+	public int getImageWidth() {
+		return imageWidth;
+	}
+	public void setImageWidth(int imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+	public int getImageHeight() {
+		return imageHeight;
+	}
+	public void setImageHeight(int imageHeight) {
+		this.imageHeight = imageHeight;
+	}
 	public void readItem(Item item) {
 		this.setId(item.getId());
 		this.setContent(item.getContent());
@@ -66,6 +83,8 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setReplyCount(item.getReplyCount());
 		this.setLikeItList(item.getLikeItList());
 		this.setLikeItCount(item.getLikeItCount());
+		this.setImageWidth(item.getImageWidth());
+		this.setImageHeight(item.getImageHeight());
 	}
 
 

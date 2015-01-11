@@ -3,6 +3,7 @@ package com.pinthecloud.item.adapter;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +37,7 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.view.CircleImageView;
+import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.squareup.picasso.Picasso;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
@@ -61,7 +62,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public TextView nickName;
 		public Button more;
 
-		public ImageView itemImage;
+		public DynamicHeightImageView itemImage;
 		public TextView content;
 		public ImageButton itButton;
 		public TextView itNumber;
@@ -79,7 +80,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 			this.more = (Button)view.findViewById(R.id.row_home_item_list_more);
 
-			this.itemImage = (ImageView)view.findViewById(R.id.row_home_item_list_item_image);
+			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_list_item_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
@@ -148,12 +149,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			holder.more.setOnClickListener(null);
 		}
 
-		holder.itemImage.setOnClickListener(new OnClickListener() {
+		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
+				intent.putExtra(Item.INTENT_KEY_IMAGE, ((BitmapDrawable)holder.itemImage.getDrawable()).getBitmap());
 				mActivity.startActivity(intent);
 			}
 		});
@@ -202,6 +204,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setImageView(final ViewHolder holder, Item item, int position) {
+		holder.itemImage.setHeightRatio((double)item.getImageHeight()/item.getImageWidth());
+
 		Picasso.with(holder.itemImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+BitmapUtil.SMALL_POSTFIX))
 		.placeholder(R.drawable.launcher)
@@ -257,7 +261,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 						AsyncChainer.notifyNext(frag);
 					}
 				});
-				
+
 				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+BitmapUtil.SMALL_POSTFIX, new EntityCallback<Boolean>() {
 
 					@Override

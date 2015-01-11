@@ -1,27 +1,44 @@
 package com.pinthecloud.item.fragment;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.view.SquareImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class ProfileImageFragment extends ItFragment {
 
+	private ImageView mProfileImage;
+	private PhotoViewAttacher mAttacher;
+
 	private String mItUserId;
-	private SquareImageView mProfileImage; 
+	private Bitmap mProfileImageBitmap;
+
+
+	public static ItFragment newInstance(String itUserId, Bitmap profileImage) {
+		ItFragment fragment = new ProfileImageFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(ItUser.INTENT_KEY, itUserId);
+		bundle.putParcelable(ItUser.INTENT_KEY_IMAGE, profileImage);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mItUserId = mActivity.getIntent().getStringExtra(ItUser.INTENT_KEY);
+		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
+		mProfileImageBitmap = getArguments().getParcelable(ItUser.INTENT_KEY_IMAGE);
 	}
 
 
@@ -30,8 +47,8 @@ public class ProfileImageFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile_image, container, false);
-		mProfileImage = (SquareImageView) view.findViewById(R.id.profile_image_frag_view);
-		new PhotoViewAttacher(mProfileImage);
+		mProfileImage = (ImageView) view.findViewById(R.id.profile_image_frag_profile_image);
+		mAttacher = new PhotoViewAttacher(mProfileImage);
 		return view;
 	}
 
@@ -41,15 +58,24 @@ public class ProfileImageFragment extends ItFragment {
 		super.onStart();
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUserId))
-		.placeholder(null)
+		.placeholder(new BitmapDrawable(getResources(), mProfileImageBitmap))
 		.fit()
-		.into(mProfileImage);
+		.into(mProfileImage, new Callback(){
+
+			@Override
+			public void onSuccess() {
+				mAttacher.update();
+			}
+			@Override
+			public void onError() {
+			}
+		});
 	}
 
 
 	@Override
 	public void onStop() {
-		mProfileImage.setImageBitmap(null);
 		super.onStop();
+		mProfileImage.setImageBitmap(null);
 	}
 }

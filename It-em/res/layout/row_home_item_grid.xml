@@ -51,12 +51,11 @@
 
         <include layout="@layout/custom_line" />
 
-        <ImageView
+        <com.pinthecloud.item.view.DynamicHeightImageView
             android:id="@+id/row_home_item_list_item_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/image" />
+            android:adjustViewBounds="true" />
 
         <include layout="@layout/custom_line" />
 

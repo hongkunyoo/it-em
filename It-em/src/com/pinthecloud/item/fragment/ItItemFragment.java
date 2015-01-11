@@ -32,7 +32,7 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 
 
 	public static ItUserPageScrollTabFragment newInstance(int position, ItUser itUser) {
-		ItItemFragment fragment = new ItItemFragment();
+		ItUserPageScrollTabFragment fragment = new ItItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
 		bundle.putParcelable(ItUser.INTENT_KEY, itUser);

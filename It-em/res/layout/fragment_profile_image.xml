@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:background="@android:color/black" >
 
-    <com.pinthecloud.item.view.SquareImageView
-        android:id="@+id/profile_image_frag_view"
+    <ImageView
+        android:id="@+id/profile_image_frag_profile_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
+        android:contentDescription="@string/profile_image" />
 
 </RelativeLayout>

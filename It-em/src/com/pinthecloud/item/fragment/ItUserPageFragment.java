@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,7 +37,6 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
-import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
 
@@ -51,7 +52,7 @@ public class ItUserPageFragment extends ItFragment {
 	private RelativeLayout mContainer;
 
 	private LinearLayout mHeader;
-	private CircleImageView mProfileImage;
+	private ImageView mProfileImage;
 	private TextView mNickName;
 	private TextView mDescription;
 	private TextView mWebsite;
@@ -67,8 +68,8 @@ public class ItUserPageFragment extends ItFragment {
 	private boolean[] mIsUpdatedTabList;
 
 
-	public static ItUserPageFragment newInstance(String itUserId) {
-		ItUserPageFragment fragment = new ItUserPageFragment();
+	public static ItFragment newInstance(String itUserId) {
+		ItFragment fragment = new ItUserPageFragment();
 		Bundle args = new Bundle();
 		args.putString(ItUser.INTENT_KEY, itUserId);
 		fragment.setArguments(args);
@@ -142,7 +143,7 @@ public class ItUserPageFragment extends ItFragment {
 	public void onStart() {
 		super.onStart();
 		if(mItUserId.equals(mItUser.getId())){
-			setProfileImage();	
+			setProfileImage();
 		}
 	}
 
@@ -170,7 +171,7 @@ public class ItUserPageFragment extends ItFragment {
 		mContainer = (RelativeLayout)view.findViewById(R.id.it_user_page_frag_container_layout);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
-		mProfileImage = (CircleImageView)view.findViewById(R.id.it_user_page_frag_profile_image);
+		mProfileImage = (ImageView)view.findViewById(R.id.it_user_page_frag_profile_image);
 		mNickName = (TextView)view.findViewById(R.id.it_user_page_frag_nick_name);
 		mDescription = (TextView)view.findViewById(R.id.it_user_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.it_user_page_frag_website);
@@ -228,6 +229,7 @@ public class ItUserPageFragment extends ItFragment {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
+					intent.putExtra(ItUser.INTENT_KEY_IMAGE, ((BitmapDrawable)mProfileImage.getDrawable()).getBitmap());
 					startActivityForResult(intent, PROFILE_SETTINGS);
 				}
 			});
@@ -241,6 +243,7 @@ public class ItUserPageFragment extends ItFragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ProfileImageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, mItUser.getId());
+				intent.putExtra(ItUser.INTENT_KEY_IMAGE, ((BitmapDrawable)mProfileImage.getDrawable()).getBitmap());
 				startActivity(intent);
 			}
 		});

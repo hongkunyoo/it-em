@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
@@ -29,26 +31,38 @@ import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.util.ItLog;
-import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
 public class ProfileSettingsFragment extends ItFragment {
 
 	private Uri mProfileImageUri;
-	private CircleImageView mProfileImage;
+	private ImageView mProfileImage;
 
 	private EditText mNickName;
 	private EditText mDescription;
 	private EditText mWebsite;
 
 	private ItUser mMyItUser;
+	private Bitmap mProfileImageBitmap;
+
 	private boolean mIsUpdating = false;
+
+
+	public static ItFragment newInstance(Bitmap profileImage) {
+		ItFragment fragment = new ProfileSettingsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(ItUser.INTENT_KEY_IMAGE, profileImage);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mProfileImageBitmap = getArguments().getParcelable(ItUser.INTENT_KEY_IMAGE);
 	}
 
 
@@ -60,7 +74,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		setHasOptionsMenu(true);
 		findComponent(view);
 		setComponent();
-		setProfileImageEvent();
+		setButton();
 		return view;
 	}
 
@@ -150,7 +164,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mProfileImage = (CircleImageView)view.findViewById(R.id.profile_settings_frag_profile_image);
+		mProfileImage = (ImageView)view.findViewById(R.id.profile_settings_frag_profile_image);
 		mNickName = (EditText)view.findViewById(R.id.profile_settings_frag_nick_name);
 		mDescription = (EditText)view.findViewById(R.id.profile_settings_frag_description);
 		mWebsite = (EditText)view.findViewById(R.id.profile_settings_frag_website);
@@ -182,13 +196,13 @@ public class ProfileSettingsFragment extends ItFragment {
 	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
-		.placeholder(R.drawable.launcher)
+		.placeholder(new BitmapDrawable(getResources(), mProfileImageBitmap))
 		.fit()
 		.into(mProfileImage);
 	}
 
 
-	private void setProfileImageEvent(){
+	private void setButton(){
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override

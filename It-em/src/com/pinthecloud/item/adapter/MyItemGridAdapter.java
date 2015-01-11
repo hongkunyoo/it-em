@@ -3,6 +3,7 @@ package com.pinthecloud.item.adapter;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -103,13 +104,14 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	}
 
 
-	private void setNormalButton(NormalViewHolder holder, final Item item){
+	private void setNormalButton(final NormalViewHolder holder, final Item item){
 		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
+				intent.putExtra(Item.INTENT_KEY_IMAGE, ((BitmapDrawable)holder.itemImage.getDrawable()).getBitmap());
 				mActivity.startActivity(intent);
 			}
 		});

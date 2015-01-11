@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,12 +77,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private ItUser mMyItUser;
 	private Item mItem;
+	private Bitmap mItemImageBitmap;
 
 
-	public static ItemFragment newInstance(Item item) {
-		ItemFragment fragment = new ItemFragment();
+	public static ItFragment newInstance(Item item, Bitmap itemImage) {
+		ItFragment fragment = new ItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(Item.INTENT_KEY, item);
+		bundle.putParcelable(Item.INTENT_KEY_IMAGE, itemImage);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -91,6 +95,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		super.onCreate(savedInstanceState);
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		mItem = getArguments().getParcelable(Item.INTENT_KEY);
+		mItemImageBitmap = getArguments().getParcelable(Item.INTENT_KEY_IMAGE);
 	}
 
 
@@ -369,7 +374,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setImageView(){
 		Picasso.with(mItemImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-		.placeholder(R.drawable.launcher)
+		.placeholder(new BitmapDrawable(getResources(), mItemImageBitmap))
 		.into(mItemImage);
 
 		Picasso.with(mProfileImage.getContext())

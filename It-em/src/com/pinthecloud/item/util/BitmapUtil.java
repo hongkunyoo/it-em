@@ -12,10 +12,11 @@ import android.media.ExifInterface;
 
 public class BitmapUtil {
 
-	public static final int ITEM_IMAGE_SIZE = 620;
+	public static final int ITEM_IMAGE_SIZE = 612;
 	public static final int ITEM_IMAGE_SMALL_SIZE = 150;
+	public static final int ITEM_IMAGE_SMALL_MAX_SIZE = 480;
 
-	public static final int PROFILE_IMAGE_SIZE = 620;
+	public static final int PROFILE_IMAGE_SIZE = 612;
 	public static final int PROFILE_IMAGE_SMALL_SIZE = 75;
 
 	public static final String SMALL_POSTFIX = "_small";
@@ -123,7 +124,7 @@ public class BitmapUtil {
 	public static Bitmap refineItemImageBitmap(Context context, String imagePath){
 		Bitmap bitmap = decodeInSampleSize(context, imagePath, ITEM_IMAGE_SIZE, ITEM_IMAGE_SIZE);
 
-		// Resize
+		// If image is too big, Resize
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width >= height && width >= ITEM_IMAGE_SIZE*4){
@@ -133,6 +134,23 @@ public class BitmapUtil {
 		}
 
 		return rotate(bitmap, getImageOrientation(imagePath));
+	}
+
+
+	public static Bitmap refineItemImageSmallBitmap(Bitmap bitmap){
+		bitmap = BitmapUtil.decodeInSampleSize(bitmap, ITEM_IMAGE_SMALL_SIZE, ITEM_IMAGE_SMALL_SIZE);
+
+		// If image is too big, Crop to thumbnail
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		if(width >= height && width > ITEM_IMAGE_SMALL_MAX_SIZE){
+			bitmap = Bitmap.createBitmap(bitmap, (int)((float)width/2 - (float)ITEM_IMAGE_SMALL_MAX_SIZE/2), 0,
+					ITEM_IMAGE_SMALL_MAX_SIZE, height);
+		} else if(width < height && height > ITEM_IMAGE_SMALL_MAX_SIZE) {
+			bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, ITEM_IMAGE_SMALL_MAX_SIZE);
+		}
+
+		return bitmap;
 	}
 
 
@@ -151,7 +169,7 @@ public class BitmapUtil {
 	public static Bitmap refineProfileImageBitmap(Bitmap bitmap, String imagePath){
 		bitmap = BitmapUtil.decodeInSampleSize(bitmap, BitmapUtil.PROFILE_IMAGE_SIZE, BitmapUtil.PROFILE_IMAGE_SIZE);
 
-		// Crop
+		// Crop to Square
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width >= height){
@@ -160,7 +178,7 @@ public class BitmapUtil {
 			bitmap = Bitmap.createBitmap(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
 		}
 
-		// Resize
+		// If image is too big, Resize
 		if(bitmap.getWidth() > PROFILE_IMAGE_SIZE){
 			bitmap = Bitmap.createScaledBitmap(bitmap, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE, true);
 		}

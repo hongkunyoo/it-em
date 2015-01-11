@@ -82,8 +82,7 @@ public class UploadFragment extends ItFragment {
 		if (resultCode == Activity.RESULT_OK){
 			String imagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
 			mItemImageBitmap = BitmapUtil.refineItemImageBitmap(mActivity, imagePath);
-			mSmallItemImageBitmap = BitmapUtil.decodeInSampleSize(mItemImageBitmap,
-					BitmapUtil.ITEM_IMAGE_SMALL_SIZE, BitmapUtil.ITEM_IMAGE_SMALL_SIZE);
+			mSmallItemImageBitmap = BitmapUtil.refineItemImageSmallBitmap(mItemImageBitmap);
 			mActivity.invalidateOptionsMenu();
 		} else{
 			mActivity.finish();
@@ -114,7 +113,8 @@ public class UploadFragment extends ItFragment {
 			break;
 		case R.id.upload_submit:
 			ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
-			Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId());
+			Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId(),
+					mSmallItemImageBitmap.getWidth(), mSmallItemImageBitmap.getHeight());
 			uploadItem(item, mItemImageBitmap, mSmallItemImageBitmap);
 			break;
 		}

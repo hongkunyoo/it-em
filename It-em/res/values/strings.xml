@@ -45,6 +45,9 @@
     <string name="zero">0</string>
     <string name="no_user">This user doesn\'t exist.</string>
 
+    <!-- Profile Image -->
+    <string name="profile_image">Profile Image</string>
+
     <!-- My Item -->
     <string name="it_lower">it</string>
     <string name="reply_lower">comments</string>
