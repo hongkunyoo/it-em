@@ -17,9 +17,12 @@ import android.text.format.Time;
 
 import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
+
+import de.greenrobot.event.EventBus;
 
 public class FileUtil {
 
@@ -60,10 +63,12 @@ public class FileUtil {
 		try {
 			file = new File(uri.getPath());
 			FileOutputStream fos = new FileOutputStream(file);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 			fos.close();
 		} catch (FileNotFoundException e) {
+			EventBus.getDefault().post(new ItException("saveBitmapToFile", ItException.TYPE.INTERNAL_ERROR));
 		} catch (IOException e) {
+			EventBus.getDefault().post(new ItException("saveBitmapToFile", ItException.TYPE.INTERNAL_ERROR));
 		}
 		return file;
 	}

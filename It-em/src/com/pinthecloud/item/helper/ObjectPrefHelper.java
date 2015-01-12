@@ -68,8 +68,7 @@ public class ObjectPrefHelper {
 
 	private boolean isGetter(Method method) {
 		if (method.getName().equals("getClass")) return false;
-		if (!(method.getName().startsWith("get") 
-				|| method.getName().startsWith("is")))
+		if (!(method.getName().startsWith("get") || method.getName().startsWith("is")))
 			return false;
 		if (method.getParameterTypes().length != 0)
 			return false;

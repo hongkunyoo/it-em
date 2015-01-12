@@ -10,6 +10,7 @@
 
     <!-- Common Sentence -->
     <string name="network_unavailable_message">Internet is unavailable. Please check network status.</string>
+    <string name="error_message">Error happened. Please retry it.</string>
 
     <!-- Login -->
     <string name="facebook_login">Login with facebook in an instant</string>
@@ -45,14 +46,11 @@
     <string name="zero">0</string>
     <string name="no_user">This user doesn\'t exist.</string>
 
-    <!-- Profile Image -->
-    <string name="profile_image">Profile Image</string>
-
     <!-- My Item -->
     <string name="it_lower">it</string>
     <string name="reply_lower">comments</string>
-    <string name="first_item">Upload your item</string>
-    <string name="first_it">Do IT your favorite item</string>
+    <string name="no_my_item">There is no uploaded item</string>
+    <string name="no_it_item">There is no IT item</string>
 
     <!-- Pro -->
     <string name="pro">Pro</string>

@@ -3,7 +3,6 @@ package com.pinthecloud.item.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,7 +27,7 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.util.ItLog;
 import com.squareup.picasso.Picasso;
@@ -43,26 +42,14 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mWebsite;
 
 	private ItUser mMyItUser;
-	private Bitmap mProfileImageBitmap;
 
 	private boolean mIsUpdating = false;
-
-
-	public static ItFragment newInstance(Bitmap profileImage) {
-		ItFragment fragment = new ProfileSettingsFragment();
-		Bundle bundle = new Bundle();
-		bundle.putParcelable(ItUser.INTENT_KEY_IMAGE, profileImage);
-		fragment.setArguments(bundle);
-		return fragment;
-	}
-
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-		mProfileImageBitmap = getArguments().getParcelable(ItUser.INTENT_KEY_IMAGE);
 	}
 
 
@@ -99,7 +86,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		if(requestCode == FileUtil.GALLERY || requestCode == FileUtil.CAMERA){
 			if (resultCode == Activity.RESULT_OK){
 				String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
-				Bitmap profileImageBitmap = BitmapUtil.refineProfileImageBitmap(mActivity, imagePath);
+				Bitmap profileImageBitmap = ImageUtil.refineProfileImage(mActivity, imagePath);
 				updateProfileImage(profileImageBitmap);
 			}
 		}
@@ -196,7 +183,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
-		.placeholder(new BitmapDrawable(getResources(), mProfileImageBitmap))
 		.fit()
 		.into(mProfileImage);
 	}
@@ -209,7 +195,9 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void onClick(View v) {
 				String[] itemList = getResources().getStringArray(R.array.profile_image_select_string_array);
 				DialogCallback[] callbacks = getDialogCallbacks(itemList);
-				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
+				
+				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+				listDialog.setCallbacks(callbacks);
 				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
@@ -247,7 +235,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				Bitmap profileImageBitmap = BitmapUtil.refineProfileImageBitmap(getResources(), R.drawable.launcher);
+				Bitmap profileImageBitmap = ImageUtil.refineProfileImage(getResources(), R.drawable.launcher);
 				updateProfileImage(profileImageBitmap);
 			}
 			@Override
@@ -317,10 +305,9 @@ public class ProfileSettingsFragment extends ItFragment {
 					}
 				});
 
-				Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap,
-						BitmapUtil.PROFILE_IMAGE_SMALL_SIZE, BitmapUtil.PROFILE_IMAGE_SMALL_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+BitmapUtil.SMALL_POSTFIX,
-						smallProfileImageBitmap, new EntityCallback<String>() {
+				Bitmap profileThumbnailImageBitmap = ImageUtil.refineProfileThumbnailImage(profileImageBitmap);
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
+						profileThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {

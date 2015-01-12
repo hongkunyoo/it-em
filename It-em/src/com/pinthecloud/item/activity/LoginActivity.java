@@ -1,6 +1,5 @@
 package com.pinthecloud.item.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -26,17 +25,12 @@ public class LoginActivity extends ItActivity {
 	public Toolbar getToolbar() {
 		return null;
 	}
-	
-	
+
+
 	private void setFragment(){
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		fragment = new LoginFragment();
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		fragment.onActivityResult(requestCode, resultCode, data);
 	}
 }

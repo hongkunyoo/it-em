@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
-import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
@@ -32,9 +31,8 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
 
-public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
+public class ReplyDialog extends CustomDialog implements ReplyCallback {
 
-	private ItFragment mFrag;
 	private Item mItem;
 	private ItUser mMyItUser;
 
@@ -49,11 +47,12 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	private Button mInputSubmit;
 
 
-	public ReplyDialog(ItFragment frag, Item item) {
-		super();
-		this.mFrag = frag;
-		this.mItem = item;
-		setStyle(STYLE_NO_TITLE, 0);
+	public static ReplyDialog newInstance(Item item) {
+		ReplyDialog dialog = new ReplyDialog();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(Item.INTENT_KEY, item);
+		dialog.setArguments(bundle);
+		return dialog;
 	}
 
 
@@ -61,6 +60,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mItem = getArguments().getParcelable(Item.INTENT_KEY);
 	}
 
 
@@ -68,7 +68,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_reply, container, false);
+		View view = inflater.inflate(R.layout.dialog_reply, container, false);
 
 		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 				| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -150,7 +150,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mReplyList = new ArrayList<Reply>();
-		mListAdapter = new ReplyListAdapter(mActivity, mFrag, mItem, mReplyList);
+		mListAdapter = new ReplyListAdapter(mActivity, mItem, mReplyList);
 		mListAdapter.setReplyCallback(this);
 		mListView.setAdapter(mListAdapter);
 	}

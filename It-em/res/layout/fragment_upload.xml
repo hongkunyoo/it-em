@@ -6,11 +6,12 @@
     android:orientation="vertical"
     android:padding="@dimen/content_margin" >
 
-    <com.pinthecloud.item.view.SquareImageView
+    <ImageView
         android:id="@+id/upload_frag_image"
         android:layout_width="@dimen/upload_image_width"
         android:layout_height="@dimen/upload_image_width"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/image"
         android:scaleType="centerCrop" />
 
     <EditText

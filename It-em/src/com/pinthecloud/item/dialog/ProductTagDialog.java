@@ -16,10 +16,9 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ProductTagListAdapter;
-import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Item;
 
-public class ProductTagDialog extends ItDialogFragment {
+public class ProductTagDialog extends CustomDialog {
 
 	private ProgressBar mProgressBar;
 	private RelativeLayout mListLayout;
@@ -29,15 +28,22 @@ public class ProductTagDialog extends ItDialogFragment {
 	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
 
-	private ItFragment mFrag;
 	private Item mItem;
 
 
-	public ProductTagDialog(ItFragment frag, Item item) {
-		super();
-		this.mFrag = frag;
-		this.mItem = item;
-		setStyle(STYLE_NO_TITLE, 0);
+	public static ProductTagDialog newInstance(Item item) {
+		ProductTagDialog dialog = new ProductTagDialog();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(Item.INTENT_KEY, item);
+		dialog.setArguments(bundle);
+		return dialog;
+	}
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mItem = getArguments().getParcelable(Item.INTENT_KEY);
 	}
 
 
@@ -45,7 +51,7 @@ public class ProductTagDialog extends ItDialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_product_tag, container, false);
+		View view = inflater.inflate(R.layout.dialog_product_tag, container, false);
 		findComponent(view);
 		setList();
 		return view;

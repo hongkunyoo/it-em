@@ -23,6 +23,7 @@ public class ItFragment extends Fragment {
 	protected UserHelper mUserHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 
+	
 	public ItFragment(){
 		super();
 		mApp = ItApplication.getInstance();

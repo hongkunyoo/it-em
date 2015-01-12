@@ -60,6 +60,8 @@ public class AsyncChainer {
 
 
 	public static void clearChain(ItFragment frag) {
+		mCount = 0;
+		
 		Class<?> clazz = null;
 		if (frag == null) {
 			clazz = ItFragment.class;

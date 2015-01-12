@@ -52,7 +52,6 @@ public class CustomTextView extends TextView {
 
 	private void setTitle(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_x_large));
-		setTextScaleX(0.9f);
 	}
 
 	private void setSubhead(){
@@ -67,7 +66,6 @@ public class CustomTextView extends TextView {
 
 	private void setCaption(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_small));
-		setTextScaleX(1.1f);
 	}
 
 	private void setButton(){

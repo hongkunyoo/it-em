@@ -1,9 +1,11 @@
 package com.pinthecloud.item.dialog;
 
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.activity.ItActivity;
@@ -27,8 +29,6 @@ public class ItDialogFragment extends DialogFragment {
 	protected UserHelper mUserHelper;
 	protected BlobStorageHelper blobStorageHelper;
 
-	private boolean isShowing = false;
-
 
 	public ItDialogFragment() {
 		super();
@@ -51,24 +51,16 @@ public class ItDialogFragment extends DialogFragment {
 
 
 	@Override
-	public void show(FragmentManager manager, String tag) {
-		if(isShowing){
-			return;
-		}else{
-			super.show(manager, tag);
-			isShowing = true;
-		}
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		setStyle(STYLE_NO_TITLE, 0);
+		return super.onCreateDialog(savedInstanceState);
 	}
 
 
 	@Override
-	public void onDismiss(DialogInterface dialog) {
-		isShowing = false;
-		super.onDismiss(dialog);
-	}
-
-
-	public boolean isShowing(){
-		return isShowing;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		getDialog().setCanceledOnTouchOutside(true);
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 }

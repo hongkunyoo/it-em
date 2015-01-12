@@ -18,7 +18,7 @@ import com.pinthecloud.item.fragment.MainDrawerFragment;
 import com.pinthecloud.item.fragment.MainDrawerFragment.MainDrawerMenu;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
@@ -119,8 +119,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		ItUser myItUser = ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class);
 
 		Picasso.with(holder.profileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(myItUser.getId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.launcher)
+		.load(BlobStorageHelper.getUserProfileImgUrl(myItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);
 

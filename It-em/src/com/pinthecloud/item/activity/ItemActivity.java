@@ -1,6 +1,5 @@
 package com.pinthecloud.item.activity;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -16,7 +15,6 @@ public class ItemActivity extends ItActivity {
 
 	private Toolbar mToolbar;
 	private Item mItem;
-	private Bitmap mItemImage;
 
 
 	@Override
@@ -25,7 +23,6 @@ public class ItemActivity extends ItActivity {
 		setContentView(R.layout.activity_toolbar_frame);
 
 		mItem = getIntent().getParcelableExtra(Item.INTENT_KEY);
-		mItemImage = getIntent().getParcelableExtra(Item.INTENT_KEY_IMAGE);
 		setToolbar();
 		setFragment();
 	}
@@ -43,7 +40,7 @@ public class ItemActivity extends ItActivity {
 
 		View shadow = findViewById(R.id.toolbar_shadow);
 		shadow.bringToFront();
-		
+
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 
@@ -53,7 +50,7 @@ public class ItemActivity extends ItActivity {
 
 	private void setFragment(){
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		ItFragment fragment = ItemFragment.newInstance(mItem, mItemImage);
+		ItFragment fragment = ItemFragment.newInstance(mItem);
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}
