@@ -27,7 +27,7 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.view.SquareImageView;
 
@@ -35,7 +35,7 @@ public class UploadFragment extends ItFragment {
 
 	private Uri mImageUri;
 	private Bitmap mItemImageBitmap;
-	private Bitmap mSmallItemImageBitmap;
+	private Bitmap mItemPreviewImageBitmap;
 
 	private SquareImageView mImage;
 	private EditText mContent;
@@ -61,10 +61,10 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(mSmallItemImageBitmap == null){
+		if(mItemPreviewImageBitmap == null){
 			mImage.setImageResource(R.drawable.launcher);
 		} else{
-			mImage.setImageBitmap(mSmallItemImageBitmap);
+			mImage.setImageBitmap(mItemPreviewImageBitmap);
 		}
 	}
 
@@ -81,8 +81,8 @@ public class UploadFragment extends ItFragment {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK){
 			String imagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
-			mItemImageBitmap = BitmapUtil.refineItemImageBitmap(mActivity, imagePath);
-			mSmallItemImageBitmap = BitmapUtil.refineItemImageSmallBitmap(mItemImageBitmap);
+			mItemImageBitmap = ImageUtil.refineItemImage(mActivity, imagePath);
+			mItemPreviewImageBitmap = ImageUtil.refineItemPreviewImage(mItemImageBitmap);
 			mActivity.invalidateOptionsMenu();
 		} else{
 			mActivity.finish();
@@ -114,8 +114,8 @@ public class UploadFragment extends ItFragment {
 		case R.id.upload_submit:
 			ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
 			Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId(),
-					mSmallItemImageBitmap.getWidth(), mSmallItemImageBitmap.getHeight());
-			uploadItem(item, mItemImageBitmap, mSmallItemImageBitmap);
+					mItemPreviewImageBitmap.getWidth(), mItemPreviewImageBitmap.getHeight());
+			uploadItem(item, mItemImageBitmap, mItemPreviewImageBitmap);
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
@@ -153,7 +153,9 @@ public class UploadFragment extends ItFragment {
 			public void onClick(View v) {
 				String[] itemList = getDialogItemList();
 				DialogCallback[] callbacks = getDialogCallbacks(itemList);
-				ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
+				
+				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+				listDialog.setCallbacks(callbacks);
 				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
@@ -203,7 +205,7 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void uploadItem(final Item item, final Bitmap itemImageBitmap, final Bitmap smallItemImageBitmap){
+	private void uploadItem(final Item item, final Bitmap itemImageBitmap, final Bitmap itemPreviewImageBitmap){
 		mApp.showProgressDialog(mActivity);
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
@@ -234,8 +236,8 @@ public class UploadFragment extends ItFragment {
 					}
 				});
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+BitmapUtil.SMALL_POSTFIX,
-						smallItemImageBitmap, new EntityCallback<String>() {
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+						itemPreviewImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {

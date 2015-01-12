@@ -1,6 +1,7 @@
 package com.pinthecloud.item.fragment;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,10 +13,10 @@ import android.view.ViewGroup;
 
 import com.facebook.AppEventsLogger;
 import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
-import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
@@ -26,7 +27,7 @@ import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.squareup.picasso.Picasso;
 
 import de.greenrobot.event.EventBus;
@@ -34,30 +35,20 @@ import de.greenrobot.event.EventBus;
 public class LoginFragment extends ItFragment {
 
 	private LoginButton mFacebookButton;
-	private UiLifecycleHelper mUiHelper;
-
-	private Session.StatusCallback mCallback = new Session.StatusCallback() {
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			onSessionStateChange(session, state, exception);
-		}
-	};
-
-	private FacebookDialog.Callback mDialogCallback = new FacebookDialog.Callback() {
-		@Override
-		public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
-		}
-		@Override
-		public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
-		}
-	};
+	private UiLifecycleHelper mFacebookUiHelper;
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mUiHelper = new UiLifecycleHelper(mActivity, mCallback);
-		mUiHelper.onCreate(savedInstanceState);
+		mFacebookUiHelper = new UiLifecycleHelper(mActivity, new StatusCallback() {
+
+			@Override
+			public void call(Session session, SessionState state, Exception exception) {
+				// Do nothing
+			}
+		});
+		mFacebookUiHelper.onCreate(savedInstanceState);
 	}
 
 
@@ -73,28 +64,24 @@ public class LoginFragment extends ItFragment {
 
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		mUiHelper.onSaveInstanceState(outState);
+	public void onResume() {
+		super.onResume();
+		mFacebookUiHelper.onResume();
+		AppEventsLogger.activateApp(mActivity);
 	}
 
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		Session session = Session.getActiveSession();
-		if (session != null && (session.isOpened() || session.isClosed()) ) {
-			onSessionStateChange(session, session.getState(), null);
-		}
-		mUiHelper.onResume();
-		AppEventsLogger.activateApp(mActivity);
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mFacebookUiHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		mUiHelper.onPause();
+		mFacebookUiHelper.onPause();
 		AppEventsLogger.deactivateApp(mActivity);
 	}
 
@@ -102,14 +89,14 @@ public class LoginFragment extends ItFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		mUiHelper.onDestroy();
+		mFacebookUiHelper.onDestroy();
 	}
 
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		mUiHelper.onActivityResult(requestCode, resultCode, data, mDialogCallback);
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		mFacebookUiHelper.onSaveInstanceState(outState);
 	}
 
 
@@ -119,23 +106,25 @@ public class LoginFragment extends ItFragment {
 
 
 	private void setButton(){
+		mFacebookButton.setFragment(mThisFragment);
+		mFacebookButton.setReadPermissions(Arrays.asList("email"));
 		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override
 			public void onUserInfoFetched(GraphUser user) {
 				Session session = Session.getActiveSession();
 				if (session != null && session.isOpened() || user != null) {
-					facebookLogin(user);
+					facebookLogin(session, user);
 				}
 			}
 		});
 	}
 
 
-	private void facebookLogin(final GraphUser user){
+	private void facebookLogin(Session session, final GraphUser user){
 		mApp.showProgressDialog(mActivity);
 
-		final ItUser itUser = new ItUser(user.getId(), ItUser.FACEBOOK, user.getFirstName(), "", "");
+		final ItUser itUser = new ItUser(user.getProperty("email").toString(), ItUser.FACEBOOK, user.getFirstName(), "", "");
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -208,7 +197,7 @@ public class LoginFragment extends ItFragment {
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				Bitmap profileImageBitmap = BitmapUtil.refineProfileImageBitmap(profileImage, null);
+				Bitmap profileImageBitmap = ImageUtil.refineProfileImage(profileImage, null);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
@@ -218,10 +207,9 @@ public class LoginFragment extends ItFragment {
 					}
 				});
 
-				Bitmap smallProfileImageBitmap = BitmapUtil.decodeInSampleSize(profileImageBitmap,
-						BitmapUtil.PROFILE_IMAGE_SMALL_SIZE, BitmapUtil.PROFILE_IMAGE_SMALL_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId()+BitmapUtil.SMALL_POSTFIX, 
-						smallProfileImageBitmap, new EntityCallback<String>() {
+				Bitmap profilePreviewImageBitmap = ImageUtil.refineProfileThumbnailImage(profileImageBitmap);
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
+						profilePreviewImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
@@ -245,9 +233,5 @@ public class LoginFragment extends ItFragment {
 		Intent intent = new Intent(mActivity, MainActivity.class);
 		startActivity(intent);
 		mActivity.finish();
-	}
-
-
-	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
 	}
 }

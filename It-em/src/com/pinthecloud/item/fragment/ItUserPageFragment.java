@@ -1,9 +1,7 @@
 package com.pinthecloud.item.fragment;
 
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
@@ -24,11 +22,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ProfileImageActivity;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.ProfileImageDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
@@ -36,11 +34,9 @@ import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
-
-
 
 public class ItUserPageFragment extends ItFragment {
 
@@ -192,7 +188,9 @@ public class ItUserPageFragment extends ItFragment {
 				public void onCompleted(ItUser entity) {
 					if(entity == null){
 						String message = getResources().getString(R.string.no_user);
-						ItAlertDialog exceptionDialog = new ItAlertDialog(null, message, null, null, false, new DialogCallback() {
+						ItAlertDialog noUserDialog = ItAlertDialog.newInstance(message, null, null, false);
+						noUserDialog.setCallback(new DialogCallback() {
+
 							@Override
 							public void doPositiveThing(Bundle bundle) {
 								mActivity.finish();
@@ -201,8 +199,8 @@ public class ItUserPageFragment extends ItFragment {
 							public void doNegativeThing(Bundle bundle) {
 								// Do nothing
 							}
-						}); 
-						exceptionDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+						});
+						noUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 						AsyncChainer.clearChain(frag);
 					} else {
 						mItUser = entity;
@@ -229,7 +227,6 @@ public class ItUserPageFragment extends ItFragment {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
-					intent.putExtra(ItUser.INTENT_KEY_IMAGE, ((BitmapDrawable)mProfileImage.getDrawable()).getBitmap());
 					startActivityForResult(intent, PROFILE_SETTINGS);
 				}
 			});
@@ -241,10 +238,8 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ProfileImageActivity.class);
-				intent.putExtra(ItUser.INTENT_KEY, mItUser.getId());
-				intent.putExtra(ItUser.INTENT_KEY_IMAGE, ((BitmapDrawable)mProfileImage.getDrawable()).getBitmap());
-				startActivity(intent);
+				ItDialogFragment replyDialog = ProfileImageDialog.newInstance(mItUser);
+				replyDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}
@@ -252,8 +247,7 @@ public class ItUserPageFragment extends ItFragment {
 
 	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.launcher)
+		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(mProfileImage);
 	}

@@ -3,7 +3,6 @@ package com.pinthecloud.item.adapter;
 import java.util.List;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -17,7 +16,7 @@ import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.squareup.picasso.Picasso;
 
 public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -111,7 +110,6 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				intent.putExtra(Item.INTENT_KEY_IMAGE, ((BitmapDrawable)holder.itemImage.getDrawable()).getBitmap());
 				mActivity.startActivity(intent);
 			}
 		});
@@ -120,8 +118,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	private void setNormalImageView(NormalViewHolder holder, Item item) {
 		Picasso.with(holder.itemImage.getContext())
-		.load(BlobStorageHelper.getItemImgUrl(item.getId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.launcher)
+		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 		.into(holder.itemImage);
 	}
 

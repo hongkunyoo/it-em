@@ -75,7 +75,7 @@ public class BlobStorageHelper {
 			container = blobClient.getContainerReference(containerName);
 			blob = container.getBlockBlobReference(id);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
 			blob.getProperties().setCacheControl("only-if-cached,max-age=" + Integer.MAX_VALUE);
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
 			baos.close();

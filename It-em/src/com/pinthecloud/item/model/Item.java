@@ -10,25 +10,24 @@ import com.google.gson.Gson;
 public class Item extends AbstractItemModel<Item> implements Parcelable {
 
 	public static String INTENT_KEY = "ITEM_INTENT_KEY";
-	public static String INTENT_KEY_IMAGE = "ITEM_INTENT_KEY_IMAGE";
 
 	private List<Reply> replyList;
 	private int replyCount;
 	private List<LikeIt> likeItList;
 	private int likeItCount;
-	private int imageWidth;
-	private int imageHeight;
+	private int previewImageWidth;
+	private int previewImageHeight;
 
 	public Item() {
 		super();
 	}
-	public Item(String content, String whoMade, String whoMadeId, int imageWidth, int imageHeight) {
+	public Item(String content, String whoMade, String whoMadeId, int previewImageWidth, int previewImageHeight) {
 		super();
 		this.setContent(content);
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
-		this.setImageWidth(imageWidth);
-		this.setImageHeight(imageHeight);
+		this.setPreviewImageWidth(previewImageWidth);
+		this.setPreviewImageHeight(previewImageHeight);
 	}
 
 	public String getRefId() {
@@ -60,17 +59,17 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setLikeItList(List<LikeIt> likeList) {
 		this.likeItList = likeList;
 	}
-	public int getImageWidth() {
-		return imageWidth;
+	public int getPreviewImageWidth() {
+		return previewImageWidth;
 	}
-	public void setImageWidth(int imageWidth) {
-		this.imageWidth = imageWidth;
+	public void setPreviewImageWidth(int previewImageWidth) {
+		this.previewImageWidth = previewImageWidth;
 	}
-	public int getImageHeight() {
-		return imageHeight;
+	public int getPreviewImageHeight() {
+		return previewImageHeight;
 	}
-	public void setImageHeight(int imageHeight) {
-		this.imageHeight = imageHeight;
+	public void setPreviewImageHeight(int previewImageHeight) {
+		this.previewImageHeight = previewImageHeight;
 	}
 	public void readItem(Item item) {
 		this.setId(item.getId());
@@ -83,8 +82,8 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setReplyCount(item.getReplyCount());
 		this.setLikeItList(item.getLikeItList());
 		this.setLikeItCount(item.getLikeItCount());
-		this.setImageWidth(item.getImageWidth());
-		this.setImageHeight(item.getImageHeight());
+		this.setPreviewImageWidth(item.getPreviewImageWidth());
+		this.setPreviewImageHeight(item.getPreviewImageHeight());
 	}
 
 

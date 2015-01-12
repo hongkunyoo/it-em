@@ -107,7 +107,7 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 
 
 	private void setComponent(){
-		mGridEmptyView.setText(getResources().getString(R.string.first_item));
+		mGridEmptyView.setText(getResources().getString(R.string.no_my_item));
 	}
 	
 	

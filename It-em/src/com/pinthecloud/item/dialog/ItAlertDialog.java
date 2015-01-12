@@ -9,42 +9,52 @@ import com.pinthecloud.item.interfaces.DialogCallback;
 
 public class ItAlertDialog extends ItDialogFragment{
 
-	private DialogCallback mCallback;
-	private String mTitle;
+	private static final String MESSAGE_KEY = "MESSAGE_KEY";
+	private static final String OK_MESSAGE_KEY = "OK_MESSAGE_KEY";
+	private static final String CANCEL_MESSAGE_KEY = "CANCEL_MESSAGE_KEY";
+	private static final String CANCEL_KEY = "CANCEL_KEY";
+
 	private String mMessage;
 	private String mOkMessage;
 	private String mCancelMessage;
 	private boolean mCancel;
+	private DialogCallback mCallback;
+
+	public void setCallback(DialogCallback mCallback) {
+		this.mCallback = mCallback;
+	}
 
 
-	public ItAlertDialog(String title, String message, String okMessage, String cancelMessage, boolean cancel, DialogCallback callback) {
-		super();
-		this.mTitle = title;
-		this.mMessage = message;
-		this.mOkMessage = okMessage;
-		this.mCancelMessage = cancelMessage;
-		this.mCancel = cancel;
-		this.mCallback = callback;
+	public static ItAlertDialog newInstance(String message, String okMessage, String cancelMessage, boolean cancel) {
+		ItAlertDialog dialog = new ItAlertDialog();
+		Bundle bundle = new Bundle();
+		bundle.putString(MESSAGE_KEY, message);
+		bundle.putString(OK_MESSAGE_KEY, okMessage);
+		bundle.putString(CANCEL_MESSAGE_KEY, cancelMessage);
+		bundle.putBoolean(CANCEL_KEY, cancel);
+		dialog.setArguments(bundle);
+		return dialog;
+	}
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mMessage = getArguments().getString(MESSAGE_KEY);
+		mOkMessage = getArguments().getString(OK_MESSAGE_KEY);
+		mCancelMessage = getArguments().getString(CANCEL_MESSAGE_KEY);
+		mCancel = getArguments().getBoolean(CANCEL_KEY);
 	}
 
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		setStyle(STYLE_NO_TITLE, 0);
 		AlertDialog.Builder altBuilder = new AlertDialog.Builder(mActivity);
-		setTitle(altBuilder);
 		setMessage();
 		setDialog(altBuilder);
 		AlertDialog alertDialog = altBuilder.create();
 		return alertDialog;
-	}
-
-
-	private void setTitle(AlertDialog.Builder altBuilder){
-		if(mTitle == null){
-			setStyle(STYLE_NO_TITLE, 0);
-		}else{
-			altBuilder.setTitle(mTitle);
-		}
 	}
 
 
@@ -64,7 +74,7 @@ public class ItAlertDialog extends ItDialogFragment{
 
 			@Override
 			public void onClick(DialogInterface dialog,int which) {
-				mCallback.doPositiveThing(null);
+				mCallback.doPositiveThing(null);	
 				dismiss();
 			}
 		});

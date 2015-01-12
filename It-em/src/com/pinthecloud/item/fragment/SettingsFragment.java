@@ -69,7 +69,9 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				String message = getResources().getString(R.string.logout_message);
-				ItAlertDialog logoutDialog = new ItAlertDialog(null, message, null, null, true, new DialogCallback() {
+				ItAlertDialog logoutDialog = ItAlertDialog.newInstance(message, null, null, true);
+				logoutDialog.setCallback(new DialogCallback() {
+
 					@Override
 					public void doPositiveThing(Bundle bundle) {
 						if(mMyItUser.getPlatform().equals(ItUser.FACEBOOK)){
@@ -86,7 +88,7 @@ public class SettingsFragment extends ItFragment {
 					public void doNegativeThing(Bundle bundle) {
 						// Do nothing
 					}
-				}); 
+				});
 				logoutDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});

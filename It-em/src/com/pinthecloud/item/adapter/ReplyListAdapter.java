@@ -19,14 +19,13 @@ import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ReplyDialog;
-import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.squareup.picasso.Picasso;
 
@@ -38,7 +37,6 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 	private ItActivity mActivity;
-	private ItFragment mFrag;
 	private Item mItem;
 	private List<Reply> mReplyList;
 
@@ -58,9 +56,8 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 
-	public ReplyListAdapter(ItActivity activity, ItFragment frag, Item item, List<Reply> replyList) {
+	public ReplyListAdapter(ItActivity activity, Item item, List<Reply> replyList) {
 		this.mActivity = activity;
-		this.mFrag = frag;
 		this.mItem = item;
 		this.mReplyList = replyList;
 	}
@@ -158,8 +155,8 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 			@Override
 			public void onClick(View v) {
-				ReplyDialog replyDialog = new ReplyDialog(mFrag, mItem);
-				replyDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				ItDialogFragment replyDialog = ReplyDialog.newInstance(mItem);
+				replyDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}
@@ -192,8 +189,10 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				public boolean onLongClick(View v) {
 					String[] itemList = mActivity.getResources().getStringArray(R.array.reply_long_click_string_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
-					ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-					listDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+					
+					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+					listDialog.setCallbacks(callbacks);
+					listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 					return false;
 				}
 			});
@@ -205,8 +204,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	private void setNormalImageView(NormalViewHolder holder, final Reply reply) {
 		Picasso.with(holder.profileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(reply.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.launcher)
+		.load(BlobStorageHelper.getUserProfileImgUrl(reply.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);
 

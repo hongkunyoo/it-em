@@ -6,6 +6,7 @@
     <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="content_margin">16dp</dimen>
     <dimen name="toolbar_title_margin">72dp</dimen>
+    <dimen name="corner_radius">5dp</dimen>
 
     <!-- Main Drawer -->
     <dimen name="main_drawer_width">280dp</dimen>
@@ -21,6 +22,7 @@
     <dimen name="home_item_information_height">48dp</dimen>
     <dimen name="home_item_content_margin">12dp</dimen>
     <dimen name="home_item_spacing">1dp</dimen>
+    <dimen name="home_item_image_max_height">240dp</dimen>
 
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>
@@ -34,6 +36,9 @@
     <dimen name="it_user_page_tab_number_margin">6dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">2dp</dimen>
 
+    <!-- Profile Image -->
+    <dimen name="profile_image_width">160dp</dimen>
+    
     <!-- My Item -->
     <dimen name="my_item_content_bottom_margin">150dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>

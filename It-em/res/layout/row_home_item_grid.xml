@@ -55,7 +55,9 @@
             android:id="@+id/row_home_item_list_item_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:maxHeight="@dimen/home_item_image_max_height"
+            android:scaleType="centerCrop" />
 
         <include layout="@layout/custom_line" />
 

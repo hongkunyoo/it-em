@@ -10,34 +10,39 @@ import com.pinthecloud.item.interfaces.DialogCallback;
 
 public class ItAlertListDialog extends ItDialogFragment{
 
-	protected DialogCallback[] mCallbacks;
-	private String mTitle;
+	private static final String ITEM_LIST_KEY = "ITEM_LIST_KEY";
+
 	private String[] mItemList;
+	private DialogCallback[] mCallbacks;
+
+	public void setCallbacks(DialogCallback[] mCallbacks) {
+		this.mCallbacks = mCallbacks;
+	}
 
 
-	public ItAlertListDialog(String title, String[] list, DialogCallback[] callbacks) {
-		super();
-		this.mCallbacks = callbacks;
-		this.mTitle = title;
-		this.mItemList = list;
+	public static ItAlertListDialog newInstance(String[] itemList) {
+		ItAlertListDialog dialog = new ItAlertListDialog();
+		Bundle bundle = new Bundle();
+		bundle.putStringArray(ITEM_LIST_KEY, itemList);
+		dialog.setArguments(bundle);
+		return dialog;
+	}
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mItemList = getArguments().getStringArray(ITEM_LIST_KEY);
 	}
 
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		setStyle(STYLE_NO_TITLE, 0);
 		AlertDialog.Builder altBuilder = new AlertDialog.Builder(mActivity);
-		setTitle(altBuilder);
 		setItemList(altBuilder);
-		return altBuilder.create();
-	}
-
-
-	private void setTitle(AlertDialog.Builder altBuilder){
-		if(mTitle == null){
-			setStyle(STYLE_NO_TITLE, 0);
-		}else{
-			altBuilder.setTitle(mTitle);
-		}
+		AlertDialog alertDialog = altBuilder.create();
+		return alertDialog;
 	}
 
 

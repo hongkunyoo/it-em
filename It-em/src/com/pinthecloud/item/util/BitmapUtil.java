@@ -10,17 +10,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 
+import com.pinthecloud.item.event.ItException;
+
+import de.greenrobot.event.EventBus;
+
 public class BitmapUtil {
-
-	public static final int ITEM_IMAGE_SIZE = 612;
-	public static final int ITEM_IMAGE_SMALL_SIZE = 150;
-	public static final int ITEM_IMAGE_SMALL_MAX_SIZE = 480;
-
-	public static final int PROFILE_IMAGE_SIZE = 612;
-	public static final int PROFILE_IMAGE_SMALL_SIZE = 75;
-
-	public static final String SMALL_POSTFIX = "_small";
-
 
 	public static Bitmap decodeInSampleSize(Context context, String imagePath, int reqWidth, int reqHeight) {
 		// First decode with inJustDecodeBounds=true to check dimensions
@@ -58,11 +52,11 @@ public class BitmapUtil {
 
 
 	public static Bitmap decodeInSampleSize(Bitmap bitmap, int reqWidth, int reqHeight) {
-		if(bitmap.getWidth() >= reqWidth*2 && bitmap.getHeight() >= reqHeight*2){
+		if(bitmap.getWidth() >= reqWidth*2 && bitmap.getHeight() >= reqHeight) {
 			ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
 			byte[] byteArray = byteArrayBitmapStream.toByteArray();
-			bitmap = decodeInSampleSize(byteArray, reqWidth, reqHeight);
+			bitmap = decodeInSampleSize(byteArray, reqWidth, reqHeight);	
 		}
 		return bitmap;
 	}
@@ -107,6 +101,7 @@ public class BitmapUtil {
 				}
 			}
 		} catch (IOException e) {
+			EventBus.getDefault().post(new ItException("getImageOrientation", ItException.TYPE.INTERNAL_ERROR));
 		}
 		return 0;
 	}
@@ -118,71 +113,5 @@ public class BitmapUtil {
 		Matrix mtx = new Matrix();
 		mtx.postRotate(degree);
 		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
-	}
-
-
-	public static Bitmap refineItemImageBitmap(Context context, String imagePath){
-		Bitmap bitmap = decodeInSampleSize(context, imagePath, ITEM_IMAGE_SIZE, ITEM_IMAGE_SIZE);
-
-		// If image is too big, Resize
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-		if(width >= height && width >= ITEM_IMAGE_SIZE*4){
-			bitmap = decodeInSampleSize(bitmap, ITEM_IMAGE_SIZE*2, 0);
-		} else if(width < height && height >= ITEM_IMAGE_SIZE*4) {
-			bitmap = decodeInSampleSize(bitmap, 0, ITEM_IMAGE_SIZE*2);
-		}
-
-		return rotate(bitmap, getImageOrientation(imagePath));
-	}
-
-
-	public static Bitmap refineItemImageSmallBitmap(Bitmap bitmap){
-		bitmap = BitmapUtil.decodeInSampleSize(bitmap, ITEM_IMAGE_SMALL_SIZE, ITEM_IMAGE_SMALL_SIZE);
-
-		// If image is too big, Crop to thumbnail
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-		if(width >= height && width > ITEM_IMAGE_SMALL_MAX_SIZE){
-			bitmap = Bitmap.createBitmap(bitmap, (int)((float)width/2 - (float)ITEM_IMAGE_SMALL_MAX_SIZE/2), 0,
-					ITEM_IMAGE_SMALL_MAX_SIZE, height);
-		} else if(width < height && height > ITEM_IMAGE_SMALL_MAX_SIZE) {
-			bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, ITEM_IMAGE_SMALL_MAX_SIZE);
-		}
-
-		return bitmap;
-	}
-
-
-	public static Bitmap refineProfileImageBitmap(Resources resources, int id){
-		Bitmap bitmap = decodeInSampleSize(resources, id, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE);
-		return refineProfileImageBitmap(bitmap, null);
-	}
-
-
-	public static Bitmap refineProfileImageBitmap(Context context, String imagePath){
-		Bitmap bitmap = decodeInSampleSize(context, imagePath, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE);
-		return refineProfileImageBitmap(bitmap, imagePath);
-	}
-
-
-	public static Bitmap refineProfileImageBitmap(Bitmap bitmap, String imagePath){
-		bitmap = BitmapUtil.decodeInSampleSize(bitmap, BitmapUtil.PROFILE_IMAGE_SIZE, BitmapUtil.PROFILE_IMAGE_SIZE);
-
-		// Crop to Square
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-		if(width >= height){
-			bitmap = Bitmap.createBitmap(bitmap, (int)((float)width/2 - (float)height/2), 0, height, height);
-		} else{
-			bitmap = Bitmap.createBitmap(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
-		}
-
-		// If image is too big, Resize
-		if(bitmap.getWidth() > PROFILE_IMAGE_SIZE){
-			bitmap = Bitmap.createScaledBitmap(bitmap, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE, true);
-		}
-
-		return rotate(bitmap, getImageOrientation(imagePath));
 	}
 }

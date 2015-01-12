@@ -65,16 +65,16 @@ public abstract class ItActivity extends ActionBarActivity {
 
 
 	public void onEvent(ItException exception) {
-		String title = null;
 		String message = null;
 		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)){
 			message = getResources().getString(R.string.network_unavailable_message);
 		} else {
-			title = exception.getType().toString();
-			message = exception.toString();
+			message = getResources().getString(R.string.error_message);
 		}
 
-		ItAlertDialog exceptionDialog = new ItAlertDialog(title, message, null, null, false, new DialogCallback() {
+		ItAlertDialog exceptionDialog = ItAlertDialog.newInstance(message, null, null, false);
+		exceptionDialog.setCallback(new DialogCallback() {
+
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				android.os.Process.killProcess(android.os.Process.myPid());
@@ -84,7 +84,7 @@ public abstract class ItActivity extends ActionBarActivity {
 			public void doNegativeThing(Bundle bundle) {
 				// Do nothing
 			}
-		}); 
+		});
 		exceptionDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 	}
 }

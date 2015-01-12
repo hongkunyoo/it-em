@@ -3,7 +3,6 @@ package com.pinthecloud.item.adapter;
 import java.util.List;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +34,7 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.squareup.picasso.Picasso;
@@ -140,8 +139,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				public void onClick(View v) {
 					String[] itemList = mActivity.getResources().getStringArray(R.array.home_more_string_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, item);
-					ItAlertListDialog listDialog = new ItAlertListDialog(null, itemList, callbacks);
-					listDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+
+					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+					listDialog.setCallbacks(callbacks);
+					listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 				}
 			});
 		} else {
@@ -155,7 +156,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
-				intent.putExtra(Item.INTENT_KEY_IMAGE, ((BitmapDrawable)holder.itemImage.getDrawable()).getBitmap());
 				mActivity.startActivity(intent);
 			}
 		});
@@ -187,8 +187,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 			@Override
 			public void onClick(View v) {
-				ReplyDialog replyDialog = new ReplyDialog(mFrag, item);
-				replyDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				ItDialogFragment replyDialog = ReplyDialog.newInstance(item);
+				replyDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 
@@ -196,24 +196,25 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 			@Override
 			public void onClick(View v) {
-				ProductTagDialog productTagDialog = new ProductTagDialog(mFrag, item);
-				productTagDialog.show(mFrag.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(item);
+				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}
 
 
 	private void setImageView(final ViewHolder holder, Item item, int position) {
-		holder.itemImage.setHeightRatio((double)item.getImageHeight()/item.getImageWidth());
+		int maxHeihgt = mActivity.getResources().getDimensionPixelSize(R.dimen.home_item_image_max_height);
+		int width = item.getPreviewImageWidth();
+		int height = Math.min(item.getPreviewImageHeight(), maxHeihgt);
+		holder.itemImage.setHeightRatio((double)height/width);
 
 		Picasso.with(holder.itemImage.getContext())
-		.load(BlobStorageHelper.getItemImgUrl(item.getId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.launcher)
+		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 		.into(holder.itemImage);
 
 		Picasso.with(holder.profileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+BitmapUtil.SMALL_POSTFIX))
-		.placeholder(R.drawable.launcher)
+		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);
 	}
@@ -262,7 +263,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 					}
 				});
 
-				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+BitmapUtil.SMALL_POSTFIX, new EntityCallback<Boolean>() {
+				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

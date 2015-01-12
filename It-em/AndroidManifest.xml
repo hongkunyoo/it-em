@@ -46,9 +46,6 @@
             android:name=".activity.ItUserPageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ProfileImageActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.ItemActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />

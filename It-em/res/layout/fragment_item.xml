@@ -11,13 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <ImageView
+        <com.pinthecloud.item.view.DynamicHeightImageView
             android:id="@+id/item_frag_item_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:background="@android:color/white"
-            android:contentDescription="@string/image" />
+            android:background="@android:color/white" />
 
         <include layout="@layout/custom_line" />
 
@@ -146,7 +145,7 @@
                     android:layout_height="@dimen/content_margin"
                     android:background="@color/brand_color" />
 
-                <include layout="@layout/fragment_reply" />
+                <include layout="@layout/dialog_reply" />
 
                 <View
                     android:layout_width="match_parent"

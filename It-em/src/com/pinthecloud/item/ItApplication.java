@@ -45,11 +45,6 @@ public class ItApplication extends Application {
 	private static UserHelper userHelper;
 	private static BlobStorageHelper blobStorageHelper;
 
-	public ItApplication() {
-		super();
-		app = this;
-	}
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -57,6 +52,8 @@ public class ItApplication extends Application {
 	}
 
 	private void init() {
+		app = this;
+		
 		String AZURE_URL;
 		String AZURE_KEY;
 		if (GlobalVariable.DEBUG_MODE) {
