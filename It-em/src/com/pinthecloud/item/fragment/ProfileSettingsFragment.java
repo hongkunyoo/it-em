@@ -27,9 +27,8 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.FileUtil;
-import com.pinthecloud.item.util.ItLog;
+import com.pinthecloud.item.util.ImageUtil;
 import com.squareup.picasso.Picasso;
 
 public class ProfileSettingsFragment extends ItFragment {
@@ -182,7 +181,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setProfileImage(){
 		Picasso.with(mProfileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(mProfileImage);
 	}
@@ -211,7 +210,6 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				ItLog.log("getDialogCallbacks 0");
 				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
 			}
 			@Override

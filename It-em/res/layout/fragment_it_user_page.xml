@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/it_user_page_profile_height"
                 android:background="@android:color/white"
-                android:padding="@dimen/content_margin" >
+                android:padding="@dimen/key_line_first" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,8 +43,8 @@
 
                     <com.pinthecloud.item.view.CircleImageView
                         android:id="@+id/it_user_page_frag_profile_image"
-                        android:layout_width="@dimen/item_profile_image_width"
-                        android:layout_height="@dimen/item_profile_image_width"
+                        android:layout_width="@dimen/profile_preview_image_width"
+                        android:layout_height="@dimen/profile_preview_image_width"
                         app:border_color="@color/line_color"
                         app:border_width="@dimen/line_width" />
 
@@ -52,7 +52,7 @@
                         android:id="@+id/it_user_page_frag_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/key_line_first"
                         android:textColor="@color/brand_text_color"
                         app:textType="subhead" />
 

@@ -4,24 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/reply_row_height"
     android:gravity="center_vertical"
-    android:paddingEnd="@dimen/content_margin"
-    android:paddingLeft="@dimen/content_margin"
-    android:paddingRight="@dimen/content_margin"
-    android:paddingStart="@dimen/content_margin" >
+    android:paddingEnd="@dimen/key_line_first"
+    android:paddingLeft="@dimen/key_line_first"
+    android:paddingRight="@dimen/key_line_first"
+    android:paddingStart="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.CircleImageView
         xmlns:civ="http://schemas.android.com/apk/res-auto"
         android:id="@+id/row_reply_list_profile_image"
-        android:layout_width="@dimen/home_item_profile_image_width"
-        android:layout_height="@dimen/home_item_profile_image_width"
+        android:layout_width="@dimen/profile_thumbnail_image_width"
+        android:layout_height="@dimen/profile_thumbnail_image_width"
         civ:border_color="@color/line_color"
         civ:border_width="@dimen/line_width" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/toolbar_title_margin"
-        android:layout_marginStart="@dimen/toolbar_title_margin"
+        android:layout_marginLeft="@dimen/key_line_second"
+        android:layout_marginStart="@dimen/key_line_second"
         android:orientation="vertical" >
 
         <RelativeLayout

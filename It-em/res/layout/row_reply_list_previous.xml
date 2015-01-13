@@ -5,10 +5,10 @@
     android:layout_height="@dimen/reply_row_previous_height"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingEnd="@dimen/content_margin"
-    android:paddingLeft="@dimen/content_margin"
-    android:paddingRight="@dimen/content_margin"
-    android:paddingStart="@dimen/content_margin" >
+    android:paddingEnd="@dimen/key_line_first"
+    android:paddingLeft="@dimen/key_line_first"
+    android:paddingRight="@dimen/key_line_first"
+    android:paddingStart="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.CustomTextView
         android:layout_width="wrap_content"

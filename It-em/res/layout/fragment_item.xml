@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:orientation="vertical"
-                    android:padding="@dimen/content_margin" >
+                    android:padding="@dimen/key_line_first" >
 
                     <com.pinthecloud.item.view.CustomTextView
                         android:id="@+id/item_frag_content"
@@ -56,7 +56,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/content_margin"
+                        android:layout_marginBottom="@dimen/key_line_first"
                         android:orientation="horizontal" >
 
                         <com.pinthecloud.item.view.CustomTextView
@@ -118,10 +118,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/home_item_information_height"
                     android:background="@color/accent_color"
-                    android:paddingEnd="@dimen/content_margin"
-                    android:paddingLeft="@dimen/content_margin"
-                    android:paddingRight="@dimen/content_margin"
-                    android:paddingStart="@dimen/content_margin" >
+                    android:paddingEnd="@dimen/key_line_first"
+                    android:paddingLeft="@dimen/key_line_first"
+                    android:paddingRight="@dimen/key_line_first"
+                    android:paddingStart="@dimen/key_line_first" >
 
                     <com.pinthecloud.item.view.CustomTextView
                         android:layout_width="wrap_content"
@@ -142,14 +142,14 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/content_margin"
+                    android:layout_height="@dimen/key_line_first"
                     android:background="@color/brand_color" />
 
                 <include layout="@layout/dialog_reply" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/content_margin"
+                    android:layout_height="@dimen/key_line_first"
                     android:background="@color/brand_color" />
 
                 <LinearLayout
@@ -158,11 +158,11 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/content_margin"
-                    android:paddingEnd="@dimen/content_margin"
-                    android:paddingLeft="@dimen/content_margin"
-                    android:paddingRight="@dimen/content_margin"
-                    android:paddingStart="@dimen/content_margin" >
+                    android:paddingBottom="@dimen/key_line_first"
+                    android:paddingEnd="@dimen/key_line_first"
+                    android:paddingLeft="@dimen/key_line_first"
+                    android:paddingRight="@dimen/key_line_first"
+                    android:paddingStart="@dimen/key_line_first" >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -192,8 +192,8 @@
                         <com.pinthecloud.item.view.CircleImageView
                             xmlns:civ="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/item_frag_profile_image"
-                            android:layout_width="@dimen/item_profile_image_width"
-                            android:layout_height="@dimen/item_profile_image_width"
+                            android:layout_width="@dimen/profile_preview_image_width"
+                            android:layout_height="@dimen/profile_preview_image_width"
                             app:border_color="@color/line_color"
                             app:border_width="@dimen/line_width" />
 
@@ -201,8 +201,8 @@
                             android:id="@+id/item_frag_nick_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/content_margin"
-                            android:layout_marginStart="@dimen/content_margin"
+                            android:layout_marginLeft="@dimen/key_line_first"
+                            android:layout_marginStart="@dimen/key_line_first"
                             android:textColor="@color/brand_text_color"
                             app:textType="subhead" />
                     </LinearLayout>

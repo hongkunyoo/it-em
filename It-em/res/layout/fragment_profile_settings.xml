@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:padding="@dimen/content_margin" >
+    android:padding="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.CircleImageView
         xmlns:civ="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_settings_frag_profile_image"
-        android:layout_width="@dimen/profile_settings_profile_image_width"
-        android:layout_height="@dimen/profile_settings_profile_image_width"
+        android:layout_width="@dimen/profile_preview_image_width"
+        android:layout_height="@dimen/profile_preview_image_width"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/content_margin"
+        android:layout_marginBottom="@dimen/key_line_first"
         civ:border_color="@color/line_color"
         civ:border_width="@dimen/line_width" />
 
@@ -35,10 +35,10 @@
             android:ems="10"
             android:hint="@string/nick_name"
             android:maxLength="@integer/nick_name_max_length"
-            android:paddingEnd="@dimen/content_margin"
-            android:paddingLeft="@dimen/content_margin"
-            android:paddingRight="@dimen/content_margin"
-            android:paddingStart="@dimen/content_margin"
+            android:paddingEnd="@dimen/key_line_first"
+            android:paddingLeft="@dimen/key_line_first"
+            android:paddingRight="@dimen/key_line_first"
+            android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
             android:textColorHint="@color/reply_input_hint"
             android:textSize="@dimen/font_medium" >
@@ -67,10 +67,10 @@
             android:ems="10"
             android:hint="@string/information"
             android:inputType="textMultiLine"
-            android:paddingEnd="@dimen/content_margin"
-            android:paddingLeft="@dimen/content_margin"
-            android:paddingRight="@dimen/content_margin"
-            android:paddingStart="@dimen/content_margin"
+            android:paddingEnd="@dimen/key_line_first"
+            android:paddingLeft="@dimen/key_line_first"
+            android:paddingRight="@dimen/key_line_first"
+            android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
             android:textColorHint="@color/reply_input_hint"
             android:textSize="@dimen/font_medium" />
@@ -95,10 +95,10 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/website"
-            android:paddingEnd="@dimen/content_margin"
-            android:paddingLeft="@dimen/content_margin"
-            android:paddingRight="@dimen/content_margin"
-            android:paddingStart="@dimen/content_margin"
+            android:paddingEnd="@dimen/key_line_first"
+            android:paddingLeft="@dimen/key_line_first"
+            android:paddingRight="@dimen/key_line_first"
+            android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
             android:textColorHint="@color/reply_input_hint"
             android:textSize="@dimen/font_medium" />
