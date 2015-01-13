@@ -56,7 +56,8 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
 		findComponent(view);
 		setComponent();
-		setGrid(inflater);
+		setGrid();
+		updateGrid();
 		return view;
 	}
 
@@ -69,8 +70,46 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 	}
 
 
-	@Override
-	public void updateTab() {
+	private void findComponent(View view){
+		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mGridLayout = (RelativeLayout)view.findViewById(R.id.my_item_frag_grid_layout);
+		mGridEmptyView = (TextView)view.findViewById(R.id.my_item_frag_grid_empty_view);
+		mGridView = (RecyclerView)view.findViewById(R.id.my_item_frag_grid);
+	}
+
+
+	private void setComponent(){
+		mGridEmptyView.setText(getResources().getString(R.string.no_my_item));
+	}
+	
+	
+	private void setGrid(){
+		mGridView.setHasFixedSize(true);
+
+		int gridColumnNum = getResources().getInteger(R.integer.my_item_grid_column_num);
+		mGridLayoutManager = new GridLayoutManager(mActivity, gridColumnNum);
+		mGridView.setLayoutManager(mGridLayoutManager);
+		mGridView.setItemAnimator(new DefaultItemAnimator());
+
+		mItemList = new ArrayList<Item>();
+		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mItemList);
+		mGridView.setAdapter(mGridAdapter);
+
+		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				// Scroll Header
+				if (mItUserPageScrollTabHolder != null){
+					mItUserPageScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
+				}
+			}
+		});
+	}
+	
+	
+	public void updateGrid() {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mGridLayout.setVisibility(View.GONE);
 
@@ -93,45 +132,6 @@ public class MyItemFragment extends ItUserPageScrollTabFragment {
 				mGridAdapter.addAll(list);
 				mGridView.scrollToPosition(0);
 				mItUserPageScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
-			}
-		});
-	}
-
-
-	private void findComponent(View view){
-		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mGridLayout = (RelativeLayout)view.findViewById(R.id.my_item_frag_grid_layout);
-		mGridEmptyView = (TextView)view.findViewById(R.id.my_item_frag_grid_empty_view);
-		mGridView = (RecyclerView)view.findViewById(R.id.my_item_frag_grid);
-	}
-
-
-	private void setComponent(){
-		mGridEmptyView.setText(getResources().getString(R.string.no_my_item));
-	}
-	
-	
-	private void setGrid(LayoutInflater inflater){
-		mGridView.setHasFixedSize(true);
-
-		int gridColumnNum = getResources().getInteger(R.integer.my_item_grid_column_num);
-		mGridLayoutManager = new GridLayoutManager(mActivity, gridColumnNum);
-		mGridView.setLayoutManager(mGridLayoutManager);
-		mGridView.setItemAnimator(new DefaultItemAnimator());
-
-		mItemList = new ArrayList<Item>();
-		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mItemList);
-		mGridView.setAdapter(mGridAdapter);
-
-		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-
-			@Override
-			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-				super.onScrolled(recyclerView, dx, dy);
-				// Scroll Header
-				if (mItUserPageScrollTabHolder != null){
-					mItUserPageScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
-				}
 			}
 		});
 	}

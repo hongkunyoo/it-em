@@ -204,10 +204,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setImageView(final ViewHolder holder, Item item, int position) {
-		int maxHeihgt = mActivity.getResources().getDimensionPixelSize(R.dimen.home_item_image_max_height);
-		int width = item.getPreviewImageWidth();
-		int height = Math.min(item.getPreviewImageHeight(), maxHeihgt);
-		holder.itemImage.setHeightRatio((double)height/width);
+		double heightRatio = Math.min((double)item.getPreviewImageHeight()/item.getPreviewImageWidth(), 2);
+		holder.itemImage.setHeightRatio(heightRatio);
 
 		Picasso.with(holder.itemImage.getContext())
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))

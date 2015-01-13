@@ -14,18 +14,18 @@
             android:id="@+id/row_home_item_list_profile_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_item_profile_height"
-            android:paddingEnd="@dimen/content_margin"
+            android:paddingEnd="@dimen/key_line_first"
             android:paddingLeft="@dimen/none"
-            android:paddingRight="@dimen/content_margin"
+            android:paddingRight="@dimen/key_line_first"
             android:paddingStart="@dimen/none" >
 
             <com.pinthecloud.item.view.CircleImageView
                 android:id="@+id/row_home_item_list_profile_image"
-                android:layout_width="@dimen/home_item_profile_image_width"
-                android:layout_height="@dimen/home_item_profile_image_width"
+                android:layout_width="@dimen/profile_thumbnail_image_width"
+                android:layout_height="@dimen/profile_thumbnail_image_width"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/content_margin"
-                android:layout_marginStart="@dimen/content_margin"
+                android:layout_marginLeft="@dimen/key_line_first"
+                android:layout_marginStart="@dimen/key_line_first"
                 app:border_color="@color/line_color"
                 app:border_width="@dimen/line_width" />
 
@@ -35,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/toolbar_title_margin"
-                android:layout_marginStart="@dimen/toolbar_title_margin"
+                android:layout_marginLeft="@dimen/key_line_second"
+                android:layout_marginStart="@dimen/key_line_second"
                 android:textColor="@color/brand_text_color"
                 app:textType="subhead" />
 
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/content_margin" >
+            android:padding="@dimen/key_line_first" >
 
             <com.pinthecloud.item.view.CustomTextView
                 android:id="@+id/row_home_item_list_content"
@@ -126,7 +126,6 @@
                     android:id="@+id/row_home_item_list_reply_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/zero"
                     android:textColor="@color/brand_text_color_light"
                     app:textType="caption" />
 
@@ -156,7 +155,6 @@
                     android:id="@+id/row_home_item_list_product_tag_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/zero"
                     android:textColor="@color/brand_text_color_light"
                     app:textType="caption" />
 

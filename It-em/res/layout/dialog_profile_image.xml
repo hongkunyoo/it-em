@@ -5,20 +5,19 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="@dimen/content_margin" >
+    android:padding="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.CustomTextView
         android:id="@+id/profile_image_frag_nick_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/content_margin"
+        android:layout_marginBottom="@dimen/key_line_first"
         app:textType="subhead" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/profile_image_frag_profile_image"
         android:layout_width="@dimen/profile_image_width"
         android:layout_height="@dimen/profile_image_width"
-        android:layout_marginTop="@dimen/content_margin"
         android:adjustViewBounds="true"
         app:riv_corner_radius="@dimen/corner_radius" />
 

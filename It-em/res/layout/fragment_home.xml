@@ -36,9 +36,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/content_margin"
-            android:layout_marginEnd="@dimen/content_margin"
-            android:layout_marginRight="@dimen/content_margin" />
+            android:layout_marginBottom="@dimen/key_line_first"
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginRight="@dimen/key_line_first" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -26,8 +26,8 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.squareup.picasso.Picasso;
 
 import de.greenrobot.event.EventBus;

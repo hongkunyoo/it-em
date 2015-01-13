@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/content_margin"
+        android:layout_marginBottom="@dimen/key_line_first"
         facebook:login_text="@string/facebook_login"
         facebook:logout_text="@string/facebook_login" />
 

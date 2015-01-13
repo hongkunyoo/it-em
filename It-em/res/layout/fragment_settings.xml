@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_row_height"
         android:background="@android:color/white"
-        android:paddingEnd="@dimen/content_margin"
-        android:paddingLeft="@dimen/content_margin"
-        android:paddingRight="@dimen/content_margin"
-        android:paddingStart="@dimen/content_margin" >
+        android:paddingEnd="@dimen/key_line_first"
+        android:paddingLeft="@dimen/key_line_first"
+        android:paddingRight="@dimen/key_line_first"
+        android:paddingStart="@dimen/key_line_first" >
 
         <com.pinthecloud.item.view.CustomTextView
             android:layout_width="wrap_content"
@@ -39,10 +39,10 @@
         android:layout_height="@dimen/settings_row_nick_name_height"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingEnd="@dimen/content_margin"
-        android:paddingLeft="@dimen/content_margin"
-        android:paddingRight="@dimen/content_margin"
-        android:paddingStart="@dimen/content_margin" >
+        android:paddingEnd="@dimen/key_line_first"
+        android:paddingLeft="@dimen/key_line_first"
+        android:paddingRight="@dimen/key_line_first"
+        android:paddingStart="@dimen/key_line_first" >
 
         <com.pinthecloud.item.view.CustomTextView
             android:id="@+id/settings_frag_it_user_id"
@@ -63,8 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/content_margin"
-            android:layout_marginStart="@dimen/content_margin"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
             android:contentDescription="@string/logout"
             android:src="@drawable/launcher" />
 
@@ -72,8 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/toolbar_title_margin"
-            android:layout_marginStart="@dimen/toolbar_title_margin"
+            android:layout_marginLeft="@dimen/key_line_second"
+            android:layout_marginStart="@dimen/key_line_second"
             android:text="@string/logout"
             android:textColor="@color/settings_logout_text"
             app:textType="body" />

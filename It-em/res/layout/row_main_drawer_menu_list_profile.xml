@@ -6,8 +6,8 @@
 
     <com.pinthecloud.item.view.CircleImageView
         android:id="@+id/row_home_drawer_menu_list_profile_image"
-        android:layout_width="@dimen/home_item_profile_image_width"
-        android:layout_height="@dimen/home_item_profile_image_width"
+        android:layout_width="@dimen/profile_thumbnail_image_width"
+        android:layout_height="@dimen/profile_thumbnail_image_width"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/main_drawer_menu_profile_image_left_margin"
         android:layout_marginStart="@dimen/main_drawer_menu_profile_image_left_margin"

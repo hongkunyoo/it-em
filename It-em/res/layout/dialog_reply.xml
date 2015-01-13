@@ -15,7 +15,7 @@
             android:layout_height="?attr/actionBarSize"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="@dimen/content_margin" >
+            android:padding="@dimen/key_line_first" >
 
             <com.pinthecloud.item.view.CustomTextView
                 android:id="@+id/reply_frag_title"
@@ -59,10 +59,10 @@
                     android:layout_height="@dimen/reply_row_height"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
-                    android:paddingEnd="@dimen/content_margin"
-                    android:paddingLeft="@dimen/content_margin"
-                    android:paddingRight="@dimen/content_margin"
-                    android:paddingStart="@dimen/content_margin"
+                    android:paddingEnd="@dimen/key_line_first"
+                    android:paddingLeft="@dimen/key_line_first"
+                    android:paddingRight="@dimen/key_line_first"
+                    android:paddingStart="@dimen/key_line_first"
                     android:visibility="gone" >
 
                     <com.pinthecloud.item.view.CustomTextView
@@ -89,9 +89,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingEnd="@dimen/content_margin"
+                    android:paddingEnd="@dimen/key_line_first"
                     android:paddingLeft="@dimen/none"
-                    android:paddingRight="@dimen/content_margin"
+                    android:paddingRight="@dimen/key_line_first"
                     android:paddingStart="@dimen/none" >
 
                     <EditText
@@ -105,10 +105,10 @@
                         android:lineSpacingExtra="@dimen/font_xx_large"
                         android:lineSpacingMultiplier="0"
                         android:maxLines="4"
-                        android:paddingEnd="@dimen/content_margin"
-                        android:paddingLeft="@dimen/content_margin"
-                        android:paddingRight="@dimen/content_margin"
-                        android:paddingStart="@dimen/content_margin"
+                        android:paddingEnd="@dimen/key_line_first"
+                        android:paddingLeft="@dimen/key_line_first"
+                        android:paddingRight="@dimen/key_line_first"
+                        android:paddingStart="@dimen/key_line_first"
                         android:textColor="@color/brand_text_color"
                         android:textColorHint="@color/reply_input_hint"
                         android:textSize="@dimen/font_large" />

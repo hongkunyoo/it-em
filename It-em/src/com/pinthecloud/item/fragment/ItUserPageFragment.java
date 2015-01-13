@@ -33,8 +33,8 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
 
@@ -60,8 +60,6 @@ public class ItUserPageFragment extends ItFragment {
 
 	private String mItUserId;
 	private ItUser mItUser;
-
-	private boolean[] mIsUpdatedTabList;
 
 
 	public static ItFragment newInstance(String itUserId) {
@@ -275,17 +273,12 @@ public class ItUserPageFragment extends ItFragment {
 			@Override
 			public void adjustScroll(int scrollHeight) {
 			}
-			@Override
-			public void updateTab() {
-			}
 		});
 		mViewPager.setAdapter(mViewPagerAdapter);
 	}
 
 
 	private void setTab(){
-		mIsUpdatedTabList = new boolean[mViewPagerAdapter.getCount()];
-
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 
@@ -294,12 +287,6 @@ public class ItUserPageFragment extends ItFragment {
 				// Get scroll tab holder interface
 				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
 				ItUserPageScrollTabHolder fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
-
-				// Update current tab fragment
-				if(!mIsUpdatedTabList[position]){
-					fragmentContent.updateTab();
-					mIsUpdatedTabList[position] = true;
-				}
 
 				// Scroll grid view items of tab fragment
 				int currentItem = mViewPager.getCurrentItem();
