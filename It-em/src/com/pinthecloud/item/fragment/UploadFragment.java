@@ -3,7 +3,6 @@ package com.pinthecloud.item.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,9 +33,7 @@ import com.pinthecloud.item.util.ImageUtil;
 
 public class UploadFragment extends ItFragment {
 
-	private Uri mImageUri;
-	private String mItemImagePath;
-	private Bitmap mItemImageBitmap;
+	private Uri mItemImageUri;
 
 	private ImageView mItemImage;
 	private EditText mContent;
@@ -52,8 +49,7 @@ public class UploadFragment extends ItFragment {
 		findComponent(view);
 		setComponent();
 		setImage();
-
-		mImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
+		FileUtil.getMediaFromGallery(mThisFragment);
 
 		return view;
 	}
@@ -62,11 +58,11 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(mItemImageBitmap == null){
-			mItemImage.setImageResource(R.drawable.launcher);
-		} else {
-			mItemImage.setImageBitmap(mItemImageBitmap);
-		}
+		mApp.getPicasso()
+		.load(mItemImageUri)
+		.placeholder(R.drawable.launcher)
+		.fit().centerCrop()
+		.into(mItemImage);
 	}
 
 
@@ -80,10 +76,13 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == Activity.RESULT_OK){
-			mItemImagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
-			mItemImageBitmap = ImageUtil.refineItemImage(mActivity, mItemImagePath);
-			mActivity.invalidateOptionsMenu();
+		switch(requestCode){
+		case FileUtil.GALLERY:
+			if (resultCode == Activity.RESULT_OK){
+				mItemImageUri = data.getData();
+				mActivity.invalidateOptionsMenu();
+			}
+			break;
 		}
 	}
 
@@ -110,10 +109,7 @@ public class UploadFragment extends ItFragment {
 			mActivity.onBackPressed();
 			break;
 		case R.id.upload_submit:
-			ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
-			Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId(),
-					mItemImageBitmap.getWidth(), mItemImageBitmap.getHeight());
-			uploadItem(item, mItemImageBitmap);
+			uploadItem();
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
@@ -161,7 +157,7 @@ public class UploadFragment extends ItFragment {
 
 
 	private String[] getDialogItemList(){
-		if(mItemImageBitmap != null){
+		if(mItemImageUri != null){
 			return getResources().getStringArray(R.array.upload_image_select_delete_string_array);
 		}else{
 			return getResources().getStringArray(R.array.upload_image_select_string_array);
@@ -172,39 +168,51 @@ public class UploadFragment extends ItFragment {
 	private DialogCallback[] getDialogCallbacks(String[] itemList){
 		DialogCallback[] callbacks = new DialogCallback[itemList.length];
 
-		callbacks[0] = new DialogCallback() {
+		for(int i=0 ; i<itemList.length ; i++){
+			switch(i){
+			case 0:
+				callbacks[0] = new DialogCallback() {
 
-			@Override
-			public void doPositiveThing(Bundle bundle) {
-				mImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
+					@Override
+					public void doPositiveThing(Bundle bundle) {
+						FileUtil.getMediaFromGallery(mThisFragment);
+					}
+					@Override
+					public void doNegativeThing(Bundle bundle) {
+					}
+				};
+				break;
+			case 1:
+				callbacks[1] = new DialogCallback() {
+
+					@Override
+					public void doPositiveThing(Bundle bundle) {
+						// Set profile image default
+						mItemImageUri = null;
+						mItemImage.setImageResource(R.drawable.launcher);
+						mActivity.invalidateOptionsMenu();
+					}
+					@Override
+					public void doNegativeThing(Bundle bundle) {
+					}
+				};
+				break;
 			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-			}
-		};
-
-		if(((BitmapDrawable)mItemImage.getDrawable()).getBitmap() == mItemImageBitmap){
-			callbacks[1] = new DialogCallback() {
-
-				@Override
-				public void doPositiveThing(Bundle bundle) {
-					// Set profile image default
-					mItemImage.setImageResource(R.drawable.launcher);
-					mItemImageBitmap = null;
-					mActivity.invalidateOptionsMenu();
-				}
-				@Override
-				public void doNegativeThing(Bundle bundle) {
-				}
-			};
 		}
 
 		return callbacks;
 	}
 
 
-	private void uploadItem(final Item item, final Bitmap itemImageBitmap){
+	private void uploadItem(){
 		mApp.showProgressDialog(mActivity);
+
+		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
+		final String itemImagePath = FileUtil.getMediaPathFromGalleryUri(mActivity, mItemImageUri);
+		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
+		final Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId(),
+				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
+
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -234,7 +242,7 @@ public class UploadFragment extends ItFragment {
 					}
 				});
 
-				Bitmap itemPreviewImageBitmap = ImageUtil.refineItemPreviewImage(mItemImageBitmap);
+				Bitmap itemPreviewImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
 						itemPreviewImageBitmap, new EntityCallback<String>() {
 
@@ -244,7 +252,7 @@ public class UploadFragment extends ItFragment {
 					}
 				});
 
-				Bitmap itemThumbnailImageBitmap = ImageUtil.refineItemThumbnailImage(mItemImageBitmap);
+				Bitmap itemThumbnailImageBitmap = ImageUtil.refineSquareImage(itemImagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
 						itemThumbnailImageBitmap, new EntityCallback<String>() {
 
@@ -271,6 +279,6 @@ public class UploadFragment extends ItFragment {
 
 
 	private boolean isSubmitEnable(){
-		return mContent.getText().toString().trim().length() > 0 && mItemImageBitmap != null;
+		return mContent.getText().toString().trim().length() > 0 && mItemImageUri != null;
 	}
 }

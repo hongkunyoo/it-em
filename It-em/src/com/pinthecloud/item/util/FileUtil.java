@@ -17,6 +17,7 @@ import android.text.format.Time;
 
 import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.R;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.squareup.picasso.PicassoTool;
@@ -73,6 +74,54 @@ public class FileUtil {
 	}
 
 
+	public static void getMediaFromGallery(ItFragment frag){
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, Media.EXTERNAL_CONTENT_URI);
+		intent.setType("image/*");
+		frag.startActivityForResult(Intent.createChooser(intent, frag.getResources().getString(R.string.select_picture)), GALLERY);
+	}
+
+
+	public static String getMediaPathFromGalleryUri(Context context, Uri mediaUri){
+		String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+		Cursor cursor = context.getContentResolver().query(mediaUri, filePathColumn, null, null, null);
+		cursor.moveToFirst();
+
+		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+		String imagePath = cursor.getString(columnIndex);
+		cursor.close();
+
+		return imagePath;
+	}
+
+
+	public static Uri getMediaFromCamera(ItFragment frag){
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		Uri mediaUri = getOutputMediaFileUri();
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri);
+		frag.startActivityForResult(intent, CAMERA);
+		return mediaUri;
+	}
+
+
+	public static Uri getMediaUriFromCamera(Context context, Intent data, Uri mediaUri){
+		if(mediaUri == null){
+			if(data == null){
+				mediaUri = getLastCaptureBitmapUri(context);
+			} else {
+				mediaUri = data.getData();
+				if(mediaUri == null){
+					// Intent pass data as Bitmap
+					Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+					mediaUri = getOutputMediaFileUri();
+					saveBitmapToFile(context, mediaUri, bitmap);
+				}
+			}
+		}
+		return mediaUri;
+	}
+
+
 	public static Uri getLastCaptureBitmapUri(Context context){
 		Uri uri =null;
 		String[] IMAGE_PROJECTION = {
@@ -87,61 +136,6 @@ public class FileUtil {
 			cursorImages.close();
 		}
 		return uri;  
-	}
-
-
-	public static Uri getMediaUri(ItFragment frag, int mediaType){
-		Intent intent = null;
-		Uri mediaUri = null;
-		switch(mediaType){
-		case GALLERY:
-			intent = new Intent(Intent.ACTION_PICK, Media.EXTERNAL_CONTENT_URI);
-			intent.setType("image/*");
-			frag.startActivityForResult(intent, GALLERY);
-			break;
-		case CAMERA:
-			intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			mediaUri = getOutputMediaFileUri();
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri);
-			frag.startActivityForResult(intent, CAMERA);
-			break;
-		}
-		return mediaUri;
-	}
-
-
-	public static String getMediaPath(Context context, Intent data, Uri mediaUri, int mediaType){
-		String imagePath = null;
-		switch(mediaType){
-		case GALLERY:
-			mediaUri = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-			Cursor cursor = context.getContentResolver().query(mediaUri, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			imagePath = cursor.getString(columnIndex);
-			cursor.close();
-			break;
-		case CAMERA:
-			if(mediaUri == null){
-				if(data == null){
-					mediaUri = getLastCaptureBitmapUri(context);
-				} else{
-					mediaUri = data.getData();
-					if(mediaUri == null){
-						// Intent pass data as Bitmap
-						Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-						mediaUri = getOutputMediaFileUri();
-						saveBitmapToFile(context, mediaUri, bitmap);
-					}
-				}
-			}
-			imagePath = mediaUri.getPath();
-			break;
-		}
-		return imagePath;
 	}
 
 

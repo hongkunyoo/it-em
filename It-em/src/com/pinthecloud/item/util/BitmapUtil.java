@@ -3,7 +3,6 @@ package com.pinthecloud.item.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +15,7 @@ import de.greenrobot.event.EventBus;
 
 public class BitmapUtil {
 
-	public static Bitmap decodeInSampleSize(Context context, String imagePath, int reqWidth, int reqHeight) {
+	public static Bitmap decodeInSampleSize(String imagePath, int reqWidth, int reqHeight) {
 		// First decode with inJustDecodeBounds=true to check dimensions
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
@@ -123,5 +122,16 @@ public class BitmapUtil {
 
 	public static Bitmap crop(Bitmap bitmap, int x, int y, int width, int height) {
 		return Bitmap.createBitmap(bitmap, x, y, width, height);
+	}
+
+	public static Bitmap cropSquare(Bitmap bitmap) {
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		if(width > height){
+			bitmap = BitmapUtil.crop(bitmap, (int)((float)width/2 - (float)height/2), 0, height, height);
+		} else if(width < height) {
+			bitmap = BitmapUtil.crop(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
+		}
+		return bitmap;
 	}
 }

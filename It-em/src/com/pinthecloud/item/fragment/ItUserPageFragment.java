@@ -85,9 +85,7 @@ public class ItUserPageFragment extends ItFragment {
 
 		setHasOptionsMenu(true);
 		findComponent(view);
-
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mTabHeight = getResources().getDimensionPixelSize(R.dimen.it_user_page_tab_height);
+		setComponent();
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
@@ -174,6 +172,12 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
+	private void setComponent(){
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mTabHeight = getResources().getDimensionPixelSize(R.dimen.it_user_page_tab_height);
+	}
+	
+	
 	private void setItUser(final ItFragment frag){
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItUserId.equals(mItUser.getId())){

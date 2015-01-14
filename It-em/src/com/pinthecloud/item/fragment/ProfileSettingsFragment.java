@@ -81,12 +81,21 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode == FileUtil.GALLERY || requestCode == FileUtil.CAMERA){
-			if (resultCode == Activity.RESULT_OK){
-				String imagePath = FileUtil.getMediaPath(mActivity, data, mProfileImageUri, requestCode);
-				Bitmap profileImageBitmap = ImageUtil.refineProfileImage(mActivity, imagePath);
-				updateProfileImage(profileImageBitmap);
+		if (resultCode == Activity.RESULT_OK){
+			String imagePath = null;
+
+			switch(requestCode){
+			case FileUtil.GALLERY:
+				mProfileImageUri = data.getData();
+				imagePath = FileUtil.getMediaPathFromGalleryUri(mActivity, mProfileImageUri);
+				break;
+			case FileUtil.CAMERA:
+				mProfileImageUri = FileUtil.getMediaUriFromCamera(mActivity, data, mProfileImageUri);
+				imagePath = mProfileImageUri.getPath();
+				break;
 			}
+
+			updateProfileImage(imagePath);
 		}
 	}
 
@@ -178,14 +187,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void setProfileImage(){
-		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.fit()
-		.into(mProfileImage);
-	}
-
-
 	private void setButton(){
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
@@ -202,6 +203,14 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
+	private void setProfileImage(){
+		mApp.getPicasso()
+		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.fit()
+		.into(mProfileImage);
+	}
+
+
 	private DialogCallback[] getDialogCallbacks(String[] itemList){
 		DialogCallback[] callbacks = new DialogCallback[itemList.length];
 
@@ -209,7 +218,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.GALLERY);
+				FileUtil.getMediaFromGallery(mThisFragment);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -220,7 +229,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				mProfileImageUri = FileUtil.getMediaUri(mThisFragment, FileUtil.CAMERA);
+				mProfileImageUri = FileUtil.getMediaFromCamera(mThisFragment);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -232,8 +241,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				Bitmap profileImageBitmap = ImageUtil.refineProfileImage(getResources(), R.drawable.launcher);
-				updateProfileImage(profileImageBitmap);
+				updateProfileImage(R.drawable.launcher);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -285,47 +293,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void updateProfileImage(final Bitmap profileImageBitmap){
-		mApp.showProgressDialog(mActivity);
-		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				AsyncChainer.waitChain(2);
-
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
-						profileImageBitmap, new EntityCallback<String>() {
-
-					@Override
-					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-
-				Bitmap profileThumbnailImageBitmap = ImageUtil.refineProfileThumbnailImage(profileImageBitmap);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
-						profileThumbnailImageBitmap, new EntityCallback<String>() {
-
-					@Override
-					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				FileUtil.clearCache();
-				setProfileImage();
-
-				mApp.dismissProgressDialog();
-				Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
-			}
-		});
-	}
-
-
 	private void updateProfileSettings(){
 		mMyItUser.setNickName(mNickName.getText().toString());
 		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
@@ -345,6 +312,61 @@ public class ProfileSettingsFragment extends ItFragment {
 				intent.putExtra(ItUser.INTENT_KEY, entity);
 				mActivity.setResult(Activity.RESULT_OK, intent);
 				mActivity.finish();
+			}
+		});
+	}
+
+
+	private void updateProfileImage(String imagePath){
+		mApp.showProgressDialog(mActivity);
+		Bitmap profileImageBitmap = ImageUtil.refineSquareImage(imagePath, ImageUtil.PROFILE_IMAGE_SIZE);
+		Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(imagePath, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
+		updateProfileImage(profileImageBitmap, profileThumbnailImageBitmap);
+	}
+
+
+	private void updateProfileImage(int resId){
+		mApp.showProgressDialog(mActivity);
+		Bitmap profileImageBitmap = ImageUtil.refineSquareImage(getResources(), R.drawable.launcher, ImageUtil.PROFILE_IMAGE_SIZE);
+		Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(getResources(), R.drawable.launcher, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
+		updateProfileImage(profileImageBitmap, profileThumbnailImageBitmap);
+	}
+
+
+	private void updateProfileImage(final Bitmap profileImageBitmap, final Bitmap profileThumbnailImageBitmap){
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
+
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
+						profileImageBitmap, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
+						profileThumbnailImageBitmap, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(frag);
+					}
+				});
+			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
+
+				FileUtil.clearCache();
+				setProfileImage();
 			}
 		});
 	}

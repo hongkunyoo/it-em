@@ -107,8 +107,8 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 			}
 		});
 	}
-	
-	
+
+
 	public void updateGrid() {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mGridLayout.setVisibility(View.GONE);
@@ -117,21 +117,23 @@ public class ItItemFragment extends ItUserPageScrollTabFragment {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
-				mProgressBar.setVisibility(View.GONE);
-				mGridLayout.setVisibility(View.VISIBLE);
+				if(isAdded()){
+					mProgressBar.setVisibility(View.GONE);
+					mGridLayout.setVisibility(View.VISIBLE);
 
-				if(count <= 0){
-					mGridEmptyView.setVisibility(View.VISIBLE);
-					mGridView.setVisibility(View.GONE);
-				} else {
-					mGridEmptyView.setVisibility(View.GONE);
-					mGridView.setVisibility(View.VISIBLE);
+					if(count <= 0){
+						mGridEmptyView.setVisibility(View.VISIBLE);
+						mGridView.setVisibility(View.GONE);
+					} else {
+						mGridEmptyView.setVisibility(View.GONE);
+						mGridView.setVisibility(View.VISIBLE);
+					}
+
+					mItemList.clear();
+					mGridAdapter.addAll(list);
+					mGridView.scrollToPosition(0);
+					mItUserPageScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 				}
-
-				mItemList.clear();
-				mGridAdapter.addAll(list);
-				mGridView.scrollToPosition(0);
-				mItUserPageScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 			}
 		});
 	}

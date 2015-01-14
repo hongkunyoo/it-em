@@ -26,9 +26,8 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.squareup.picasso.Picasso;
+import com.pinthecloud.item.util.ImageUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -175,7 +174,10 @@ public class LoginFragment extends ItFragment {
 			protected Bitmap doInBackground(Void... params) {
 				Bitmap bitmap = null;
 				try {
-					bitmap = Picasso.with(mActivity).load("https://graph.facebook.com/"+user.getId()+"/picture?type=large").get();
+					bitmap = mApp.getPicasso()
+							.load("https://graph.facebook.com/"+user.getId()+"/picture?type=large")
+							.resize(ImageUtil.PROFILE_IMAGE_SIZE, ImageUtil.PROFILE_IMAGE_SIZE).centerCrop()
+							.get();
 				} catch (IOException e) {
 					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.SERVER_ERROR));
 				}
@@ -197,7 +199,7 @@ public class LoginFragment extends ItFragment {
 			public void doNext(final ItFragment frag, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				Bitmap profileImageBitmap = ImageUtil.refineProfileImage(profileImage, null);
+				Bitmap profileImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_IMAGE_SIZE);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
@@ -207,9 +209,9 @@ public class LoginFragment extends ItFragment {
 					}
 				});
 
-				Bitmap profilePreviewImageBitmap = ImageUtil.refineProfileThumbnailImage(profileImageBitmap);
+				Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
-						profilePreviewImageBitmap, new EntityCallback<String>() {
+						profileThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
