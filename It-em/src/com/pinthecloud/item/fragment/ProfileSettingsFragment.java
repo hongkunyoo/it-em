@@ -29,7 +29,6 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.util.ImageUtil;
-import com.squareup.picasso.Picasso;
 
 public class ProfileSettingsFragment extends ItFragment {
 
@@ -180,7 +179,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void setProfileImage(){
-		Picasso.with(mProfileImage.getContext())
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(mProfileImage);
@@ -194,7 +193,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void onClick(View v) {
 				String[] itemList = getResources().getStringArray(R.array.profile_image_select_string_array);
 				DialogCallback[] callbacks = getDialogCallbacks(itemList);
-				
+
 				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
 				listDialog.setCallbacks(callbacks);
 				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);

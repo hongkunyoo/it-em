@@ -17,6 +17,7 @@ import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
+import com.squareup.picasso.Picasso;
 
 public class ItApplication extends Application {
 
@@ -26,103 +27,109 @@ public class ItApplication extends Application {
 	private final String AZURE_TEST_URL = "https://it-emtest.azure-mobile.net/";
 	private final String AZURE_TEST_KEY = "yHCLhyMsjiaLSbcMKeUdUOoZkbYXfK52";
 
-	// Mobile Service instances
-	private static MobileServiceClient mClient;
+	// Mobile Service
+	private MobileServiceClient mClient;
 
 	// Application
 	private static ItApplication app;
-	private static ProgressDialog progressDialog;
+	private ProgressDialog progressDialog;
 
 	// Analysis
-	private static UserHabitHelper userHabitHelper;
-	private static GAHelper gaHelper;
+	private UserHabitHelper userHabitHelper;
+	private GAHelper gaHelper;
 
 	// Helper
-	private static PrefHelper prefHelper;
-	private static ObjectPrefHelper objectPrefHelper;
-	private static AimHelper aimHelper;
-	private static AimDBHelper aimDBHelper;
-	private static UserHelper userHelper;
-	private static BlobStorageHelper blobStorageHelper;
+	private Picasso picasso;
+	private PrefHelper prefHelper;
+	private ObjectPrefHelper objectPrefHelper;
+	private AimHelper aimHelper;
+	private AimDBHelper aimDBHelper;
+	private UserHelper userHelper;
+	private BlobStorageHelper blobStorageHelper;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		init();
-	}
-
-	private void init() {
 		app = this;
-		
-		String AZURE_URL;
-		String AZURE_KEY;
-		if (GlobalVariable.DEBUG_MODE) {
-			AZURE_URL = AZURE_TEST_URL;
-			AZURE_KEY = AZURE_TEST_KEY;
-		} else {
-			AZURE_URL = AZURE_REAL_URL;
-			AZURE_KEY = AZURE_REAL_KEY;
-		}
 
-		try {
-			mClient = new MobileServiceClient(
-					AZURE_URL,
-					AZURE_KEY,
-					app);
-		} catch (MalformedURLException e) {
-		}
+		mClient = getMobileClient();
 
-		userHabitHelper = new UserHabitHelper();
-		gaHelper = new GAHelper(app);
+		userHabitHelper = getUserHabitHelper();
+		gaHelper = getGaHelper();
 
-		prefHelper = new PrefHelper(app);
-		objectPrefHelper = new ObjectPrefHelper(app);
-		aimHelper = new AimHelper(app);
-		userHelper = new UserHelper(app);
-		aimDBHelper = new AimDBHelper(app);
-		blobStorageHelper = new BlobStorageHelper(app);
+		picasso = getPicasso();
+		prefHelper = getPrefHelper();
+		objectPrefHelper = getObjectPrefHelper();
+		aimHelper = getAimHelper();
+		userHelper = getUserHelper();
+		aimDBHelper = getAimDBHelper();
+		blobStorageHelper = getBlobStorageHelper();
 	}
 
 	public static ItApplication getInstance(){
 		return app;
 	}
 	public MobileServiceClient getMobileClient() {
-		if (mClient == null) init();
+		if(mClient == null){
+			String AZURE_URL;
+			String AZURE_KEY;
+			if (GlobalVariable.DEBUG_MODE) {
+				AZURE_URL = AZURE_TEST_URL;
+				AZURE_KEY = AZURE_TEST_KEY;
+			} else {
+				AZURE_URL = AZURE_REAL_URL;
+				AZURE_KEY = AZURE_REAL_KEY;
+			}
+
+			try {
+				mClient = new MobileServiceClient(
+						AZURE_URL,
+						AZURE_KEY,
+						this);
+			} catch (MalformedURLException e) {
+			}
+		}
 		return mClient;
 	}
 	public UserHabitHelper getUserHabitHelper() {
+		if(userHabitHelper == null) userHabitHelper = new UserHabitHelper();
 		return userHabitHelper;
 	}
 	public GAHelper getGaHelper() {
+		if(gaHelper == null) gaHelper = new GAHelper(app);
 		return gaHelper;
 	}
+	public Picasso getPicasso() {
+		if(picasso == null) picasso = Picasso.with(app);
+		return picasso; 
+	}
 	public PrefHelper getPrefHelper() {
-		if (prefHelper == null) init();
+		if(prefHelper == null) prefHelper = new PrefHelper(app);
 		return prefHelper;
 	}
 	public ObjectPrefHelper getObjectPrefHelper() {
-		if (objectPrefHelper == null) init();
+		if(objectPrefHelper == null) objectPrefHelper = new ObjectPrefHelper(app);
 		return objectPrefHelper;
 	}
 	public AimHelper getAimHelper() {
-		if (aimHelper == null) init();
+		if(aimHelper == null) aimHelper = new AimHelper(app);
 		return aimHelper;
 	}
 	public AimDBHelper getAimDBHelper() {
-		if (aimDBHelper == null) init();
+		if(aimDBHelper == null) aimDBHelper = new AimDBHelper(app);
 		return aimDBHelper;
 	}
 	public UserHelper getUserHelper() {
-		if (userHelper == null) init();
+		if(userHelper == null) userHelper = new UserHelper(app);
 		return userHelper;
 	}
 	public BlobStorageHelper getBlobStorageHelper() {
-		if (blobStorageHelper == null) init();
+		if(blobStorageHelper == null)blobStorageHelper = new BlobStorageHelper(app);
 		return blobStorageHelper;
 	}
 
 	public boolean isOnline(){
-		ConnectivityManager cm = (ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
 	}

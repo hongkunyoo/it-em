@@ -13,6 +13,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
@@ -27,7 +28,6 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.squareup.picasso.Picasso;
 
 public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -36,6 +36,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		NORMAL
 	}
 
+	private ItApplication mApp;
 	private ItActivity mActivity;
 	private Item mItem;
 	private List<Reply> mReplyList;
@@ -57,6 +58,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 	public ReplyListAdapter(ItActivity activity, Item item, List<Reply> replyList) {
+		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mItem = item;
 		this.mReplyList = replyList;
@@ -174,7 +176,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 		holder.content.setText(reply.getContent());
 		if(reply.getRawCreateDateTime() != null){
-			holder.time.setText(reply.getCreateDateTime().getElapsedDateTime());
+			holder.time.setText(reply.getCreateDateTime().getElapsedDateTime(mActivity.getResources()));
 		} else {
 			holder.time.setText("");
 		}
@@ -189,7 +191,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				public boolean onLongClick(View v) {
 					String[] itemList = mActivity.getResources().getStringArray(R.array.reply_long_click_string_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
-					
+
 					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
 					listDialog.setCallbacks(callbacks);
 					listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
@@ -203,7 +205,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 	private void setNormalImageView(NormalViewHolder holder, final Reply reply) {
-		Picasso.with(holder.profileImage.getContext())
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(reply.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);

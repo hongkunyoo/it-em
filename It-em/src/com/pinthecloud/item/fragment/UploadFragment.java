@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,9 +35,10 @@ import com.pinthecloud.item.util.ImageUtil;
 public class UploadFragment extends ItFragment {
 
 	private Uri mImageUri;
+	private String mItemImagePath;
 	private Bitmap mItemImageBitmap;
 
-	private ImageView mImage;
+	private ImageView mItemImage;
 	private EditText mContent;
 
 
@@ -61,9 +63,9 @@ public class UploadFragment extends ItFragment {
 	public void onStart() {
 		super.onStart();
 		if(mItemImageBitmap == null){
-			mImage.setImageResource(R.drawable.launcher);
-		} else{
-			mImage.setImageBitmap(mItemImageBitmap);
+			mItemImage.setImageResource(R.drawable.launcher);
+		} else {
+			mItemImage.setImageBitmap(mItemImageBitmap);
 		}
 	}
 
@@ -71,7 +73,7 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		mImage.setImageBitmap(null);
+		mItemImage.setImageBitmap(null);
 	}
 
 
@@ -79,11 +81,9 @@ public class UploadFragment extends ItFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK){
-			String imagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
-			mItemImageBitmap = ImageUtil.refineItemImage(mActivity, imagePath);
+			mItemImagePath = FileUtil.getMediaPath(mActivity, data, mImageUri, requestCode);
+			mItemImageBitmap = ImageUtil.refineItemImage(mActivity, mItemImagePath);
 			mActivity.invalidateOptionsMenu();
-		} else{
-			mActivity.finish();
 		}
 	}
 
@@ -121,7 +121,7 @@ public class UploadFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mImage = (ImageView)view.findViewById(R.id.upload_frag_image);
+		mItemImage = (ImageView)view.findViewById(R.id.upload_frag_item_image);
 		mContent = (EditText)view.findViewById(R.id.upload_frag_content);
 	}
 
@@ -145,7 +145,7 @@ public class UploadFragment extends ItFragment {
 
 
 	private void setImage(){
-		mImage.setOnClickListener(new OnClickListener() {
+		mItemImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -183,13 +183,13 @@ public class UploadFragment extends ItFragment {
 			}
 		};
 
-		if(mItemImageBitmap != null){
+		if(((BitmapDrawable)mItemImage.getDrawable()).getBitmap() == mItemImageBitmap){
 			callbacks[1] = new DialogCallback() {
 
 				@Override
 				public void doPositiveThing(Bundle bundle) {
 					// Set profile image default
-					mImage.setImageResource(R.drawable.launcher);
+					mItemImage.setImageResource(R.drawable.launcher);
 					mItemImageBitmap = null;
 					mActivity.invalidateOptionsMenu();
 				}

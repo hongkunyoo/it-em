@@ -20,7 +20,6 @@ import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.squareup.picasso.Picasso;
 
 public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -29,11 +28,13 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		NORMAL
 	}
 
+	private ItApplication mApp;
 	private ItFragment mfrag; 
 	private List<MainDrawerMenu> mMenuList;
 
 
 	public MainDrawerMenuListAdapter(ItFragment frag, List<MainDrawerMenu> menuList) {
+		this.mApp = ItApplication.getInstance();
 		this.mfrag = frag;
 		this.mMenuList = menuList;
 	}
@@ -116,9 +117,9 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 
 	private void setProfileViewHolder(ProfileViewHolder holder, final int position) {
-		ItUser myItUser = ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class);
+		ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 
-		Picasso.with(holder.profileImage.getContext())
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(myItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);

@@ -2,9 +2,9 @@ package com.pinthecloud.item.model;
 
 import java.util.TimeZone;
 
+import android.content.res.Resources;
 import android.text.format.Time;
 
-import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 
 // 20141113014345 --> 2014-11-13 01:43:45
@@ -61,29 +61,28 @@ public class ItDateTime {
 		return nowJulianDay - itJulianDay;
 	}
 
-	public String getElapsedDateTime() {
+	public String getElapsedDateTime(Resources resources) {
 		Time nowTime = new Time();
 		nowTime.setToNow();
 
-		ItApplication app = ItApplication.getInstance();
 		if(dateTime.year == nowTime.year && dateTime.month == nowTime.month && dateTime.monthDay == nowTime.monthDay){
 			if(dateTime.hour == nowTime.hour){
 				if(dateTime.minute == nowTime.minute){
 					int elapsedSecond = nowTime.second-dateTime.second;
 					if(elapsedSecond < 0)	elapsedSecond = 0;
-					return elapsedSecond + app.getResources().getString(R.string.second_ago);
+					return elapsedSecond + resources.getString(R.string.second_ago);
 				} else {
-					return (nowTime.minute-dateTime.minute) + app.getResources().getString(R.string.minute_ago);
+					return (nowTime.minute-dateTime.minute) + resources.getString(R.string.minute_ago);
 				}
 			} else {
-				return (nowTime.hour-dateTime.hour) + app.getResources().getString(R.string.hour_ago);
+				return (nowTime.hour-dateTime.hour) + resources.getString(R.string.hour_ago);
 			}
 		} else {
 			int elapsedDate = getElapsedDate();
 			if(elapsedDate == 1){
-				return app.getResources().getString(R.string.yesterday) + " " + toPrettyTime();
+				return resources.getString(R.string.yesterday) + " " + toPrettyTime();
 			} else if(elapsedDate < 4) {
-				return elapsedDate + app.getResources().getString(R.string.day_ago) + " " + toPrettyTime();
+				return elapsedDate + resources.getString(R.string.day_ago) + " " + toPrettyTime();
 			} else {
 				return toPrettyDateTime();
 			}

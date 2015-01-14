@@ -15,19 +15,19 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	private int replyCount;
 	private List<LikeIt> likeItList;
 	private int likeItCount;
-	private int previewImageWidth;
-	private int previewImageHeight;
+	private int imageWidth;
+	private int imageHeight;
 
 	public Item() {
 		super();
 	}
-	public Item(String content, String whoMade, String whoMadeId, int previewImageWidth, int previewImageHeight) {
+	public Item(String content, String whoMade, String whoMadeId, int imageWidth, int imageHeight) {
 		super();
 		this.setContent(content);
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
-		this.setPreviewImageWidth(previewImageWidth);
-		this.setPreviewImageHeight(previewImageHeight);
+		this.setImageWidth(imageWidth);
+		this.setImageHeight(imageHeight);
 	}
 
 	public String getRefId() {
@@ -59,17 +59,17 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setLikeItList(List<LikeIt> likeList) {
 		this.likeItList = likeList;
 	}
-	public int getPreviewImageWidth() {
-		return previewImageWidth;
+	public int getImageWidth() {
+		return imageWidth;
 	}
-	public void setPreviewImageWidth(int previewImageWidth) {
-		this.previewImageWidth = previewImageWidth;
+	public void setImageWidth(int imageWidth) {
+		this.imageWidth = imageWidth;
 	}
-	public int getPreviewImageHeight() {
-		return previewImageHeight;
+	public int getImageHeight() {
+		return imageHeight;
 	}
-	public void setPreviewImageHeight(int previewImageHeight) {
-		this.previewImageHeight = previewImageHeight;
+	public void setImageHeight(int imageHeight) {
+		this.imageHeight = imageHeight;
 	}
 	public void readItem(Item item) {
 		this.setId(item.getId());
@@ -82,8 +82,8 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setReplyCount(item.getReplyCount());
 		this.setLikeItList(item.getLikeItList());
 		this.setLikeItCount(item.getLikeItCount());
-		this.setPreviewImageWidth(item.getPreviewImageWidth());
-		this.setPreviewImageHeight(item.getPreviewImageHeight());
+		this.setImageWidth(item.getImageWidth());
+		this.setImageHeight(item.getImageHeight());
 	}
 
 

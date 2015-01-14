@@ -52,11 +52,11 @@ public class BitmapUtil {
 
 
 	public static Bitmap decodeInSampleSize(Bitmap bitmap, int reqWidth, int reqHeight) {
-		if(bitmap.getWidth() >= reqWidth*2 && bitmap.getHeight() >= reqHeight) {
+		if(bitmap.getWidth() >= reqWidth*2 && bitmap.getHeight() >= reqHeight*2) {
 			ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
 			byte[] byteArray = byteArrayBitmapStream.toByteArray();
-			bitmap = decodeInSampleSize(byteArray, reqWidth, reqHeight);	
+			bitmap = decodeInSampleSize(byteArray, reqWidth, reqHeight);
 		}
 		return bitmap;
 	}
@@ -113,5 +113,15 @@ public class BitmapUtil {
 		Matrix mtx = new Matrix();
 		mtx.postRotate(degree);
 		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+	}
+
+
+	public static Bitmap scale(Bitmap bitmap, int width, int height) {
+		return Bitmap.createScaledBitmap(bitmap, width, height, true);
+	}
+
+
+	public static Bitmap crop(Bitmap bitmap, int x, int y, int width, int height) {
+		return Bitmap.createBitmap(bitmap, x, y, width, height);
 	}
 }

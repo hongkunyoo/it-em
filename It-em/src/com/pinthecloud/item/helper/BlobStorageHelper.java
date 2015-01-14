@@ -76,7 +76,7 @@ public class BlobStorageHelper {
 			blob = container.getBlockBlobReference(id);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-			blob.getProperties().setCacheControl("only-if-cached,max-age=" + Integer.MAX_VALUE);
+			blob.getProperties().setCacheControl("only-if-cached, max-age=" + Integer.MAX_VALUE);
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
 			baos.close();
 		} catch (URISyntaxException e) {
@@ -101,7 +101,9 @@ public class BlobStorageHelper {
 			blob.download(baos);
 			bm = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
 		} catch (URISyntaxException e) {
+			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (StorageException e) {
+			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		}
 		return bm;
 	}
@@ -135,7 +137,7 @@ public class BlobStorageHelper {
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		} catch (StorageException e) {
-			return false;
+			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
 		}
 		return true;
 	}

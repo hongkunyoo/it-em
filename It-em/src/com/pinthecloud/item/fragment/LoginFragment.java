@@ -107,7 +107,7 @@ public class LoginFragment extends ItFragment {
 
 	private void setButton(){
 		mFacebookButton.setFragment(mThisFragment);
-		mFacebookButton.setReadPermissions(Arrays.asList("email"));
+		mFacebookButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override

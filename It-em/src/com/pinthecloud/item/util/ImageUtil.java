@@ -32,10 +32,26 @@ public class ImageUtil {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width > ITEM_IMAGE_WIDTH) {
-			bitmap = Bitmap.createScaledBitmap(bitmap, ITEM_IMAGE_WIDTH, (int)(height*((float)ITEM_IMAGE_WIDTH/width)), true);
+			bitmap = BitmapUtil.scale(bitmap, ITEM_IMAGE_WIDTH, (int)(height*((float)ITEM_IMAGE_WIDTH/width)));
 		}
 
 		return BitmapUtil.rotate(bitmap, BitmapUtil.getImageOrientation(imagePath));
+	}
+	
+	public static Bitmap refineItemLongImage(Bitmap bitmap, int maxSize){
+		ItLog.log("here1");
+		bitmap = BitmapUtil.decodeInSampleSize(bitmap, -1, maxSize);
+
+		// Scale by maxSize
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		ItLog.log("here2");
+		if(height > maxSize) {
+			ItLog.log("here3");
+			bitmap = BitmapUtil.scale(bitmap, (int)(width*((float)maxSize/height)), maxSize);
+		}
+		ItLog.log("here4");
+		return bitmap;
 	}
 
 	public static Bitmap refineItemPreviewImage(Bitmap bitmap){
@@ -45,7 +61,7 @@ public class ImageUtil {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width > ITEM_PREVIEW_IMAGE_WIDTH) {
-			bitmap = Bitmap.createScaledBitmap(bitmap, ITEM_PREVIEW_IMAGE_WIDTH, (int)(height*((float)ITEM_PREVIEW_IMAGE_WIDTH/width)), true);
+			bitmap = BitmapUtil.scale(bitmap, ITEM_PREVIEW_IMAGE_WIDTH, (int)(height*((float)ITEM_PREVIEW_IMAGE_WIDTH/width)));
 		}
 
 		return bitmap;
@@ -58,14 +74,14 @@ public class ImageUtil {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width > height){
-			bitmap = Bitmap.createBitmap(bitmap, (int)((float)width/2 - (float)height/2), 0, height, height);
+			bitmap = BitmapUtil.crop(bitmap, (int)((float)width/2 - (float)height/2), 0, height, height);
 		} else if(width < height) {
-			bitmap = Bitmap.createBitmap(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
+			bitmap = BitmapUtil.crop(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
 		}
 
 		// If image is big, Resize
 		if(bitmap.getWidth() > ITEM_THUMBNAIL_IMAGE_SIZE){
-			bitmap = Bitmap.createScaledBitmap(bitmap, ITEM_THUMBNAIL_IMAGE_SIZE, ITEM_THUMBNAIL_IMAGE_SIZE, true);
+			bitmap = BitmapUtil.scale(bitmap, ITEM_THUMBNAIL_IMAGE_SIZE, ITEM_THUMBNAIL_IMAGE_SIZE);
 		}
 
 		return bitmap;
@@ -94,14 +110,14 @@ public class ImageUtil {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width > height){
-			bitmap = Bitmap.createBitmap(bitmap, (int)((float)width/2 - (float)height/2), 0, height, height);
+			bitmap = BitmapUtil.crop(bitmap, (int)((float)width/2 - (float)height/2), 0, height, height);
 		} else if(width < height) {
-			bitmap = Bitmap.createBitmap(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
+			bitmap = BitmapUtil.crop(bitmap, 0, (int)((float)height/2 - (float)width/2), width, width);
 		}
 
 		// If image is big, Resize
 		if(bitmap.getWidth() > PROFILE_IMAGE_SIZE){
-			bitmap = Bitmap.createScaledBitmap(bitmap, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE, true);
+			bitmap = BitmapUtil.scale(bitmap, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE);
 		}
 
 		return BitmapUtil.rotate(bitmap, BitmapUtil.getImageOrientation(imagePath));
@@ -113,7 +129,7 @@ public class ImageUtil {
 
 		// If image is big, Resize
 		if(bitmap.getWidth() > PROFILE_THUMBNAIL_IMAGE_SIZE){
-			bitmap = Bitmap.createScaledBitmap(bitmap, PROFILE_THUMBNAIL_IMAGE_SIZE, PROFILE_THUMBNAIL_IMAGE_SIZE, true);
+			bitmap = BitmapUtil.scale(bitmap, PROFILE_THUMBNAIL_IMAGE_SIZE, PROFILE_THUMBNAIL_IMAGE_SIZE);
 		}
 
 		return bitmap;

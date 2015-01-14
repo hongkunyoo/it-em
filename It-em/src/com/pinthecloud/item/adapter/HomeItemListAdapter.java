@@ -25,28 +25,26 @@ import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
-import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
-import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
-import com.squareup.picasso.Picasso;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
 
+	private ItApplication mApp;
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 
 
 	public HomeItemListAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
+		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mItemList = itemList;
@@ -167,12 +165,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				final int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
 				holder.itNumber.setText(String.valueOf(likeItNum));
 
-				ItApplication app = ItApplication.getInstance();
-				AimHelper mAimHelper = app.getAimHelper();
-				ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
-
+				ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 				LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
-				mAimHelper.add(likeIt, new EntityCallback<LikeIt>() {
+				mApp.getAimHelper().add(likeIt, new EntityCallback<LikeIt>() {
 
 					@Override
 					public void onCompleted(LikeIt entity) {
@@ -204,14 +199,15 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setImageView(final ViewHolder holder, Item item, int position) {
-		double heightRatio = Math.min((double)item.getPreviewImageHeight()/item.getPreviewImageWidth(), 2);
+		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), 2);
 		holder.itemImage.setHeightRatio(heightRatio);
 
-		Picasso.with(holder.itemImage.getContext())
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
+		.fit().centerCrop()
 		.into(holder.itemImage);
 
-		Picasso.with(holder.profileImage.getContext())
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);
@@ -235,45 +231,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void deleteItem(final Item item){
-		AsyncChainer.asyncChain(mFrag, new Chainable(){
+		mApp.getAimHelper().delItem(mFrag, item, new EntityCallback<Boolean>() {
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				AsyncChainer.waitChain(3);
-
-				ItApplication app = ItApplication.getInstance();
-				AimHelper aimHelper = app.getAimHelper();
-				BlobStorageHelper blobStorageHelper = app.getBlobStorageHelper();
-
-				aimHelper.delItem(item, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-
-				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-
-				blobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-			}
-
-		}, new Chainable(){
-
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
+			public void onCompleted(Boolean entity) {
 				remove(item);
 			}
 		});

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.helper.AimHelper;
@@ -52,8 +51,8 @@ public class HongkunTestFragment extends ItFragment {
 
 
 	private void test() {
-		aimHelper = ItApplication.getInstance().getAimHelper();
-		aimDBHelper = ItApplication.getInstance().getAimDBHelper();
+		aimHelper = mApp.getAimHelper();
+		aimDBHelper = mApp.getAimDBHelper();
 		today = ItDateTime.getToday();
 		final ItUser user = mObjectPrefHelper.get(ItUser.class);
 		ItLog.log(user.getId());

@@ -18,7 +18,6 @@
         android:id="@+id/profile_image_frag_profile_image"
         android:layout_width="@dimen/profile_image_width"
         android:layout_height="@dimen/profile_image_width"
-        android:adjustViewBounds="true"
         app:riv_corner_radius="@dimen/corner_radius" />
 
 </LinearLayout>

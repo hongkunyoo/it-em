@@ -20,10 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
-import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
@@ -85,8 +83,7 @@ public class ReplyDialog extends CustomDialog implements ReplyCallback {
 
 	@Override
 	public void deleteReply(final Reply reply){
-		AimHelper aimHelper = ItApplication.getInstance().getAimHelper();
-		aimHelper.del(reply, new EntityCallback<Boolean>() {
+		mApp.getAimHelper().del(reply, new EntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {

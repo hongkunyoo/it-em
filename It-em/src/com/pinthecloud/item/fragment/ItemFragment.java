@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,11 +43,14 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
+import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ItLog;
+import com.pinthecloud.item.util.WindowUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso.LoadedFrom;
+import com.squareup.picasso.Target;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
@@ -104,7 +109,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		findComponent(view);
 		setComponent();
 		setButton();
+		setImageView();
 		setReplyList();
+		setReplyTitle();
 		setText();
 		updateItemFrag();
 
@@ -115,7 +122,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onStart() {
 		super.onStart();
-		setImageView();
+		setImage();
 	}
 
 
@@ -268,6 +275,30 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void setImageView(){
+		Target target = new Target() {
+
+			@Override
+			public void onPrepareLoad(Drawable placeHolderDrawable) {
+			}
+			@Override
+			public void onBitmapLoaded(Bitmap bitmap, LoadedFrom from) {
+				int maxSize = WindowUtil.getMaxTextureSize();
+				ItLog.log("maxSize : " + maxSize);
+				if(bitmap.getHeight() > 4096){
+					bitmap = ImageUtil.refineItemLongImage(bitmap, maxSize);
+				}
+				mItemImage.setImageBitmap(bitmap);
+			}
+			@Override
+			public void onBitmapFailed(Drawable errorDrawable) {
+			}
+		};
+		mItemImage.setTag(target);
+		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
+	}
+
+
 	private void setReplyList(){
 		mReplyListView.setHasFixedSize(true);
 
@@ -284,7 +315,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setText(){
 		mContent.setText(mItem.getContent());
-		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime());
+		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(getResources()));
 		mItNumber.setText(""+mItem.getLikeItCount());
 		mNickName.setText(mItem.getWhoMade());
 	}
@@ -316,22 +347,23 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
-				mItem.setReplyCount(count);
+				if(isAdded()){
+					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
+					if(mItem.getReplyCount() > displayReplyNum){
+						mReplyListAdapter.setHasPrevious(true);
+					} else {
+						mReplyListAdapter.setHasPrevious(false);
+					}
+					resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
+					showReplyList(mItem.getReplyCount());
 
-				int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
-				if(mItem.getReplyCount() > displayReplyNum){
-					mReplyListAdapter.setHasPrevious(true);
+					mReplyList.clear();
+					mReplyListAdapter.addAll(list);
+
+					AsyncChainer.notifyNext(frag);
 				} else {
-					mReplyListAdapter.setHasPrevious(false);
+					AsyncChainer.clearChain(frag);
 				}
-				resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
-				showReplyList(mItem.getReplyCount());
-				setReplyTitle();
-
-				mReplyList.clear();
-				mReplyListAdapter.addAll(list);
-
-				AsyncChainer.notifyNext(frag);
 			}
 		});
 	}
@@ -366,14 +398,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setImageView(){
-		mItemImage.setHeightRatio((double)mItem.getPreviewImageHeight()/mItem.getPreviewImageWidth());
-
-		Picasso.with(mItemImage.getContext())
+	private void setImage(){
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
 		.into(mItemImage);
 
-		Picasso.with(mProfileImage.getContext())
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(mProfileImage);
@@ -400,41 +430,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void deleteItem(final Item item){
 		mApp.showProgressDialog(mActivity);
-		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+		mAimHelper.delItem(mThisFragment, item, new EntityCallback<Boolean>() {
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				AsyncChainer.waitChain(3);
-
-				mAimHelper.delItem(item, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag);
-					}
-				});
-			}
-
-		}, new Chainable(){
-
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
+			public void onCompleted(Boolean entity) {
 				mApp.dismissProgressDialog();
 
 				Intent intent = new Intent(mActivity, MainActivity.class);

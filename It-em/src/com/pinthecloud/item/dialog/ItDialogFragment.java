@@ -46,7 +46,7 @@ public class ItDialogFragment extends DialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mActivity = (ItActivity) getActivity();
+		mActivity = (ItActivity)getActivity();
 	}
 
 

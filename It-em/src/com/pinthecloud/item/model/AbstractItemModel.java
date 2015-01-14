@@ -12,7 +12,7 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.util.RandomUtil;
 
 public class AbstractItemModel<T> {
-	
+
 	protected String id;
 	protected String content;
 	protected String whoMade;

@@ -13,10 +13,14 @@ import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.event.ItException;
+import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
+import com.pinthecloud.item.util.ImageUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -35,11 +39,13 @@ public class AimHelper {
 
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
+	private BlobStorageHelper mBlobStorageHelper;
 
 
 	public AimHelper(ItApplication app) {
 		this.mApp = app;
 		this.mClient = app.getMobileClient();
+		this.mBlobStorageHelper = app.getBlobStorageHelper();
 	}
 
 
@@ -242,22 +248,62 @@ public class AimHelper {
 	}
 
 
-	public void delItem(Item obj, final EntityCallback<Boolean> callback) {
+	public void delItem(ItFragment frag, final Item item, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
-		mClient.invokeApi(AIM_DELETE_ITEM, obj.toJson(), new ApiJsonOperationCallback() {
+		AsyncChainer.asyncChain(frag, new Chainable(){
 
 			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted(_json.getAsBoolean());	
-				} else {
-					EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.SERVER_ERROR, response));
-				}
+			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(4);
+
+				mClient.invokeApi(AIM_DELETE_ITEM, item.toJson(), new ApiJsonOperationCallback() {
+
+					@Override
+					public void onCompleted(JsonElement _json, Exception exception,
+							ServiceFilterResponse response) {
+						if (exception == null) {
+							AsyncChainer.notifyNext(frag, _json.getAsBoolean());
+						} else {
+							EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.SERVER_ERROR, response));
+						}
+					}
+				});
+
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag, entity);
+					}
+				});
+
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag, entity);	
+					}
+				});
+
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag, entity);
+					}
+				});
+			}
+
+		}, new Chainable(){
+
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				boolean result = (Boolean)params[0];
+				callback.onCompleted(result);	
 			}
 		});
 	}

@@ -16,7 +16,7 @@ public class ItFragment extends Fragment {
 	protected ItApplication mApp;
 	protected ItActivity mActivity;
 	protected ItFragment mThisFragment;
-
+	
 	protected PrefHelper mPrefHelper;
 	protected ObjectPrefHelper mObjectPrefHelper;
 	protected AimHelper mAimHelper;

@@ -33,10 +33,9 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
-import com.squareup.picasso.Picasso;
 
 public class ItUserPageFragment extends ItFragment {
 
@@ -244,7 +243,7 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setProfileImage(){
-		Picasso.with(mProfileImage.getContext())
+		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(mProfileImage);

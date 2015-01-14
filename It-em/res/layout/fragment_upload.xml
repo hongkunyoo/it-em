@@ -7,7 +7,7 @@
     android:padding="@dimen/key_line_first" >
 
     <ImageView
-        android:id="@+id/upload_frag_image"
+        android:id="@+id/upload_frag_item_image"
         android:layout_width="@dimen/upload_image_width"
         android:layout_height="@dimen/upload_image_width"
         android:adjustViewBounds="true"

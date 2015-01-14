@@ -19,8 +19,7 @@ import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.fragment.ItFragment;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.PicassoTools;
+import com.squareup.picasso.PicassoTool;
 
 import de.greenrobot.event.EventBus;
 
@@ -158,7 +157,7 @@ public class FileUtil {
 
 	public static void clearCache(){
 		ItApplication app = ItApplication.getInstance();
-		PicassoTools.clearCache(Picasso.with(app));
+		PicassoTool.clearCache(app.getPicasso());
 		deleteDirectoryTree(app.getCacheDir());
 	}
 }
