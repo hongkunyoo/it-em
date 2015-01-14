@@ -176,7 +176,7 @@ public class LoginFragment extends ItFragment {
 				try {
 					bitmap = mApp.getPicasso()
 							.load("https://graph.facebook.com/"+user.getId()+"/picture?type=large")
-							.resize(ImageUtil.PROFILE_IMAGE_SIZE, ImageUtil.PROFILE_IMAGE_SIZE).centerCrop()
+							.resize(ImageUtil.PROFILE_IMAGE_SIZE, ImageUtil.PROFILE_IMAGE_SIZE)
 							.get();
 				} catch (IOException e) {
 					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.SERVER_ERROR));

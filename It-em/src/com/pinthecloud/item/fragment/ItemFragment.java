@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,12 +43,8 @@ import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.ItLog;
-import com.pinthecloud.item.util.WindowUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
-import com.squareup.picasso.Picasso.LoadedFrom;
-import com.squareup.picasso.Target;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
@@ -276,25 +270,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setImageView(){
-		Target target = new Target() {
-
-			@Override
-			public void onPrepareLoad(Drawable placeHolderDrawable) {
-			}
-			@Override
-			public void onBitmapLoaded(Bitmap bitmap, LoadedFrom from) {
-				int maxSize = WindowUtil.getMaxTextureSize();
-				ItLog.log("maxSize : " + maxSize);
-				if(bitmap.getHeight() > 4096){
-					bitmap = ImageUtil.refineItemLongImage(bitmap, maxSize);
-				}
-				mItemImage.setImageBitmap(bitmap);
-			}
-			@Override
-			public void onBitmapFailed(Drawable errorDrawable) {
-			}
-		};
-		mItemImage.setTag(target);
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 	}
 
@@ -399,9 +374,17 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setImage(){
-		mApp.getPicasso()
-		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-		.into(mItemImage);
+		int maxSize = mPrefHelper.getInt(ImageUtil.MAX_TEXTURE_SIZE_KEY);
+		if(mItem.getImageHeight() > maxSize){
+			mApp.getPicasso()
+			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+			.resize((int)(mItem.getImageWidth()*((float)maxSize/mItem.getImageHeight())), maxSize)
+			.into(mItemImage);
+		} else {
+			mApp.getPicasso()
+			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+			.into(mItemImage);
+		}
 
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))

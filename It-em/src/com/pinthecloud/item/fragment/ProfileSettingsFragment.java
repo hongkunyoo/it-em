@@ -110,7 +110,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		MenuItem menuItem = menu.findItem(R.id.profile_settings_done);
+		MenuItem menuItem = menu.findItem(R.id.profile_settings_submit);
 		menuItem.setEnabled(mNickName.getText().toString().trim().length() > 0);
 	}
 
@@ -121,7 +121,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		case android.R.id.home:
 			mActivity.onBackPressed();
 			break;
-		case R.id.profile_settings_done:
+		case R.id.profile_settings_submit:
 			if(!mIsUpdating){
 				mIsUpdating = true;
 				trimProfileSettings();

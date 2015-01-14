@@ -116,7 +116,7 @@
                 <RelativeLayout
                     android:id="@+id/item_frag_product_tag"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/home_item_information_height"
+                    android:layout_height="@dimen/home_item_profile_height"
                     android:background="@color/accent_color"
                     android:paddingEnd="@dimen/key_line_first"
                     android:paddingLeft="@dimen/key_line_first"
@@ -166,7 +166,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_item_information_height" >
+                        android:layout_height="@dimen/home_item_profile_height" >
 
                         <com.pinthecloud.item.view.CustomTextView
                             android:layout_width="wrap_content"

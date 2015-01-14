@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
-        android:id="@+id/profile_settings_done"
-        android:title="@string/done"
+        android:id="@+id/profile_settings_submit"
+        android:icon="@drawable/toolbar_submit_button"
+        android:title="@string/submit"
         app:showAsAction="always"/>
 
 </menu>

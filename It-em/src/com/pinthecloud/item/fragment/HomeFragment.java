@@ -16,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -33,7 +33,7 @@ public class HomeFragment extends ItFragment {
 	private ProgressBar mProgressBar;
 	private RelativeLayout mLayout;
 	private SwipeRefreshLayout mRefresh;
-	private Button mUploadButton;
+	private ImageButton mUploadButton;
 
 	private RecyclerView mGridView;
 	private HomeItemListAdapter mGridAdapter;
@@ -100,7 +100,7 @@ public class HomeFragment extends ItFragment {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mLayout = (RelativeLayout)view.findViewById(R.id.home_frag_layout);
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
-		mUploadButton = (Button)view.findViewById(R.id.home_frag_upload_button);
+		mUploadButton = (ImageButton)view.findViewById(R.id.home_frag_upload_button);
 		mGridView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
 	}
 

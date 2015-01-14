@@ -27,6 +27,8 @@
     <string name="plus">+</string>
     <string name="comments">Comments</string>
     <string name="tags">Tags</string>
+    <string name="more">More</string>
+    <string name="fold">Fold</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
@@ -65,7 +67,6 @@
     <string name="nick_name">Nick Name</string>
     <string name="information">Information</string>
     <string name="website">Website</string>
-    <string name="done">Done</string>
     <string name="min_nick_name_message">Please type in more than 1 letter.</string>
     <string name="bad_nick_name_message">Special letter is not good as nick name.</string>
     <string name="duplicated_nick_name_message">The nick name already exists.</string>

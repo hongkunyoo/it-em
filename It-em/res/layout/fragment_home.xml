@@ -29,7 +29,7 @@
                 android:scrollbars="none" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <Button
+        <ImageButton
             android:id="@+id/home_frag_upload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +38,10 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/key_line_first"
             android:layout_marginEnd="@dimen/key_line_first"
-            android:layout_marginRight="@dimen/key_line_first" />
+            android:layout_marginRight="@dimen/key_line_first"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/upload"
+            android:src="@drawable/feed_upload_btn" />
     </RelativeLayout>
 
 </RelativeLayout>

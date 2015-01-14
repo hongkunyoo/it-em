@@ -66,7 +66,7 @@
             android:layout_marginLeft="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_first"
             android:contentDescription="@string/logout"
-            android:src="@drawable/launcher" />
+            android:src="@drawable/setting_logout_ic" />
 
         <com.pinthecloud.item.view.CustomTextView
             android:layout_width="wrap_content"

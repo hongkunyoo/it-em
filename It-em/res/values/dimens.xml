@@ -6,8 +6,8 @@
     <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="key_line_first">16dp</dimen>
     <dimen name="key_line_second">72dp</dimen>
-    <dimen name="corner_radius">5dp</dimen>
-    <dimen name="profile_thumbnail_image_width">32dp</dimen>
+    <dimen name="corner_radius">2dp</dimen>
+    <dimen name="profile_thumbnail_image_width">28dp</dimen>
     <dimen name="profile_preview_image_width">56dp</dimen>
     <dimen name="profile_image_width">212dp</dimen>
 
@@ -15,16 +15,16 @@
     <dimen name="main_drawer_width">280dp</dimen>
     <dimen name="main_drawer_menu_indicator_width">4dp</dimen>
     <dimen name="main_drawer_menu_top_margin">56dp</dimen>
+    <dimen name="main_drawer_menu_height">48dp</dimen>
     <dimen name="main_drawer_menu_profile_image_left_margin">38dp</dimen>
     <dimen name="main_drawer_menu_image_left_margin">40dp</dimen>
     <dimen name="main_drawer_menu_name_left_margin">92dp</dimen>
     
     <!-- Home -->
-    <dimen name="home_item_profile_height">56dp</dimen>
-    <dimen name="home_item_information_height">48dp</dimen>
-    <dimen name="home_item_content_margin">12dp</dimen>
-    <dimen name="home_item_spacing">1dp</dimen>
-    <dimen name="home_item_image_max_height">240dp</dimen>
+    <dimen name="home_item_profile_height">48dp</dimen>
+    <dimen name="home_item_margin">10dp</dimen>
+    <dimen name="home_item_content_margin">6dp</dimen>
+    <dimen name="home_item_spacing">2dp</dimen>
 
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>

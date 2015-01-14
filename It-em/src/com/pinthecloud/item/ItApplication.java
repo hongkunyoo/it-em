@@ -51,7 +51,7 @@ public class ItApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-
+		
 		mClient = getMobileClient();
 
 		userHabitHelper = getUserHabitHelper();

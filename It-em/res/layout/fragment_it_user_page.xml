@@ -81,7 +81,7 @@
                     android:layout_alignParentRight="true"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/profile_settings"
-                    android:src="@drawable/mypage_profile_edit_ic" />
+                    android:src="@drawable/mypage_edit_ic" />
             </RelativeLayout>
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip

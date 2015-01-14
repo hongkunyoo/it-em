@@ -24,4 +24,9 @@
         android:layout_height="0dp"
         android:layout_weight="0.6" />
 
+    <FrameLayout
+        android:id="@+id/splash_frag_surface_layout"
+        android:layout_width="@dimen/line_width"
+        android:layout_height="@dimen/line_width" />
+
 </LinearLayout>

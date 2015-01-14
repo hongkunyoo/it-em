@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/home_item_spacing"
     android:background="@android:color/white" >
 
     <LinearLayout
@@ -11,73 +12,116 @@
         android:orientation="vertical" >
 
         <RelativeLayout
-            android:id="@+id/row_home_item_list_profile_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_item_profile_height"
-            android:paddingEnd="@dimen/key_line_first"
-            android:paddingLeft="@dimen/none"
-            android:paddingRight="@dimen/key_line_first"
-            android:paddingStart="@dimen/none" >
+            android:padding="@dimen/home_item_margin" >
 
-            <com.pinthecloud.item.view.CircleImageView
-                android:id="@+id/row_home_item_list_profile_image"
-                android:layout_width="@dimen/profile_thumbnail_image_width"
-                android:layout_height="@dimen/profile_thumbnail_image_width"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/key_line_first"
-                android:layout_marginStart="@dimen/key_line_first"
-                app:border_color="@color/line_color"
-                app:border_width="@dimen/line_width" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical" >
 
-            <com.pinthecloud.item.view.CustomTextView
-                android:id="@+id/row_home_item_list_nick_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/key_line_second"
-                android:layout_marginStart="@dimen/key_line_second"
-                android:textColor="@color/brand_text_color"
-                app:textType="subhead" />
+                <com.pinthecloud.item.view.CircleImageView
+                    android:id="@+id/row_home_item_list_profile_image"
+                    android:layout_width="@dimen/profile_thumbnail_image_width"
+                    android:layout_height="@dimen/profile_thumbnail_image_width"
+                    app:border_color="@color/line_color"
+                    app:border_width="@dimen/line_width" />
 
-            <Button
+                <com.pinthecloud.item.view.CustomTextView
+                    android:id="@+id/row_home_item_list_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/home_item_margin"
+                    android:layout_marginStart="@dimen/home_item_margin"
+                    android:textColor="@color/brand_text_color"
+                    app:textType="caption" />
+            </LinearLayout>
+
+            <ImageButton
                 android:id="@+id/row_home_item_list_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/more"
+                android:src="@drawable/feed_more_ic" />
         </RelativeLayout>
 
         <include layout="@layout/custom_line" />
 
-        <com.pinthecloud.item.view.DynamicHeightImageView
-            android:id="@+id/row_home_item_list_item_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="@dimen/home_item_image_max_height" />
-
-        <include layout="@layout/custom_line" />
-
         <LinearLayout
+            android:id="@+id/row_home_item_list_item_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/key_line_first" >
+            android:orientation="vertical" >
 
-            <com.pinthecloud.item.view.CustomTextView
-                android:id="@+id/row_home_item_list_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/home_item_content_margin"
-                android:textColor="@color/brand_text_color"
-                app:textType="body" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.pinthecloud.item.view.DynamicHeightImageView
+                    android:id="@+id/row_home_item_list_item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/row_home_item_list_item_image"
+                    android:layout_alignEnd="@+id/row_home_item_list_item_image"
+                    android:layout_alignRight="@+id/row_home_item_list_item_image"
+                    android:contentDescription="@string/fold"
+                    android:src="@drawable/feed_unfold_ic" />
+            </RelativeLayout>
+
+            <include layout="@layout/custom_line" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="vertical"
+                android:padding="@dimen/home_item_margin" >
+
+                <com.pinthecloud.item.view.CustomTextView
+                    android:id="@+id/row_home_item_list_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/home_item_content_margin"
+                    android:textColor="@color/brand_text_color"
+                    app:textType="caption" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/home_item_content_margin"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <com.pinthecloud.item.view.CustomTextView
+                        android:id="@+id/row_home_item_list_it_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/feed_it_ic"
+                        android:drawableStart="@drawable/feed_it_ic"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
+
+                    <com.pinthecloud.item.view.CustomTextView
+                        android:id="@+id/row_home_item_list_reply_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/home_item_content_margin"
+                        android:layout_marginStart="@dimen/home_item_content_margin"
+                        android:drawableLeft="@drawable/feed_comment_ic"
+                        android:drawableStart="@drawable/feed_comment_ic"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/brand_text_color_light"
+                        app:textType="caption" />
+                </LinearLayout>
 
                 <ImageButton
                     android:id="@+id/row_home_item_list_it_button"
@@ -86,89 +130,6 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/it_lower"
                     android:src="@drawable/home_item_list_it_button" />
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/home_item_content_margin"
-                    android:layout_marginStart="@dimen/home_item_content_margin"
-                    android:text="@string/plus"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:id="@+id/row_home_item_list_it_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <include layout="@layout/custom_line" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/home_item_information_height"
-            android:baselineAligned="false"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:id="@+id/row_home_item_list_reply"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center" >
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:id="@+id/row_home_item_list_reply_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/space"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/comments"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/row_home_item_list_product_tag"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center" >
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:id="@+id/row_home_item_list_product_tag_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/space"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
-
-                <com.pinthecloud.item.view.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tags"
-                    android:textColor="@color/brand_text_color_light"
-                    app:textType="caption" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

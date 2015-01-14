@@ -9,10 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
@@ -22,7 +20,6 @@ import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -54,37 +51,31 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
-		public RelativeLayout profileLayout;
 		public CircleImageView profileImage;
 		public TextView nickName;
-		public Button more;
+		public ImageButton more;
 
+		public LinearLayout itemLayout; 
 		public DynamicHeightImageView itemImage;
 		public TextView content;
-		public ImageButton itButton;
 		public TextView itNumber;
-		public LinearLayout reply;
 		public TextView replyNumber;
-		public LinearLayout productTag;
-		public TextView productTagNumber;
+		public ImageButton itButton;
 
 		public ViewHolder(View view) {
 			super(view);
 			this.view = view;
 
-			this.profileLayout = (RelativeLayout)view.findViewById(R.id.row_home_item_list_profile_layout);
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
-			this.more = (Button)view.findViewById(R.id.row_home_item_list_more);
+			this.more = (ImageButton)view.findViewById(R.id.row_home_item_list_more);
 
+			this.itemLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_item_layout);
 			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_list_item_image);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
-			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
-			this.reply = (LinearLayout)view.findViewById(R.id.row_home_item_list_reply);
 			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_list_reply_number);
-			this.productTag = (LinearLayout)view.findViewById(R.id.row_home_item_list_product_tag);
-			this.productTagNumber = (TextView)view.findViewById(R.id.row_home_item_list_product_tag_number);
+			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
 		}
 	}
 
@@ -112,14 +103,25 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setComponent(ViewHolder holder, Item item){
+		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 		holder.itNumber.setText(""+item.getLikeItCount());
-		holder.nickName.setText(item.getWhoMade());
+		holder.replyNumber.setText(""+item.getReplyCount());
 	}
 
 
 	private void setButton(final ViewHolder holder, final Item item){
-		holder.profileLayout.setOnClickListener(new OnClickListener() {
+		holder.profileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
+				mActivity.startActivity(intent);
+			}
+		});
+
+		holder.nickName.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -148,7 +150,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			holder.more.setOnClickListener(null);
 		}
 
-		holder.view.setOnClickListener(new OnClickListener() {
+		holder.itemLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -157,13 +159,20 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				mActivity.startActivity(intent);
 			}
 		});
-
+		
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				final int likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
+				int likeItNum = 0;
+				if(holder.itButton.isActivated()) {
+					likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) - 1);
+				} else {
+					likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
+				}
 				holder.itNumber.setText(String.valueOf(likeItNum));
+
+				holder.itButton.setActivated(!holder.itButton.isActivated());
 
 				ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 				LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
@@ -171,14 +180,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 					@Override
 					public void onCompleted(LikeIt entity) {
-						item.setLikeItCount(likeItNum);
+						item.setLikeItCount(Integer.parseInt(holder.itNumber.getText().toString()));
 					}
 				});
 			}
 		});
 
-		holder.replyNumber.setText(""+item.getReplyCount());
-		holder.reply.setOnClickListener(new OnClickListener() {
+		holder.replyNumber.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -186,20 +194,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				replyDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
-
-		holder.productTag.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(item);
-				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
-			}
-		});
 	}
 
 
 	private void setImageView(final ViewHolder holder, Item item, int position) {
-		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), 2);
+		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), 2.5);
 		holder.itemImage.setHeightRatio(heightRatio);
 
 		mApp.getPicasso()

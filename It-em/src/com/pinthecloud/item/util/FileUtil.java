@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,7 +16,6 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.text.format.Time;
 
-import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.event.ItException;
@@ -30,16 +30,16 @@ public class FileUtil {
 	public static final int CAMERA = 1;
 
 
-	public static Uri getOutputMediaFileUri(){
-		return Uri.fromFile(getOutputMediaFile());
+	public static Uri getOutputMediaFileUri(Resources resources){
+		return Uri.fromFile(getOutputMediaFile(resources));
 	}
 
 
-	public static File getOutputMediaFile(){
+	public static File getOutputMediaFile(Resources resources){
 		// To be safe, you should check that the SDCard is mounted
 		// using Environment.getExternalStorageState() before doing this.
 		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES), GlobalVariable.APP_NAME);
+				Environment.DIRECTORY_PICTURES), resources.getString(R.string.app_name));
 
 		// This location works best if you want the created images to be shared
 		// between applications and persist after your app has been uninstalled.
@@ -97,7 +97,7 @@ public class FileUtil {
 
 	public static Uri getMediaFromCamera(ItFragment frag){
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		Uri mediaUri = getOutputMediaFileUri();
+		Uri mediaUri = getOutputMediaFileUri(frag.getResources());
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri);
 		frag.startActivityForResult(intent, CAMERA);
 		return mediaUri;
@@ -113,7 +113,7 @@ public class FileUtil {
 				if(mediaUri == null){
 					// Intent pass data as Bitmap
 					Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-					mediaUri = getOutputMediaFileUri();
+					mediaUri = getOutputMediaFileUri(context.getResources());
 					saveBitmapToFile(context, mediaUri, bitmap);
 				}
 			}
@@ -132,7 +132,7 @@ public class FileUtil {
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 				IMAGE_PROJECTION, null, null,null);
 		if (cursorImages != null && cursorImages.moveToLast()) {
-			uri = Uri.parse(cursorImages.getString(0)); //경로
+			uri = Uri.parse(cursorImages.getString(0));
 			cursorImages.close();
 		}
 		return uri;  

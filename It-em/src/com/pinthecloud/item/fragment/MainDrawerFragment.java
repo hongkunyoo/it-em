@@ -90,7 +90,6 @@ public class MainDrawerFragment extends ItFragment {
 				if (isAdded()) {
 					mActivity.invalidateOptionsMenu();
 				}
-
 			}
 
 			@Override
@@ -127,11 +126,11 @@ public class MainDrawerFragment extends ItFragment {
 		// Profile
 		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(mObjectPrefHelper.get(ItUser.class).getId()), false));
 		// Home
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[0], new HomeFragment(), false));
+		mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_home, menuNameList[0], new HomeFragment(), false));
 		// Be Pro
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[1], new BeProFragment(), false));
+		mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_be_pro, menuNameList[1], new BeProFragment(), false));
 		// Settings
-		mMenuList.add(new MainDrawerMenu(R.drawable.launcher, menuNameList[2], new SettingsFragment(), false));
+		mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_settings, menuNameList[2], new SettingsFragment(), false));
 
 		mListAdapter = new MainDrawerMenuListAdapter(mThisFragment, mMenuList);
 		mListView.setAdapter(mListAdapter);

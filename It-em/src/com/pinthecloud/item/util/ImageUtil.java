@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 
 public class ImageUtil {
 
+	public static String MAX_TEXTURE_SIZE_KEY = "MAX_TEXTURE_SIZE_KEY";
+	
 	public static final int PROFILE_IMAGE_SIZE = 212;
 	public static final int PROFILE_THUMBNAIL_IMAGE_SIZE = 75;
 	public static final String PROFILE_THUMBNAIL_IMAGE_POSTFIX = "_thumbnail";
@@ -27,20 +29,6 @@ public class ImageUtil {
 		}
 
 		return BitmapUtil.rotate(bitmap, BitmapUtil.getImageOrientation(imagePath));
-	}
-
-
-	public static Bitmap refineItemLongImage(Bitmap bitmap, int maxHeight){
-		bitmap = BitmapUtil.decodeInSampleSize(bitmap, -1, maxHeight);
-
-		// Scale by height maxSize
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-		if(height > maxHeight) {
-			bitmap = BitmapUtil.scale(bitmap, (int)(width*((float)maxHeight/height)), maxHeight);
-		}
-
-		return bitmap;
 	}
 
 
