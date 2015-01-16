@@ -12,6 +12,22 @@ public class ItUser implements Parcelable {
 	public static final String INTENT_KEY = "IT_USER_INTENT_KEY";
 	public static final String FACEBOOK = "facebook";
 	
+	public static enum TYPE {
+		VIEWER("VIEWER"),
+		SELLER("SELLER"),
+		PRO("PRO");
+		
+		private final String value;
+
+		private TYPE(final String value) {
+			this.value = value;
+		}
+		@Override
+		public String toString() {
+			return this.value;
+		}
+	}
+	
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
 	@com.google.gson.annotations.SerializedName("itUserId")
@@ -24,18 +40,20 @@ public class ItUser implements Parcelable {
 	private String selfIntro;
 	@com.google.gson.annotations.SerializedName("webPage")
 	private String webPage;
-
+	@com.google.gson.annotations.SerializedName("type")
+	private String type;
 	
 	public ItUser() {
 		super();
 	}
-	public ItUser(String itUserId, String platform, String nickName, String selfIntro, String webPage) {
+	public ItUser(String itUserId, String platform, String nickName, String selfIntro, String webPage, TYPE type) {
 		super();
 		this.itUserId = itUserId;
 		this.platform = platform;
 		this.nickName = nickName;
 		this.selfIntro = selfIntro;
 		this.webPage = webPage;
+		this.type = type.toString();
 	}
 
 
@@ -75,6 +93,15 @@ public class ItUser implements Parcelable {
 	public void setWebPage(String webPage) {
 		this.webPage = webPage;
 	}
+	public String getType() {
+		return this.type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public void setType(TYPE type) {
+		this.type = type.toString();
+	}
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
@@ -82,6 +109,7 @@ public class ItUser implements Parcelable {
 		this.setNickName(itUser.getNickName());
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());
+		this.setType(itUser.getType());
 	}
 
 
