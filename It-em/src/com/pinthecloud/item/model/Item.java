@@ -17,6 +17,8 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	private int likeItCount;
 	private int imageWidth;
 	private int imageHeight;
+	private String prevLikeId;
+	private String prevReplyId;
 
 	public Item() {
 		super();
@@ -71,6 +73,18 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setImageHeight(int imageHeight) {
 		this.imageHeight = imageHeight;
 	}
+	public String getPrevLikeId() {
+		return prevLikeId;
+	}
+	public void setPrevLikeId(String prevLikeId) {
+		this.prevLikeId = prevLikeId;
+	}
+	public String getPrevReplyId() {
+		return this.prevReplyId;
+	}
+	public void setPrevReplyId(String prevReplyId) {
+		this.prevReplyId = prevReplyId;
+	}
 	public void readItem(Item item) {
 		this.setId(item.getId());
 		this.setContent(item.getContent());
@@ -84,6 +98,8 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setLikeItCount(item.getLikeItCount());
 		this.setImageWidth(item.getImageWidth());
 		this.setImageHeight(item.getImageHeight());
+		this.setPrevLikeId(item.getPrevLikeId());
+		this.setPrevReplyId(item.getPrevReplyId());
 	}
 
 

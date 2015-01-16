@@ -19,6 +19,7 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 
@@ -49,7 +50,7 @@ public class AimHelper {
 	}
 
 
-	public<E extends AbstractItemModel<E>> void listItem(int page, final ListCallback<Item> callback) {
+	public<E extends AbstractItemModel<E>> void listItem(int page, String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -57,6 +58,7 @@ public class AimHelper {
 
 		JsonObject jo = new JsonObject();
 		jo.addProperty("page", page);
+		jo.addProperty("userId", userId);
 
 		mClient.invokeApi(AIM_LIST_ITEM, jo, new ApiJsonOperationCallback() {
 
@@ -64,6 +66,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
+					ItLog.log(_json);
 					JsonElement json = _json.getAsJsonArray();
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());

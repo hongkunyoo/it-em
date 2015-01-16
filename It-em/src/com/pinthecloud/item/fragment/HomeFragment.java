@@ -25,8 +25,10 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.FileUtil;
+import com.pinthecloud.item.util.ItLog;
 
 public class HomeFragment extends ItFragment {
 
@@ -165,14 +167,15 @@ public class HomeFragment extends ItFragment {
 
 	public void updateList() {
 		page = 0;
-		mAimHelper.listItem(page, new ListCallback<Item>() {
+		ItUser itUser = mObjectPrefHelper.get(ItUser.class);
+		mAimHelper.listItem(page, itUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mLayout.setVisibility(View.VISIBLE);
 				mRefresh.setRefreshing(false);
-
+				ItLog.log(list);
 				mItemList.clear();
 				mGridAdapter.addAll(list);
 			}
@@ -182,7 +185,8 @@ public class HomeFragment extends ItFragment {
 
 	private void addNextItemList() {
 		mIsAdding = true;
-		mAimHelper.listItem(++page, new ListCallback<Item>() {
+		ItUser itUser = mObjectPrefHelper.get(ItUser.class);
+		mAimHelper.listItem(++page, itUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
