@@ -55,8 +55,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mDate;
 	private ImageButton mItButton;
 	private TextView mItNumber;
-	private RelativeLayout mProductTag;
-
+	
+	private LinearLayout mProductTagLayout;
 	private TextView mReplyTitle;
 	private View mReplyTitlebarDivider;
 	private FrameLayout mReplyListLayout;
@@ -182,8 +182,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
-		mProductTag = (RelativeLayout)view.findViewById(R.id.item_frag_product_tag);
-
+		
+		mProductTagLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_layout);
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyTitlebarDivider = view.findViewById(R.id.reply_frag_titlebar_divider);
 		mReplyListLayout = (FrameLayout)view.findViewById(R.id.reply_frag_list_layout);
@@ -238,7 +238,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		});
 
-		mProductTag.setOnClickListener(new OnClickListener() {
+		mProductTagLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

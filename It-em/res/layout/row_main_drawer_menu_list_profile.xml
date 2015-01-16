@@ -2,7 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/main_drawer_menu_height" >
+    android:layout_height="@dimen/main_drawer_menu_height"
+    android:background="@drawable/main_drawer_menu_background" >
+
+    <View
+        android:layout_width="@dimen/main_drawer_menu_indicator_width"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_drawer_menu_indicator_background" />
 
     <com.pinthecloud.item.view.CircleImageView
         android:id="@+id/row_home_drawer_menu_list_profile_image"

@@ -105,8 +105,18 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	private void setComponent(ViewHolder holder, Item item){
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
-		holder.itNumber.setText(""+item.getLikeItCount());
-		holder.replyNumber.setText(""+item.getReplyCount());
+
+		if(item.getLikeItCount() <= 0){
+			holder.itNumber.setText("");	
+		} else {
+			holder.itNumber.setText(""+item.getLikeItCount());
+		}
+
+		if(item.getReplyCount() <= 0){
+			holder.replyNumber.setText("");
+		} else {
+			holder.replyNumber.setText(""+item.getReplyCount());
+		}
 	}
 
 
@@ -159,30 +169,31 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				mActivity.startActivity(intent);
 			}
 		});
-		
+
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				int likeItNum = 0;
+				int likeItNum = Integer.parseInt(holder.itNumber.getText().toString());
 				if(holder.itButton.isActivated()) {
-					likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) - 1);
+					// Cancel like it
+					likeItNum--;
 				} else {
-					likeItNum = (Integer.parseInt(holder.itNumber.getText().toString()) + 1);
+					// Do like it
+					likeItNum++;
+
+					ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
+					LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
+					mApp.getAimHelper().add(likeIt, new EntityCallback<LikeIt>() {
+
+						@Override
+						public void onCompleted(LikeIt entity) {
+							item.setLikeItCount(Integer.parseInt(holder.itNumber.getText().toString()));
+						}
+					});
 				}
-				holder.itNumber.setText(String.valueOf(likeItNum));
-
+				holder.itNumber.setText(""+likeItNum);
 				holder.itButton.setActivated(!holder.itButton.isActivated());
-
-				ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
-				LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
-				mApp.getAimHelper().add(likeIt, new EntityCallback<LikeIt>() {
-
-					@Override
-					public void onCompleted(LikeIt entity) {
-						item.setLikeItCount(Integer.parseInt(holder.itNumber.getText().toString()));
-					}
-				});
 			}
 		});
 

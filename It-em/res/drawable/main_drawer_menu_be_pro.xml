@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/drawer_bepro_highlight_ic" android:state_pressed="true"/>
-    <item android:drawable="@drawable/drawer_bepro_highlight_ic" android:state_activated="true"/>
+    <item android:drawable="@drawable/drawer_bepro_highlight_ic" android:state_selected="true"/>
     <item android:drawable="@drawable/drawer_bepro_ic"/>
 
 </selector>

@@ -151,10 +151,10 @@ public class MainDrawerFragment extends ItFragment {
 		if(mListView != null){
 			for(int i=0 ; i<mMenuList.size() ; i++){
 				if(i == position){
-					mMenuList.get(i).setActivated(true);
+					mMenuList.get(i).setSelected(true);
 					mListAdapter.notifyItemChanged(i);
-				} else if(mMenuList.get(i).isActivated()) {
-					mMenuList.get(i).setActivated(false);
+				} else if(mMenuList.get(i).isSelected()) {
+					mMenuList.get(i).setSelected(false);
 					mListAdapter.notifyItemChanged(i);
 				}
 			}
@@ -178,7 +178,7 @@ public class MainDrawerFragment extends ItFragment {
 		private int menuImage;
 		private String menuName;
 		private ItFragment fragment;
-		private boolean isActivated;
+		private boolean isSelected;
 
 		public int getMenuImage() {
 			return menuImage;
@@ -189,19 +189,19 @@ public class MainDrawerFragment extends ItFragment {
 		public ItFragment getFragment() {
 			return fragment;
 		}
-		public boolean isActivated() {
-			return isActivated;
+		public boolean isSelected() {
+			return isSelected;
 		}
-		public void setActivated(boolean isActivated) {
-			this.isActivated = isActivated;
+		public void setSelected(boolean isSelected) {
+			this.isSelected = isSelected;
 		}
 
-		public MainDrawerMenu(int menuImage, String menuName, ItFragment fragment, boolean isActivated) {
+		public MainDrawerMenu(int menuImage, String menuName, ItFragment fragment, boolean isSelected) {
 			super();
 			this.menuImage = menuImage;
 			this.menuName = menuName;
 			this.fragment = fragment;
-			this.isActivated = isActivated;
+			this.isSelected = isSelected;
 		}
 	}
 }

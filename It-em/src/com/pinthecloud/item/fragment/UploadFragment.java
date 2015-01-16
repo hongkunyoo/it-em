@@ -39,6 +39,22 @@ public class UploadFragment extends ItFragment {
 	private EditText mContent;
 
 
+	public static ItFragment newInstance(Uri itemImageUri) {
+		ItFragment fragment = new UploadFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(Item.INTENT_KEY, itemImageUri);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mItemImageUri = getArguments().getParcelable(Item.INTENT_KEY);
+	}
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -48,8 +64,7 @@ public class UploadFragment extends ItFragment {
 		setHasOptionsMenu(true);
 		findComponent(view);
 		setComponent();
-		setImage();
-		FileUtil.getMediaFromGallery(mThisFragment);
+		setImageView();
 
 		return view;
 	}
@@ -140,7 +155,7 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void setImage(){
+	private void setImageView(){
 		mItemImage.setOnClickListener(new OnClickListener() {
 
 			@Override

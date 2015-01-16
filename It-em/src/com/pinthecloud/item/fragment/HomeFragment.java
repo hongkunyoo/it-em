@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -25,6 +26,7 @@ import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.util.FileUtil;
 
 public class HomeFragment extends ItFragment {
 
@@ -78,14 +80,20 @@ public class HomeFragment extends ItFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		switch(requestCode){
-		case UPLOAD:
-			if (resultCode == Activity.RESULT_OK){
+		if (resultCode == Activity.RESULT_OK){
+			switch(requestCode){
+			case UPLOAD:
 				Item item = data.getParcelableExtra(Item.INTENT_KEY);
 				mGridAdapter.add(0, item);
 				mGridView.smoothScrollToPosition(0);
+				break;
+			case FileUtil.GALLERY:
+				Uri itemImageUri = data.getData();
+				Intent intent = new Intent(mActivity, UploadActivity.class);
+				intent.putExtra(Item.INTENT_KEY, itemImageUri);
+				startActivityForResult(intent, UPLOAD);
+				break;
 			}
-			break;
 		}
 	}
 
@@ -110,8 +118,7 @@ public class HomeFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, UploadActivity.class);
-				startActivityForResult(intent, UPLOAD);
+				FileUtil.getMediaFromGallery(mThisFragment);
 			}
 		});
 	}

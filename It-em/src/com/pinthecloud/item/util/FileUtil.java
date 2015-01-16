@@ -26,8 +26,8 @@ import de.greenrobot.event.EventBus;
 
 public class FileUtil {
 
-	public static final int GALLERY = 0;
-	public static final int CAMERA = 1;
+	public static final int GALLERY = 10;
+	public static final int CAMERA = 11;
 
 
 	public static Uri getOutputMediaFileUri(Resources resources){

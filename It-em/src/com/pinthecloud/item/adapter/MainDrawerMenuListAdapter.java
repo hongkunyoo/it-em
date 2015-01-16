@@ -31,12 +31,14 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	private ItApplication mApp;
 	private ItFragment mfrag; 
 	private List<MainDrawerMenu> mMenuList;
+	private ItUser mMyItUser;
 
 
 	public MainDrawerMenuListAdapter(ItFragment frag, List<MainDrawerMenu> menuList) {
 		this.mApp = ItApplication.getInstance();
 		this.mfrag = frag;
 		this.mMenuList = menuList;
+		this.mMyItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 	}
 
 
@@ -92,7 +94,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		int viewType = getItemViewType(position);
 		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
 			ProfileViewHolder profileViewHolder = (ProfileViewHolder)holder;
-			setProfileViewHolder(profileViewHolder, position);
+			setProfileViewHolder(profileViewHolder, menu);
 		} else if (viewType == VIEW_TYPE.NORMAL.ordinal()){
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
 			setNormalViewHolder(normalViewHolder, menu);
@@ -114,31 +116,31 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 			return VIEW_TYPE.NORMAL.ordinal();
 		}
 	}
-
-
-	private void setProfileViewHolder(ProfileViewHolder holder, final int position) {
-		ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
-
+	
+	
+	private void setProfileViewHolder(ProfileViewHolder holder, final MainDrawerMenu menu) {
+		holder.view.setSelected(menu.isSelected());
+		holder.nickName.setText(mMyItUser.getNickName());
+		
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(myItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);
 
-		holder.nickName.setText(myItUser.getNickName());
 		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				((MainDrawerFragment)mfrag).selectMenu(position);
+				((MainDrawerFragment)mfrag).selectMenu(mMenuList.indexOf(menu));
 			}
 		});
 	}
 
 
 	private void setNormalViewHolder(NormalViewHolder holder, final MainDrawerMenu menu) {
-		holder.view.setActivated(menu.isActivated());
-		holder.menuImage.setImageResource(menu.getMenuImage());
+		holder.view.setSelected(menu.isSelected());
 		holder.menuName.setText(menu.getMenuName());
+		holder.menuImage.setImageResource(menu.getMenuImage());
 
 		holder.view.setOnClickListener(new OnClickListener() {
 

@@ -20,7 +20,7 @@
 
         <include layout="@layout/custom_line" />
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" >
@@ -28,7 +28,7 @@
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 layout="@layout/custom_progress_bar"
                 android:visibility="gone" />
 
@@ -49,7 +49,7 @@
                         android:id="@+id/item_frag_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/home_item_content_margin"
+                        android:layout_marginBottom="@dimen/item_content_margin"
                         android:textColor="@color/brand_text_color"
                         app:textType="subhead" />
 
@@ -98,8 +98,8 @@
                         <com.pinthecloud.item.view.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/home_item_content_margin"
-                            android:layout_marginStart="@dimen/home_item_content_margin"
+                            android:layout_marginLeft="@dimen/item_content_margin"
+                            android:layout_marginStart="@dimen/item_content_margin"
                             android:text="@string/plus"
                             android:textColor="@color/brand_text_color_light"
                             app:textType="caption" />
@@ -113,37 +113,32 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/item_frag_product_tag"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/home_item_profile_height"
-                    android:background="@color/accent_color"
+                    android:layout_height="@dimen/key_line_first"
+                    android:background="@color/brand_color" />
+
+                <LinearLayout
+                    android:id="@+id/item_frag_product_tag_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_content_row_height"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
                     android:paddingEnd="@dimen/key_line_first"
                     android:paddingLeft="@dimen/key_line_first"
                     android:paddingRight="@dimen/key_line_first"
                     android:paddingStart="@dimen/key_line_first" >
 
-                    <com.pinthecloud.item.view.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/go_to_buy"
-                        android:textColor="@color/brand_text_color"
-                        app:textType="body" />
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@string/go_to_buy" />
-                </RelativeLayout>
+                        android:layout_marginEnd="@dimen/item_content_margin"
+                        android:layout_marginRight="@dimen/item_content_margin"
+                        android:contentDescription="@string/product_tag"
+                        android:src="@drawable/detail_tag_ic" />
+                </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/key_line_first"
-                    android:background="@color/brand_color" />
+                <include layout="@layout/custom_line" />
 
                 <include layout="@layout/dialog_reply" />
 
@@ -166,7 +161,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_item_profile_height" >
+                        android:layout_height="@dimen/item_content_row_height" >
 
                         <com.pinthecloud.item.view.CustomTextView
                             android:layout_width="wrap_content"
@@ -180,7 +175,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:contentDescription="@string/upload_by" />
+                            android:contentDescription="@string/upload_by"
+                            android:src="@drawable/general_arrow_ic" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -208,7 +204,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </FrameLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>

@@ -88,7 +88,7 @@ public class ReplyDialog extends CustomDialog implements ReplyCallback {
 			@Override
 			public void onCompleted(Boolean entity) {
 				mItem.setReplyCount(mItem.getReplyCount()-1);
-				setTitle();
+				setTitle(mItem.getReplyCount());
 				showReplyList(mItem.getReplyCount());
 
 				mListAdapter.remove(reply);
@@ -167,7 +167,7 @@ public class ReplyDialog extends CustomDialog implements ReplyCallback {
 
 					mItem.setReplyCount(count);
 					showReplyList(mItem.getReplyCount());
-					setTitle();
+					setTitle(mItem.getReplyCount());
 
 					mReplyList.clear();
 					mListAdapter.addAll(list);
@@ -197,7 +197,7 @@ public class ReplyDialog extends CustomDialog implements ReplyCallback {
 			@Override
 			public void onCompleted(Reply entity) {
 				mItem.setReplyCount(mItem.getReplyCount()+1);
-				setTitle();
+				setTitle(mItem.getReplyCount());
 
 				mListAdapter.replace(mReplyList.indexOf(reply), entity);
 			}
@@ -205,7 +205,11 @@ public class ReplyDialog extends CustomDialog implements ReplyCallback {
 	}
 
 
-	private void setTitle(){
-		mTitle.setText(getResources().getString(R.string.comments) + " " + mItem.getReplyCount());
+	private void setTitle(int replyCount){
+		String title = getResources().getString(R.string.comments);
+		if(replyCount != 0){
+			title = title + " " + mItem.getReplyCount();
+		}
+		mTitle.setText(title);
 	}
 }
