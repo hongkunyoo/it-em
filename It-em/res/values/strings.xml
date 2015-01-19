@@ -28,7 +28,7 @@
     <string name="comments">Comments</string>
     <string name="tags">Tags</string>
     <string name="more">More</string>
-    <string name="fold">Fold</string>
+    <string name="unfold">Unfold</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>

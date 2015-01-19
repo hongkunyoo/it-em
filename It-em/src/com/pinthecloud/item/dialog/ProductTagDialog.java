@@ -18,7 +18,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ProductTagListAdapter;
 import com.pinthecloud.item.model.Item;
 
-public class ProductTagDialog extends CustomDialog {
+public class ProductTagDialog extends ItDialogFragment {
 
 	private ProgressBar mProgressBar;
 	private RelativeLayout mListLayout;

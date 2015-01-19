@@ -2,18 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/reply_row_height"
-    android:gravity="center_vertical"
-    android:paddingEnd="@dimen/key_line_first"
-    android:paddingLeft="@dimen/key_line_first"
-    android:paddingRight="@dimen/key_line_first"
-    android:paddingStart="@dimen/key_line_first" >
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.CircleImageView
         xmlns:civ="http://schemas.android.com/apk/res-auto"
         android:id="@+id/row_reply_list_profile_image"
         android:layout_width="@dimen/profile_thumbnail_image_width"
         android:layout_height="@dimen/profile_thumbnail_image_width"
+        android:layout_marginLeft="@dimen/key_line_first"
+        android:layout_marginStart="@dimen/key_line_first"
         civ:border_color="@color/line_color"
         civ:border_width="@dimen/line_width" />
 
@@ -24,34 +22,48 @@
         android:layout_marginStart="@dimen/key_line_second"
         android:orientation="vertical" >
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/reply_margin"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/key_line_first"
+            android:paddingLeft="@dimen/none"
+            android:paddingRight="@dimen/key_line_first"
+            android:paddingStart="@dimen/none" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.pinthecloud.item.view.CustomTextView
+                    android:id="@+id/row_reply_list_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/brand_text_color"
+                    app:textType="subhead" />
+
+                <com.pinthecloud.item.view.CustomTextView
+                    android:id="@+id/row_reply_list_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/brand_text_color_light"
+                    app:textType="caption" />
+            </RelativeLayout>
 
             <com.pinthecloud.item.view.CustomTextView
-                android:id="@+id/row_reply_list_nick_name"
+                android:id="@+id/row_reply_list_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/brand_text_color"
-                app:textType="subhead" />
+                app:textType="body" />
+        </LinearLayout>
 
-            <com.pinthecloud.item.view.CustomTextView
-                android:id="@+id/row_reply_list_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/brand_text_color_light"
-                app:textType="caption" />
-        </RelativeLayout>
-
-        <com.pinthecloud.item.view.CustomTextView
-            android:id="@+id/row_reply_list_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/home_item_content_margin"
-            android:textColor="@color/brand_text_color"
-            app:textType="body" />
+        <include layout="@layout/custom_line" />
     </LinearLayout>
 
 </RelativeLayout>

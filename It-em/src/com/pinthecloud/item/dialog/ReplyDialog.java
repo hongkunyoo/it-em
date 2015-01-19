@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,7 +28,7 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
 
-public class ReplyDialog extends CustomDialog implements ReplyCallback {
+public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 	private Item mItem;
 	private ItUser mMyItUser;
@@ -40,7 +39,7 @@ public class ReplyDialog extends CustomDialog implements ReplyCallback {
 	private ReplyListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
 	private List<Reply> mReplyList;
-	private LinearLayout mListEmptyView;
+	private TextView mListEmptyView;
 	private EditText mInputText;
 	private Button mInputSubmit;
 
@@ -101,7 +100,7 @@ public class ReplyDialog extends CustomDialog implements ReplyCallback {
 		mTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_progress_bar);
 		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
-		mListEmptyView = (LinearLayout)view.findViewById(R.id.reply_frag_list_empty_view);
+		mListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
 		mInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 	}
