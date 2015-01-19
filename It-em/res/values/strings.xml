@@ -49,8 +49,9 @@
     <!-- My Item -->
     <string name="it_lower">it</string>
     <string name="reply_lower">comments</string>
-    <string name="no_my_item">There is no uploaded item</string>
-    <string name="no_it_item">There is no IT item</string>
+    <string name="empty_my_item">There is no uploaded item</string>
+    <string name="empty_it_item">There is no IT item</string>
+    <string name="empty">Empty</string>
 
     <!-- Pro -->
     <string name="pro">Pro</string>

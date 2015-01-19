@@ -43,7 +43,8 @@
     <dimen name="it_user_page_tab_indicator_height">2dp</dimen>
 
     <!-- My Item -->
-    <dimen name="my_item_content_bottom_margin">150dp</dimen>
+    <dimen name="my_item_progress_bar_bottom_margin">150dp</dimen>
+    <dimen name="my_item_empty_bottom_margin">100dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
 
     <!-- Reply -->

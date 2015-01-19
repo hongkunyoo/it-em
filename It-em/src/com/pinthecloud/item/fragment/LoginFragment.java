@@ -219,7 +219,6 @@ public class LoginFragment extends ItFragment {
 					}
 				});
 			}
-
 		}, new Chainable(){
 
 			@Override

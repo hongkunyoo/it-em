@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.util.SparseArrayCompat;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItItemFragment;
-import com.pinthecloud.item.fragment.ItUserPageScrollTabFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
 import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
@@ -53,16 +51,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	@Override
 	public Fragment getItem(int position) {
-		ItUserPageScrollTabFragment fragment = null;
-		switch(position){
-		case 0:
-			fragment = (ItUserPageScrollTabFragment) MyItemFragment.newInstance(position, mItUser);
-			break;
-		case 1:
-			fragment = (ItUserPageScrollTabFragment) ItItemFragment.newInstance(position, mItUser);
-			break;
-		}
-
+		MyItemFragment fragment = MyItemFragment.newInstance(position, mItUser);
 		mItUserPageScrollTabHolderList.put(position, fragment);
 		if (mItUserPageScrollTabHolder != null){
 			fragment.setItUserPageScrollTabHolder(mItUserPageScrollTabHolder);	
