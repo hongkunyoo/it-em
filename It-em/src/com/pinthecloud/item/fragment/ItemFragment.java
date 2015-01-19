@@ -23,7 +23,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
@@ -55,16 +54,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mDate;
 	private ImageButton mItButton;
 	private TextView mItNumber;
-	
+
 	private LinearLayout mProductTagLayout;
 	private TextView mReplyTitle;
-	private View mReplyTitlebarDivider;
 	private FrameLayout mReplyListLayout;
 	private RecyclerView mReplyListView;
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
 	private List<Reply> mReplyList;
-	private LinearLayout mReplyListEmptyView;
+	private TextView mReplyListEmptyView;
 	private EditText mReplyInputText;
 	private Button mReplyInputSubmit;
 
@@ -182,13 +180,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
-		
+
 		mProductTagLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_layout);
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
-		mReplyTitlebarDivider = view.findViewById(R.id.reply_frag_titlebar_divider);
 		mReplyListLayout = (FrameLayout)view.findViewById(R.id.reply_frag_list_layout);
 		mReplyListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
-		mReplyListEmptyView = (LinearLayout)view.findViewById(R.id.reply_frag_list_empty_view);
+		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
 		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
@@ -199,8 +196,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
-		mReplyTitlebarDivider.setVisibility(View.GONE);
-
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -329,7 +324,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					} else {
 						mReplyListAdapter.setHasPrevious(false);
 					}
-					resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
+
+					//					resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
 					showReplyList(mItem.getReplyCount());
 
 					mReplyList.clear();
@@ -345,7 +341,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void resizeReplyListLayoutHeight(int rowCount){
-		int replyRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_height);
+		int replyRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
 		int replyPreviousRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
 
 		int height = 0;

@@ -14,7 +14,7 @@ import com.pinthecloud.item.model.ItUser;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-public class ProfileImageDialog extends CustomDialog {
+public class ProfileImageDialog extends ItDialogFragment {
 
 	private TextView mNickName;
 	private ImageView mProfileImage;

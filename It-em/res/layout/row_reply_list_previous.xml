@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/reply_row_previous_height"
-    android:gravity="center_vertical"
     android:orientation="vertical"
     android:paddingEnd="@dimen/key_line_first"
     android:paddingLeft="@dimen/key_line_first"
@@ -13,7 +12,17 @@
     <com.pinthecloud.item.view.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:text="@string/previous_reply"
         app:textType="body" />
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/reply_lower"
+        android:src="@drawable/general_arrow_ic" />
+
+</RelativeLayout>

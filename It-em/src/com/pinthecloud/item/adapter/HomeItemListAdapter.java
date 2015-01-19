@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,6 +35,8 @@ import com.pinthecloud.item.view.DynamicHeightImageView;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
 
+	private final float MAX_HEIGHT_RATIO = 2.5f;
+
 	private ItApplication mApp;
 	private ItActivity mActivity;
 	private ItFragment mFrag;
@@ -57,6 +60,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 		public LinearLayout itemLayout; 
 		public DynamicHeightImageView itemImage;
+		public ImageView unfold;
 		public TextView content;
 		public TextView itNumber;
 		public TextView replyNumber;
@@ -72,6 +76,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 			this.itemLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_item_layout);
 			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_list_item_image);
+			this.unfold = (ImageView)view.findViewById(R.id.row_home_item_list_unfold);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
 			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_list_reply_number);
@@ -209,8 +214,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setImageView(final ViewHolder holder, Item item, int position) {
-		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), 2.5);
+		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), MAX_HEIGHT_RATIO);
 		holder.itemImage.setHeightRatio(heightRatio);
+		if(heightRatio < MAX_HEIGHT_RATIO){
+			holder.unfold.setVisibility(View.GONE);
+		} else {
+			holder.unfold.setVisibility(View.VISIBLE);
+		}
 
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
