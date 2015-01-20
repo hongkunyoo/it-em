@@ -84,8 +84,8 @@
     <string name="empty_product_tag">Product tag of this item is empty.</string>
 
     <!-- ItDateTime -->
-    <string name="second_ago">second ago</string>
-    <string name="minute_ago">minute ago</string>
+    <string name="second_ago">sec ago</string>
+    <string name="minute_ago">min ago</string>
     <string name="hour_ago">hour ago</string>
     <string name="day_ago">day ago</string>
     <string name="yesterday">Yesterday</string>

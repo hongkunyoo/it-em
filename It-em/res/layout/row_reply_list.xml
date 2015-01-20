@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:paddingBottom="@dimen/reply_margin"
     android:paddingEnd="@dimen/key_line_first"
     android:paddingLeft="@dimen/key_line_first"
@@ -12,22 +11,23 @@
     android:paddingTop="@dimen/reply_margin" >
 
     <com.pinthecloud.item.view.CircleImageView
-        xmlns:civ="http://schemas.android.com/apk/res-auto"
         android:id="@+id/row_reply_list_profile_image"
         android:layout_width="@dimen/profile_thumbnail_image_width"
         android:layout_height="@dimen/profile_thumbnail_image_width"
-        civ:border_color="@color/line_color"
-        civ:border_width="@dimen/line_width" />
+        app:border_color="@color/line_color"
+        app:border_width="@dimen/line_width" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/reply_margin"
         android:layout_marginStart="@dimen/reply_margin"
-        android:orientation="vertical" >
+        android:layout_toEndOf="@+id/row_reply_list_profile_image"
+        android:layout_toRightOf="@+id/row_reply_list_profile_image" >
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:id="@+id/row_reply_list_information_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/reply_margin" >
 
@@ -54,8 +54,9 @@
             android:id="@+id/row_reply_list_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/row_reply_list_information_layout"
             android:textColor="@color/brand_text_color_light"
             app:textType="body" />
-    </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

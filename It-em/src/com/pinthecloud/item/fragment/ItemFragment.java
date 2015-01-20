@@ -45,6 +45,7 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
+import com.pinthecloud.item.view.ExpandableHeightRecyclerView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
@@ -61,7 +62,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private TextView mReplyTitle;
 	private TextView mReplyListEmptyView;
-	private RecyclerView mReplyListView;
+	private ExpandableHeightRecyclerView mReplyListView;
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
 	private List<Reply> mReplyList;
@@ -187,9 +188,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mProductTagLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_layout);
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
-		mReplyListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
-		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
-		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
+		mReplyListView = (ExpandableHeightRecyclerView)view.findViewById(R.id.reply_frag_list);
+		mReplyInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
+		mReplyInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
 
 		mProfileLayout = (LinearLayout)view.findViewById(R.id.item_frag_profile_layout);
 		mProfileImage = (CircleImageView)view.findViewById(R.id.item_frag_profile_image);
@@ -345,7 +346,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 					// Check reply count
 					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
-					if(count < displayReplyNum){
+					if(count <= displayReplyNum){
 						mItem.setReplyCount(count);
 					}
 
@@ -376,28 +377,28 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		if(rowCount <= 0){
 			height = replyPreviousRowHeight;
 		} else {
-			height = getListHeightBasedOnChildren(rowCount);
+			height = getListHeightBasedOnChildren(mReplyListView, rowCount);
 		}
 		mReplyListView.getLayoutParams().height = height;
 		mReplyListView.requestLayout();
 	}
 
 
-	private int getListHeightBasedOnChildren(int rowCount) {
-		int height = 0;
-		int desiredWidth = MeasureSpec.makeMeasureSpec(mReplyListView.getWidth(), MeasureSpec.AT_MOST);
+	@SuppressWarnings("unchecked")
+	private int getListHeightBasedOnChildren(RecyclerView recyclerView, int rowCount) {
+		@SuppressWarnings("rawtypes")
+		RecyclerView.Adapter adapter = recyclerView.getAdapter();
+		int totalHeight = 0;
+		int desiredWidth = MeasureSpec.makeMeasureSpec(recyclerView.getWidth(), MeasureSpec.AT_MOST);
 		for (int i=0 ; i<rowCount ; i++) {
-			RecyclerView.ViewHolder holder = mReplyListAdapter.onCreateViewHolder(mReplyListView, mReplyListAdapter.getItemViewType(i));
-			mReplyListAdapter.onBindViewHolder(holder, i);
+			RecyclerView.ViewHolder holder = adapter.onCreateViewHolder(recyclerView, adapter.getItemViewType(i));
+			adapter.onBindViewHolder(holder, i);
 
 			holder.itemView.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
-
+			totalHeight += holder.itemView.getMeasuredHeight();
 			ItLog.log("measured heright : " + holder.itemView.getMeasuredHeight());
-
-			height += holder.itemView.getMeasuredHeight();
 		}
-		ItLog.log("total height : "+height);
-		return height;
+		return totalHeight;
 	}
 
 
