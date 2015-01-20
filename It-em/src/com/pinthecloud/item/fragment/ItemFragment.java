@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,7 +40,7 @@ import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.ItLog;
+import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.pinthecloud.item.view.ExpandableHeightRecyclerView;
@@ -168,7 +166,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				mItem.setReplyCount(mItem.getReplyCount()-1);
 
 				setReplyTitle(mItem.getReplyCount());
-				resizeReplyListLayoutHeight(mReplyListAdapter.getItemCount());
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
 				showReplyList(mItem.getReplyCount());
 			}
 		});
@@ -346,7 +344,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 					// Check reply count
 					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
-					if(count <= displayReplyNum){
+					if(count < displayReplyNum){
 						mItem.setReplyCount(count);
 					}
 
@@ -357,48 +355,22 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 						mReplyListAdapter.setHasPrevious(false);
 					}
 
-					// Show reply fragment
-					resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
+					// Set reply list expand setting for expand when on draw
+					mReplyListView.setOnDrawExpandRowCount(Math.min(mItem.getReplyCount(), displayReplyNum+1));	
+					
+					// Set wrong reply list height for do draw
+					ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));	 
+					
+					// Set reply list fragment
 					showReplyList(mItem.getReplyCount());
 					setReplyTitle(mItem.getReplyCount());
-
+					
 					AsyncChainer.notifyNext(frag);
 				} else {
 					AsyncChainer.clearChain(frag);
 				}
 			}
 		});
-	}
-
-
-	private void resizeReplyListLayoutHeight(int rowCount){
-		int replyPreviousRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
-		int height = 0;
-		if(rowCount <= 0){
-			height = replyPreviousRowHeight;
-		} else {
-			height = getListHeightBasedOnChildren(mReplyListView, rowCount);
-		}
-		mReplyListView.getLayoutParams().height = height;
-		mReplyListView.requestLayout();
-	}
-
-
-	@SuppressWarnings("unchecked")
-	private int getListHeightBasedOnChildren(RecyclerView recyclerView, int rowCount) {
-		@SuppressWarnings("rawtypes")
-		RecyclerView.Adapter adapter = recyclerView.getAdapter();
-		int totalHeight = 0;
-		int desiredWidth = MeasureSpec.makeMeasureSpec(recyclerView.getWidth(), MeasureSpec.AT_MOST);
-		for (int i=0 ; i<rowCount ; i++) {
-			RecyclerView.ViewHolder holder = adapter.onCreateViewHolder(recyclerView, adapter.getItemViewType(i));
-			adapter.onBindViewHolder(holder, i);
-
-			holder.itemView.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
-			totalHeight += holder.itemView.getMeasuredHeight();
-			ItLog.log("measured heright : " + holder.itemView.getMeasuredHeight());
-		}
-		return totalHeight;
 	}
 
 
@@ -435,7 +407,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void submitReply(final Reply reply){
 		mReplyListAdapter.add(mReplyList.size(), reply);
-		resizeReplyListLayoutHeight(mReplyListAdapter.getItemCount());
+		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
 		showReplyList(mItem.getReplyCount()+1);
 
 		mAimHelper.add(reply, new EntityCallback<Reply>() {
