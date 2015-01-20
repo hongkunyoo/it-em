@@ -17,7 +17,4 @@ public class ProductTag {
 	private String shopName;
 	private String webPage;
 	private double price;
-	
-	
-	
 }

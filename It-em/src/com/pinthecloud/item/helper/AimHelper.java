@@ -66,7 +66,6 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					ItLog.log(_json);
 					JsonElement json = _json.getAsJsonArray();
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());
@@ -244,6 +243,7 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
+					ItLog.log(response);
 					EventBus.getDefault().post(new ItException("del", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}

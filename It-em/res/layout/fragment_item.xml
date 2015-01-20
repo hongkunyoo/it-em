@@ -95,21 +95,28 @@
                             android:contentDescription="@string/it_lower"
                             android:src="@drawable/home_item_list_it_button" />
 
-                        <com.pinthecloud.item.view.CustomTextView
+                        <LinearLayout
+                            android:id="@+id/item_frag_it_number_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/item_content_margin"
                             android:layout_marginStart="@dimen/item_content_margin"
-                            android:text="@string/plus"
-                            android:textColor="@color/brand_text_color_light"
-                            app:textType="caption" />
+                            android:orientation="horizontal" >
 
-                        <com.pinthecloud.item.view.CustomTextView
-                            android:id="@+id/item_frag_it_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/brand_text_color_light"
-                            app:textType="caption" />
+                            <com.pinthecloud.item.view.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/plus"
+                                android:textColor="@color/brand_text_color_light"
+                                app:textType="caption" />
+
+                            <com.pinthecloud.item.view.CustomTextView
+                                android:id="@+id/item_frag_it_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/brand_text_color_light"
+                                app:textType="caption" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -140,7 +147,9 @@
 
                 <include layout="@layout/custom_line" />
 
-                <include layout="@layout/dialog_reply" />
+                <include
+                    android:layout_width="match_parent"                    android:layout_height="wrap_content"
+                    layout="@layout/dialog_reply" />
 
                 <View
                     android:layout_width="match_parent"

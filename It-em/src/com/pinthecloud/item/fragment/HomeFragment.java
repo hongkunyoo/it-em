@@ -28,7 +28,6 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.FileUtil;
-import com.pinthecloud.item.util.ItLog;
 
 public class HomeFragment extends ItFragment {
 
@@ -156,8 +155,8 @@ public class HomeFragment extends ItFragment {
 				super.onScrolled(recyclerView, dx, dy);
 				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
 				int totalItemCount = mGridLayoutManager.getItemCount();
-
-				if (positions[0] >= totalItemCount-1 && !mIsAdding) {
+				
+				if (positions[positions.length-1] >= totalItemCount-1 && !mIsAdding) {
 					addNextItemList();
 				}
 			}
@@ -175,7 +174,6 @@ public class HomeFragment extends ItFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mLayout.setVisibility(View.VISIBLE);
 				mRefresh.setRefreshing(false);
-				ItLog.log(list);
 				mItemList.clear();
 				mGridAdapter.addAll(list);
 			}

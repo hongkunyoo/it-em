@@ -17,16 +17,17 @@ import android.widget.TextView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ProductTagListAdapter;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.model.ProductTag;
 
 public class ProductTagDialog extends ItDialogFragment {
 
 	private ProgressBar mProgressBar;
-	private RelativeLayout mListLayout;
+	private View mListLayout;
 	private TextView mListEmptyView;
 	private RecyclerView mListView;
 	private ProductTagListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
-	private List<Item> mItemList;
+	private List<ProductTag> mTagList;
 
 	private Item mItem;
 
@@ -73,8 +74,8 @@ public class ProductTagDialog extends ItDialogFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mItemList = new ArrayList<Item>();
-		mListAdapter = new ProductTagListAdapter(mItemList);
+		mTagList = new ArrayList<ProductTag>();
+		mListAdapter = new ProductTagListAdapter(mTagList);
 		mListView.setAdapter(mListAdapter);
 	}
 }

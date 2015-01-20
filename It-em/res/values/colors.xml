@@ -17,8 +17,10 @@
     <!-- Reply -->
     <color name="reply_submit_enable">#ffab00</color>
     <color name="reply_submit_disable">#42ffab00</color>
-    <color name="reply_input_hint">#20263238</color>
 
+    <!-- Inputbar -->
+    <color name="custom_inputbar_hint">#20263238</color>
+    
     <!-- It User Page -->
     <color name="it_user_page_tab_number_selected">#ffab00</color>
     
