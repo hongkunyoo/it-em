@@ -56,12 +56,10 @@ public class CustomTextView extends TextView {
 
 	private void setSubhead(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_large));
-		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_xx_large), 0);
 	}
 
 	private void setBody(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
-		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_x_large), 0);
 	}
 
 	private void setCaption(){

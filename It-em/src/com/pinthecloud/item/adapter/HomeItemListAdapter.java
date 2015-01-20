@@ -35,7 +35,7 @@ import com.pinthecloud.item.view.DynamicHeightImageView;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
 
-	private final float MAX_HEIGHT_RATIO = 2.5f;
+	private final float MAX_HEIGHT_RATIO = 2.3f;
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
@@ -111,11 +111,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
-		if(item.getLikeItCount() <= 0){
-			holder.itNumber.setText("");	
-		} else {
-			holder.itNumber.setText(""+item.getLikeItCount());
-		}
+		setItNumber(holder, item.getLikeItCount());
 
 		if(item.getReplyCount() <= 0){
 			holder.replyNumber.setText("");
@@ -197,7 +193,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 						}
 					});
 				}
-				holder.itNumber.setText(""+likeItNum);
+
+				// Set it number and button activated
+				setItNumber(holder, likeItNum);
 				holder.itButton.setActivated(!holder.itButton.isActivated());
 			}
 		});
@@ -231,6 +229,15 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.fit()
 		.into(holder.profileImage);
+	}
+
+
+	private void setItNumber(ViewHolder holder, int itNumber){
+		if(itNumber <= 0){
+			holder.itNumber.setText("");
+		} else {
+			holder.itNumber.setText(""+itNumber);
+		}
 	}
 
 

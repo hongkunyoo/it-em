@@ -15,11 +15,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -42,6 +42,7 @@ import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 
@@ -53,16 +54,18 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mContent;
 	private TextView mDate;
 	private ImageButton mItButton;
+	private LinearLayout mItNumberLayout;
 	private TextView mItNumber;
 
 	private LinearLayout mProductTagLayout;
+
 	private TextView mReplyTitle;
-	private FrameLayout mReplyListLayout;
+	private TextView mReplyListEmptyView;
 	private RecyclerView mReplyListView;
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
 	private List<Reply> mReplyList;
-	private TextView mReplyListEmptyView;
+
 	private EditText mReplyInputText;
 	private Button mReplyInputSubmit;
 
@@ -103,7 +106,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		setButton();
 		setImageView();
 		setReplyList();
-		setReplyTitle();
 		setText();
 		updateItemFrag();
 
@@ -161,12 +163,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				mItem.setReplyCount(mItem.getReplyCount()-1);
-				setReplyTitle();
-				resizeReplyListLayoutHeight(mItem.getReplyCount());
-				showReplyList(mItem.getReplyCount());
-
 				mReplyListAdapter.remove(reply);
+				mItem.setReplyCount(mItem.getReplyCount()-1);
+
+				setReplyTitle(mItem.getReplyCount());
+				resizeReplyListLayoutHeight(mReplyListAdapter.getItemCount());
+				showReplyList(mItem.getReplyCount());
 			}
 		});
 	}
@@ -179,13 +181,13 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
+		mItNumberLayout = (LinearLayout)view.findViewById(R.id.item_frag_it_number_layout);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 
 		mProductTagLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_layout);
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
-		mReplyListLayout = (FrameLayout)view.findViewById(R.id.reply_frag_list_layout);
-		mReplyListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
+		mReplyListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
 		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
@@ -196,6 +198,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
+		showItNumber(mItem.getLikeItCount());
+
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -219,26 +223,27 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				final int likeItNum = (Integer.parseInt(mItNumber.getText().toString()) + 1);
-				mItNumber.setText(String.valueOf(likeItNum));
+				int likeItNum = Integer.parseInt(mItNumber.getText().toString());
+				if(mItButton.isActivated()) {
+					// Cancel like it
+					likeItNum--;
+				} else {
+					// Do like it
+					likeItNum++;
 
-				LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-				mAimHelper.add(likeIt, new EntityCallback<LikeIt>() {
+					LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+					mApp.getAimHelper().add(likeIt, new EntityCallback<LikeIt>() {
 
-					@Override
-					public void onCompleted(LikeIt entity) {
-						mItem.setLikeItCount(likeItNum);
-					}
-				});
-			}
-		});
+						@Override
+						public void onCompleted(LikeIt entity) {
+							mItem.setLikeItCount(Integer.parseInt(mItNumber.getText().toString()));
+						}
+					});
+				}
 
-		mProductTagLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem);
-				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				// Set it number and button activated
+				showItNumber(likeItNum);
+				mItButton.setActivated(!mItButton.isActivated());
 			}
 		});
 
@@ -299,6 +304,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
+				updateProductTag(frag);
 				updateRecentReplyList(frag);
 			}
 		}, new Chainable(){
@@ -312,24 +319,47 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void updateProductTag(ItFragment frag) {
+		mProductTagLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem);
+				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		AsyncChainer.notifyNext(frag);
+	}
+
+
 	private void updateRecentReplyList(final ItFragment frag) {
 		mAimHelper.listRecent(Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
 				if(isAdded()){
+					// Add reply item
+					mReplyList.clear();
+					mReplyListAdapter.addAll(list);
+
+					// Check reply count
 					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
+					if(count < displayReplyNum){
+						mItem.setReplyCount(count);
+					}
+
+					// Set see previous row
 					if(mItem.getReplyCount() > displayReplyNum){
 						mReplyListAdapter.setHasPrevious(true);
 					} else {
 						mReplyListAdapter.setHasPrevious(false);
 					}
 
-					//					resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
+					// Show reply fragment
+					resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
 					showReplyList(mItem.getReplyCount());
-
-					mReplyList.clear();
-					mReplyListAdapter.addAll(list);
+					setReplyTitle(mItem.getReplyCount());
 
 					AsyncChainer.notifyNext(frag);
 				} else {
@@ -341,20 +371,33 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void resizeReplyListLayoutHeight(int rowCount){
-		int replyRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
 		int replyPreviousRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
-
 		int height = 0;
 		if(rowCount <= 0){
-			height = replyRowHeight;
-		} else if(!mReplyListAdapter.isHasPrevious()) {
-			height = replyRowHeight * rowCount;
+			height = replyPreviousRowHeight;
 		} else {
-			height = replyRowHeight * (rowCount - 1);
-			height += replyPreviousRowHeight;
+			height = getListHeightBasedOnChildren(rowCount);
 		}
+		mReplyListView.getLayoutParams().height = height;
+		mReplyListView.requestLayout();
+	}
 
-		mReplyListLayout.getLayoutParams().height = height;
+
+	private int getListHeightBasedOnChildren(int rowCount) {
+		int height = 0;
+		int desiredWidth = MeasureSpec.makeMeasureSpec(mReplyListView.getWidth(), MeasureSpec.AT_MOST);
+		for (int i=0 ; i<rowCount ; i++) {
+			RecyclerView.ViewHolder holder = mReplyListAdapter.onCreateViewHolder(mReplyListView, mReplyListAdapter.getItemViewType(i));
+			mReplyListAdapter.onBindViewHolder(holder, i);
+
+			holder.itemView.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+
+			ItLog.log("measured heright : " + holder.itemView.getMeasuredHeight());
+
+			height += holder.itemView.getMeasuredHeight();
+		}
+		ItLog.log("total height : "+height);
+		return height;
 	}
 
 
@@ -390,16 +433,16 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void submitReply(final Reply reply){
-		resizeReplyListLayoutHeight(mItem.getReplyCount()+1);
-		showReplyList(mItem.getReplyCount()+1);
 		mReplyListAdapter.add(mReplyList.size(), reply);
+		resizeReplyListLayoutHeight(mReplyListAdapter.getItemCount());
+		showReplyList(mItem.getReplyCount()+1);
 
 		mAimHelper.add(reply, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {
 				mItem.setReplyCount(mItem.getReplyCount()+1);
-				setReplyTitle();
+				setReplyTitle(mItem.getReplyCount());
 
 				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
 			}
@@ -423,7 +466,22 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setReplyTitle(){
-		mReplyTitle.setText(getResources().getString(R.string.comments) + " " + mItem.getReplyCount());
+	private void showItNumber(int itNumber){
+		if(mItem.getLikeItCount() <= 0){
+			mItNumberLayout.setVisibility(View.GONE);
+			mItNumber.setText("");
+		} else {
+			mItNumberLayout.setVisibility(View.VISIBLE);
+			mItNumber.setText(""+itNumber);
+		}
+	}
+
+
+	private void setReplyTitle(int replyCount){
+		String title = getResources().getString(R.string.comments);
+		if(replyCount != 0){
+			title = title + " " + replyCount;
+		}
+		mReplyTitle.setText(title);
 	}
 }

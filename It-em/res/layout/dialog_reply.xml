@@ -34,7 +34,6 @@
         android:layout_height="match_parent" >
 
         <include
-            android:id="@+id/reply_frag_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -42,12 +41,12 @@
             android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/reply_frag_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <FrameLayout
-                android:id="@+id/reply_frag_list_layout"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" >
@@ -55,8 +54,12 @@
                 <com.pinthecloud.item.view.CustomTextView
                     android:id="@+id/reply_frag_list_empty_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_height="@dimen/reply_row_previous_height"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="@dimen/key_line_first"
+                    android:paddingLeft="@dimen/key_line_first"
+                    android:paddingRight="@dimen/key_line_first"
+                    android:paddingStart="@dimen/key_line_first"
                     android:text="@string/first_reply"
                     android:visibility="gone"
                     app:textType="body" />
@@ -64,50 +67,60 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/reply_frag_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </FrameLayout>
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/reply_frag_inputbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/reply_margin"
-                android:paddingEnd="@dimen/none"
-                android:paddingLeft="@dimen/reply_margin"
-                android:paddingRight="@dimen/none"
-                android:paddingStart="@dimen/reply_margin" >
+                android:orientation="vertical" >
 
-                <EditText
-                    android:id="@+id/reply_frag_inputbar_text"
-                    android:layout_width="0dp"
+                <include layout="@layout/custom_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/general_inputbar_bg"
-                    android:ems="10"
-                    android:hint="@string/message"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:paddingEnd="@dimen/reply_margin"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/reply_margin"
+                    android:paddingEnd="@dimen/none"
                     android:paddingLeft="@dimen/reply_margin"
-                    android:paddingRight="@dimen/reply_margin"
+                    android:paddingRight="@dimen/none"
                     android:paddingStart="@dimen/reply_margin"
-                    android:textColor="@color/brand_text_color"
-                    android:textColorHint="@color/reply_input_hint"
-                    android:textSize="@dimen/font_large" >
+                    android:paddingTop="@dimen/reply_margin" >
 
-                    <requestFocus />
-                </EditText>
+                    <EditText
+                        android:id="@+id/reply_frag_inputbar_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/general_inputbar_bg"
+                        android:ems="10"
+                        android:hint="@string/message"
+                        android:inputType="textMultiLine"
+                        android:maxLines="3"
+                        android:paddingEnd="@dimen/reply_margin"
+                        android:paddingLeft="@dimen/reply_margin"
+                        android:paddingRight="@dimen/reply_margin"
+                        android:paddingStart="@dimen/reply_margin"
+                        android:textColor="@color/brand_text_color"
+                        android:textColorHint="@color/reply_input_hint"
+                        android:textSize="@dimen/font_large" >
 
-                <Button
-                    android:id="@+id/reply_frag_inputbar_submit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="@android:color/transparent"
-                    android:enabled="false"
-                    android:text="@string/submit"
-                    android:textColor="@color/reply_submit_color"
-                    android:textSize="@dimen/font_medium" />
+                        <requestFocus />
+                    </EditText>
+
+                    <Button
+                        android:id="@+id/reply_frag_inputbar_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
+                        android:text="@string/submit"
+                        android:textColor="@color/reply_submit_color"
+                        android:textSize="@dimen/font_medium" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

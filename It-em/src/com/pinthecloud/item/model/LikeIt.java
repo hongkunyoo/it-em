@@ -1,7 +1,5 @@
 package com.pinthecloud.item.model;
 
-
-
 public class LikeIt extends AbstractItemModel<LikeIt>{
 
 	public LikeIt() {
@@ -21,5 +19,4 @@ public class LikeIt extends AbstractItemModel<LikeIt>{
 	@Override
 	public final void setContent(String content) {
 	}
-
 }

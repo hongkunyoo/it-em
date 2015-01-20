@@ -30,18 +30,21 @@ import com.pinthecloud.item.model.Reply;
 
 public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
-	private Item mItem;
-	private ItUser mMyItUser;
-
 	private TextView mTitle;
+
+	private View mListLayout;
 	private ProgressBar mProgressBar;
+	private TextView mListEmptyView;
 	private RecyclerView mListView;
 	private ReplyListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
 	private List<Reply> mReplyList;
-	private TextView mListEmptyView;
+
 	private EditText mInputText;
 	private Button mInputSubmit;
+
+	private Item mItem;
+	private ItUser mMyItUser;
 
 
 	public static ReplyDialog newInstance(Item item) {
@@ -98,9 +101,10 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 	private void findComponent(View view){
 		mTitle = (TextView)view.findViewById(R.id.reply_frag_title);
-		mProgressBar = (ProgressBar)view.findViewById(R.id.reply_frag_progress_bar);
-		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
+		mListLayout = view.findViewById(R.id.reply_frag_list_layout);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
+		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
 		mInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 	}
@@ -154,7 +158,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 	private void updateList() {
 		mProgressBar.setVisibility(View.VISIBLE);
-		mListView.setVisibility(View.GONE);
+		mListLayout.setVisibility(View.INVISIBLE);
 
 		mAimHelper.list(Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
@@ -162,7 +166,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 			public void onCompleted(List<Reply> list, int count) {
 				if(isAdded()){
 					mProgressBar.setVisibility(View.GONE);
-					mListView.setVisibility(View.VISIBLE);
+					mListLayout.setVisibility(View.VISIBLE);
 
 					mItem.setReplyCount(count);
 					showReplyList(mItem.getReplyCount());
@@ -188,8 +192,8 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 
 	private void submitReply(final Reply reply){
-		showReplyList(mItem.getReplyCount()+1);
 		mListAdapter.add(mReplyList.size(), reply);
+		showReplyList(mItem.getReplyCount()+1);
 
 		mAimHelper.add(reply, new EntityCallback<Reply>() {
 
@@ -207,7 +211,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	private void setTitle(int replyCount){
 		String title = getResources().getString(R.string.comments);
 		if(replyCount != 0){
-			title = title + " " + mItem.getReplyCount();
+			title = title + " " + replyCount;
 		}
 		mTitle.setText(title);
 	}
