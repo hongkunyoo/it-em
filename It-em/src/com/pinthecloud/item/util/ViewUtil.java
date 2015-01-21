@@ -1,6 +1,8 @@
 package com.pinthecloud.item.util;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View.MeasureSpec;
 
@@ -38,5 +40,25 @@ public class ViewUtil {
 			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, activity.getResources().getDisplayMetrics());
 		}
 		return actionBarHeight;
+	}
+
+
+	public static int getDeviceWidth(ItActivity activity){
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		return displayMetrics.widthPixels;
+	}
+
+
+	public static int getDeviceHeight(ItActivity activity){
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		return displayMetrics.heightPixels;
+	}
+
+
+	public static int getStatusBarHeight(Context context) {
+		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		return context.getResources().getDimensionPixelSize(resourceId);
 	}
 }

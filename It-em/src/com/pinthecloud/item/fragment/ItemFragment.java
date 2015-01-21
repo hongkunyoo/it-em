@@ -254,11 +254,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			public void onScrollChanged() {
 				int scrollY = mScrollLayout.getScrollY();
 				int diffY = scrollY-mBaseScrollY;
-				if(mBaseScrollY > scrollY && mToolbarLayout.getScrollY() >= 0){
-					// Down
+				if(diffY < 0 && mToolbarLayout.getScrollY() >= 0){
+					// Scroll Down, Toolbar Down
 					mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
-				} else if(mBaseScrollY < scrollY && mToolbarLayout.getScrollY() <= actionBarHeight) {
-					// Up
+				} else if(diffY > 0 && mToolbarLayout.getScrollY() <= actionBarHeight) {
+					// Scroll Up, Toolbar Up
 					mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
 				}
 				mBaseScrollY = scrollY;

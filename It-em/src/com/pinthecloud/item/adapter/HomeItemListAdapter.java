@@ -227,6 +227,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.placeholder(R.drawable.profile_s_defualt_img)
 		.fit()
 		.into(holder.profileImage);
 	}

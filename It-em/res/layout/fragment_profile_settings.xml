@@ -9,8 +9,8 @@
     <com.pinthecloud.item.view.CircleImageView
         xmlns:civ="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_settings_frag_profile_image"
-        android:layout_width="@dimen/profile_preview_image_width"
-        android:layout_height="@dimen/profile_preview_image_width"
+        android:layout_width="@dimen/profile_settings_image_width"
+        android:layout_height="@dimen/profile_settings_image_width"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/key_line_first"
         civ:border_color="@color/line_color"

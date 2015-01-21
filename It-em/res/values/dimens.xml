@@ -9,7 +9,6 @@
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
     <dimen name="profile_preview_image_width">56dp</dimen>
-    <dimen name="profile_image_width">212dp</dimen>
 
     <!-- Main Drawer -->
     <dimen name="main_drawer_width">280dp</dimen>
@@ -42,6 +41,9 @@
     <dimen name="it_user_page_tab_number_margin">6dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">2dp</dimen>
 
+    <!-- Profile Image -->
+    <dimen name="profile_image_width">212dp</dimen>
+    
     <!-- My Item -->
     <dimen name="my_item_progress_bar_bottom_margin">150dp</dimen>
     <dimen name="my_item_empty_bottom_margin">100dp</dimen>
@@ -59,6 +61,7 @@
 
     <!-- Profile Settings -->
     <dimen name="profile_settings_content_margin">8dp</dimen>
+    <dimen name="profile_settings_image_width">128dp</dimen>
 
     <!-- Settings -->
     <dimen name="settings_row_height">48dp</dimen>

@@ -80,7 +80,7 @@ public class UploadFragment extends ItFragment {
 		super.onStart();
 		mApp.getPicasso()
 		.load(mItemImageUri)
-		.placeholder(R.drawable.launcher)
+		.placeholder(R.drawable.upload_thumbnail_default_img)
 		.fit().centerCrop()
 		.into(mItemImage);
 	}
@@ -211,7 +211,7 @@ public class UploadFragment extends ItFragment {
 					public void doPositiveThing(Bundle bundle) {
 						// Set profile image default
 						mItemImageUri = null;
-						mItemImage.setImageResource(R.drawable.launcher);
+						mItemImage.setImageResource(R.drawable.upload_thumbnail_default_img);
 						mSubmit.setEnabled(isSubmitEnable());
 					}
 					@Override

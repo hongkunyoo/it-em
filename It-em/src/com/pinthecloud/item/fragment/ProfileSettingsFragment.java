@@ -208,7 +208,8 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setProfileImage(){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
+		.placeholder(R.drawable.profile_m_defualt_img)
 		.fit()
 		.into(mProfileImage);
 	}
@@ -244,7 +245,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				updateProfileImage(R.drawable.launcher);
+				updateProfileImage(R.drawable.profile_m_default_img);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -329,8 +330,8 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void updateProfileImage(int resId){
 		mApp.showProgressDialog(mActivity);
-		Bitmap profileImageBitmap = ImageUtil.refineSquareImage(getResources(), R.drawable.launcher, ImageUtil.PROFILE_IMAGE_SIZE);
-		Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(getResources(), R.drawable.launcher, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
+		Bitmap profileImageBitmap = ImageUtil.refineSquareImage(getResources(), resId, ImageUtil.PROFILE_IMAGE_SIZE);
+		Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(getResources(), resId, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
 		updateProfileImage(profileImageBitmap, profileThumbnailImageBitmap);
 	}
 
