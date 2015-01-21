@@ -8,7 +8,6 @@
     <color name="line_color">#20000000</color>
     <color name="brand_text_color">#de263238</color>
     <color name="brand_text_color_light">#78909c</color>
-    <color name="brand_background">#eceff1</color>
 
     <!-- Main Drawer -->
     <color name="main_drawer_menu_profile_nick_name">#deffffff</color>
@@ -25,5 +24,9 @@
     <!-- Settings -->
     <color name="settings_logout_text">#deffffff</color>
     <color name="settings_logout_background">#ef5350</color>
+    
+    <!-- Be Pro -->
+    <color name="be_pro_text">#deffffff</color>
+    <color name="be_pro_code_hint">#87ffffff</color>
 
 </resources>

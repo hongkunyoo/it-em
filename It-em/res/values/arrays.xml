@@ -14,8 +14,11 @@
     </string-array>
 
     <!-- It User Page -->
-    <string-array name="it_user_page_tab_title_string_array">
+    <string-array name="it_user_page_pro_tab_title_string_array">
         <item>IT:EM</item>
+        <item>IT</item>
+    </string-array>
+    <string-array name="it_user_page_tab_title_string_array">
         <item>IT</item>
     </string-array>
 

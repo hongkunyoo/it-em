@@ -36,14 +36,15 @@ public class HomeFragment extends ItFragment {
 	private ProgressBar mProgressBar;
 	private View mLayout;
 	private SwipeRefreshLayout mRefresh;
-	private View mUploadLayout;
-	private ImageButton mUploadButton;
-
 	private RecyclerView mGridView;
 	private HomeItemListAdapter mGridAdapter;
 	private StaggeredGridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
 
+	private View mUploadLayout;
+	private ImageButton mUploadButton;
+
+	private ItUser mMyitUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
 
@@ -51,6 +52,7 @@ public class HomeFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mMyitUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItemList == null){
 			mItemList = new ArrayList<Item>();
 		}
@@ -119,9 +121,14 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setComponent(){
-		int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
-		int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
-		mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
+		if(mMyitUser.isPro()){
+			mUploadLayout.setVisibility(View.VISIBLE);
+			int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
+			int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
+			mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
+		} else {
+			mUploadLayout.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -172,7 +179,7 @@ public class HomeFragment extends ItFragment {
 				// Add more items when grid reaches bottom
 				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
 				int totalItemCount = mGridLayoutManager.getItemCount();
-				if (positions[positions.length-1] >= totalItemCount-1 && !mIsAdding) {
+				if (positions[positions.length-1] >= totalItemCount-3 && !mIsAdding) {
 					addNextItemList();
 				}
 
@@ -191,8 +198,7 @@ public class HomeFragment extends ItFragment {
 
 	public void updateList() {
 		page = 0;
-		ItUser itUser = mObjectPrefHelper.get(ItUser.class);
-		mAimHelper.listItem(page, itUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(page, mMyitUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
@@ -208,8 +214,7 @@ public class HomeFragment extends ItFragment {
 
 	private void addNextItemList() {
 		mIsAdding = true;
-		ItUser itUser = mObjectPrefHelper.get(ItUser.class);
-		mAimHelper.listItem(++page, itUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(++page, mMyitUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

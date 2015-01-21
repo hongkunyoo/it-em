@@ -11,12 +11,12 @@ public class ItUser implements Parcelable {
 
 	public static final String INTENT_KEY = "IT_USER_INTENT_KEY";
 	public static final String FACEBOOK = "facebook";
-	
+
 	public static enum TYPE {
 		VIEWER("VIEWER"),
 		SELLER("SELLER"),
 		PRO("PRO");
-		
+
 		private final String value;
 
 		private TYPE(final String value) {
@@ -27,7 +27,7 @@ public class ItUser implements Parcelable {
 			return this.value;
 		}
 	}
-	
+
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
 	@com.google.gson.annotations.SerializedName("itUserId")
@@ -44,7 +44,7 @@ public class ItUser implements Parcelable {
 	private String webPage;
 	@com.google.gson.annotations.SerializedName("type")
 	private String type;
-	
+
 	public ItUser() {
 		super();
 	}
@@ -136,6 +136,11 @@ public class ItUser implements Parcelable {
 
 	public boolean isMe(){
 		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.id);
+	}
+
+
+	public boolean isPro(){
+		return TYPE.PRO.toString().equals(this.type);
 	}
 
 

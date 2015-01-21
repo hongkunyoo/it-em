@@ -26,8 +26,8 @@ import com.pinthecloud.item.model.Item;
 public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHolder {
 
 	private static final String POSITION_KEY = "POSITION_KEY";
-	private final int MY_ITEM = 0;
-	private final int IT_ITEM = 1;
+	private int MY_ITEM;
+	private int IT_ITEM;
 
 	private ProgressBar mProgressBar;
 	private RelativeLayout mGridLayout;
@@ -66,6 +66,14 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		super.onCreate(savedInstanceState);
 		mPosition = getArguments().getInt(POSITION_KEY);
 		mItUser = getArguments().getParcelable(ItUser.INTENT_KEY);
+
+		if(mItUser.isPro()){
+			MY_ITEM = 0;
+			IT_ITEM = 1;
+		} else {
+			MY_ITEM = -1;
+			IT_ITEM = 0;
+		}
 	}
 
 
@@ -111,15 +119,12 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 
 	private void setComponent(){
-		switch(mPosition){
-		case MY_ITEM:
+		if(mPosition == MY_ITEM){
 			mGridEmptyImage.setImageResource(R.drawable.mypage_item_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_my_item));
-			break;
-		case IT_ITEM:
+		} else if(mPosition == IT_ITEM) {
 			mGridEmptyImage.setImageResource(R.drawable.mypage_it_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_it_item));
-			break;
 		}
 	}
 
@@ -141,6 +146,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
+
 				// Scroll Header
 				if (mItUserPageScrollTabHolder != null){
 					mItUserPageScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
@@ -154,13 +160,10 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		mProgressBar.setVisibility(View.VISIBLE);
 		mGridLayout.setVisibility(View.GONE);
 
-		switch(mPosition){
-		case MY_ITEM:
+		if(mPosition == MY_ITEM){
 			updateMyItemGrid();
-			break;
-		case IT_ITEM:
+		} else if(mPosition == IT_ITEM) {
 			updateItItemGrid();
-			break;
 		}
 	}
 

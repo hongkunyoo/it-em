@@ -53,8 +53,10 @@
     <string name="empty_it_item">This user\'s IT item is empty.</string>
     <string name="empty">Empty</string>
 
-    <!-- Pro -->
-    <string name="pro">Pro</string>
+    <!-- Be Pro -->
+    <string name="be_pro">Be Pro</string>
+    <string name="support_email">support@pinthecloud.com</string>
+    <string name="code">CODE</string>
 
     <!-- Upload -->
     <string name="upload">Upload</string>

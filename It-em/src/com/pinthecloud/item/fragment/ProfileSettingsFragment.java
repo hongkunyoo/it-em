@@ -141,7 +141,8 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				mSubmit.setEnabled(mNickName.getText().toString().trim().length() > 0);
+				String nickName = s.toString().trim();
+				mSubmit.setEnabled(nickName.length() > 0);
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,

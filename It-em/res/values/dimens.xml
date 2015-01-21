@@ -3,7 +3,6 @@
     <!-- Common -->
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
-    <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="key_line_first">16dp</dimen>
     <dimen name="key_line_second">72dp</dimen>
     <dimen name="corner_radius">2dp</dimen>
@@ -25,6 +24,10 @@
     <dimen name="home_item_content_margin">6dp</dimen>
     <dimen name="home_item_spacing">2dp</dimen>
 
+    <!-- Be Pro -->
+    <dimen name="be_pro_content_margin">12dp</dimen>
+    <dimen name="be_pro_code_margin">8dp</dimen>
+    
     <!-- Item -->
     <dimen name="item_content_margin">12dp</dimen>
     <dimen name="item_content_row_height">48dp</dimen>

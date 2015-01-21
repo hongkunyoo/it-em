@@ -23,9 +23,14 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	public ItUserPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
 		super(fm);
-		this.mTitles = context.getResources().getStringArray(R.array.it_user_page_tab_title_string_array);
 		this.mItUserPageScrollTabHolderList = new SparseArrayCompat<ItUserPageScrollTabHolder>();
 		this.mItUser = itUser;
+		
+		if(mItUser.isPro()){
+			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_pro_tab_title_string_array);	
+		} else {
+			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_tab_title_string_array);
+		}
 	}
 
 
