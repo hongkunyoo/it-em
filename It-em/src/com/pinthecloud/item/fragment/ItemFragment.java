@@ -5,8 +5,10 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,11 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
@@ -46,6 +50,11 @@ import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.pinthecloud.item.view.ExpandableHeightRecyclerView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
+
+	private View mToolbarLayout;
+	private Toolbar mToolbar;
+	private ScrollView mScrollLayout;
+	private int mBaseScrollY;
 
 	private DynamicHeightImageView mItemImage;
 	private ProgressBar mProgressBar;
@@ -101,7 +110,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		setHasOptionsMenu(true);
 		findComponent(view);
+		setToolbar();
 		setComponent();
+		setScroll();
 		setButton();
 		setImageView();
 		setReplyList();
@@ -174,6 +185,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
+		mToolbarLayout = view.findViewById(R.id.item_frag_toolbar_layout);
+		mToolbar = (Toolbar)view.findViewById(R.id.toolbar);
+		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
+
 		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_item_image);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mItemLayout = (LinearLayout)view.findViewById(R.id.item_frag_item_layout);
@@ -187,12 +202,24 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
 		mReplyListView = (ExpandableHeightRecyclerView)view.findViewById(R.id.reply_frag_list);
-		mReplyInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
-		mReplyInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
+		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
+		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
 		mProfileLayout = (LinearLayout)view.findViewById(R.id.item_frag_profile_layout);
 		mProfileImage = (CircleImageView)view.findViewById(R.id.item_frag_profile_image);
 		mNickName = (TextView)view.findViewById(R.id.item_frag_nick_name);
+	}
+
+
+	private void setToolbar(){
+		mActivity.setSupportActionBar(mToolbar);
+
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 
+				+ " " + getResources().getString(R.string.app_name));
+
+		mToolbarLayout.bringToFront();
 	}
 
 
@@ -212,6 +239,29 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 			@Override
 			public void afterTextChanged(Editable s) {
+			}
+		});
+	}
+
+
+	private void setScroll(){
+		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
+		mToolbarLayout.scrollTo(0, actionBarHeight);
+		mScrollLayout.scrollTo(0, actionBarHeight);
+		mScrollLayout.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
+
+			@Override
+			public void onScrollChanged() {
+				int scrollY = mScrollLayout.getScrollY();
+				int diffY = scrollY-mBaseScrollY;
+				if(mBaseScrollY > scrollY && mToolbarLayout.getScrollY() >= 0){
+					// Down
+					mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
+				} else if(mBaseScrollY < scrollY && mToolbarLayout.getScrollY() <= actionBarHeight) {
+					// Up
+					mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
+				}
+				mBaseScrollY = scrollY;
 			}
 		});
 	}
@@ -356,15 +406,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					}
 
 					// Set reply list expand setting for expand when on draw
-					mReplyListView.setOnDrawExpandRowCount(Math.min(mItem.getReplyCount(), displayReplyNum+1));	
-					
-					// Set wrong reply list height for do draw
-					ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));	 
-					
+					mReplyListView.setOnDrawExpandRowCount(Math.min(mItem.getReplyCount(), displayReplyNum+1));
+
 					// Set reply list fragment
 					showReplyList(mItem.getReplyCount());
 					setReplyTitle(mItem.getReplyCount());
-					
+
 					AsyncChainer.notifyNext(frag);
 				} else {
 					AsyncChainer.clearChain(frag);

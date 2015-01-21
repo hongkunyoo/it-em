@@ -51,13 +51,11 @@
     <dimen name="reply_row_previous_height">36dp</dimen>
     <dimen name="reply_margin">6dp</dimen>
     <dimen name="reply_title_margin">12dp</dimen>
+    <dimen name="reply_inputbar_margin">6dp</dimen>
     
     <!-- Product Tag -->
     <dimen name="product_tag_margin">12dp</dimen>
     <dimen name="product_tag_row_height">48dp</dimen>
-    
-    <!-- Inputbar -->
-    <dimen name="custom_inputbar_margin">6dp</dimen>
 
     <!-- Profile Settings -->
     <dimen name="profile_settings_content_margin">8dp</dimen>

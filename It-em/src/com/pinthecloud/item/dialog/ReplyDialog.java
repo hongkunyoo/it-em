@@ -105,8 +105,8 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
 		mListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
-		mInputText = (EditText)view.findViewById(R.id.custom_inputbar_text);
-		mInputSubmit = (Button)view.findViewById(R.id.custom_inputbar_submit);
+		mInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
+		mInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 	}
 
 

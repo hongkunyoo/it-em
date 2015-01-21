@@ -5,17 +5,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
@@ -32,6 +33,9 @@ import com.pinthecloud.item.util.ImageUtil;
 
 public class ProfileSettingsFragment extends ItFragment {
 
+	private TextView mTitle;
+	private ImageButton mSubmit;
+
 	private Uri mProfileImageUri;
 	private ImageView mProfileImage;
 
@@ -40,8 +44,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mWebsite;
 
 	private ItUser mMyItUser;
-
-	private boolean mIsUpdating = false;
 
 
 	@Override
@@ -56,10 +58,13 @@ public class ProfileSettingsFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile_settings, container, false);
+		
 		setHasOptionsMenu(true);
+		setToolbar(inflater);
 		findComponent(view);
 		setComponent();
 		setButton();
+		
 		return view;
 	}
 
@@ -101,59 +106,22 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.profile_settings, menu);
-	}
-
-
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		super.onPrepareOptionsMenu(menu);
-		MenuItem menuItem = menu.findItem(R.id.profile_settings_submit);
-		menuItem.setEnabled(mNickName.getText().toString().trim().length() > 0);
-	}
-
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			mActivity.onBackPressed();
 			break;
-		case R.id.profile_settings_submit:
-			if(!mIsUpdating){
-				mIsUpdating = true;
-				trimProfileSettings();
-				if(isProfileSettingsChanged()){
-					mApp.showProgressDialog(mActivity);
-					AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-						@Override
-						public void doNext(final ItFragment frag, Object... params) {
-							checkNickName(frag, mNickName.getText().toString());
-						}
-					}, new Chainable(){
-
-						@Override
-						public void doNext(ItFragment frag, Object... params) {
-							String message = params[0].toString();
-							if(message.equals("")){
-								updateProfileSettings();
-							} else {
-								mIsUpdating = false;
-								mApp.dismissProgressDialog();
-								Toast.makeText(mActivity, params[0].toString(), Toast.LENGTH_LONG).show();	
-							}
-						}
-					});
-				} else {
-					mActivity.onBackPressed();
-				}
-			}
-			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+
+	private void setToolbar(LayoutInflater inflater){
+		Toolbar toolbar = mActivity.getToolbar();
+		View view = inflater.inflate(R.layout.custom_toolbar_submit_view, toolbar, false);
+		mTitle = (TextView)view.findViewById(R.id.custom_toolbar_submit_title);
+		mSubmit = (ImageButton)view.findViewById(R.id.custom_toolbar_submit_button);
+		toolbar.addView(view);
 	}
 
 
@@ -166,12 +134,14 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
+		mTitle.setText(getResources().getString(R.string.profile_settings));
+
 		mNickName.setText(mMyItUser.getNickName());
 		mNickName.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				mActivity.invalidateOptionsMenu();
+				mSubmit.setEnabled(mNickName.getText().toString().trim().length() > 0);
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -188,6 +158,39 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void setButton(){
+		mSubmit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				trimProfileSettings();
+				if(isProfileSettingsChanged()){
+					mApp.showProgressDialog(mActivity);
+
+					AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+						@Override
+						public void doNext(final ItFragment frag, Object... params) {
+							checkNickName(frag, mNickName.getText().toString());
+						}
+					}, new Chainable(){
+
+						@Override
+						public void doNext(ItFragment frag, Object... params) {
+							String message = params[0].toString();
+							if(message.equals("")){
+								updateProfileSettings();
+							} else {
+								mApp.dismissProgressDialog();
+								Toast.makeText(mActivity, params[0].toString(), Toast.LENGTH_LONG).show();	
+							}
+						}
+					});
+				} else {
+					mActivity.onBackPressed();
+				}
+			}
+		});
+
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -302,11 +305,10 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void onCompleted(ItUser entity) {
-				mObjectPrefHelper.put(entity);
-
-				mIsUpdating = false;
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
+
+				mObjectPrefHelper.put(entity);
 
 				Intent intent = new Intent();
 				intent.putExtra(ItUser.INTENT_KEY, entity);

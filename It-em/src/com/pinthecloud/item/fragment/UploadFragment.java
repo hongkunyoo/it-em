@@ -5,17 +5,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
@@ -32,6 +33,9 @@ import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.util.ImageUtil;
 
 public class UploadFragment extends ItFragment {
+
+	private TextView mTitle;
+	private ImageButton mSubmit;
 
 	private Uri mItemImageUri;
 
@@ -62,9 +66,10 @@ public class UploadFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_upload, container, false);
 
 		setHasOptionsMenu(true);
+		setToolbar(inflater);
 		findComponent(view);
 		setComponent();
-		setImageView();
+		setButton();
 
 		return view;
 	}
@@ -95,25 +100,10 @@ public class UploadFragment extends ItFragment {
 		case FileUtil.GALLERY:
 			if (resultCode == Activity.RESULT_OK){
 				mItemImageUri = data.getData();
-				mActivity.invalidateOptionsMenu();
+				mSubmit.setEnabled(isSubmitEnable());
 			}
 			break;
 		}
-	}
-
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.upload, menu);
-	}
-
-
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		MenuItem menuItem = menu.findItem(R.id.upload_submit);
-		menuItem.setEnabled(isSubmitEnable());
-		super.onPrepareOptionsMenu(menu);
 	}
 
 
@@ -123,11 +113,17 @@ public class UploadFragment extends ItFragment {
 		case android.R.id.home:
 			mActivity.onBackPressed();
 			break;
-		case R.id.upload_submit:
-			uploadItem();
-			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
+	}
+
+
+	private void setToolbar(LayoutInflater inflater){
+		Toolbar toolbar = mActivity.getToolbar();
+		View view = inflater.inflate(R.layout.custom_toolbar_submit_view, toolbar, false);
+		mTitle = (TextView)view.findViewById(R.id.custom_toolbar_submit_title);
+		mSubmit = (ImageButton)view.findViewById(R.id.custom_toolbar_submit_button);
+		toolbar.addView(view);
 	}
 
 
@@ -138,11 +134,13 @@ public class UploadFragment extends ItFragment {
 
 
 	private void setComponent(){
+		mTitle.setText(getResources().getString(R.string.upload));
+
 		mContent.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				mActivity.invalidateOptionsMenu();
+				mSubmit.setEnabled(isSubmitEnable());
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -155,7 +153,16 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void setImageView(){
+	private void setButton(){
+		mSubmit.setEnabled(isSubmitEnable());
+		mSubmit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				uploadItem();
+			}
+		});
+
 		mItemImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -205,7 +212,7 @@ public class UploadFragment extends ItFragment {
 						// Set profile image default
 						mItemImageUri = null;
 						mItemImage.setImageResource(R.drawable.launcher);
-						mActivity.invalidateOptionsMenu();
+						mSubmit.setEnabled(isSubmitEnable());
 					}
 					@Override
 					public void doNegativeThing(Bundle bundle) {

@@ -1,7 +1,11 @@
 package com.pinthecloud.item.util;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View.MeasureSpec;
+
+import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItActivity;
 
 public class ViewUtil {
 
@@ -20,5 +24,19 @@ public class ViewUtil {
 		}
 		recyclerView.getLayoutParams().height = totalHeight;
 		recyclerView.requestLayout();
+	}
+
+
+	public static int getActionBarHeight(ItActivity activity){
+		int actionBarHeight = activity.getSupportActionBar().getHeight();
+		if (actionBarHeight != 0){
+			return actionBarHeight;
+		}
+
+		final TypedValue tv = new TypedValue();
+		if (activity.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)){
+			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, activity.getResources().getDisplayMetrics());
+		}
+		return actionBarHeight;
 	}
 }
