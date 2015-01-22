@@ -2,6 +2,7 @@ package com.pinthecloud.item.util;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.pinthecloud.item.GlobalVariable;
 
 public class ItLog {
@@ -17,5 +18,8 @@ public class ItLog {
 			}
 			Log.e("ERROR" ,"\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		}
+	}
+	public static void logObject(Object obj) {
+		log(new Gson().toJson(obj));
 	}
 }

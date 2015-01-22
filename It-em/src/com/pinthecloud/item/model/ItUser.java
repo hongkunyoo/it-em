@@ -44,6 +44,8 @@ public class ItUser implements Parcelable {
 	private String webPage;
 	@com.google.gson.annotations.SerializedName("type")
 	private String type;
+	@com.google.gson.annotations.SerializedName("password")
+	private String password = "";
 
 	public ItUser() {
 		super();
