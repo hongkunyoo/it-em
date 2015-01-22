@@ -54,6 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/key_line_first"
                         android:textColor="@color/brand_text_color"
+                        android:textStyle= "bold"
                         app:textType="subhead" />
 
                     <com.pinthecloud.item.view.CustomTextView
@@ -71,6 +72,8 @@
                         android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
                         android:textColor="@color/brand_text_color_light"
                         app:textType="caption" />
+                    
+                    <include layout="@layout/custom_line" />
                 </LinearLayout>
 
                 <ImageButton
