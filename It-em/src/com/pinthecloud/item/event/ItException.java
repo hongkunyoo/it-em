@@ -50,6 +50,7 @@ public class ItException extends RuntimeException {
 		}
 	}
 
+	// Client Exception Type
 	public enum TYPE {
 		NETWORK_UNAVAILABLE,
 		SERVER_ERROR,
@@ -57,4 +58,7 @@ public class ItException extends RuntimeException {
 		INTERNAL_ERROR,
 		INVALID_KEY
 	}
+
+	// Azure Mobile Service Exception Code
+	public static final String ITEM_NOT_FOUND = "ItemNotFound";
 }

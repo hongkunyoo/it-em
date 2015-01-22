@@ -20,6 +20,7 @@
         android:id="@+id/profile_settings_frag_nick_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/profile_settings_edit_text"
         android:drawableLeft="@drawable/profile_settings_nick_name"
         android:drawablePadding="@dimen/profile_settings_content_margin"
         android:drawableStart="@drawable/profile_settings_nick_name"
@@ -32,7 +33,7 @@
         android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
         android:textColorHint="@color/reply_inputbar_hint"
-        android:textSize="@dimen/font_medium" >
+        android:textSize="@dimen/font_small" >
 
         <requestFocus />
     </EditText>
@@ -41,6 +42,7 @@
         android:id="@+id/profile_settings_frag_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/profile_settings_edit_text"
         android:drawableLeft="@drawable/profile_settings_description"
         android:drawablePadding="@dimen/profile_settings_content_margin"
         android:drawableStart="@drawable/profile_settings_description"
@@ -53,12 +55,13 @@
         android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
         android:textColorHint="@color/reply_inputbar_hint"
-        android:textSize="@dimen/font_medium" />
+        android:textSize="@dimen/font_small" />
 
     <EditText
         android:id="@+id/profile_settings_frag_website"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/profile_settings_edit_text"
         android:drawableLeft="@drawable/profile_settings_website"
         android:drawablePadding="@dimen/profile_settings_content_margin"
         android:drawableStart="@drawable/profile_settings_website"
@@ -70,6 +73,6 @@
         android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
         android:textColorHint="@color/reply_inputbar_hint"
-        android:textSize="@dimen/font_medium" />
+        android:textSize="@dimen/font_small" />
 
 </LinearLayout>

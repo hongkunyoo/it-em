@@ -6,9 +6,10 @@ import com.google.gson.Gson;
 import com.pinthecloud.item.GlobalVariable;
 
 public class ItLog {
+	
 	public static void log(Object... objs) {
 		if(GlobalVariable.DEBUG_MODE){
-			Log.e("ERROR",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			Log.e("Log",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			for (Object obj : objs) {
 				if (obj == null) {
 					Log.e("ERROR" ,"null");
@@ -16,9 +17,10 @@ public class ItLog {
 					Log.e("ERROR" ,obj.toString());
 				}
 			}
-			Log.e("ERROR" ,"\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+			Log.e("Log","<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		}
 	}
+	
 	public static void logObject(Object obj) {
 		log(new Gson().toJson(obj));
 	}

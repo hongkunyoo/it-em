@@ -5,35 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_row_height"
-        android:background="@android:color/white"
-        android:paddingEnd="@dimen/key_line_first"
-        android:paddingLeft="@dimen/key_line_first"
-        android:paddingRight="@dimen/key_line_first"
-        android:paddingStart="@dimen/key_line_first"
-        android:visibility="gone" >
-
-        <com.pinthecloud.item.view.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/alarm"
-            android:textColor="@color/brand_text_color_light"
-            app:textType="body" />
-
-        <ImageView
-            android:id="@+id/settings_frag_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/alarm"
-            android:src="@drawable/launcher" />
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_row_nick_name_height"
@@ -44,11 +15,11 @@
         android:paddingRight="@dimen/key_line_first"
         android:paddingStart="@dimen/key_line_first" >
 
-        <com.pinthecloud.item.view.CustomTextView
+        <com.pinthecloud.item.view.ItTextView
             android:id="@+id/settings_frag_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/brand_text_color_light"
+            android:textColor="@color/light_gray"
             app:textType="body" />
     </LinearLayout>
 
@@ -56,7 +27,7 @@
         android:id="@+id/settings_frag_logout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_row_height"
-        android:background="@color/settings_logout_background"
+        android:background="@color/red"
         android:orientation="horizontal" >
 
         <ImageView
@@ -68,7 +39,7 @@
             android:contentDescription="@string/logout"
             android:src="@drawable/setting_logout_ic" />
 
-        <com.pinthecloud.item.view.CustomTextView
+        <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

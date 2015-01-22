@@ -5,8 +5,10 @@ import java.util.Arrays;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,6 +109,12 @@ public class LoginFragment extends ItFragment {
 	private void setButton(){
 		mFacebookButton.setFragment(mThisFragment);
 		mFacebookButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+		mFacebookButton.setBackgroundResource(0);
+		mFacebookButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		mFacebookButton.setText(getResources().getString(R.string.facebook_login));
+		mFacebookButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
+		mFacebookButton.setTextColor(getResources().getColor(R.color.accent_color));
+		mFacebookButton.setTypeface(Typeface.DEFAULT);
 		mFacebookButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 
 			@Override

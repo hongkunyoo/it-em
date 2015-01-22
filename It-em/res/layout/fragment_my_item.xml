@@ -35,12 +35,12 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty" />
 
-            <com.pinthecloud.item.view.CustomTextView
+            <com.pinthecloud.item.view.ItTextView
                 android:id="@+id/my_item_frag_grid_empty_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/key_line_first"
-                android:textColor="@color/brand_text_color_light"
+                android:textColor="@color/light_gray"
                 app:textType="body" />
         </LinearLayout>
 

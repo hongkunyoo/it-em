@@ -207,7 +207,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private void setNormalImageView(NormalViewHolder holder, final Reply reply) {
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(reply.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.placeholder(R.drawable.profile_s_defualt_img)
+		.placeholder(R.drawable.profile_s_default_img)
 		.fit()
 		.into(holder.profileImage);
 

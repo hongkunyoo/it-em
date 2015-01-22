@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 
-public class CustomTextView extends TextView {
+public class ItTextView extends TextView {
 
 	private enum TEXT_TYPE{
 		TITLE,
@@ -22,19 +22,19 @@ public class CustomTextView extends TextView {
 
 	private int mTextType = TEXT_TYPE.TITLE.ordinal();
 
-	public CustomTextView(Context context) {
+	public ItTextView(Context context) {
 		this(context, null);
 	}
 
-	public CustomTextView(Context context, AttributeSet attrs) {
+	public ItTextView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+	public ItTextView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomTextView);
-		mTextType = a.getInt(R.styleable.CustomTextView_textType, 0);
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ItTextView);
+		mTextType = a.getInt(R.styleable.ItTextView_textType, 0);
 		a.recycle();
 
 		if(mTextType == TEXT_TYPE.TITLE.ordinal()){
@@ -51,23 +51,25 @@ public class CustomTextView extends TextView {
 	}
 
 	private void setTitle(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_x_large));
-	}
-
-	private void setSubhead(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_large));
 	}
 
-	private void setBody(){
+	private void setSubhead(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
+		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_x_large), 0);
+	}
+
+	private void setBody(){
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_small));
+		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_large), 0);
 	}
 
 	private void setCaption(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_small));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_micro));
 	}
 
 	private void setButton(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_small));
 		setText(getText().toString().toUpperCase(Locale.US));
 	}
 

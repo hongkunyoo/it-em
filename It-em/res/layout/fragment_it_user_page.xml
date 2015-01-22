@@ -48,31 +48,30 @@
                         app:border_color="@color/line_color"
                         app:border_width="@dimen/line_width" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/it_user_page_frag_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/key_line_first"
                         android:textColor="@color/brand_text_color"
-                        android:textStyle= "bold"
+                        android:textStyle="bold"
                         app:textType="subhead" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/it_user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_profile_nick_name_margin"
-                        android:textColor="@color/brand_text_color_light"
+                        android:textColor="@color/light_gray"
                         app:textType="caption" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/it_user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
-                        android:textColor="@color/brand_text_color_light"
+                        android:textColor="@color/light_gray"
                         app:textType="caption" />
-                    
                 </LinearLayout>
 
                 <ImageButton
@@ -85,7 +84,7 @@
                     android:contentDescription="@string/profile_settings"
                     android:src="@drawable/mypage_edit_ic" />
             </RelativeLayout>
-            
+
             <include layout="@layout/custom_line" />
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip

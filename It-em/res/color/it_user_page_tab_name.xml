@@ -3,6 +3,6 @@
 
     <item android:color="@color/brand_text_color" android:state_pressed="true"/>
     <item android:color="@color/brand_text_color" android:state_selected="true"/>
-    <item android:color="@color/brand_text_color_light"/>
+    <item android:color="@color/light_gray"/>
 
 </selector>

@@ -249,7 +249,7 @@ public class ItUserPageFragment extends ItFragment {
 	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.placeholder(R.drawable.profile_s_defualt_img)
+		.placeholder(R.drawable.profile_s_default_img)
 		.fit()
 		.into(mProfileImage);
 	}

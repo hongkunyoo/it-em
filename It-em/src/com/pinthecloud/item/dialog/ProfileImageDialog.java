@@ -78,7 +78,7 @@ public class ProfileImageDialog extends ItDialogFragment {
 	private void setImageView(){
 		Picasso.with(mProfileImage.getContext())
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
-		.placeholder(R.drawable.profile_m_defualt_img)
+		.placeholder(R.drawable.profile_l_default_img)
 		.fit()
 		.into(mProfileImage, new Callback(){
 

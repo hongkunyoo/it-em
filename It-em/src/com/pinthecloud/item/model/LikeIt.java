@@ -5,7 +5,12 @@ public class LikeIt extends AbstractItemModel<LikeIt>{
 	public LikeIt() {
 		super();
 	}
-	
+
+	public LikeIt(String id) {
+		super();
+		this.setId(id);
+	}
+
 	public LikeIt(String whoMade, String whoMadeId, String refId) {
 		super();
 		this.setWhoMade(whoMade);

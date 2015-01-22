@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
@@ -41,6 +40,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
+	private ItUser mMyItUser;
+
+	private boolean isDoingLikeIt = false;
 
 
 	public HomeItemListAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
@@ -48,6 +50,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mItemList = itemList;
+		this.mMyItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 	}
 
 
@@ -58,7 +61,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public TextView nickName;
 		public ImageButton more;
 
-		public LinearLayout itemLayout; 
 		public DynamicHeightImageView itemImage;
 		public ImageView unfold;
 		public TextView content;
@@ -74,7 +76,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
 			this.more = (ImageButton)view.findViewById(R.id.row_home_item_list_more);
 
-			this.itemLayout = (LinearLayout)view.findViewById(R.id.row_home_item_list_item_layout);
 			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_list_item_image);
 			this.unfold = (ImageView)view.findViewById(R.id.row_home_item_list_unfold);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
@@ -114,10 +115,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		setItNumber(holder, item.getLikeItCount());
 
 		if(item.getReplyCount() <= 0){
-			holder.replyNumber.setText("");
+			holder.replyNumber.setVisibility(View.GONE);
 		} else {
-			holder.replyNumber.setText(""+item.getReplyCount());
+			holder.replyNumber.setVisibility(View.VISIBLE);
 		}
+		holder.replyNumber.setText(""+item.getReplyCount());
 	}
 
 
@@ -161,7 +163,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			holder.more.setOnClickListener(null);
 		}
 
-		holder.itemLayout.setOnClickListener(new OnClickListener() {
+		holder.itemImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -171,32 +173,46 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			}
 		});
 
+
+		if(item.getPrevLikeId() == null){
+			holder.itButton.setActivated(false);
+		} else {
+			holder.itButton.setActivated(true);
+		}
+
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				int likeItNum = Integer.parseInt(holder.itNumber.getText().toString());
-				if(holder.itButton.isActivated()) {
-					// Cancel like it
-					likeItNum--;
-				} else {
-					// Do like it
-					likeItNum++;
+				final boolean isDoLike = !holder.itButton.isActivated();
+				final int currentLikeItNum = Integer.parseInt(holder.itNumber.getText().toString());
+				setItButton(holder, currentLikeItNum, isDoLike);
 
-					ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
-					LikeIt likeIt = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
-					mApp.getAimHelper().add(likeIt, new EntityCallback<LikeIt>() {
+				if(!isDoingLikeIt){
+					isDoingLikeIt = true;
 
-						@Override
-						public void onCompleted(LikeIt entity) {
-							item.setLikeItCount(Integer.parseInt(holder.itNumber.getText().toString()));
-						}
-					});
+					if(isDoLike) {
+						// Do like it
+						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
+						mApp.getAimHelper().addUnique(likeIt, new EntityCallback<LikeIt>() {
+
+							@Override
+							public void onCompleted(LikeIt entity) {
+								doLikeIt(holder, item, entity.getId(), currentLikeItNum, isDoLike);
+							}
+						});
+					} else {
+						// Cancel like it
+						LikeIt likeIt = new LikeIt(item.getPrevLikeId());
+						mApp.getAimHelper().del(likeIt, new EntityCallback<Boolean>() {
+
+							@Override
+							public void onCompleted(Boolean entity) {
+								doLikeIt(holder, item, null, currentLikeItNum, isDoLike);
+							}
+						});
+					}
 				}
-
-				// Set it number and button activated
-				setItNumber(holder, likeItNum);
-				holder.itButton.setActivated(!holder.itButton.isActivated());
 			}
 		});
 
@@ -227,18 +243,47 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.placeholder(R.drawable.profile_s_defualt_img)
+		.placeholder(R.drawable.profile_s_default_img)
 		.fit()
 		.into(holder.profileImage);
 	}
 
 
+	private void doLikeIt(ViewHolder holder, Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
+		isDoingLikeIt = false;
+		item.setPrevLikeId(likeItId);
+		setItButton(holder, currentLikeItNum, isDoLikeIt);
+
+		if(isDoLikeIt){
+			// Do like it
+			item.setLikeItCount(currentLikeItNum+1);
+		} else {
+			// Cancel like it
+			item.setLikeItCount(currentLikeItNum-1);
+		}
+	}
+
+
+	private void setItButton(ViewHolder holder, int currentLikeItNum, boolean isDoLikeIt){
+		if(isDoLikeIt) {
+			// Do like it
+			setItNumber(holder, currentLikeItNum+1);
+			holder.itButton.setActivated(true);
+		} else {
+			// Cancel like it
+			setItNumber(holder, currentLikeItNum-1);
+			holder.itButton.setActivated(false);
+		}
+	}
+
+
 	private void setItNumber(ViewHolder holder, int itNumber){
 		if(itNumber <= 0){
-			holder.itNumber.setText("");
+			holder.itNumber.setVisibility(View.GONE);
 		} else {
-			holder.itNumber.setText(""+itNumber);
+			holder.itNumber.setVisibility(View.VISIBLE);
 		}
+		holder.itNumber.setText(""+itNumber);
 	}
 
 

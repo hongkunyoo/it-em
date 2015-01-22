@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/product_tag_row_height" >
 
-    <com.pinthecloud.item.view.CustomTextView
+    <com.pinthecloud.item.view.ItTextView
         android:id="@+id/row_product_tag_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,6 +20,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:textColor="@color/brand_text_color"
-        android:textSize="@dimen/font_small" />
+        android:textSize="@dimen/font_micro" />
 
 </RelativeLayout>

@@ -50,6 +50,7 @@ public class ItUser implements Parcelable {
 	public ItUser() {
 		super();
 	}
+	
 	public ItUser(String itUserId, String platform, String email, String nickName, String selfIntro, String webPage, TYPE type) {
 		super();
 		this.itUserId = itUserId;
@@ -113,6 +114,12 @@ public class ItUser implements Parcelable {
 	public void setType(TYPE type) {
 		this.type = type.toString();
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
@@ -122,6 +129,7 @@ public class ItUser implements Parcelable {
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());
 		this.setType(itUser.getType());
+		this.setPassword(itUser.getPassword());
 	}
 
 

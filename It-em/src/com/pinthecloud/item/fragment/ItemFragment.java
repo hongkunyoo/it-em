@@ -84,6 +84,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private ItUser mMyItUser;
 	private Item mItem;
 
+	private boolean isDoingLikeIt = false;
+
 
 	public static ItFragment newInstance(Item item) {
 		ItFragment fragment = new ItemFragment();
@@ -178,7 +180,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 				setReplyTitle(mItem.getReplyCount());
 				ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-				showReplyList(mItem.getReplyCount());
+				showReplyEmptyView(mItem.getReplyCount());
 			}
 		});
 	}
@@ -224,7 +226,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
-		showItNumber(mItem.getLikeItCount());
+		setItNumber(mItem.getLikeItCount());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
@@ -246,22 +248,23 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setScroll(){
 		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
-		mToolbarLayout.scrollTo(0, actionBarHeight);
 		mScrollLayout.scrollTo(0, actionBarHeight);
 		mScrollLayout.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
 
 			@Override
 			public void onScrollChanged() {
-				int scrollY = mScrollLayout.getScrollY();
-				int diffY = scrollY-mBaseScrollY;
-				if(diffY < 0 && mToolbarLayout.getScrollY() >= 0){
-					// Scroll Down, Toolbar Down
-					mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
-				} else if(diffY > 0 && mToolbarLayout.getScrollY() <= actionBarHeight) {
-					// Scroll Up, Toolbar Up
-					mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
+				int currentScrollY = mScrollLayout.getScrollY();
+				if(currentScrollY >= 0){
+					int diffY = currentScrollY-mBaseScrollY;
+					if(diffY < 0){
+						// Scroll Up, Toolbar Down
+						mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
+					} else if(diffY > 0) {
+						// Scroll Down, Toolbar Up
+						mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
+					}
+					mBaseScrollY = currentScrollY;
 				}
-				mBaseScrollY = scrollY;
 			}
 		});
 	}
@@ -272,27 +275,35 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				int likeItNum = Integer.parseInt(mItNumber.getText().toString());
-				if(mItButton.isActivated()) {
-					// Cancel like it
-					likeItNum--;
-				} else {
-					// Do like it
-					likeItNum++;
+				final boolean isDoLike = !mItButton.isActivated();
+				final int currentLikeItNum = Integer.parseInt(mItNumber.getText().toString());
+				setItButton(currentLikeItNum, isDoLike);
 
-					LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-					mApp.getAimHelper().add(likeIt, new EntityCallback<LikeIt>() {
+				if(!isDoingLikeIt){
+					isDoingLikeIt = true;
 
-						@Override
-						public void onCompleted(LikeIt entity) {
-							mItem.setLikeItCount(Integer.parseInt(mItNumber.getText().toString()));
-						}
-					});
+					if(isDoLike) {
+						// Do like it
+						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+						mApp.getAimHelper().addUnique(likeIt, new EntityCallback<LikeIt>() {
+
+							@Override
+							public void onCompleted(LikeIt entity) {
+								doLikeIt(mItem, entity.getId(), currentLikeItNum, isDoLike);
+							}
+						});
+					} else {
+						// Cancel like it
+						LikeIt likeIt = new LikeIt(mItem.getPrevLikeId());
+						mApp.getAimHelper().del(likeIt, new EntityCallback<Boolean>() {
+
+							@Override
+							public void onCompleted(Boolean entity) {
+								doLikeIt(mItem, null, currentLikeItNum, isDoLike);
+							}
+						});
+					}
 				}
-
-				// Set it number and button activated
-				showItNumber(likeItNum);
-				mItButton.setActivated(!mItButton.isActivated());
 			}
 		});
 
@@ -325,6 +336,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setReplyList(){
 		mReplyListView.setHasFixedSize(true);
+		mReplyListView.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
 
 		mReplyListLayoutManager = new LinearLayoutManager(mActivity);
 		mReplyListView.setLayoutManager(mReplyListLayoutManager);
@@ -409,7 +421,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					mReplyListView.setOnDrawExpandRowCount(Math.min(mItem.getReplyCount(), displayReplyNum+1));
 
 					// Set reply list fragment
-					showReplyList(mItem.getReplyCount());
+					showReplyEmptyView(mItem.getReplyCount());
 					setReplyTitle(mItem.getReplyCount());
 
 					AsyncChainer.notifyNext(frag);
@@ -421,13 +433,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void showReplyList(int replyCount){
+	private void showReplyEmptyView(int replyCount){
 		if(replyCount > 0){
 			mReplyListEmptyView.setVisibility(View.GONE);
-			mReplyListView.setVisibility(View.VISIBLE);
 		} else {
 			mReplyListEmptyView.setVisibility(View.VISIBLE);
-			mReplyListView.setVisibility(View.GONE);
 		}
 	}
 
@@ -455,7 +465,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void submitReply(final Reply reply){
 		mReplyListAdapter.add(mReplyList.size(), reply);
 		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-		showReplyList(mItem.getReplyCount()+1);
+		showReplyEmptyView(mItem.getReplyCount()+1);
 
 		mAimHelper.add(reply, new EntityCallback<Reply>() {
 
@@ -486,14 +496,41 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void showItNumber(int itNumber){
-		if(mItem.getLikeItCount() <= 0){
+	private void doLikeIt(Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
+		isDoingLikeIt = false;
+		item.setPrevLikeId(likeItId);
+		setItButton(currentLikeItNum, isDoLikeIt);
+
+		if(isDoLikeIt){
+			// Do like it
+			item.setLikeItCount(currentLikeItNum+1);
+		} else {
+			// Cancel like it
+			item.setLikeItCount(currentLikeItNum-1);
+		}
+	}
+
+
+	private void setItButton(int currentLikeItNum, boolean isDoLikeIt){
+		if(isDoLikeIt) {
+			// Do like it
+			setItNumber(currentLikeItNum+1);
+			mItButton.setActivated(true);
+		} else {
+			// Cancel like it
+			setItNumber(currentLikeItNum-1);
+			mItButton.setActivated(false);
+		}
+	}
+
+
+	private void setItNumber(int itNumber){
+		if(itNumber <= 0){
 			mItNumberLayout.setVisibility(View.GONE);
-			mItNumber.setText("");
 		} else {
 			mItNumberLayout.setVisibility(View.VISIBLE);
-			mItNumber.setText(""+itNumber);
 		}
+		mItNumber.setText(""+itNumber);
 	}
 
 

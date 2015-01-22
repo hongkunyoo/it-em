@@ -210,7 +210,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
-		.placeholder(R.drawable.profile_m_defualt_img)
+		.placeholder(R.drawable.profile_l_default_img)
 		.fit()
 		.into(mProfileImage);
 	}
@@ -246,7 +246,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				updateProfileImage(R.drawable.profile_m_default_img);
+				updateProfileImage(R.drawable.profile_s_default_img);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {

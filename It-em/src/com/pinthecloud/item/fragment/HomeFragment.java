@@ -121,14 +121,14 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setComponent(){
-		if(mMyitUser.isPro()){
-			mUploadLayout.setVisibility(View.VISIBLE);
-			int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
-			int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
-			mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
-		} else {
-			mUploadLayout.setVisibility(View.GONE);
-		}
+		//		if(mMyitUser.isPro()){
+		mUploadLayout.setVisibility(View.VISIBLE);
+		int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
+		int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
+		mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
+		//		} else {
+		//			mUploadLayout.setVisibility(View.GONE);
+		//		}
 	}
 
 
@@ -184,11 +184,11 @@ public class HomeFragment extends ItFragment {
 				}
 
 				// Scroll upload button by dy
-				if(dy < 0 && mUploadLayout.getScrollY() <= 0){
-					// Scroll Down, Upload button Up
+				if(dy < 0){
+					// Scroll Up, Upload button Up
 					mUploadLayout.scrollTo(0, Math.min(mUploadLayout.getScrollY()-dy, 0));
-				} else if(dy > 0 && mUploadLayout.getScrollY() >= -maxScrollY) {
-					// Scroll Up, Upload button Down
+				} else if(dy > 0) {
+					// Scroll down, Upload button Down
 					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxScrollY));
 				}
 			}

@@ -7,12 +7,12 @@
     android:orientation="vertical"
     android:padding="@dimen/key_line_first" >
 
-    <com.pinthecloud.item.view.CustomTextView
+    <com.pinthecloud.item.view.ItTextView
         android:id="@+id/profile_image_frag_nick_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/key_line_first"
-        android:textStyle = "bold"
+        android:textStyle="bold"
         app:textType="subhead" />
 
     <com.makeramen.roundedimageview.RoundedImageView

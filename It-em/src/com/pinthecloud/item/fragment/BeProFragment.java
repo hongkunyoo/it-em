@@ -16,7 +16,6 @@ import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 
 import de.greenrobot.event.EventBus;
@@ -50,8 +49,8 @@ public class BeProFragment extends ItFragment {
 		mCode = (EditText)view.findViewById(R.id.be_pro_frag_code);
 		mSubmit = (Button)view.findViewById(R.id.be_pro_frag_submit);
 	}
-	
-	
+
+
 	private void setComponent(){
 		mCode.addTextChangedListener(new TextWatcher() {
 
@@ -69,33 +68,28 @@ public class BeProFragment extends ItFragment {
 			}
 		});
 	}
-	
-	
+
+
 	private void setButton(){
 		mSubmit.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				
+
 				final String inviteKey = mCode.getText().toString();
-				
+
 				if (inviteKey == null || "".equals(inviteKey)) {
 					// TODO : Seung Min --> Do SOMETHING
-					// I make Error on purpose to let you Know!!
-					_ItLog.log("Seung Min Change Here");
-					
 					return;
 				}
 				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 					@Override
 					public void doNext(final ItFragment frag, Object... params) {
-						// TODO Auto-generated method stub
 						mAimHelper.isValid(inviteKey, ItUser.TYPE.PRO, new EntityCallback<Boolean>() {
 
 							@Override
 							public void onCompleted(Boolean entity) {
-								// TODO Auto-generated method stub
 								if (entity) AsyncChainer.notifyNext(frag, entity);
 								else {
 									EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.INVALID_KEY));
@@ -104,21 +98,18 @@ public class BeProFragment extends ItFragment {
 							}
 						});
 					}
-					
+
 				}, new Chainable(){
 
 					@Override
 					public void doNext(ItFragment frag, Object... params) {
-						// TODO Auto-generated method stub
 						ItUser user = mObjectPrefHelper.get(ItUser.class);
 						user.setType(ItUser.TYPE.PRO);
 						mUserHelper.update(user, new EntityCallback<ItUser>() {
-							
+
 							@Override
 							public void onCompleted(ItUser entity) {
 								// TODO : Seung Min --> Do SOMETHING
-								// I make Error on purpose to let you Know!!
-								_ItLog.log("Seung Min Change Here");
 								mObjectPrefHelper.put(entity);
 							}
 						});
