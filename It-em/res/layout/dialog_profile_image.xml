@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/key_line_first"
+        android:textStyle = "bold"
         app:textType="subhead" />
 
     <com.makeramen.roundedimageview.RoundedImageView

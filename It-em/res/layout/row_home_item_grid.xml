@@ -38,7 +38,8 @@
                     android:layout_marginLeft="@dimen/home_item_margin"
                     android:layout_marginStart="@dimen/home_item_margin"
                     android:textColor="@color/brand_text_color"
-                    app:textType="caption" />
+                    android:textStyle= "bold"
+                    app:textType="body" />
             </LinearLayout>
 
             <ImageButton
@@ -52,8 +53,6 @@
                 android:contentDescription="@string/more"
                 android:src="@drawable/feed_more_ic" />
         </RelativeLayout>
-
-        <include layout="@layout/custom_line" />
 
         <LinearLayout
             android:id="@+id/row_home_item_list_item_layout"
@@ -84,8 +83,6 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
-            <include layout="@layout/custom_line" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,7 +100,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/home_item_content_margin"
+                    android:layout_marginBottom="@dimen/home_item_content_button_margin"
                     android:gravity="center_vertical"
                     android:orientation="horizontal" >
 
@@ -114,7 +111,7 @@
                         android:drawableLeft="@drawable/feed_it_ic"
                         android:drawableStart="@drawable/feed_it_ic"
                         android:gravity="center_vertical"
-                        android:textColor="@color/brand_text_color_light"
+                        android:textColor="@color/brnad_text_color_gray"
                         app:textType="caption" />
 
                     <com.pinthecloud.item.view.CustomTextView
@@ -126,7 +123,7 @@
                         android:drawableLeft="@drawable/feed_comment_ic"
                         android:drawableStart="@drawable/feed_comment_ic"
                         android:gravity="center_vertical"
-                        android:textColor="@color/brand_text_color_light"
+                        android:textColor="@color/brnad_text_color_gray"
                         app:textType="caption" />
                 </LinearLayout>
 

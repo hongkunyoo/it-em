@@ -54,6 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/key_line_first"
                         android:textColor="@color/brand_text_color"
+                        android:textStyle= "bold"
                         app:textType="subhead" />
 
                     <com.pinthecloud.item.view.CustomTextView
@@ -71,6 +72,7 @@
                         android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
                         android:textColor="@color/brand_text_color_light"
                         app:textType="caption" />
+                    
                 </LinearLayout>
 
                 <ImageButton
@@ -83,6 +85,8 @@
                     android:contentDescription="@string/profile_settings"
                     android:src="@drawable/mypage_edit_ic" />
             </RelativeLayout>
+            
+            <include layout="@layout/custom_line" />
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip
                 xmlns:psts="http://schemas.android.com/apk/res-auto"
