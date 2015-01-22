@@ -4,10 +4,11 @@
     <!-- Common -->
     <color name="brand_color">#263238</color>
     <color name="brand_color_dark">#1e292e</color>
-    <color name="accent_color">#ffc400</color>
+    <color name="accent_color">#ffd600</color>
     <color name="line_color">#20000000</color>
     <color name="brand_text_color">#de263238</color>
     <color name="brand_text_color_light">#de78909c</color>
+    <color name="brnad_text_color_gray">#B0BEC5</color>
 
     <!-- Main Drawer -->
     <color name="main_drawer_menu_profile_nick_name">#deffffff</color>

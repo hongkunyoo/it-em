@@ -38,6 +38,7 @@
                     android:layout_marginLeft="@dimen/home_item_margin"
                     android:layout_marginStart="@dimen/home_item_margin"
                     android:textColor="@color/brand_text_color"
+                    android:textStyle= "bold"
                     app:textType="body" />
             </LinearLayout>
 
@@ -110,7 +111,7 @@
                         android:drawableLeft="@drawable/feed_it_ic"
                         android:drawableStart="@drawable/feed_it_ic"
                         android:gravity="center_vertical"
-                        android:textColor="@color/brand_text_color_light"
+                        android:textColor="@color/brnad_text_color_gray"
                         app:textType="caption" />
 
                     <com.pinthecloud.item.view.CustomTextView
@@ -122,7 +123,7 @@
                         android:drawableLeft="@drawable/feed_comment_ic"
                         android:drawableStart="@drawable/feed_comment_ic"
                         android:gravity="center_vertical"
-                        android:textColor="@color/brand_text_color_light"
+                        android:textColor="@color/brnad_text_color_gray"
                         app:textType="caption" />
                 </LinearLayout>
 
