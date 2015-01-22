@@ -4,7 +4,7 @@
     <!-- Common -->
     <color name="brand_color">#263238</color>
     <color name="brand_color_dark">#1e292e</color>
-    <color name="accent_color">#ffd600</color>
+    <color name="accent_color">#ffAB00</color>
     <color name="line_color">#20000000</color>
     <color name="brand_text_color">#de263238</color>
     <color name="brand_text_color_light">#de78909c</color>
