@@ -73,7 +73,6 @@
                         android:textColor="@color/brand_text_color_light"
                         app:textType="caption" />
                     
-                    <include layout="@layout/custom_line" />
                 </LinearLayout>
 
                 <ImageButton
@@ -86,6 +85,8 @@
                     android:contentDescription="@string/profile_settings"
                     android:src="@drawable/mypage_edit_ic" />
             </RelativeLayout>
+            
+            <include layout="@layout/custom_line" />
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip
                 xmlns:psts="http://schemas.android.com/apk/res-auto"
