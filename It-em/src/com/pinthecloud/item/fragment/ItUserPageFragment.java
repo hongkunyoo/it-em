@@ -176,8 +176,8 @@ public class ItUserPageFragment extends ItFragment {
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mTabHeight = getResources().getDimensionPixelSize(R.dimen.it_user_page_tab_height);
 	}
-	
-	
+
+
 	private void setItUser(final ItFragment frag){
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItUserId.equals(mItUser.getId())){
@@ -249,6 +249,7 @@ public class ItUserPageFragment extends ItFragment {
 	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.placeholder(R.drawable.profile_s_defualt_img)
 		.fit()
 		.into(mProfileImage);
 	}

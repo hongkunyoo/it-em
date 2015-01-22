@@ -20,7 +20,7 @@ import com.pinthecloud.item.model.ItUser;
 
 public class SettingsFragment extends ItFragment {
 
-	private TextView mItUserId;
+	private TextView mEmail;
 	private RelativeLayout mLogout;
 
 	private ItUser mMyItUser;
@@ -53,13 +53,13 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mItUserId = (TextView)view.findViewById(R.id.settings_frag_it_user_id);
+		mEmail = (TextView)view.findViewById(R.id.settings_frag_email);
 		mLogout = (RelativeLayout)view.findViewById(R.id.settings_frag_logout);
 	}
 
 
 	private void setComponent(){
-		mItUserId.setText(mMyItUser.getItUserId());
+		mEmail.setText(mMyItUser.getEmail());
 	}
 
 
@@ -78,8 +78,8 @@ public class SettingsFragment extends ItFragment {
 							facebookLogout();
 						}
 
-						mObjectPrefHelper.remove(ItUser.class);
-
+						removePreference();
+						
 						Intent intent = new Intent(mActivity, LoginActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
@@ -106,5 +106,10 @@ public class SettingsFragment extends ItFragment {
 			Session.setActiveSession(session);
 			session.closeAndClearTokenInformation();
 		}
+	}
+	
+	
+	private void removePreference(){
+		mObjectPrefHelper.remove(ItUser.class);
 	}
 }

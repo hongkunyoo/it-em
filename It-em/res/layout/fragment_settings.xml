@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/brand_background"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -13,7 +12,8 @@
         android:paddingEnd="@dimen/key_line_first"
         android:paddingLeft="@dimen/key_line_first"
         android:paddingRight="@dimen/key_line_first"
-        android:paddingStart="@dimen/key_line_first" >
+        android:paddingStart="@dimen/key_line_first"
+        android:visibility="gone" >
 
         <com.pinthecloud.item.view.CustomTextView
             android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
         android:paddingStart="@dimen/key_line_first" >
 
         <com.pinthecloud.item.view.CustomTextView
-            android:id="@+id/settings_frag_it_user_id"
+            android:id="@+id/settings_frag_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/brand_text_color_light"

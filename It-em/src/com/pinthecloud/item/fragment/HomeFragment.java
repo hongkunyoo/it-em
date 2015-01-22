@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.UploadActivity;
@@ -28,22 +28,23 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.FileUtil;
-import com.pinthecloud.item.util.ItLog;
 
 public class HomeFragment extends ItFragment {
 
 	private final int UPLOAD = 0;
 
 	private ProgressBar mProgressBar;
-	private RelativeLayout mLayout;
+	private View mLayout;
 	private SwipeRefreshLayout mRefresh;
-	private ImageButton mUploadButton;
-
 	private RecyclerView mGridView;
 	private HomeItemListAdapter mGridAdapter;
 	private StaggeredGridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
 
+	private View mUploadLayout;
+	private ImageButton mUploadButton;
+
+	private ItUser mMyitUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
 
@@ -51,6 +52,7 @@ public class HomeFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mMyitUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItemList == null){
 			mItemList = new ArrayList<Item>();
 		}
@@ -65,9 +67,11 @@ public class HomeFragment extends ItFragment {
 
 		setActionBar();
 		findComponent(view);
+		setComponent();
 		setButton();
 		setRefreshLayout();
 		setList();
+		setScroll();
 
 		if(mItemList.size() < 1){
 			mProgressBar.setVisibility(View.VISIBLE);
@@ -108,10 +112,23 @@ public class HomeFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mLayout = (RelativeLayout)view.findViewById(R.id.home_frag_layout);
+		mLayout = view.findViewById(R.id.home_frag_layout);
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
+		mUploadLayout = view.findViewById(R.id.home_frag_upload_layout);
 		mUploadButton = (ImageButton)view.findViewById(R.id.home_frag_upload_button);
 		mGridView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
+	}
+
+
+	private void setComponent(){
+		if(mMyitUser.isPro()){
+			mUploadLayout.setVisibility(View.VISIBLE);
+			int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
+			int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
+			mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
+		} else {
+			mUploadLayout.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -148,17 +165,31 @@ public class HomeFragment extends ItFragment {
 
 		mGridAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
 		mGridView.setAdapter(mGridAdapter);
+	}
 
+
+	private void setScroll(){
+		final int maxScrollY = mUploadLayout.getLayoutParams().height;
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
+
+				// Add more items when grid reaches bottom
 				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
 				int totalItemCount = mGridLayoutManager.getItemCount();
-
-				if (positions[0] >= totalItemCount-1 && !mIsAdding) {
+				if (positions[positions.length-1] >= totalItemCount-3 && !mIsAdding) {
 					addNextItemList();
+				}
+
+				// Scroll upload button by dy
+				if(dy < 0 && mUploadLayout.getScrollY() <= 0){
+					// Scroll Down, Upload button Up
+					mUploadLayout.scrollTo(0, Math.min(mUploadLayout.getScrollY()-dy, 0));
+				} else if(dy > 0 && mUploadLayout.getScrollY() >= -maxScrollY) {
+					// Scroll Up, Upload button Down
+					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxScrollY));
 				}
 			}
 		});
@@ -167,15 +198,13 @@ public class HomeFragment extends ItFragment {
 
 	public void updateList() {
 		page = 0;
-		ItUser itUser = mObjectPrefHelper.get(ItUser.class);
-		mAimHelper.listItem(page, itUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(page, mMyitUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mLayout.setVisibility(View.VISIBLE);
 				mRefresh.setRefreshing(false);
-				ItLog.log(list);
 				mItemList.clear();
 				mGridAdapter.addAll(list);
 			}
@@ -185,8 +214,7 @@ public class HomeFragment extends ItFragment {
 
 	private void addNextItemList() {
 		mIsAdding = true;
-		ItUser itUser = mObjectPrefHelper.get(ItUser.class);
-		mAimHelper.listItem(++page, itUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(++page, mMyitUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

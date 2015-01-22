@@ -5,9 +5,10 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,13 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
@@ -43,10 +44,17 @@ import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
+import com.pinthecloud.item.view.ExpandableHeightRecyclerView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
+
+	private View mToolbarLayout;
+	private Toolbar mToolbar;
+	private ScrollView mScrollLayout;
+	private int mBaseScrollY;
 
 	private DynamicHeightImageView mItemImage;
 	private ProgressBar mProgressBar;
@@ -54,17 +62,18 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mContent;
 	private TextView mDate;
 	private ImageButton mItButton;
+	private LinearLayout mItNumberLayout;
 	private TextView mItNumber;
-	
+
 	private LinearLayout mProductTagLayout;
+
 	private TextView mReplyTitle;
-	private View mReplyTitlebarDivider;
-	private FrameLayout mReplyListLayout;
-	private RecyclerView mReplyListView;
+	private TextView mReplyListEmptyView;
+	private ExpandableHeightRecyclerView mReplyListView;
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
 	private List<Reply> mReplyList;
-	private LinearLayout mReplyListEmptyView;
+
 	private EditText mReplyInputText;
 	private Button mReplyInputSubmit;
 
@@ -101,11 +110,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		setHasOptionsMenu(true);
 		findComponent(view);
+		setToolbar();
 		setComponent();
+		setScroll();
 		setButton();
 		setImageView();
 		setReplyList();
-		setReplyTitle();
 		setText();
 		updateItemFrag();
 
@@ -163,32 +173,35 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				mItem.setReplyCount(mItem.getReplyCount()-1);
-				setReplyTitle();
-				resizeReplyListLayoutHeight(mItem.getReplyCount());
-				showReplyList(mItem.getReplyCount());
-
 				mReplyListAdapter.remove(reply);
+				mItem.setReplyCount(mItem.getReplyCount()-1);
+
+				setReplyTitle(mItem.getReplyCount());
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
+				showReplyList(mItem.getReplyCount());
 			}
 		});
 	}
 
 
 	private void findComponent(View view){
+		mToolbarLayout = view.findViewById(R.id.item_frag_toolbar_layout);
+		mToolbar = (Toolbar)view.findViewById(R.id.toolbar);
+		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
+
 		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_item_image);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mItemLayout = (LinearLayout)view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
+		mItNumberLayout = (LinearLayout)view.findViewById(R.id.item_frag_it_number_layout);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
-		
+
 		mProductTagLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_layout);
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
-		mReplyTitlebarDivider = view.findViewById(R.id.reply_frag_titlebar_divider);
-		mReplyListLayout = (FrameLayout)view.findViewById(R.id.reply_frag_list_layout);
-		mReplyListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
-		mReplyListEmptyView = (LinearLayout)view.findViewById(R.id.reply_frag_list_empty_view);
+		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
+		mReplyListView = (ExpandableHeightRecyclerView)view.findViewById(R.id.reply_frag_list);
 		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
@@ -198,8 +211,20 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void setToolbar(){
+		mActivity.setSupportActionBar(mToolbar);
+
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 
+				+ " " + getResources().getString(R.string.app_name));
+
+		mToolbarLayout.bringToFront();
+	}
+
+
 	private void setComponent(){
-		mReplyTitlebarDivider.setVisibility(View.GONE);
+		showItNumber(mItem.getLikeItCount());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
@@ -219,31 +244,55 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void setScroll(){
+		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
+		mToolbarLayout.scrollTo(0, actionBarHeight);
+		mScrollLayout.scrollTo(0, actionBarHeight);
+		mScrollLayout.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
+
+			@Override
+			public void onScrollChanged() {
+				int scrollY = mScrollLayout.getScrollY();
+				int diffY = scrollY-mBaseScrollY;
+				if(diffY < 0 && mToolbarLayout.getScrollY() >= 0){
+					// Scroll Down, Toolbar Down
+					mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
+				} else if(diffY > 0 && mToolbarLayout.getScrollY() <= actionBarHeight) {
+					// Scroll Up, Toolbar Up
+					mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
+				}
+				mBaseScrollY = scrollY;
+			}
+		});
+	}
+
+
 	private void setButton(){
 		mItButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				final int likeItNum = (Integer.parseInt(mItNumber.getText().toString()) + 1);
-				mItNumber.setText(String.valueOf(likeItNum));
+				int likeItNum = Integer.parseInt(mItNumber.getText().toString());
+				if(mItButton.isActivated()) {
+					// Cancel like it
+					likeItNum--;
+				} else {
+					// Do like it
+					likeItNum++;
 
-				LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-				mAimHelper.add(likeIt, new EntityCallback<LikeIt>() {
+					LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+					mApp.getAimHelper().add(likeIt, new EntityCallback<LikeIt>() {
 
-					@Override
-					public void onCompleted(LikeIt entity) {
-						mItem.setLikeItCount(likeItNum);
-					}
-				});
-			}
-		});
+						@Override
+						public void onCompleted(LikeIt entity) {
+							mItem.setLikeItCount(Integer.parseInt(mItNumber.getText().toString()));
+						}
+					});
+				}
 
-		mProductTagLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem);
-				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				// Set it number and button activated
+				showItNumber(likeItNum);
+				mItButton.setActivated(!mItButton.isActivated());
 			}
 		});
 
@@ -304,6 +353,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
+				AsyncChainer.waitChain(2);
+				updateProductTag(frag);
 				updateRecentReplyList(frag);
 			}
 		}, new Chainable(){
@@ -317,23 +368,49 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void updateProductTag(ItFragment frag) {
+		mProductTagLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem);
+				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		AsyncChainer.notifyNext(frag);
+	}
+
+
 	private void updateRecentReplyList(final ItFragment frag) {
 		mAimHelper.listRecent(Reply.class, mItem.getId(), new ListCallback<Reply>() {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
 				if(isAdded()){
+					// Add reply item
+					mReplyList.clear();
+					mReplyListAdapter.addAll(list);
+
+					// Check reply count
 					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
+					if(count < displayReplyNum){
+						mItem.setReplyCount(count);
+					}
+
+					// Set see previous row
 					if(mItem.getReplyCount() > displayReplyNum){
 						mReplyListAdapter.setHasPrevious(true);
 					} else {
 						mReplyListAdapter.setHasPrevious(false);
 					}
-					resizeReplyListLayoutHeight(Math.min(mItem.getReplyCount(), displayReplyNum+1));
-					showReplyList(mItem.getReplyCount());
 
-					mReplyList.clear();
-					mReplyListAdapter.addAll(list);
+					// Set reply list expand setting for expand when on draw
+					mReplyListView.setOnDrawExpandRowCount(Math.min(mItem.getReplyCount(), displayReplyNum+1));
+
+					// Set reply list fragment
+					showReplyList(mItem.getReplyCount());
+					setReplyTitle(mItem.getReplyCount());
 
 					AsyncChainer.notifyNext(frag);
 				} else {
@@ -341,24 +418,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				}
 			}
 		});
-	}
-
-
-	private void resizeReplyListLayoutHeight(int rowCount){
-		int replyRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_height);
-		int replyPreviousRowHeight = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
-
-		int height = 0;
-		if(rowCount <= 0){
-			height = replyRowHeight;
-		} else if(!mReplyListAdapter.isHasPrevious()) {
-			height = replyRowHeight * rowCount;
-		} else {
-			height = replyRowHeight * (rowCount - 1);
-			height += replyPreviousRowHeight;
-		}
-
-		mReplyListLayout.getLayoutParams().height = height;
 	}
 
 
@@ -394,16 +453,16 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void submitReply(final Reply reply){
-		resizeReplyListLayoutHeight(mItem.getReplyCount()+1);
-		showReplyList(mItem.getReplyCount()+1);
 		mReplyListAdapter.add(mReplyList.size(), reply);
+		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
+		showReplyList(mItem.getReplyCount()+1);
 
 		mAimHelper.add(reply, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {
 				mItem.setReplyCount(mItem.getReplyCount()+1);
-				setReplyTitle();
+				setReplyTitle(mItem.getReplyCount());
 
 				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
 			}
@@ -427,7 +486,22 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setReplyTitle(){
-		mReplyTitle.setText(getResources().getString(R.string.comments) + " " + mItem.getReplyCount());
+	private void showItNumber(int itNumber){
+		if(mItem.getLikeItCount() <= 0){
+			mItNumberLayout.setVisibility(View.GONE);
+			mItNumber.setText("");
+		} else {
+			mItNumberLayout.setVisibility(View.VISIBLE);
+			mItNumber.setText(""+itNumber);
+		}
+	}
+
+
+	private void setReplyTitle(int replyCount){
+		String title = getResources().getString(R.string.comments);
+		if(replyCount != 0){
+			title = title + " " + replyCount;
+		}
+		mReplyTitle.setText(title);
 	}
 }

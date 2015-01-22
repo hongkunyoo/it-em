@@ -9,14 +9,15 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.model.ProductTag;
 
 public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAdapter.ViewHolder> {
 
-	private List<Item> mItemList;
+	private List<ProductTag> mTagList;
 
 
-	public ProductTagListAdapter(List<Item> itemList) {
-		this.mItemList = itemList;
+	public ProductTagListAdapter(List<ProductTag> tagList) {
+		this.mTagList = tagList;
 	}
 
 
@@ -39,18 +40,18 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAd
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		Item item = mItemList.get(position);
+		ProductTag tag = mTagList.get(position);
 	}
 
 
 	@Override
 	public int getItemCount() {
-		return mItemList.size();
+		return mTagList.size();
 	}
 
 
-	public void addAll(List<Item> itemList) {
-		mItemList.addAll(itemList);
+	public void addAll(List<ProductTag> tagList) {
+		mTagList.addAll(tagList);
 		notifyDataSetChanged();
 	}
 }

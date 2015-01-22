@@ -65,7 +65,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 
-	private static class PreviousViewHolder extends RecyclerView.ViewHolder {
+	public static class PreviousViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
 		public PreviousViewHolder(View view) {
@@ -75,7 +75,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 
-	private static class NormalViewHolder extends RecyclerView.ViewHolder {
+	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public CircleImageView profileImage;
 		public TextView nickName;
@@ -207,6 +207,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private void setNormalImageView(NormalViewHolder holder, final Reply reply) {
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(reply.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.placeholder(R.drawable.profile_s_defualt_img)
 		.fit()
 		.into(holder.profileImage);
 

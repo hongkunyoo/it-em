@@ -28,7 +28,7 @@
     <string name="comments">Comments</string>
     <string name="tags">Tags</string>
     <string name="more">More</string>
-    <string name="fold">Fold</string>
+    <string name="unfold">Unfold</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
@@ -49,11 +49,14 @@
     <!-- My Item -->
     <string name="it_lower">it</string>
     <string name="reply_lower">comments</string>
-    <string name="no_my_item">There is no uploaded item</string>
-    <string name="no_it_item">There is no IT item</string>
+    <string name="empty_my_item">This user\'s item is empty.</string>
+    <string name="empty_it_item">This user\'s IT item is empty.</string>
+    <string name="empty">Empty</string>
 
-    <!-- Pro -->
-    <string name="pro">Pro</string>
+    <!-- Be Pro -->
+    <string name="be_pro">Be Pro</string>
+    <string name="support_email">support@pinthecloud.com</string>
+    <string name="code">CODE</string>
 
     <!-- Upload -->
     <string name="upload">Upload</string>
@@ -62,7 +65,7 @@
     <string name="select_picture">Select Picture</string>
 
     <!-- Profile Settings -->
-    <string name="profile_settings">Profile edit</string>
+    <string name="profile_settings">Profile Settings</string>
     <string name="nick_name">Nick Name</string>
     <string name="information">Information</string>
     <string name="website">Website</string>
@@ -80,11 +83,11 @@
 
     <!-- Product Tag -->
     <string name="product_tag">Product Tag</string>
-    <string name="empty_product_tag">There is no product tag.</string>
+    <string name="empty_product_tag">Product tag of this item is empty.</string>
 
     <!-- ItDateTime -->
-    <string name="second_ago">second ago</string>
-    <string name="minute_ago">minute ago</string>
+    <string name="second_ago">sec ago</string>
+    <string name="minute_ago">min ago</string>
     <string name="hour_ago">hour ago</string>
     <string name="day_ago">day ago</string>
     <string name="yesterday">Yesterday</string>

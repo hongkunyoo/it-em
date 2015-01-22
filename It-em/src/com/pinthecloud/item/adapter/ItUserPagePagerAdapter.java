@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.util.SparseArrayCompat;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItItemFragment;
-import com.pinthecloud.item.fragment.ItUserPageScrollTabFragment;
 import com.pinthecloud.item.fragment.MyItemFragment;
 import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
@@ -25,9 +23,14 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	public ItUserPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
 		super(fm);
-		this.mTitles = context.getResources().getStringArray(R.array.it_user_page_tab_title_string_array);
 		this.mItUserPageScrollTabHolderList = new SparseArrayCompat<ItUserPageScrollTabHolder>();
 		this.mItUser = itUser;
+		
+		if(mItUser.isPro()){
+			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_pro_tab_title_string_array);	
+		} else {
+			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_tab_title_string_array);
+		}
 	}
 
 
@@ -53,16 +56,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	@Override
 	public Fragment getItem(int position) {
-		ItUserPageScrollTabFragment fragment = null;
-		switch(position){
-		case 0:
-			fragment = (ItUserPageScrollTabFragment) MyItemFragment.newInstance(position, mItUser);
-			break;
-		case 1:
-			fragment = (ItUserPageScrollTabFragment) ItItemFragment.newInstance(position, mItUser);
-			break;
-		}
-
+		MyItemFragment fragment = MyItemFragment.newInstance(position, mItUser);
 		mItUserPageScrollTabHolderList.put(position, fragment);
 		if (mItUserPageScrollTabHolder != null){
 			fragment.setItUserPageScrollTabHolder(mItUserPageScrollTabHolder);	

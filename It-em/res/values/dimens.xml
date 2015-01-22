@@ -3,13 +3,11 @@
     <!-- Common -->
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
-    <dimen name="toolbar_shadow_height">5dp</dimen>
     <dimen name="key_line_first">16dp</dimen>
     <dimen name="key_line_second">72dp</dimen>
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
     <dimen name="profile_preview_image_width">56dp</dimen>
-    <dimen name="profile_image_width">212dp</dimen>
 
     <!-- Main Drawer -->
     <dimen name="main_drawer_width">280dp</dimen>
@@ -19,17 +17,21 @@
     <dimen name="main_drawer_menu_profile_image_left_margin">38dp</dimen>
     <dimen name="main_drawer_menu_image_left_margin">40dp</dimen>
     <dimen name="main_drawer_menu_name_left_margin">92dp</dimen>
-    
+
     <!-- Home -->
     <dimen name="home_item_profile_height">48dp</dimen>
     <dimen name="home_item_margin">10dp</dimen>
     <dimen name="home_item_content_margin">6dp</dimen>
     <dimen name="home_item_spacing">2dp</dimen>
 
+    <!-- Be Pro -->
+    <dimen name="be_pro_content_margin">12dp</dimen>
+    <dimen name="be_pro_code_margin">8dp</dimen>
+    
     <!-- Item -->
     <dimen name="item_content_margin">12dp</dimen>
     <dimen name="item_content_row_height">48dp</dimen>
-    
+
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>
 
@@ -41,23 +43,33 @@
     <dimen name="it_user_page_tab_height">48dp</dimen>
     <dimen name="it_user_page_tab_number_margin">6dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">2dp</dimen>
+
+    <!-- Profile Image -->
+    <dimen name="profile_image_width">212dp</dimen>
     
     <!-- My Item -->
-    <dimen name="my_item_content_bottom_margin">150dp</dimen>
+    <dimen name="my_item_progress_bar_bottom_margin">150dp</dimen>
+    <dimen name="my_item_empty_bottom_margin">100dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
-    
+
     <!-- Reply -->
-    <dimen name="reply_row_height">72dp</dimen>
-    <dimen name="reply_row_previous_height">56dp</dimen>
-    <dimen name="reply_submit_bottom_margin">5dp</dimen>
+    <dimen name="reply_row_previous_height">36dp</dimen>
+    <dimen name="reply_margin">6dp</dimen>
+    <dimen name="reply_title_margin">12dp</dimen>
+    <dimen name="reply_inputbar_margin">6dp</dimen>
     
+    <!-- Product Tag -->
+    <dimen name="product_tag_margin">12dp</dimen>
+    <dimen name="product_tag_row_height">48dp</dimen>
+
     <!-- Profile Settings -->
     <dimen name="profile_settings_content_margin">8dp</dimen>
-    
+    <dimen name="profile_settings_image_width">128dp</dimen>
+
     <!-- Settings -->
     <dimen name="settings_row_height">48dp</dimen>
     <dimen name="settings_row_nick_name_height">40dp</dimen>
-    
+
     <!-- Font -->
     <dimen name="font_xx_large">24sp</dimen>
     <dimen name="font_x_large">20sp</dimen>

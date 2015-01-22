@@ -1,12 +1,11 @@
 package com.pinthecloud.item.model;
 
-
-
 public class LikeIt extends AbstractItemModel<LikeIt>{
 
 	public LikeIt() {
 		super();
 	}
+	
 	public LikeIt(String whoMade, String whoMadeId, String refId) {
 		super();
 		this.setWhoMade(whoMade);
@@ -21,5 +20,4 @@ public class LikeIt extends AbstractItemModel<LikeIt>{
 	@Override
 	public final void setContent(String content) {
 	}
-
 }

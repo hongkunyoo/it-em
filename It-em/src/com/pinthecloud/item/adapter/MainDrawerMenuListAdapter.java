@@ -124,6 +124,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.placeholder(R.drawable.profile_s_defualt_img)
 		.fit()
 		.into(holder.profileImage);
 

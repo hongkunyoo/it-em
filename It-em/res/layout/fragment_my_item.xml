@@ -10,31 +10,44 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/my_item_content_bottom_margin"
+        android:layout_marginBottom="@dimen/my_item_progress_bar_bottom_margin"
         layout="@layout/custom_progress_bar"
         android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/my_item_frag_grid_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/brand_background" >
+        android:layout_height="match_parent" >
 
-        <com.pinthecloud.item.view.CustomTextView
-            android:id="@+id/my_item_frag_grid_empty_view"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/my_item_frag_grid_empty_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/my_item_content_bottom_margin"
-            android:textColor="@color/brand_text_color"
-            android:visibility="gone"
-            app:textType="body" />
+            android:layout_marginBottom="@dimen/my_item_empty_bottom_margin"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/my_item_frag_grid_empty_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty" />
+
+            <com.pinthecloud.item.view.CustomTextView
+                android:id="@+id/my_item_frag_grid_empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/key_line_first"
+                android:textColor="@color/brand_text_color_light"
+                app:textType="body" />
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/my_item_frag_grid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="@dimen/my_item_spacing"
             android:scrollbars="none" />
     </RelativeLayout>

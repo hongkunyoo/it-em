@@ -14,6 +14,7 @@
     </style>
 
     <style name="LightActionBarAppTheme" parent="AppTheme">
+        <item name="actionBarItemBackground">@color/accent_color</item>
         <item name="android:textColorPrimary">@android:color/black</item>
     </style>
 
