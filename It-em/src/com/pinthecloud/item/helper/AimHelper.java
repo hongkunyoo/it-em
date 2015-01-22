@@ -17,6 +17,7 @@ import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.ItLog;
@@ -37,6 +38,8 @@ public class AimHelper {
 	private final String AIM_LIST_ITEM = "aim_list_item";
 	private final String AIM_LIST_MY_ITEM = "aim_list_my_item";
 	private final String AIM_LIST_IT_ITEM = "aim_list_it_item";
+	private final String IS_VALID = "is_valid";
+	
 
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
@@ -349,6 +352,29 @@ public class AimHelper {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
 					EventBus.getDefault().post(new ItException("update", ItException.TYPE.SERVER_ERROR, response));
+				}
+			}
+		});
+	}
+	
+	public void isValid(String key, ItUser.TYPE type, final EntityCallback<Boolean> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+		JsonObject json = new JsonObject();
+		json.addProperty("key", key);
+		json.addProperty("validType", type.toString());
+
+		mClient.invokeApi(IS_VALID, json, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(_json.getAsBoolean());	
+				} else {
+					EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});

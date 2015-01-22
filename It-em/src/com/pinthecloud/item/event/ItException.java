@@ -54,6 +54,7 @@ public class ItException extends RuntimeException {
 		NETWORK_UNAVAILABLE,
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
-		INTERNAL_ERROR
+		INTERNAL_ERROR,
+		INVALID_KEY
 	}
 }
