@@ -18,7 +18,7 @@
             android:contentDescription="@string/product_tag"
             android:src="@drawable/detail_tag_ic" />
 
-        <com.pinthecloud.item.view.CustomTextView
+        <com.pinthecloud.item.view.ItTextView
             android:id="@+id/product_tag_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <com.pinthecloud.item.view.CustomTextView
+            <com.pinthecloud.item.view.ItTextView
                 android:id="@+id/product_tag_frag_list_empty_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

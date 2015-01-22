@@ -17,7 +17,7 @@ public class ProfileSettingsActivity extends ItActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_toolbar_light_frame);
+		setContentView(R.layout.activity_toolbar_frame);
 		setToolbar();
 		setFragment();
 	}
@@ -30,7 +30,7 @@ public class ProfileSettingsActivity extends ItActivity {
 
 
 	private void setToolbar(){
-		mToolbar = (Toolbar) findViewById(R.id.toolbar_light);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
 
 		ActionBar actionBar = getSupportActionBar();

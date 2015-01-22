@@ -48,7 +48,7 @@
                         app:border_color="@color/line_color"
                         app:border_width="@dimen/line_width" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/it_user_page_frag_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                         android:textColor="@color/brand_text_color"
                         app:textType="subhead" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/it_user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                         android:textColor="@color/brand_text_color_light"
                         app:textType="caption" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/it_user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

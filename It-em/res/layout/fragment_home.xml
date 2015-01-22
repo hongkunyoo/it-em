@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/brand_color" >
 
     <include
         android:layout_width="wrap_content"
@@ -13,8 +14,7 @@
     <RelativeLayout
         android:id="@+id/home_frag_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/brand_color" >
+        android:layout_height="match_parent" >
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/home_frag_item_list_refresh"

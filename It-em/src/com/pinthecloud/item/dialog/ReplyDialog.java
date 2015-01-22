@@ -27,6 +27,7 @@ import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
+import com.pinthecloud.item.util.ItLog;
 
 public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
@@ -168,6 +169,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 					mProgressBar.setVisibility(View.GONE);
 					mListLayout.setVisibility(View.VISIBLE);
 
+					ItLog.log("count : " + count);
 					mItem.setReplyCount(count);
 					showReplyList(mItem.getReplyCount());
 					setTitle(mItem.getReplyCount());

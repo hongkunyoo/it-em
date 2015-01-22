@@ -15,7 +15,7 @@
         android:paddingStart="@dimen/key_line_first"
         android:visibility="gone" >
 
-        <com.pinthecloud.item.view.CustomTextView
+        <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -44,7 +44,7 @@
         android:paddingRight="@dimen/key_line_first"
         android:paddingStart="@dimen/key_line_first" >
 
-        <com.pinthecloud.item.view.CustomTextView
+        <com.pinthecloud.item.view.ItTextView
             android:id="@+id/settings_frag_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             android:contentDescription="@string/logout"
             android:src="@drawable/setting_logout_ic" />
 
-        <com.pinthecloud.item.view.CustomTextView
+        <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

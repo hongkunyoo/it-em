@@ -48,6 +48,7 @@ public class ItUser implements Parcelable {
 	public ItUser() {
 		super();
 	}
+	
 	public ItUser(String itUserId, String platform, String email, String nickName, String selfIntro, String webPage, TYPE type) {
 		super();
 		this.itUserId = itUserId;

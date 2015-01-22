@@ -46,7 +46,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/key_line_first" >
 
-                <com.pinthecloud.item.view.CustomTextView
+                <com.pinthecloud.item.view.ItTextView
                     android:id="@+id/item_frag_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,21 +60,21 @@
                     android:layout_marginBottom="@dimen/key_line_first"
                     android:orientation="horizontal" >
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/upload_date"
                         android:textColor="@color/brand_text_color_light"
                         app:textType="caption" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/space"
                         android:textColor="@color/brand_text_color_light"
                         app:textType="caption" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/item_frag_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -104,14 +104,14 @@
                         android:layout_marginStart="@dimen/item_content_margin"
                         android:orientation="horizontal" >
 
-                        <com.pinthecloud.item.view.CustomTextView
+                        <com.pinthecloud.item.view.ItTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/plus"
                             android:textColor="@color/brand_text_color_light"
                             app:textType="caption" />
 
-                        <com.pinthecloud.item.view.CustomTextView
+                        <com.pinthecloud.item.view.ItTextView
                             android:id="@+id/item_frag_it_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/item_content_row_height" >
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -223,7 +223,7 @@
                         app:border_color="@color/line_color"
                         app:border_width="@dimen/line_width" />
 
-                    <com.pinthecloud.item.view.CustomTextView
+                    <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/item_frag_nick_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

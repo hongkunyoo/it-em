@@ -32,7 +32,7 @@
         android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
         android:textColorHint="@color/reply_inputbar_hint"
-        android:textSize="@dimen/font_medium" >
+        android:textSize="@dimen/font_small" >
 
         <requestFocus />
     </EditText>
@@ -53,7 +53,7 @@
         android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
         android:textColorHint="@color/reply_inputbar_hint"
-        android:textSize="@dimen/font_medium" />
+        android:textSize="@dimen/font_small" />
 
     <EditText
         android:id="@+id/profile_settings_frag_website"
@@ -70,6 +70,6 @@
         android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
         android:textColorHint="@color/reply_inputbar_hint"
-        android:textSize="@dimen/font_medium" />
+        android:textSize="@dimen/font_small" />
 
 </LinearLayout>

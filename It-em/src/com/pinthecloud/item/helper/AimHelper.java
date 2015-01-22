@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
@@ -19,7 +20,6 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 
@@ -27,10 +27,10 @@ import de.greenrobot.event.EventBus;
 
 public class AimHelper {
 
-	private final String AIM_GET = "aim_get";
 	private final String AIM_ADD = "aim_add";
+	private final String AIM_ADD_UNIQUE = "aim_add_unique";
 	private final String AIM_UPDATE = "aim_update";
-	private final String AIM_DELETE = "aim_delete";
+	private final String AIM_DELETE = "aim_delete";	
 	private final String AIM_DELETE_ITEM = "aim_delete_item";
 	private final String AIM_LIST = "aim_list";
 	private final String AIM_LIST_RECENT = "aim_list_recent";
@@ -229,6 +229,30 @@ public class AimHelper {
 	}
 
 
+	public <E extends AbstractItemModel<E>> void addUnique(final E obj, final EntityCallback<E> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("addUnique", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		mClient.invokeApi(AIM_ADD_UNIQUE, obj.toJson(), new ApiJsonOperationCallback() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					if(callback != null){
+						callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
+					}
+				} else {
+					EventBus.getDefault().post(new ItException("addUnique", ItException.TYPE.SERVER_ERROR, response));
+				}
+			}
+		});
+	}
+
+
 	public <E extends AbstractItemModel<E>> void del(E obj, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("del", ItException.TYPE.NETWORK_UNAVAILABLE));
@@ -241,9 +265,18 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(_json.getAsBoolean());	
+					callback.onCompleted(_json.getAsBoolean());
 				} else {
-					ItLog.log(response);
+					JsonObject responseJson = new JsonParser().parse(response.getContent()).getAsJsonObject();
+					JsonElement codeJson = responseJson.get("0");
+					if(codeJson != null){
+						String code = codeJson.getAsJsonObject().get("code").toString();
+						if(code.equals(ItException.ITEM_NOT_FOUND)){
+							callback.onCompleted(_json.getAsBoolean());		
+							return;
+						}
+					}
+
 					EventBus.getDefault().post(new ItException("del", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
@@ -307,28 +340,6 @@ public class AimHelper {
 			public void doNext(ItFragment frag, Object... params) {
 				boolean result = (Boolean)params[0];
 				callback.onCompleted(result);	
-			}
-		});
-	}
-
-
-	public <E extends AbstractItemModel<E>> void get(final E obj, final EntityCallback<E> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("get", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		mClient.invokeApi(AIM_GET, obj.toJson(), new ApiJsonOperationCallback() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
-				} else {
-					EventBus.getDefault().post(new ItException("get", ItException.TYPE.SERVER_ERROR, response));
-				}
 			}
 		});
 	}

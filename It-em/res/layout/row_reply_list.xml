@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/reply_list_selector"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/reply_margin"
     android:paddingEnd="@dimen/key_line_first"
@@ -18,19 +19,19 @@
         app:border_color="@color/line_color"
         app:border_width="@dimen/line_width" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/reply_margin"
-        android:layout_marginStart="@dimen/reply_margin" >
+        android:layout_marginStart="@dimen/reply_margin"
+        android:orientation="vertical" >
 
         <RelativeLayout
-            android:id="@+id/row_reply_list_information_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/reply_margin" >
 
-            <com.pinthecloud.item.view.CustomTextView
+            <com.pinthecloud.item.view.ItTextView
                 android:id="@+id/row_reply_list_nick_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +39,7 @@
                 android:textColor="@color/brand_text_color"
                 app:textType="subhead" />
 
-            <com.pinthecloud.item.view.CustomTextView
+            <com.pinthecloud.item.view.ItTextView
                 android:id="@+id/row_reply_list_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,13 +50,12 @@
                 app:textType="caption" />
         </RelativeLayout>
 
-        <com.pinthecloud.item.view.CustomTextView
+        <com.pinthecloud.item.view.ItTextView
             android:id="@+id/row_reply_list_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/row_reply_list_information_layout"
             android:textColor="@color/brand_text_color_light"
             app:textType="body" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

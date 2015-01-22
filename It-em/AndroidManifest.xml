@@ -18,7 +18,7 @@
         android:allowBackup="true"
         android:icon="@drawable/launcher"
         android:label="@string/app_name"
-        android:theme="@style/DarkActionBarAppTheme" >
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -54,13 +54,11 @@
         <activity
             android:name=".activity.UploadActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/LightActionBarAppTheme" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ProfileSettingsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/LightActionBarAppTheme" />
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.HongkunTestActivity" />
     </application>
 

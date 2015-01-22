@@ -13,7 +13,7 @@
     <string name="error_message">Error happened. Please retry it.</string>
 
     <!-- Login -->
-    <string name="facebook_login">Login with facebook in an instant</string>
+    <string name="facebook_login">SIGN IN with facebook</string>
 
     <!-- Main -->
     <string name="drawer_open">Open drawer</string>
@@ -54,6 +54,7 @@
     <string name="empty">Empty</string>
 
     <!-- Be Pro -->
+    <string name="pro">Pro</string>
     <string name="be_pro">Be Pro</string>
     <string name="support_email">support@pinthecloud.com</string>
     <string name="code">CODE</string>

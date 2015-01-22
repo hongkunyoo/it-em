@@ -14,7 +14,7 @@
         android:contentDescription="@string/be_pro"
         android:src="@drawable/bepro_badge_img" />
 
-    <com.pinthecloud.item.view.CustomTextView
+    <com.pinthecloud.item.view.ItTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/be_pro_content_margin"
@@ -22,7 +22,7 @@
         android:textColor="@color/be_pro_text"
         app:textType="subhead" />
 
-    <com.pinthecloud.item.view.CustomTextView
+    <com.pinthecloud.item.view.ItTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/be_pro_code_margin"
@@ -40,7 +40,7 @@
         android:hint="@string/code"
         android:textColor="@color/be_pro_text"
         android:textColorHint="@color/be_pro_code_hint"
-        android:textSize="@dimen/font_large" >
+        android:textSize="@dimen/font_medium" >
 
         <requestFocus />
     </EditText>
@@ -53,6 +53,6 @@
         android:enabled="false"
         android:text="@string/submit"
         android:textColor="@color/brand_text_color"
-        android:textSize="@dimen/font_medium" />
+        android:textSize="@dimen/font_small" />
 
 </LinearLayout>

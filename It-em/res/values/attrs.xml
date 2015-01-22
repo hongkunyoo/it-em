@@ -22,7 +22,7 @@
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
     </declare-styleable>
-    <declare-styleable name="CustomTextView">
+    <declare-styleable name="ItTextView">
         <attr name="textType">
             <flag name="title" value="0" />
             <flag name="subhead" value="0x1" />
