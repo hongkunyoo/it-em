@@ -66,6 +66,7 @@ public class ItTextView extends TextView {
 
 	private void setCaption(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_micro));
+		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_micro), 0.3f);
 	}
 
 	private void setButton(){

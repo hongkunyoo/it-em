@@ -20,9 +20,10 @@
 
     <!-- Home -->
     <dimen name="home_item_profile_height">48dp</dimen>
-    <dimen name="home_item_margin">6dp</dimen>
+    <dimen name="home_item_margin">10dp</dimen>
     <dimen name="home_item_spacing">2dp</dimen>
-    <dimen name="home_item_content_margin">4dp</dimen>
+    <dimen name="home_item_content_margin">2dp</dimen>
+    <dimen name="home_content_button_margin">10dp</dimen>
 
     <!-- Be Pro -->
     <dimen name="be_pro_content_margin">12dp</dimen>
@@ -75,6 +76,6 @@
     <dimen name="font_large">20sp</dimen>
     <dimen name="font_medium">16sp</dimen>
     <dimen name="font_small">14sp</dimen>
-    <dimen name="font_micro">12sp</dimen>
+    <dimen name="font_micro">13sp</dimen>
 
 </resources>
