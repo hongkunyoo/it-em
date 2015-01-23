@@ -20,7 +20,7 @@
 
     <!-- Home -->
     <dimen name="home_item_profile_height">48dp</dimen>
-    <dimen name="home_item_margin">10dp</dimen>
+    <dimen name="home_item_margin">6dp</dimen>
     <dimen name="home_item_spacing">2dp</dimen>
 
     <!-- Be Pro -->
