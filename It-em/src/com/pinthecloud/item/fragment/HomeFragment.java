@@ -44,7 +44,7 @@ public class HomeFragment extends ItFragment {
 	private View mUploadLayout;
 	private ImageButton mUploadButton;
 
-	private ItUser mMyitUser;
+	private ItUser mMyItUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
 
@@ -52,7 +52,7 @@ public class HomeFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMyitUser = mObjectPrefHelper.get(ItUser.class);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItemList == null){
 			mItemList = new ArrayList<Item>();
 		}
@@ -121,7 +121,7 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setComponent(){
-		if(mMyitUser.isPro()){
+		if(mMyItUser.isPro()){
 			mUploadLayout.setVisibility(View.VISIBLE);
 			int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
 			int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
@@ -198,7 +198,7 @@ public class HomeFragment extends ItFragment {
 
 	public void updateList() {
 		page = 0;
-		mAimHelper.listItem(page, mMyitUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(page, mMyItUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
@@ -214,7 +214,7 @@ public class HomeFragment extends ItFragment {
 
 	private void addNextItemList() {
 		mIsAdding = true;
-		mAimHelper.listItem(++page, mMyitUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(++page, mMyItUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

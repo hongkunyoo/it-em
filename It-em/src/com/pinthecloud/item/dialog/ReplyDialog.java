@@ -71,8 +71,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_reply, container, false);
 
-		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-				| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 		findComponent(view);
 		setComponent();

@@ -13,7 +13,6 @@
 
     <!-- Profile Settings -->
     <integer name="profile_settings_nick_name_max_length">10</integer>
-    <integer name="profile_settings_description_max_length">40</integer>
-    <integer name="profile_settings_website_max_length">80</integer>
+    <integer name="long_text_max_length">40</integer>
 
 </resources>
