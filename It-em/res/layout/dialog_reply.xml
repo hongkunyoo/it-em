@@ -11,13 +11,18 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/key_line_first" >
+        android:paddingBottom="@dimen/reply_margin"
+    	android:paddingEnd="@dimen/key_line_first"
+    	android:paddingLeft="@dimen/key_line_first"
+    	android:paddingRight="@dimen/key_line_first"
+    	android:paddingStart="@dimen/key_line_first"
+    	android:paddingTop="@dimen/reply_margin" >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/reply_title_margin"
-            android:layout_marginRight="@dimen/reply_title_margin"
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginRight="@dimen/key_line_first"
             android:contentDescription="@string/reply_lower"
             android:src="@drawable/detail_comment_ic" />
 
@@ -26,6 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
+            android:textColor="@color/brand_text_color"
+            android:textStyle="bold"
             app:textType="subhead" />
     </LinearLayout>
 
@@ -72,17 +79,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
+                
+                <include layout="@layout/custom_line" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/reply_inputbar_top_bottom_margin"
+                    android:paddingBottom="@dimen/reply_inputbar_margin_none"
                     android:paddingEnd="@dimen/reply_inputbar_margin_none"
                     android:paddingLeft="@dimen/reply_inputbar_left_margin"
                     android:paddingRight="@dimen/reply_inputbar_margin_none"
                     android:paddingStart="@dimen/reply_inputbar_left_margin"
-                    android:paddingTop="@dimen/reply_inputbar_top_bottom_margin" >
+                    android:paddingTop="@dimen/reply_inputbar_top_margin" >
 
                     <EditText
                         android:id="@+id/reply_frag_inputbar_text"

@@ -99,8 +99,8 @@
                         android:id="@+id/item_frag_it_number_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/item_content_margin"
-                        android:layout_marginStart="@dimen/item_content_margin"
+                        android:layout_marginLeft="@dimen/item_button_number_margin"
+                        android:layout_marginStart="@dimen/item_button_number_margin"
                         android:orientation="horizontal" >
 
                         <com.pinthecloud.item.view.ItTextView
@@ -196,7 +196,8 @@
                         android:layout_centerVertical="true"
                         android:text="@string/upload_by"
                         android:textColor="@color/light_gray"
-                        app:textType="body" />
+                        android:textStyle="bold"
+                        app:textType="subhead" />
 
                     <ImageView
                         android:layout_width="wrap_content"

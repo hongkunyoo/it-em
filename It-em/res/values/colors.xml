@@ -5,8 +5,9 @@
     <color name="brand_color">#263238</color>
     <color name="brand_color_dark">#1e292e</color>
     <color name="brand_text_color">#de263238</color>
+    <color name="brnad_sub_text_color">#96263238</color>
     <color name="accent_color">#ffAB00</color>
-    <color name="line_color">#20000000</color>
+    <color name="line_color">#16000000</color>
     <color name="light_gray">#de78909c</color>
     <color name="gray">#deB0BEC5</color>
     <color name="red">#ef5350</color>

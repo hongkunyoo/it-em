@@ -4,7 +4,7 @@
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
     <dimen name="key_line_first">16dp</dimen>
-    <dimen name="key_line_second">52dp</dimen>
+    <dimen name="key_line_second">72dp</dimen>
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
     <dimen name="profile_preview_image_width">40dp</dimen>
@@ -30,8 +30,9 @@
     <dimen name="be_pro_code_margin">8dp</dimen>
     
     <!-- Item -->
-    <dimen name="item_content_margin">12dp</dimen>
+    <dimen name="item_content_margin">2dp</dimen>
     <dimen name="item_content_row_height">48dp</dimen>
+    <dimen name="item_button_number_margin">12dp</dimen>
 
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>
@@ -53,11 +54,11 @@
 
     <!-- Reply -->
     <dimen name="reply_row_previous_height">36dp</dimen>
-    <dimen name="reply_margin">8dp</dimen>
+    <dimen name="reply_margin">10dp</dimen>
     <dimen name="reply_title_margin">12dp</dimen>
     <dimen name="reply_inputbar_margin_none">0dp</dimen>
-    <dimen name="reply_inputbar_top_bottom_margin">8dp</dimen>
-    <dimen name="reply_inputbar_left_margin">16dp</dimen>
+    <dimen name="reply_inputbar_top_margin">8dp</dimen>
+    <dimen name="reply_inputbar_left_margin">8dp</dimen>
     
     <!-- Product Tag -->
     <dimen name="product_tag_margin">12dp</dimen>
