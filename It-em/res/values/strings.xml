@@ -58,6 +58,8 @@
     <string name="be_pro">Be Pro</string>
     <string name="support_email">support@pinthecloud.com</string>
     <string name="code">CODE</string>
+    <string name="valid_pro">You are pro.</string>
+    <string name="invalid_pro">It is invalid key.</string>
 
     <!-- Upload -->
     <string name="upload">Upload</string>

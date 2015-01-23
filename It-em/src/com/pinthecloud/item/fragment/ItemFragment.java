@@ -312,7 +312,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				Reply reply = new Reply(mReplyInputText.getText().toString(), mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+				Reply reply = new Reply(mReplyInputText.getText().toString().trim(),
+						mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
 				mReplyInputText.setText("");
 				submitReply(reply);
 			}
@@ -404,12 +405,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					// Add reply item
 					mReplyList.clear();
 					mReplyListAdapter.addAll(list);
-
-					// Check reply count
-					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
 					mItem.setReplyCount(count);
 
 					// Set see previous row
+					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
 					if(mItem.getReplyCount() > displayReplyNum){
 						mReplyListAdapter.setHasPrevious(true);
 					} else {

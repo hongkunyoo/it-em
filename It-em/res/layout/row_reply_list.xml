@@ -15,9 +15,9 @@
         android:id="@+id/row_reply_list_profile_image"
         android:layout_width="@dimen/profile_preview_image_width"
         android:layout_height="@dimen/profile_preview_image_width"
+        android:layout_marginTop="@dimen/reply_margin"
         app:border_color="@color/line_color"
-        app:border_width="@dimen/line_width"
-        android:layout_marginTop="@dimen/reply_margin" />
+        app:border_width="@dimen/line_width" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,14 +25,12 @@
         android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginStart="@dimen/key_line_first"
         android:orientation="vertical" >
-        
+
         <include layout="@layout/custom_line" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/key_line_first"
-            android:layout_marginRight="@dimen/key_line_first"
             android:layout_marginTop="@dimen/reply_margin" >
 
             <com.pinthecloud.item.view.ItTextView
@@ -51,6 +49,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/key_line_first"
+                android:layout_marginRight="@dimen/key_line_first"
                 android:textColor="@color/light_gray"
                 app:textType="caption" />
         </RelativeLayout>
@@ -61,7 +61,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/brnad_sub_text_color"
             app:textType="body" />
-    </LinearLayout>    
+    </LinearLayout>
 
-    <include layout="@layout/custom_line" />
 </LinearLayout>

@@ -36,6 +36,15 @@ public class MainDrawerFragment extends ItFragment {
 	private DrawerLayout mDrawerLayout;
 	private View mFragmentContainerView;
 
+	private ItUser mMyItUser;
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,11 +133,15 @@ public class MainDrawerFragment extends ItFragment {
 		mMenuList = new ArrayList<MainDrawerMenu>();
 
 		// Profile
-		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(mObjectPrefHelper.get(ItUser.class).getId()), false));
+		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(mMyItUser.getId()), false));
 		// Home
 		mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_home, menuNameList[0], new HomeFragment(), false));
-		// Be Pro
-		mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_be_pro, menuNameList[1], new BeProFragment(), false));
+		
+		if(!mMyItUser.isPro()){
+			// Be Pro
+			mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_be_pro, menuNameList[1], new BeProFragment(), false));
+		}
+		
 		// Settings
 		mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_settings, menuNameList[2], new SettingsFragment(), false));
 

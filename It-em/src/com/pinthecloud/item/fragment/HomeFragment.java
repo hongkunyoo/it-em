@@ -5,7 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -121,14 +121,14 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setComponent(){
-		//		if(mMyitUser.isPro()){
-		mUploadLayout.setVisibility(View.VISIBLE);
-		int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
-		int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
-		mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
-		//		} else {
-		//			mUploadLayout.setVisibility(View.GONE);
-		//		}
+		if(mMyitUser.isPro()){
+			mUploadLayout.setVisibility(View.VISIBLE);
+			int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
+			int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
+			mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
+		} else {
+			mUploadLayout.setVisibility(View.GONE);
+		}
 	}
 
 

@@ -32,9 +32,10 @@
 
     <EditText
         android:id="@+id/be_pro_frag_code"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/be_pro_code_margin"
+        android:background="@drawable/edit_text_line"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/code"

@@ -37,6 +37,7 @@ public class UploadFragment extends ItFragment {
 
 	private ImageView mItemImage;
 	private EditText mContent;
+	private ItUser mMyItUser;
 
 
 	public static ItFragment newInstance(Uri itemImageUri) {
@@ -51,6 +52,7 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		mItemImageUri = getArguments().getParcelable(Item.INTENT_KEY);
 	}
 
@@ -124,6 +126,7 @@ public class UploadFragment extends ItFragment {
 			mActivity.onBackPressed();
 			break;
 		case R.id.upload_submit:
+			trimContent();
 			uploadItem();
 			break;
 		}
@@ -222,10 +225,9 @@ public class UploadFragment extends ItFragment {
 	private void uploadItem(){
 		mApp.showProgressDialog(mActivity);
 
-		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
 		final String itemImagePath = FileUtil.getMediaPathFromGalleryUri(mActivity, mItemImageUri);
 		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
-		final Item item = new Item(mContent.getText().toString(), myItUser.getNickName(), myItUser.getId(),
+		final Item item = new Item(mContent.getText().toString(), mMyItUser.getNickName(), mMyItUser.getId(),
 				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
@@ -290,6 +292,11 @@ public class UploadFragment extends ItFragment {
 				mActivity.finish();
 			}
 		});
+	}
+
+
+	private void trimContent(){
+		mContent.setText(mContent.getText().toString().trim());
 	}
 
 
