@@ -56,7 +56,6 @@ public class ItException extends RuntimeException {
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
 		INTERNAL_ERROR,
-		INVALID_KEY
 	}
 
 	// Azure Mobile Service Exception Code

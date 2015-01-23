@@ -53,9 +53,6 @@
     <!-- Reply -->
     <dimen name="reply_row_previous_height">36dp</dimen>
     <dimen name="reply_margin">8dp</dimen>
-    <dimen name="reply_title_margin">12dp</dimen>
-    <dimen name="reply_inputbar_margin_none">0dp</dimen>
-    <dimen name="reply_inputbar_top_bottom_margin">8dp</dimen>
     <dimen name="reply_inputbar_left_margin">16dp</dimen>
     
     <!-- Product Tag -->

@@ -121,14 +121,14 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setComponent(){
-		//		if(mMyitUser.isPro()){
-		mUploadLayout.setVisibility(View.VISIBLE);
-		int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
-		int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
-		mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
-		//		} else {
-		//			mUploadLayout.setVisibility(View.GONE);
-		//		}
+//		if(mMyitUser.isPro()){
+			mUploadLayout.setVisibility(View.VISIBLE);
+			int uploadButtonHeight = ((BitmapDrawable)mUploadButton.getDrawable()).getBitmap().getHeight();
+			int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
+			mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
+//		} else {
+//			mUploadLayout.setVisibility(View.GONE);
+//		}
 	}
 
 

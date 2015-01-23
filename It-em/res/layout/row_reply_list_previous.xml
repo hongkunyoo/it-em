@@ -3,26 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/reply_row_previous_height"
-    android:orientation="vertical"
-    android:paddingEnd="@dimen/key_line_first"
-    android:paddingLeft="@dimen/key_line_first"
-    android:paddingRight="@dimen/key_line_first"
-    android:paddingStart="@dimen/key_line_first" >
+    android:gravity="center_vertical" >
 
     <com.pinthecloud.item.view.ItTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/key_line_first"
+        android:layout_marginStart="@dimen/key_line_first"
         android:text="@string/previous_reply"
         app:textType="body" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/reply_lower"
-        android:src="@drawable/general_arrow_ic" />
 
 </RelativeLayout>

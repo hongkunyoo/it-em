@@ -30,14 +30,12 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	private ItApplication mApp;
 	private ItFragment mfrag; 
 	private List<MainDrawerMenu> mMenuList;
-	private ItUser mMyItUser;
 
 
 	public MainDrawerMenuListAdapter(ItFragment frag, List<MainDrawerMenu> menuList) {
 		this.mApp = ItApplication.getInstance();
 		this.mfrag = frag;
 		this.mMenuList = menuList;
-		this.mMyItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 	}
 
 
@@ -120,17 +118,19 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 
 	private void setProfileViewHolder(ProfileViewHolder holder, final MainDrawerMenu menu) {
+		ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
+		
 		holder.view.setSelected(menu.isSelected());
-		holder.nickName.setText(mMyItUser.getNickName());
+		holder.nickName.setText(myItUser.getNickName());
 
-		if(mMyItUser.isPro()){
+		if(myItUser.isPro()){
 			holder.pro.setVisibility(View.VISIBLE);
 		} else {
 			holder.pro.setVisibility(View.GONE);
 		}
 
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileImgUrl(myItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.profile_s_default_img)
 		.fit()
 		.into(holder.profileImage);

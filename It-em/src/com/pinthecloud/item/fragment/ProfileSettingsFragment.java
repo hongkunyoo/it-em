@@ -264,7 +264,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-
 	private void checkNickName(final ItFragment frag, String nickName){
 		String nickNameRegx = "^[a-zA-Z0-9가-힣_-]{2,10}$";
 		if(nickName.length() < 2){

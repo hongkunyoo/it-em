@@ -10,20 +10,26 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 
-import de.greenrobot.event.EventBus;
-
 public class BeProFragment extends ItFragment {
 
 	private EditText mCode;
 	private Button mSubmit;
+	private ItUser mMyItUser;
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+	}
 
 
 	@Override
@@ -75,47 +81,64 @@ public class BeProFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
+				mApp.showProgressDialog(mActivity);
+				trimCode();
+				bePro(mCode.getText().toString());
+			}
+		});
+	}
 
-				final String inviteKey = mCode.getText().toString();
 
-				if (inviteKey == null || "".equals(inviteKey)) {
-					// TODO : Seung Min --> Do SOMETHING
-					return;
-				}
-				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+	private void bePro(final String inviteKey){
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
-					@Override
-					public void doNext(final ItFragment frag, Object... params) {
-						mAimHelper.isValid(inviteKey, ItUser.TYPE.PRO, new EntityCallback<Boolean>() {
-
-							@Override
-							public void onCompleted(Boolean entity) {
-								if (entity) AsyncChainer.notifyNext(frag, entity);
-								else {
-									EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.INVALID_KEY));
-									return;
-								}
-							}
-						});
-					}
-
-				}, new Chainable(){
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				mAimHelper.isValid(inviteKey, ItUser.TYPE.PRO, new EntityCallback<Boolean>() {
 
 					@Override
-					public void doNext(ItFragment frag, Object... params) {
-						ItUser user = mObjectPrefHelper.get(ItUser.class);
-						user.setType(ItUser.TYPE.PRO);
-						mUserHelper.update(user, new EntityCallback<ItUser>() {
-
-							@Override
-							public void onCompleted(ItUser entity) {
-								// TODO : Seung Min --> Do SOMETHING
-								mObjectPrefHelper.put(entity);
-							}
-						});
+					public void onCompleted(Boolean entity) {
+						AsyncChainer.notifyNext(frag, entity);
 					}
 				});
 			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(final ItFragment frag, Object... params) {
+				boolean result = (Boolean)params[0];
+				if(result) {
+					mMyItUser.setType(ItUser.TYPE.PRO);
+					mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+
+						@Override
+						public void onCompleted(ItUser entity) {
+							mObjectPrefHelper.put(entity);
+							AsyncChainer.notifyNext(frag, getResources().getString(R.string.valid_pro));
+						}
+					});
+				} else {
+					AsyncChainer.notifyNext(frag, getResources().getString(R.string.invalid_pro));
+				}
+			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				mApp.dismissProgressDialog();
+
+				String message = params[0].toString();
+				Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+
+				//				Intent intent = new Intent(mActivity, MainActivity.class);
+				//				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				//				startActivity(intent);
+			}
 		});
+	}
+
+
+	private void trimCode(){
+		mCode.setText(mCode.getText().toString().trim().replace("\n", ""));
 	}
 }
