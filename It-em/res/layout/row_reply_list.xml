@@ -14,16 +14,16 @@
 
     <com.pinthecloud.item.view.CircleImageView
         android:id="@+id/row_reply_list_profile_image"
-        android:layout_width="@dimen/profile_thumbnail_image_width"
-        android:layout_height="@dimen/profile_thumbnail_image_width"
+        android:layout_width="@dimen/profile_preview_image_width"
+        android:layout_height="@dimen/profile_preview_image_width"
         app:border_color="@color/line_color"
         app:border_width="@dimen/line_width" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/reply_margin"
-        android:layout_marginStart="@dimen/reply_margin"
+        android:layout_marginLeft="@dimen/key_line_first"
+        android:layout_marginStart="@dimen/key_line_first"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:textColor="@color/brand_text_color"
+                android:textStyle="bold"
                 app:textType="subhead" />
 
             <com.pinthecloud.item.view.ItTextView

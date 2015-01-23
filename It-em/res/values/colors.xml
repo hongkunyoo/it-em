@@ -20,7 +20,7 @@
 
     <!-- Reply -->
     <color name="reply_submit_disable">#42ffab00</color>
-    <color name="reply_inputbar_hint">#20263238</color>
+    <color name="reply_inputbar_hint">#B0BEC5</color>
 
     <!-- Settings -->
     <color name="settings_logout_text">#deffffff</color>

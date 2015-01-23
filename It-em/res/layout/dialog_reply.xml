@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/reply_title_margin" >
+        android:padding="@dimen/key_line_first" >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -57,9 +57,9 @@
                     android:layout_height="@dimen/reply_row_previous_height"
                     android:gravity="center_vertical"
                     android:paddingEnd="@dimen/key_line_first"
-                    android:paddingLeft="@dimen/key_line_first"
+                    android:paddingLeft="@dimen/key_line_second"
                     android:paddingRight="@dimen/key_line_first"
-                    android:paddingStart="@dimen/key_line_first"
+                    android:paddingStart="@dimen/key_line_second"
                     android:text="@string/first_reply"
                     android:visibility="gone"
                     app:textType="body" />
@@ -75,18 +75,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <include layout="@layout/custom_line" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/reply_inputbar_margin"
-                    android:paddingEnd="@dimen/none"
-                    android:paddingLeft="@dimen/reply_inputbar_margin"
-                    android:paddingRight="@dimen/none"
-                    android:paddingStart="@dimen/reply_inputbar_margin"
-                    android:paddingTop="@dimen/reply_inputbar_margin" >
+                    android:paddingBottom="@dimen/reply_inputbar_top_bottom_margin"
+                    android:paddingEnd="@dimen/reply_inputbar_margin_none"
+                    android:paddingLeft="@dimen/reply_inputbar_left_margin"
+                    android:paddingRight="@dimen/reply_inputbar_margin_none"
+                    android:paddingStart="@dimen/reply_inputbar_left_margin"
+                    android:paddingTop="@dimen/reply_inputbar_top_bottom_margin" >
 
                     <EditText
                         android:id="@+id/reply_frag_inputbar_text"
@@ -98,10 +96,10 @@
                         android:hint="@string/message"
                         android:inputType="textMultiLine"
                         android:maxLines="3"
-                        android:paddingEnd="@dimen/reply_inputbar_margin"
-                        android:paddingLeft="@dimen/reply_inputbar_margin"
-                        android:paddingRight="@dimen/reply_inputbar_margin"
-                        android:paddingStart="@dimen/reply_inputbar_margin"
+                        android:paddingEnd="@dimen/reply_inputbar_left_margin"
+                        android:paddingLeft="@dimen/reply_inputbar_left_margin"
+                        android:paddingRight="@dimen/reply_inputbar_left_margin"
+                        android:paddingStart="@dimen/reply_inputbar_left_margin"
                         android:textColor="@color/brand_text_color"
                         android:textColorHint="@color/reply_inputbar_hint"
                         android:textSize="@dimen/font_medium" >
