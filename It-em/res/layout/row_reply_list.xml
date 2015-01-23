@@ -51,6 +51,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/key_line_first"
                 android:layout_marginRight="@dimen/key_line_first"
+                android:drawableLeft="@drawable/detail_comment_time"
+                android:drawableStart="@drawable/detail_comment_time"
                 android:textColor="@color/light_gray"
                 app:textType="caption" />
         </RelativeLayout>

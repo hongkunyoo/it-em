@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" >
+        android:layout_height="@dimen/item_content_row_height" >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -62,8 +62,10 @@
                     android:layout_marginStart="@dimen/key_line_second"
                     android:gravity="center_vertical"
                     android:text="@string/first_reply"
+                    android:textColor="@color/light_gray"
+                    android:textStyle="italic"
                     android:visibility="gone"
-                    app:textType="body" />
+                    app:textType="caption" />
 
                 <com.pinthecloud.item.view.ExpandableHeightRecyclerView
                     android:id="@+id/reply_frag_list"
@@ -82,9 +84,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingEnd="@dimen/none"
+                    android:paddingEnd="@dimen/reply_margin"
                     android:paddingLeft="@dimen/reply_margin"
-                    android:paddingRight="@dimen/none"
+                    android:paddingRight="@dimen/reply_margin"
                     android:paddingStart="@dimen/reply_margin"
                     android:paddingTop="@dimen/reply_margin" >
 
@@ -93,6 +95,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/reply_margin"
+                    	android:layout_marginLeft="@dimen/none"
+                    	android:layout_marginRight="@dimen/reply_margin"
+                    	android:layout_marginStart="@dimen/none"
                         android:background="@drawable/general_inputbar_bg"
                         android:ems="10"
                         android:gravity="center_vertical"
@@ -115,11 +121,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
+                        android:paddingBottom="@dimen/reply_margin"
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:text="@string/submit"
                         android:textColor="@color/reply_inputbar_submit_button"
-                        android:textSize="@dimen/font_small" />
+                        android:textStyle="bold"
+                        android:textSize="@dimen/font_medium" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

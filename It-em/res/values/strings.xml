@@ -41,7 +41,7 @@
     <string name="submit">SUBMIT</string>
     <string name="message">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
-    <string name="first_reply">Write first comment</string>
+    <string name="first_reply">No comment. Write a first comment</string>
 
     <!-- It User Page -->
     <string name="no_user">This user doesn\'t exist.</string>
@@ -68,7 +68,7 @@
     <string name="select_picture">Select Picture</string>
 
     <!-- Profile Settings -->
-    <string name="profile_settings">Profile Settings</string>
+    <string name="profile_settings">PROFILE EDIT</string>
     <string name="nick_name">Nick Name</string>
     <string name="information">Information</string>
     <string name="website">Website</string>
@@ -92,7 +92,7 @@
     <string name="second_ago">sec ago</string>
     <string name="minute_ago">min ago</string>
     <string name="hour_ago">hour ago</string>
-    <string name="day_ago">day ago</string>
+    <string name="day_ago"> day ago</string>
     <string name="yesterday">Yesterday</string>
 
     <!-- Purchase -->

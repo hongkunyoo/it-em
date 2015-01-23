@@ -20,7 +20,7 @@
 
     <!-- Home -->
     <dimen name="home_item_profile_height">48dp</dimen>
-    <dimen name="home_item_margin">10dp</dimen>
+    <dimen name="home_item_margin">8dp</dimen>
     <dimen name="home_item_spacing">2dp</dimen>
     <dimen name="home_item_content_margin">2dp</dimen>
 
@@ -30,7 +30,7 @@
     
     <!-- Item -->
     <dimen name="item_content_margin">2dp</dimen>
-    <dimen name="item_content_row_height">48dp</dimen>
+    <dimen name="item_content_row_height">40dp</dimen>
     <dimen name="item_button_number_margin">12dp</dimen>
 
     <!-- Upload -->
@@ -42,6 +42,7 @@
     <dimen name="it_user_page_tab_height">48dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
     <dimen name="it_user_page_content_margin">6dp</dimen>
+    <dimen name="it_user_profile_settings_btn_height">24dp</dimen>
 
     <!-- Profile Image -->
     <dimen name="profile_image_width">212dp</dimen>

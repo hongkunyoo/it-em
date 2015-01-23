@@ -107,6 +107,8 @@
                     android:id="@+id/row_home_item_list_it_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/home_item_content_margin"
+                    android:layout_marginEnd="@dimen/home_item_content_margin"
                     android:drawableLeft="@drawable/feed_it_ic"
                     android:drawableStart="@drawable/feed_it_ic"
                     android:gravity="center_vertical"

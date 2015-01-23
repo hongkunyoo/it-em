@@ -70,7 +70,7 @@ public class ItTextView extends TextView {
 	}
 
 	private void setButton(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_small));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
 		setText(getText().toString().toUpperCase(Locale.US));
 	}
 
