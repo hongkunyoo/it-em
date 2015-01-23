@@ -133,7 +133,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				mActivity.startActivity(intent);
 			}
 		});
-
+		
 		holder.nickName.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -173,13 +173,17 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			}
 		});
 
+		holder.content.setOnClickListener(new OnClickListener() {
 
-		if(item.getPrevLikeId() == null){
-			holder.itButton.setActivated(false);
-		} else {
-			holder.itButton.setActivated(true);
-		}
-
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, ItemActivity.class);
+				intent.putExtra(Item.INTENT_KEY, item);
+				mActivity.startActivity(intent);
+			}
+		});
+		
+		holder.itButton.setActivated(item.getPrevLikeId() != null);
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -238,7 +242,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
-		.fit().centerCrop()
+		.placeholder(R.drawable.feed_loading_default_img)
 		.into(holder.itemImage);
 
 		mApp.getPicasso()

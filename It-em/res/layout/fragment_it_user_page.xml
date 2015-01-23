@@ -39,7 +39,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:paddingTop="@dimen/it_user_page_profile_content_margin" >
+                    android:paddingTop="@dimen/it_user_page_content_margin" >
 
                     <com.pinthecloud.item.view.CircleImageView
                         android:id="@+id/it_user_page_frag_profile_image"
@@ -61,7 +61,8 @@
                         android:id="@+id/it_user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/it_user_page_profile_nick_name_margin"
+                        android:layout_marginTop="@dimen/it_user_page_content_margin"
+                        android:gravity="center"
                         android:textColor="@color/light_gray"
                         app:textType="caption" />
 
@@ -69,20 +70,27 @@
                         android:id="@+id/it_user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/it_user_page_profile_content_margin"
+                        android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:textColor="@color/light_gray"
                         app:textType="caption" />
                 </LinearLayout>
 
-                <ImageButton
+                <Button
                     android:id="@+id/it_user_page_frag_profile_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/profile_settings"
-                    android:src="@drawable/mypage_edit_ic" />
+                    android:background="@drawable/mypage_edit_btn"
+                    android:drawableEnd="@drawable/mypage_edit_ic"
+                    android:drawableRight="@drawable/mypage_edit_ic"
+                    android:paddingEnd="@dimen/none"
+                    android:paddingLeft="@dimen/it_user_page_content_margin"
+                    android:paddingRight="@dimen/none"
+                    android:paddingStart="@dimen/it_user_page_content_margin"
+                    android:text="@string/profile_settings"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/font_micro" />
             </RelativeLayout>
 
             <include layout="@layout/custom_line" />

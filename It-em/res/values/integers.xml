@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="home_grid_column_num">2</integer>
+    <!-- Home -->
+    <integer name="home_item_grid_column_num">2</integer>
+    <integer name="home_item_content_max_line">3</integer>
+
+    <!-- My Item -->
     <integer name="my_item_grid_column_num">3</integer>
-    <integer name="nick_name_max_length">10</integer>
+
+    <!-- Item -->
     <integer name="item_display_reply_num">2</integer>
+
+    <!-- Profile Settings -->
+    <integer name="profile_settings_nick_name_max_length">10</integer>
+    <integer name="profile_settings_description_max_length">40</integer>
+    <integer name="profile_settings_website_max_length">100</integer>
 
 </resources>

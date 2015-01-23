@@ -34,8 +34,7 @@
                 android:id="@+id/item_frag_item_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:background="@android:color/white" />
+                android:adjustViewBounds="true" />
 
             <include layout="@layout/custom_line" />
 

@@ -271,6 +271,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setButton(){
+		mItButton.setActivated(mItem.getPrevLikeId() != null);
 		mItButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -406,9 +407,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 					// Check reply count
 					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
-					if(count < displayReplyNum){
-						mItem.setReplyCount(count);
-					}
+					mItem.setReplyCount(count);
 
 					// Set see previous row
 					if(mItem.getReplyCount() > displayReplyNum){
@@ -447,6 +446,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		if(mItem.getImageHeight() > maxSize){
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+			.placeholder(R.drawable.feed_loading_default_img)
 			.resize((int)(mItem.getImageWidth()*((float)maxSize/mItem.getImageHeight())), maxSize)
 			.into(mItemImage);
 		} else {

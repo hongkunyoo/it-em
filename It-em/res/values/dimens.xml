@@ -22,6 +22,7 @@
     <dimen name="home_item_profile_height">48dp</dimen>
     <dimen name="home_item_margin">10dp</dimen>
     <dimen name="home_item_spacing">2dp</dimen>
+    <dimen name="home_item_content_margin">4dp</dimen>
 
     <!-- Be Pro -->
     <dimen name="be_pro_content_margin">12dp</dimen>
@@ -36,12 +37,10 @@
 
     <!-- It User Page -->
     <dimen name="it_user_page_profile_height">200dp</dimen>
-    <dimen name="it_user_page_profile_nick_name_margin">12dp</dimen>
-    <dimen name="it_user_page_profile_content_margin">10dp</dimen>
     <dimen name="it_user_page_header_height">248dp</dimen>
     <dimen name="it_user_page_tab_height">48dp</dimen>
-    <dimen name="it_user_page_tab_number_margin">6dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
+    <dimen name="it_user_page_content_margin">6dp</dimen>
 
     <!-- Profile Image -->
     <dimen name="profile_image_width">212dp</dimen>

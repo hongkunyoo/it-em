@@ -53,10 +53,12 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activity.UploadActivity"
+            android:label="@string/upload"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ProfileSettingsActivity"
+            android:label="@string/profile_settings"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.HongkunTestActivity" />

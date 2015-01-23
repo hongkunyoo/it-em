@@ -158,7 +158,7 @@ public class HomeFragment extends ItFragment {
 	private void setList(){
 		mGridView.setHasFixedSize(true);
 
-		int gridColumnNum = getResources().getInteger(R.integer.home_grid_column_num);
+		int gridColumnNum = getResources().getInteger(R.integer.home_item_grid_column_num);
 		mGridLayoutManager = new StaggeredGridLayoutManager(gridColumnNum, StaggeredGridLayoutManager.VERTICAL);
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());

@@ -21,6 +21,7 @@ import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 
@@ -189,12 +190,17 @@ public class AimHelper {
 				public void onCompleted(JsonElement _json, Exception exception,
 						ServiceFilterResponse response) {
 					if(exception == null){
-						JsonArray arr = _json.getAsJsonArray();
+						JsonObject json = _json.getAsJsonObject();
+
+						String count = json.get("count").getAsString();
+						JsonArray jsonList = json.get("list").getAsJsonArray();
+						
 						List<E> list = new ArrayList<E>();
-						for (int i = 0 ; i < arr.size() ; i++) {
-							list.add((E)new Gson().fromJson(arr.get(i), obj.getClass()));
+						for (int i = 0 ; i < jsonList.size() ; i++) {
+							list.add((E)new Gson().fromJson(jsonList.get(i), obj.getClass()));
 						}
-						callback.onCompleted(list, list.size());
+
+						callback.onCompleted(list, Integer.parseInt(count));
 					} else {
 						EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.SERVER_ERROR, response));
 					}
