@@ -7,7 +7,7 @@
     <dimen name="key_line_second">52dp</dimen>
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
-    <dimen name="profile_preview_image_width">56dp</dimen>
+    <dimen name="profile_preview_image_width">40dp</dimen>
 
     <!-- Main Drawer -->
     <dimen name="main_drawer_width">280dp</dimen>
@@ -53,7 +53,7 @@
 
     <!-- Reply -->
     <dimen name="reply_row_previous_height">36dp</dimen>
-    <dimen name="reply_margin">6dp</dimen>
+    <dimen name="reply_margin">8dp</dimen>
     <dimen name="reply_title_margin">12dp</dimen>
     <dimen name="reply_inputbar_margin_none">0dp</dimen>
     <dimen name="reply_inputbar_top_bottom_margin">8dp</dimen>

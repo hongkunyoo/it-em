@@ -28,8 +28,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/reply_margin" >
+            android:layout_height="wrap_content" >
 
             <com.pinthecloud.item.view.ItTextView
                 android:id="@+id/row_reply_list_nick_name"
