@@ -27,7 +27,7 @@
         android:paddingRight="@dimen/key_line_first"
         android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
-        android:textColorHint="@color/reply_inputbar_hint"
+        android:textColorHint="@color/gray"
         android:textSize="@dimen/font_small" >
 
         <requestFocus />

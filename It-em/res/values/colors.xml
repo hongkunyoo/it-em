@@ -13,19 +13,18 @@
 
     <!-- Home -->
     <color name="home_item_image_default">#cfd8dc</color>
-    
+
     <!-- Main Drawer -->
     <color name="main_drawer_menu_profile_nick_name">#deffffff</color>
     <color name="main_drawer_menu_name_disabled">#87ffffff</color>
 
     <!-- Reply -->
     <color name="reply_submit_disable">#42ffab00</color>
-    <color name="reply_inputbar_hint">#20263238</color>
     <color name="reply_row_press">#ECEFF1</color>
 
     <!-- Settings -->
     <color name="settings_logout_text">#deffffff</color>
-    
+
     <!-- Be Pro -->
     <color name="be_pro_text">#deffffff</color>
     <color name="be_pro_code_hint">#87ffffff</color>

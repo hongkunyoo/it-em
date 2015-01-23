@@ -229,6 +229,7 @@
                         android:layout_marginLeft="@dimen/key_line_first"
                         android:layout_marginStart="@dimen/key_line_first"
                         android:textColor="@color/brand_text_color"
+                        android:textStyle="bold"
                         app:textType="subhead" />
                 </LinearLayout>
             </LinearLayout>
