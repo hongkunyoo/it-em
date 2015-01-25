@@ -48,7 +48,11 @@
             android:id="@+id/my_item_frag_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/my_item_spacing"
+            android:paddingBottom="@dimen/my_item_spacing"
+            android:paddingEnd="@dimen/my_item_spacing"
+            android:paddingLeft="@dimen/my_item_spacing"
+            android:paddingRight="@dimen/my_item_spacing"
+            android:paddingStart="@dimen/my_item_spacing"
             android:scrollbars="none" />
     </RelativeLayout>
 

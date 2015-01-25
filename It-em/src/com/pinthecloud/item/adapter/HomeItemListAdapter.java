@@ -72,16 +72,16 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			super(view);
 			this.view = view;
 
-			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_list_profile_image);
-			this.nickName = (TextView)view.findViewById(R.id.row_home_item_list_nick_name);
-			this.more = (ImageButton)view.findViewById(R.id.row_home_item_list_more);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_grid_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_home_item_grid_nick_name);
+			this.more = (ImageButton)view.findViewById(R.id.row_home_item_grid_more);
 
-			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_list_item_image);
-			this.unfold = (ImageView)view.findViewById(R.id.row_home_item_list_unfold);
-			this.content = (TextView)view.findViewById(R.id.row_home_item_list_content);
-			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_list_it_number);
-			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_list_reply_number);
-			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_list_it_button);
+			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_grid_item_image);
+			this.unfold = (ImageView)view.findViewById(R.id.row_home_item_grid_unfold);
+			this.content = (TextView)view.findViewById(R.id.row_home_item_grid_content);
+			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_grid_it_number);
+			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_grid_reply_number);
+			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_grid_it_button);
 		}
 	}
 
