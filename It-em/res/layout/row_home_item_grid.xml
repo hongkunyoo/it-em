@@ -36,6 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/home_item_margin"
                 android:layout_marginStart="@dimen/home_item_margin"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/brand_text_color"
                 android:textStyle="bold"
                 app:textType="body" />

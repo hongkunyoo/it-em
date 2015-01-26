@@ -51,7 +51,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/key_line_first"
                 android:layout_marginRight="@dimen/key_line_first"
-                android:textColor="@color/light_gray"
+                android:textColor="@color/gray_light"
                 app:textType="caption" />
         </RelativeLayout>
 

@@ -26,7 +26,7 @@
         android:drawableStart="@drawable/profile_settings_nick_name"
         android:ems="10"
         android:hint="@string/nick_name"
-        android:maxLength="@integer/profile_settings_nick_name_max_length"
+        android:maxLength="@integer/nick_name_max_length"
         android:paddingEnd="@dimen/key_line_first"
         android:paddingLeft="@dimen/key_line_first"
         android:paddingRight="@dimen/key_line_first"
