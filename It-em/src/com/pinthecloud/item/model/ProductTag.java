@@ -17,7 +17,7 @@ public class ProductTag extends AbstractItemModel<ProductTag> {
 		Bag("Bag"),
 		Accessory("Accessory"),
 		Cap("Cap"),
-		items("items");
+		Items("Items");
 		
 		private String value;
 		private Category(String value) {
@@ -35,6 +35,9 @@ public class ProductTag extends AbstractItemModel<ProductTag> {
 	
 	public String getCategory() {
 		return category;
+	}
+	public Category getCategoryType() {
+		return Category.valueOf(category);
 	}
 	public void setCategory(Category category) {
 		this.category = category.toString();
