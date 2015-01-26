@@ -41,7 +41,7 @@
     <string name="submit">SUBMIT</string>
     <string name="message">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
-    <string name="first_reply">No comments. Write a first comment.</string>
+    <string name="first_reply">How about writing a first comment?</string>
 
     <!-- It User Page -->
     <string name="no_user">This user doesn\'t exist.</string>

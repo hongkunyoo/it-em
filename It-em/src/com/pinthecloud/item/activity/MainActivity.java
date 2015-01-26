@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -11,6 +12,7 @@ import com.pinthecloud.item.fragment.MainDrawerFragment;
 
 public class MainActivity extends ItActivity implements MainDrawerFragment.DrawerCallbacks {
 
+	private View mToolbarLayout;
 	private Toolbar mToolbar;
 	private DrawerLayout mDrawerLayout;
 	private MainDrawerFragment mDrawerFragment;
@@ -42,18 +44,25 @@ public class MainActivity extends ItActivity implements MainDrawerFragment.Drawe
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.main_container, fragment);
 		transaction.commit();
+		
+		if(mToolbarLayout != null){
+			mToolbarLayout.scrollTo(0, 0);	
+		}
 	}
 
 
 	@Override
-	public Toolbar getToolbar() {
-		return mToolbar;
+	public View getToolbarLayout() {
+		return mToolbarLayout;
 	}
 	
 	
 	private void setToolbar(){
+		mToolbarLayout = findViewById(R.id.toolbar_layout);
 		mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
+		
+		mToolbarLayout.bringToFront();
 	}
 
 

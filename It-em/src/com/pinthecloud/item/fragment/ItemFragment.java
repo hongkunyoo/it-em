@@ -7,10 +7,8 @@ import java.util.Map;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -55,8 +53,6 @@ import com.pinthecloud.item.view.ItTextView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
-	private View mToolbarLayout;
-	private Toolbar mToolbar;
 	private ScrollView mScrollLayout;
 	private int mBaseScrollY;
 
@@ -117,7 +113,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		setHasOptionsMenu(true);
 		findComponent(view);
-		setToolbar();
 		setComponent();
 		setButton();
 		setImageView();
@@ -192,8 +187,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
-		mToolbarLayout = view.findViewById(R.id.item_frag_toolbar_layout);
-		mToolbar = (Toolbar)view.findViewById(R.id.toolbar);
 		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 
 		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_item_image);
@@ -219,19 +212,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mNickName = (TextView)view.findViewById(R.id.item_frag_nick_name);
 	}
 
-
-	private void setToolbar(){
-		mActivity.setSupportActionBar(mToolbar);
-
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 
-				+ " " + getResources().getString(R.string.app_name));
-
-		mToolbarLayout.bringToFront();
-	}
-
-
+	
 	private void setComponent(){
 		setItNumber(mItem.getLikeItCount());
 
@@ -320,8 +301,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setScroll(){
+		final View toolbarLayout = mActivity.getToolbarLayout();
 		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
-		mScrollLayout.scrollTo(0, actionBarHeight);
 		mScrollLayout.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
 
 			@Override
@@ -331,15 +312,17 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					int diffY = currentScrollY-mBaseScrollY;
 					if(diffY < 0){
 						// Scroll Up, Toolbar Down
-						mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
+						toolbarLayout.scrollTo(0, Math.max(toolbarLayout.getScrollY()+diffY, 0));
 					} else if(diffY > 0) {
 						// Scroll Down, Toolbar Up
-						mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
+						toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+diffY, actionBarHeight));
 					}
 					mBaseScrollY = currentScrollY;
 				}
 			}
 		});
+		
+		mScrollLayout.scrollTo(0, actionBarHeight);
 	}
 
 
@@ -396,6 +379,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				if(isAdded()){
 					if(count < 1){
 						mProductTagLayout.setVisibility(View.GONE);
+					} else {
+						mProductTagLayout.setVisibility(View.VISIBLE);
 					}
 
 					final Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();

@@ -3,6 +3,7 @@ package com.pinthecloud.item.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -11,6 +12,7 @@ import com.pinthecloud.item.model.ItUser;
 
 public class ItUserPageActivity extends ItActivity {
 
+	private View mToolbarLayout;
 	private Toolbar mToolbar;
 
 
@@ -24,14 +26,17 @@ public class ItUserPageActivity extends ItActivity {
 
 
 	@Override
-	public Toolbar getToolbar() {
-		return mToolbar;
+	public View getToolbarLayout() {
+		return mToolbarLayout;
 	}
 
 
 	private void setToolbar(){
+		mToolbarLayout = findViewById(R.id.toolbar_layout);
 		mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
+		
+		mToolbarLayout.bringToFront();
 	}
 
 

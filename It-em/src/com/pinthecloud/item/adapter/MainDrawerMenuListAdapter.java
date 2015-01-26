@@ -22,7 +22,7 @@ import com.pinthecloud.item.util.ImageUtil;
 
 public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private enum VIEW_TYPE{
+	private enum TYPE{
 		PROFILE,
 		NORMAL
 	}
@@ -39,7 +39,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	private static class ProfileViewHolder extends RecyclerView.ViewHolder {
+	public static class ProfileViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public ImageView profileImage;
 		public ImageView pro;
@@ -55,7 +55,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 
-	private static class NormalViewHolder extends RecyclerView.ViewHolder {
+	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public ImageView menuImage;
 		public TextView menuName;
@@ -75,10 +75,10 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 		ViewHolder viewHolder = null;
 		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
+		if(viewType == TYPE.PROFILE.ordinal()){
 			view = inflater.inflate(R.layout.row_main_drawer_menu_list_profile, parent, false);
 			viewHolder = new ProfileViewHolder(view);
-		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
+		} else if(viewType == TYPE.NORMAL.ordinal()){
 			view = inflater.inflate(R.layout.row_main_drawer_menu_list, parent, false);
 			viewHolder = new NormalViewHolder(view);
 		}
@@ -91,10 +91,10 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	public void onBindViewHolder(ViewHolder holder, final int position) {
 		MainDrawerMenu menu = mMenuList.get(position);
 		int viewType = getItemViewType(position);
-		if(viewType == VIEW_TYPE.PROFILE.ordinal()){
+		if(viewType == TYPE.PROFILE.ordinal()){
 			ProfileViewHolder profileViewHolder = (ProfileViewHolder)holder;
 			setProfileViewHolder(profileViewHolder, menu);
-		} else if (viewType == VIEW_TYPE.NORMAL.ordinal()){
+		} else if (viewType == TYPE.NORMAL.ordinal()){
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
 			setNormalViewHolder(normalViewHolder, menu);
 		}
@@ -110,9 +110,9 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 	@Override
 	public int getItemViewType(int position) {
 		if(position == 0){
-			return VIEW_TYPE.PROFILE.ordinal();
+			return TYPE.PROFILE.ordinal();
 		} else {
-			return VIEW_TYPE.NORMAL.ordinal();
+			return TYPE.NORMAL.ordinal();
 		}
 	}
 

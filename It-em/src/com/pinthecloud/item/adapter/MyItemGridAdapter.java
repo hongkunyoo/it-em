@@ -22,8 +22,8 @@ import com.pinthecloud.item.util.ImageUtil;
 public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private enum VIEW_TYPE{
-		NORMAL,
-		HEADER
+		HEADER,
+		NORMAL
 	}
 
 	private ItApplication mApp;
@@ -40,7 +40,14 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	}
 
 
-	private static class NormalViewHolder extends RecyclerView.ViewHolder {
+	public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+		public HeaderViewHolder(View view) {
+			super(view);
+		}
+	}
+	
+	
+	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public ImageView itemImage;
 
@@ -52,26 +59,19 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	}
 
 
-	private static class HeaderViewHolder extends RecyclerView.ViewHolder {
-		public HeaderViewHolder(View view) {
-			super(view);
-		}
-	}
-
-
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = null;
 		ViewHolder viewHolder = null;
 		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
-			view = inflater.inflate(R.layout.row_my_item_grid, parent, false);
-			viewHolder = new NormalViewHolder(view);
-		} else if(viewType == VIEW_TYPE.HEADER.ordinal()){
+		if(viewType == VIEW_TYPE.HEADER.ordinal()){
 			view = inflater.inflate(R.layout.row_my_item_grid_header, parent, false);
 			viewHolder = new HeaderViewHolder(view);
-		}
+		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
+			view = inflater.inflate(R.layout.row_my_item_grid, parent, false);
+			viewHolder = new NormalViewHolder(view);
+		} 
 
 		return viewHolder;
 	}
