@@ -34,7 +34,6 @@ import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class ItUserPageFragment extends ItFragment {
@@ -48,6 +47,7 @@ public class ItUserPageFragment extends ItFragment {
 
 	private LinearLayout mHeader;
 	private ImageView mProfileImage;
+	private ImageView mPro;
 	private TextView mNickName;
 	private TextView mDescription;
 	private TextView mWebsite;
@@ -163,6 +163,7 @@ public class ItUserPageFragment extends ItFragment {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
 		mProfileImage = (ImageView)view.findViewById(R.id.it_user_page_frag_profile_image);
+		mPro = (ImageView)view.findViewById(R.id.it_user_page_frag_pro);
 		mNickName = (TextView)view.findViewById(R.id.it_user_page_frag_nick_name);
 		mDescription = (TextView)view.findViewById(R.id.it_user_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.it_user_page_frag_website);
@@ -218,6 +219,12 @@ public class ItUserPageFragment extends ItFragment {
 		mNickName.setText(mItUser.getNickName());
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());
+		
+		if(mItUser.isPro()){
+			mPro.setVisibility(View.VISIBLE);
+		} else {
+			mPro.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -248,8 +255,8 @@ public class ItUserPageFragment extends ItFragment {
 
 	private void setProfileImage(){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.placeholder(R.drawable.profile_s_default_img)
+		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
+		.placeholder(R.drawable.profile_l_default_img)
 		.fit()
 		.into(mProfileImage);
 	}
@@ -341,7 +348,7 @@ public class ItUserPageFragment extends ItFragment {
 		if (findFirstVisibleItemPosition >= spanCount) {
 			headerHeight = mHeader.getHeight();
 		}
-		
+
 		return -c.getTop() + (findFirstVisibleItemPosition/spanCount)*c.getHeight() + headerHeight;
 	}
 }

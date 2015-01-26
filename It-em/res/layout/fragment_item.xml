@@ -144,24 +144,31 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/item_frag_product_tag_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/item_content_row_height"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="@dimen/key_line_first"
-                        android:paddingLeft="@dimen/key_line_first"
-                        android:paddingRight="@dimen/key_line_first"
-                        android:paddingStart="@dimen/key_line_first" >
+                        android:layout_height="@dimen/item_content_row_height" >
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/item_content_margin"
-                            android:layout_marginRight="@dimen/item_content_margin"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/key_line_first"
+                            android:layout_marginStart="@dimen/key_line_first"
                             android:contentDescription="@string/product_tag"
                             android:src="@drawable/detail_tag_ic" />
-                    </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/item_frag_product_tag_text_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingEnd="@dimen/key_line_first"
+                            android:paddingLeft="@dimen/key_line_second"
+                            android:paddingRight="@dimen/key_line_first"
+                            android:paddingStart="@dimen/key_line_second" />
+                    </RelativeLayout>
 
                     <include layout="@layout/custom_line" />
 

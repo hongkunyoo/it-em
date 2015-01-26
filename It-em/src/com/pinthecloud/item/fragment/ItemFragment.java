@@ -1,7 +1,9 @@
 package com.pinthecloud.item.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -48,6 +51,7 @@ import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.pinthecloud.item.view.ExpandableHeightRecyclerView;
+import com.pinthecloud.item.view.ItTextView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
@@ -58,14 +62,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private DynamicHeightImageView mItemImage;
 	private ProgressBar mProgressBar;
-	private LinearLayout mItemLayout;
+	private View mItemLayout;
 	private TextView mContent;
 	private TextView mDate;
 	private ImageButton mItButton;
-	private LinearLayout mItNumberLayout;
+	private View mItNumberLayout;
 	private TextView mItNumber;
 
-	private LinearLayout mProductTagLayout;
+	private View mProductTagLayout;
+	private LinearLayout mProductTagTextLayout;
 
 	private TextView mReplyTitle;
 	private TextView mReplyListEmptyView;
@@ -77,7 +82,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private EditText mReplyInputText;
 	private Button mReplyInputSubmit;
 
-	private LinearLayout mProfileLayout;
+	private View mProfileLayout;
 	private CircleImageView mProfileImage;
 	private TextView mNickName;
 
@@ -193,21 +198,23 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_item_image);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mItemLayout = (LinearLayout)view.findViewById(R.id.item_frag_item_layout);
+		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
 		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
-		mItNumberLayout = (LinearLayout)view.findViewById(R.id.item_frag_it_number_layout);
+		mItNumberLayout = view.findViewById(R.id.item_frag_it_number_layout);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 
-		mProductTagLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_layout);
+		mProductTagLayout = view.findViewById(R.id.item_frag_product_tag_layout);
+		mProductTagTextLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_text_layout);
+
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
 		mReplyListView = (ExpandableHeightRecyclerView)view.findViewById(R.id.reply_frag_list);
 		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
-		mProfileLayout = (LinearLayout)view.findViewById(R.id.item_frag_profile_layout);
+		mProfileLayout = view.findViewById(R.id.item_frag_profile_layout);
 		mProfileImage = (CircleImageView)view.findViewById(R.id.item_frag_profile_image);
 		mNickName = (TextView)view.findViewById(R.id.item_frag_nick_name);
 	}
@@ -338,7 +345,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setReplyList(){
 		mReplyListView.setHasFixedSize(true);
-		mReplyListView.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
 
 		mReplyListLayoutManager = new LinearLayoutManager(mActivity);
 		mReplyListView.setLayoutManager(mReplyListLayoutManager);
@@ -382,17 +388,51 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void updateProductTag(ItFragment frag) {
-		mProductTagLayout.setOnClickListener(new OnClickListener() {
+	private void updateProductTag(final ItFragment frag) {
+		mAimHelper.list(ProductTag.class, mItem.getId(), new ListCallback<ProductTag>() {
 
 			@Override
-			public void onClick(View v) {
-				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem);
-				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			public void onCompleted(List<ProductTag> list, int count) {
+				if(isAdded()){
+					if(count < 1){
+						mProductTagLayout.setVisibility(View.GONE);
+					}
+
+					final Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();
+					for(final ProductTag tag : list){
+						// Add tag list by category
+						if(tagList.containsKey(""+tag.getCategory())){
+							tagList.get(""+tag.getCategory()).add(tag);
+							continue;
+						} else {
+							tagList.put(""+tag.getCategory(), new ArrayList<ProductTag>());
+							tagList.get(""+tag.getCategory()).add(tag);
+						}
+
+						// Add category text view
+						ItTextView categoryText = new ItTextView(mActivity);
+						categoryText.setTextType(ItTextView.TYPE.BODY);
+						categoryText.setText(tag.categoryString(getResources()) + " ");
+						categoryText.setTextColor(getResources().getColor(R.color.gray_light));
+
+						categoryText.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								ItDialogFragment productTagDialog = ProductTagDialog.newInstance(tagList.get(""+tag.getCategory()));
+								productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+							}
+						});
+
+						mProductTagTextLayout.addView(categoryText);
+					}
+
+					AsyncChainer.notifyNext(frag);
+				} else {
+					AsyncChainer.clearChain(frag);
+				}
 			}
 		});
-
-		AsyncChainer.notifyNext(frag);
 	}
 
 
@@ -416,6 +456,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					}
 
 					// Set reply list expand setting for expand when on draw
+					mReplyListView.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
 					mReplyListView.setOnDrawExpandRowCount(Math.min(mItem.getReplyCount(), displayReplyNum+1));
 
 					// Set reply list fragment

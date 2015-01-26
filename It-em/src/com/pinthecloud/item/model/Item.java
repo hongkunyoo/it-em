@@ -1,7 +1,5 @@
 package com.pinthecloud.item.model;
 
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,9 +9,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 
 	public static String INTENT_KEY = "ITEM_INTENT_KEY";
 
-	private List<Reply> replyList;
 	private int replyCount;
-	private List<LikeIt> likeItList;
 	private int likeItCount;
 	private int imageWidth;
 	private int imageHeight;
@@ -22,7 +18,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public Item() {
 		super();
 	}
-	
+
 	public Item(String content, String whoMade, String whoMadeId, int imageWidth, int imageHeight) {
 		super();
 		this.setContent(content);
@@ -49,18 +45,6 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setLikeItCount(int likeCount) {
 		this.likeItCount = likeCount;
 	}
-	public List<Reply> getReplyList() {
-		return replyList;
-	}
-	public void setReplyList(List<Reply> replyList) {
-		this.replyList = replyList;
-	}
-	public List<LikeIt> getLikeItList() {
-		return likeItList;
-	}
-	public void setLikeItList(List<LikeIt> likeList) {
-		this.likeItList = likeList;
-	}
 	public int getImageWidth() {
 		return imageWidth;
 	}
@@ -86,9 +70,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setWhoMadeId(item.getWhoMadeId());
 		this.setRawCreateDateTime(item.getRawCreateDateTime());
 		this.setRefId(item.getRefId());
-		this.setReplyList(item.getReplyList());
 		this.setReplyCount(item.getReplyCount());
-		this.setLikeItList(item.getLikeItList());
 		this.setLikeItCount(item.getLikeItCount());
 		this.setImageWidth(item.getImageWidth());
 		this.setImageHeight(item.getImageHeight());
@@ -108,8 +90,8 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		Item item = super.rand(hasId);
 		return item;
 	}
-	
-	
+
+
 	/*
 	 * Parcelable
 	 */

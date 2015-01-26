@@ -38,7 +38,7 @@
 
     <!-- It User Page -->
     <dimen name="it_user_page_profile_height">200dp</dimen>
-    <dimen name="it_user_page_header_height">248dp</dimen>
+    <dimen name="it_user_page_header_height">249dp</dimen>
     <dimen name="it_user_page_tab_height">48dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
     <dimen name="it_user_page_content_margin">6dp</dimen>
@@ -57,7 +57,6 @@
     <dimen name="reply_margin">8dp</dimen>
     
     <!-- Product Tag -->
-    <dimen name="product_tag_margin">12dp</dimen>
     <dimen name="product_tag_row_height">48dp</dimen>
 
     <!-- Profile Settings -->
