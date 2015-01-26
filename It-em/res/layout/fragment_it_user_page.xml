@@ -93,7 +93,7 @@
                     android:textColor="@color/gray"
                     android:textSize="@dimen/font_micro" />
             </RelativeLayout>
-
+            
             <include layout="@layout/custom_line" />
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip
