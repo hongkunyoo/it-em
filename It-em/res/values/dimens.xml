@@ -25,9 +25,10 @@
     <dimen name="home_item_content_margin">2dp</dimen>
 
     <!-- Be Pro -->
+    <dimen name="be_pro_content_bottom_margin">30dp</dimen>
     <dimen name="be_pro_content_margin">12dp</dimen>
     <dimen name="be_pro_code_margin">8dp</dimen>
-    <dimen name="be_pro_submit_button_height">24dp</dimen>
+    <dimen name="be_pro_mail_height">24dp</dimen>
     
     <!-- Item -->
     <dimen name="item_content_margin">2dp</dimen>

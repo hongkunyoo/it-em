@@ -15,16 +15,21 @@
         android:src="@drawable/bepro_badge_img" />
 
     <com.pinthecloud.item.view.ItTextView
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/be_pro_content_margin"
+        android:layout_marginEnd="@dimen/key_line_second"
+        android:layout_marginLeft="@dimen/key_line_second"
+        android:layout_marginStart="@dimen/key_line_second"
+        android:layout_marginRight="@dimen/key_line_second"        
         android:text="@string/be_pro"
         android:textColor="@color/be_pro_text"
         app:textType="subhead" />
 
     <com.pinthecloud.item.view.ItTextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/be_pro_mail_height"
         android:layout_marginBottom="@dimen/be_pro_code_margin"
         android:background="@drawable/bepro_mail_bg"
         android:text="@string/support_email"
@@ -36,10 +41,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/be_pro_code_margin"
-        android:layout_marginEnd="@dimen/key_line_first"
-        android:layout_marginLeft="@dimen/key_line_first"
-        android:layout_marginStart="@dimen/key_line_first"
-        android:layout_marginRight="@dimen/key_line_first"
+        android:layout_marginEnd="@dimen/key_line_second"
+        android:layout_marginLeft="@dimen/key_line_second"
+        android:layout_marginStart="@dimen/key_line_second"
+        android:layout_marginRight="@dimen/key_line_second"
         android:background="@drawable/edit_text_line"
         android:ems="10"
         android:gravity="center"
@@ -55,11 +60,13 @@
     <Button
         android:id="@+id/be_pro_frag_submit"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/be_pro_submit_button_height"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/be_pro_content_bottom_margin"
         android:background="@drawable/be_pro_submit_button"
         android:enabled="false"
         android:text="@string/submit"
         android:textColor="@color/brand_text_color"
+        android:textStyle="bold"
         android:textSize="@dimen/font_small" />
 
 </LinearLayout>
