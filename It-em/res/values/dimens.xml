@@ -27,6 +27,7 @@
     <!-- Be Pro -->
     <dimen name="be_pro_content_margin">12dp</dimen>
     <dimen name="be_pro_code_margin">8dp</dimen>
+    <dimen name="be_pro_submit_button_height">24dp</dimen>
     
     <!-- Item -->
     <dimen name="item_content_margin">2dp</dimen>
@@ -37,12 +38,12 @@
     <dimen name="upload_image_width">72dp</dimen>
 
     <!-- It User Page -->
-    <dimen name="it_user_page_profile_height">200dp</dimen>
-    <dimen name="it_user_page_header_height">248dp</dimen>
+    <dimen name="it_user_page_profile_height">160dp</dimen>
+    <dimen name="it_user_page_header_height">208dp</dimen>
     <dimen name="it_user_page_tab_height">48dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
     <dimen name="it_user_page_content_margin">6dp</dimen>
-    <dimen name="it_user_profile_settings_btn_height">24dp</dimen>
+    <dimen name="it_user_page_profile_settings_button_height">24dp</dimen>
 
     <!-- Profile Image -->
     <dimen name="profile_image_width">212dp</dimen>
