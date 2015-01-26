@@ -106,7 +106,7 @@ public class HomeFragment extends ItFragment {
 
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle(getResources().getString(R.string.home));
+		actionBar.setTitle("");
 	}
 
 
