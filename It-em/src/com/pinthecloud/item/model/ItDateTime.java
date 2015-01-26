@@ -10,6 +10,10 @@ import com.pinthecloud.item.R;
 // 20141113014345 --> 2014-11-13 01:43:45
 public class ItDateTime {
 
+	private final int DAY_SECOND = 86400;
+	private final int HOUR_SECOND = 3600;
+	private final int MINUTE_SECOND = 60;
+
 	private Time dateTime;
 
 	public ItDateTime(String rawDateTime) {
@@ -61,31 +65,45 @@ public class ItDateTime {
 		return nowJulianDay - itJulianDay;
 	}
 
+	public String getElapsedTime(Resources resources, int elapsedSecond){
+		if(elapsedSecond/HOUR_SECOND > 0){
+			return (elapsedSecond/HOUR_SECOND) + resources.getString(R.string.hour_ago);
+		} else if(elapsedSecond/MINUTE_SECOND > 0) {
+			return (elapsedSecond/MINUTE_SECOND) + resources.getString(R.string.minute_ago);
+		} else {
+			if(elapsedSecond < 0) elapsedSecond = 0;
+			return elapsedSecond + resources.getString(R.string.second_ago);
+		}
+	}
+	
 	public String getElapsedDateTime(Resources resources) {
 		Time nowTime = new Time();
 		nowTime.setToNow();
 
-		if(dateTime.year == nowTime.year && dateTime.month == nowTime.month && dateTime.monthDay == nowTime.monthDay){
-			if(dateTime.hour == nowTime.hour){
-				if(dateTime.minute == nowTime.minute){
-					int elapsedSecond = nowTime.second-dateTime.second;
-					if(elapsedSecond < 0)	elapsedSecond = 0;
-					return elapsedSecond + resources.getString(R.string.second_ago);
-				} else {
-					return (nowTime.minute-dateTime.minute) + resources.getString(R.string.minute_ago);
-				}
+		int elapsedDate = getElapsedDate();
+		if(elapsedDate < 1){
+			// In a day
+			int nowTimeSecond = nowTime.second + nowTime.minute*MINUTE_SECOND + nowTime.hour*HOUR_SECOND;
+			int dateTimeSecond = dateTime.second + dateTime.minute*MINUTE_SECOND + dateTime.hour*HOUR_SECOND;
+			return getElapsedTime(resources, nowTimeSecond - dateTimeSecond);
+		} else if(elapsedDate == 1) {
+			int nowTimeSecond = nowTime.second + nowTime.minute*MINUTE_SECOND + nowTime.hour*HOUR_SECOND + DAY_SECOND;
+			int dateTimeSecond = dateTime.second + dateTime.minute*MINUTE_SECOND + dateTime.hour*HOUR_SECOND;
+			int elapsedSeoncd = nowTimeSecond - dateTimeSecond;
+			
+			if(elapsedSeoncd < DAY_SECOND){
+				// In a day
+				return getElapsedTime(resources, elapsedSeoncd);
 			} else {
-				return (nowTime.hour-dateTime.hour) + resources.getString(R.string.hour_ago);
-			}
-		} else {
-			int elapsedDate = getElapsedDate();
-			if(elapsedDate == 1){
+				// 1 day
 				return resources.getString(R.string.yesterday) + " " + toPrettyTime();
-			} else if(elapsedDate < 4) {
-				return elapsedDate + resources.getString(R.string.day_ago) + " " + toPrettyTime();
-			} else {
-				return toPrettyDateTime();
 			}
+		} else if(elapsedDate < 3) {
+			// 2 day
+			return elapsedDate + resources.getString(R.string.day_ago) + " " + toPrettyTime();
+		} else {
+			// More than 3 day
+			return toPrettyDateTime();
 		}
 	}
 

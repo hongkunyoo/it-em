@@ -63,21 +63,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/upload_date"
-                        android:textColor="@color/light_gray"
+                        android:textColor="@color/gray_light"
                         app:textType="caption" />
 
                     <com.pinthecloud.item.view.ItTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/space"
-                        android:textColor="@color/light_gray"
+                        android:textColor="@color/gray_light"
                         app:textType="caption" />
 
                     <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/item_frag_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/light_gray"
+                        android:textColor="@color/gray_light"
                         app:textType="caption" />
                 </LinearLayout>
 
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/it_lower"
-                        android:src="@drawable/home_item_list_it_button" />
+                        android:src="@drawable/home_item_grid_it_button" />
 
                     <LinearLayout
                         android:id="@+id/item_frag_it_number_layout"
@@ -107,14 +107,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/plus"
-                            android:textColor="@color/light_gray"
+                            android:textColor="@color/gray_light"
                             app:textType="caption" />
 
                         <com.pinthecloud.item.view.ItTextView
                             android:id="@+id/item_frag_it_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/light_gray"
+                            android:textColor="@color/gray_light"
                             app:textType="caption" />
                     </LinearLayout>
                 </LinearLayout>
@@ -195,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/upload_by"
-                        android:textColor="@color/light_gray"
+                        android:textColor="@color/gray_light"
                         android:textStyle="bold"
                         app:textType="subhead" />
 
