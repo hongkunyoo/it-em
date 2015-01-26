@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:gravity="center"
-                        android:textColor="@color/brnad_sub_text_color"
+                        android:textColor="@color/light_gray"
                         app:textType="caption" />
 
                     <com.pinthecloud.item.view.ItTextView
@@ -71,25 +71,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
-<<<<<<< HEAD
-                        android:textColor="@color/brnad_sub_text_color"
-=======
                         android:gravity="center"
                         android:textColor="@color/light_gray"
->>>>>>> FETCH_HEAD
                         app:textType="caption" />
-                    
-                    <Button
-	                    android:id="@+id/it_user_page_frag_profile_settings"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:background="@drawable/mypage_edit_btn"
-	                    android:drawableEnd="@drawable/mypage_edit_ic"
-	                    android:drawableRight="@drawable/mypage_edit_ic"
-	                    android:text="@string/profile_settings"
-	                    android:textColor="@color/brnad_sub_text_color"
-	                    android:textSize="@dimen/font_micro" />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/it_user_page_frag_profile_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/mypage_edit_btn"
+                    android:drawableEnd="@drawable/mypage_edit_ic"
+                    android:drawableRight="@drawable/mypage_edit_ic"
+                    android:paddingEnd="@dimen/none"
+                    android:paddingLeft="@dimen/it_user_page_content_margin"
+                    android:paddingRight="@dimen/none"
+                    android:paddingStart="@dimen/it_user_page_content_margin"
+                    android:text="@string/profile_settings"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/font_micro" />
             </RelativeLayout>
 
             <include layout="@layout/custom_line" />
