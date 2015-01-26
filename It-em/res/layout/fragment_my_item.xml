@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/key_line_first"
-                android:textColor="@color/light_gray"
+                android:textColor="@color/gray_light"
                 app:textType="body" />
         </LinearLayout>
 
@@ -48,7 +48,11 @@
             android:id="@+id/my_item_frag_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/my_item_spacing"
+            android:paddingBottom="@dimen/my_item_spacing"
+            android:paddingEnd="@dimen/my_item_spacing"
+            android:paddingLeft="@dimen/my_item_spacing"
+            android:paddingRight="@dimen/my_item_spacing"
+            android:paddingStart="@dimen/my_item_spacing"
             android:scrollbars="none" />
     </RelativeLayout>
 

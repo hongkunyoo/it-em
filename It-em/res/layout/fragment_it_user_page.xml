@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:gravity="center"
-                        android:textColor="@color/light_gray"
+                        android:textColor="@color/gray_light"
                         app:textType="caption" />
 
                     <com.pinthecloud.item.view.ItTextView
@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:gravity="center"
-                        android:textColor="@color/light_gray"
+                        android:textColor="@color/gray_light"
                         app:textType="caption" />
                 </LinearLayout>
 

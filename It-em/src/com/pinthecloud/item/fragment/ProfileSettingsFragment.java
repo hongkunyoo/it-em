@@ -265,8 +265,11 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void checkNickName(final ItFragment frag, String nickName){
-		String nickNameRegx = "^[a-zA-Z0-9가-힣_-]{2,10}$";
-		if(nickName.length() < 2){
+		int nickNameMinLength = getResources().getInteger(R.integer.nick_name_min_length);
+		int nickNameMaxLength = getResources().getInteger(R.integer.nick_name_max_length);
+		String nickNameRegx = "^[a-zA-Z0-9가-힣_-]{" + nickNameMinLength + "," + nickNameMaxLength + "}$";
+		
+		if(nickName.length() < nickNameMinLength){
 			AsyncChainer.notifyNext(frag, getResources().getString(R.string.min_nick_name_message));
 		} else if(!nickName.matches(nickNameRegx)){
 			AsyncChainer.notifyNext(frag, getResources().getString(R.string.bad_nick_name_message));

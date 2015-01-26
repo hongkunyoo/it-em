@@ -19,7 +19,7 @@
             android:id="@+id/settings_frag_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/gray_light"
             app:textType="body" />
     </LinearLayout>
 

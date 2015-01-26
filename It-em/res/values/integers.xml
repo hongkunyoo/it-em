@@ -11,8 +11,10 @@
     <!-- Item -->
     <integer name="item_display_reply_num">2</integer>
 
+    
     <!-- Profile Settings -->
-    <integer name="profile_settings_nick_name_max_length">10</integer>
+    <integer name="nick_name_min_length">2</integer>
+    <integer name="nick_name_max_length">15</integer>
     <integer name="long_text_max_length">40</integer>
 
 </resources>

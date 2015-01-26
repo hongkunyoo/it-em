@@ -114,9 +114,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		findComponent(view);
 		setToolbar();
 		setComponent();
-		setScroll();
 		setButton();
 		setImageView();
+		setScroll();
 		setReplyList();
 		setText();
 		updateItemFrag();
@@ -246,30 +246,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setScroll(){
-		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
-		mScrollLayout.scrollTo(0, actionBarHeight);
-		mScrollLayout.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
-
-			@Override
-			public void onScrollChanged() {
-				int currentScrollY = mScrollLayout.getScrollY();
-				if(currentScrollY >= 0){
-					int diffY = currentScrollY-mBaseScrollY;
-					if(diffY < 0){
-						// Scroll Up, Toolbar Down
-						mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
-					} else if(diffY > 0) {
-						// Scroll Down, Toolbar Up
-						mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
-					}
-					mBaseScrollY = currentScrollY;
-				}
-			}
-		});
-	}
-
-
 	private void setButton(){
 		mItButton.setActivated(mItem.getPrevLikeId() != null);
 		mItButton.setOnClickListener(new OnClickListener() {
@@ -333,6 +309,30 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setImageView(){
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
+	}
+
+
+	private void setScroll(){
+		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
+		mScrollLayout.scrollTo(0, actionBarHeight);
+		mScrollLayout.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
+
+			@Override
+			public void onScrollChanged() {
+				int currentScrollY = mScrollLayout.getScrollY();
+				if(currentScrollY >= 0){
+					int diffY = currentScrollY-mBaseScrollY;
+					if(diffY < 0){
+						// Scroll Up, Toolbar Down
+						mToolbarLayout.scrollTo(0, Math.max(mToolbarLayout.getScrollY()+diffY, 0));
+					} else if(diffY > 0) {
+						// Scroll Down, Toolbar Up
+						mToolbarLayout.scrollTo(0, Math.min(mToolbarLayout.getScrollY()+diffY, actionBarHeight));
+					}
+					mBaseScrollY = currentScrollY;
+				}
+			}
+		});
 	}
 
 
@@ -445,7 +445,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		if(mItem.getImageHeight() > maxSize){
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-			.placeholder(R.drawable.feed_loading_default_img)
 			.resize((int)(mItem.getImageWidth()*((float)maxSize/mItem.getImageHeight())), maxSize)
 			.into(mItemImage);
 		} else {

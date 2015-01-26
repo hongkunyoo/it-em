@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="@string/previous_reply"
-        android:textColor="@color/light_gray"
+        android:textColor="@color/gray_light"
         android:textStyle="bold"
         app:textType="caption" />
 

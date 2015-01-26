@@ -94,6 +94,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - ItUserPageFragment.mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
+			onScrollTabHolder();
 		}
 	}
 
@@ -146,11 +147,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-
-				// Scroll Header
-				if (mItUserPageScrollTabHolder != null){
-					mItUserPageScrollTabHolder.onScroll(recyclerView, mGridLayoutManager, mPosition);
-				}
+				onScrollTabHolder();
 			}
 		});
 	}
@@ -213,6 +210,13 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		} else {
 			mGridEmptyLayout.setVisibility(View.GONE);
 			mGridView.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	
+	private void onScrollTabHolder(){
+		if (mItUserPageScrollTabHolder != null){
+			mItUserPageScrollTabHolder.onScroll(mGridView, mGridLayoutManager, mPosition);
 		}
 	}
 }

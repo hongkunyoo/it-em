@@ -290,7 +290,7 @@ public class ItUserPageFragment extends ItFragment {
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 				// Get scroll tab holder interface
 				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
-				ItUserPageScrollTabHolder fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
+				ItUserPageScrollTabHolder fragmentContent = null;
 
 				// Scroll grid view items of tab fragment
 				int currentItem = mViewPager.getCurrentItem();
@@ -308,6 +308,10 @@ public class ItUserPageFragment extends ItFragment {
 			}
 			@Override
 			public void onPageSelected(int position) {
+				// Scroll header by grid view items scroll y
+				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
+				ItUserPageScrollTabHolder fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
+				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 			}
 			@Override
 			public void onPageScrollStateChanged(int state) {
@@ -337,7 +341,7 @@ public class ItUserPageFragment extends ItFragment {
 		if (findFirstVisibleItemPosition >= spanCount) {
 			headerHeight = mHeader.getHeight();
 		}
-
-		return -c.getTop() + (findFirstVisibleItemPosition / spanCount) * c.getHeight() + headerHeight;
+		
+		return -c.getTop() + (findFirstVisibleItemPosition/spanCount)*c.getHeight() + headerHeight;
 	}
 }
