@@ -37,8 +37,6 @@ import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class ItUserPageFragment extends ItFragment {
@@ -237,13 +235,13 @@ public class ItUserPageFragment extends ItFragment {
 		mNickName.setText(mItUser.getNickName());
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());
-		
+
 		if(mItUser.getSelfIntro().equals("")){
 			mDescription.setVisibility(View.GONE);
 		} else {
 			mDescription.setVisibility(View.VISIBLE);
 		}
-		
+
 		if(mItUser.getWebPage().equals("")){
 			mWebsite.setVisibility(View.GONE);
 		} else {
@@ -285,7 +283,7 @@ public class ItUserPageFragment extends ItFragment {
 
 	private void setProfileImage(){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
 		.placeholder(R.drawable.profile_l_default_img)
 		.fit()
 		.into(mProfileImage);
@@ -295,25 +293,14 @@ public class ItUserPageFragment extends ItFragment {
 	private void setViewPager(){
 		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), getResources(), mItUser, 
 				mHeader.getHeight(), mTab.getHeight());
-		
-		final View toolbarLayout = mActivity.getToolbarLayout();
 		mViewPagerAdapter.setItUserPageScrollTabHolder(new ItUserPageScrollTabHolder() {
 
 			@Override
-			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int dy, int pagePosition) {
+			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 				if (mViewPager.getCurrentItem() == pagePosition) {
 					// Scroll Header by current grid scroll y
 					int scrollY = getGridScrollY(view, (GridLayoutManager)layoutManager);
 					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTab.getHeight()));
-					
-					// Scroll toolbar by dy
-					if(dy < 0 &&  scrollY < mHeader.getHeight() - mTab.getHeight()){
-						// Scroll Up, Toolbar Down
-						toolbarLayout.scrollTo(0, Math.max(toolbarLayout.getScrollY()+dy, 0));
-					} else if(dy > 0) {
-						// Scroll Down, Toolbar Up
-						toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+dy, ViewUtil.getActionBarHeight(mActivity)));
-					}
 				}
 			}
 
