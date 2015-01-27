@@ -115,20 +115,37 @@ public class BeProFragment extends ItFragment {
 
 						@Override
 						public void onCompleted(ItUser entity) {
-							mApp.dismissProgressDialog();
 							mObjectPrefHelper.put(entity);
-							
-							Toast.makeText(mActivity, getResources().getString(R.string.valid_pro), Toast.LENGTH_LONG).show();
-
-							Intent intent = new Intent(mActivity, MainActivity.class);
-							intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-							startActivity(intent);
+							AsyncChainer.notifyNext(frag, entity);
 						}
 					});
 				} else {
 					mApp.dismissProgressDialog();
 					Toast.makeText(mActivity, getResources().getString(R.string.invalid_pro), Toast.LENGTH_LONG).show();
 				}
+			}
+		}, new Chainable() {
+			
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				// TODO Auto-generated method stub
+				mAimHelper.invalidateInviteKey(inviteKey, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						// TODO Auto-generated method stub
+						if (!entity) return;
+						mApp.dismissProgressDialog();
+						Toast.makeText(mActivity, getResources().getString(R.string.valid_pro), Toast.LENGTH_LONG).show();
+						Intent intent = new Intent(mActivity, MainActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+					}
+				});
+				
+				
+				
+				
 			}
 		});
 	}

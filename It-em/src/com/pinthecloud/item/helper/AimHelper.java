@@ -40,6 +40,8 @@ public class AimHelper {
 	private final String AIM_LIST_MY_ITEM = "aim_list_my_item";
 	private final String AIM_LIST_IT_ITEM = "aim_list_it_item";
 	private final String IS_VALID = "is_valid";
+	private final String INVALIDATE_INVITE_KEY = "invalidate_invitekey";
+	
 
 
 	private ItApplication mApp;
@@ -393,6 +395,29 @@ public class AimHelper {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
 					EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.SERVER_ERROR, response));
+				}
+			}
+		});
+	}
+	
+	public void invalidateInviteKey(String inviteKey, final EntityCallback<Boolean> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("invalidateInviteKey", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		JsonObject json = new JsonObject();
+		json.addProperty("inviteKey", inviteKey);
+
+		mClient.invokeApi(INVALIDATE_INVITE_KEY, json, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(_json.getAsBoolean());	
+				} else {
+					EventBus.getDefault().post(new ItException("invalidateInviteKey", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
