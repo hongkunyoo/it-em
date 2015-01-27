@@ -22,10 +22,14 @@ import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.util.ViewUtil;
 
 public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHolder {
 
 	private static final String POSITION_KEY = "POSITION_KEY";
+	private static final String HEADER_HEIGHT_KEY = "HEADER_HEIGHT_KEY";
+	private static final String TAB_HEIGHT_KEY = "TAB_HEIGHT_KEY";
+
 	private int MY_ITEM;
 	private int IT_ITEM;
 
@@ -41,8 +45,11 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	private GridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
 
+	private ItUser mItUser;
 	private int mPosition;
-	protected ItUser mItUser;
+	private int mHeaderHeight;
+	private int mTabHeight;
+
 
 	private  ItUserPageScrollTabHolder mItUserPageScrollTabHolder;
 
@@ -51,11 +58,13 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	}
 
 
-	public static MyItemFragment newInstance(int position, ItUser itUser) {
+	public static MyItemFragment newInstance(int position, ItUser itUser, int headerHeight, int tabHeight) {
 		MyItemFragment fragment = new MyItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
 		bundle.putParcelable(ItUser.INTENT_KEY, itUser);
+		bundle.putInt(HEADER_HEIGHT_KEY, headerHeight);
+		bundle.putInt(TAB_HEIGHT_KEY, tabHeight);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -66,6 +75,8 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		super.onCreate(savedInstanceState);
 		mPosition = getArguments().getInt(POSITION_KEY);
 		mItUser = getArguments().getParcelable(ItUser.INTENT_KEY);
+		mHeaderHeight = getArguments().getInt(HEADER_HEIGHT_KEY);
+		mTabHeight = getArguments().getInt(TAB_HEIGHT_KEY);
 
 		if(mItUser.isPro()){
 			MY_ITEM = 0;
@@ -85,6 +96,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		findComponent(view);
 		setComponent();
 		setGrid();
+		setScroll();
 		updateGrid();
 		return view;
 	}
@@ -92,15 +104,15 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 	@Override
 	public void adjustScroll(final int scrollHeight) {
-		if (scrollHeight - ItUserPageFragment.mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
+		if (scrollHeight - mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
-			onScrollTabHolder();
+			onScrollTabHolder(-ViewUtil.getActionBarHeight(mActivity));
 		}
 	}
 
 
 	@Override
-	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
+	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int dy, int pagePosition) {
 	}
 
 
@@ -139,20 +151,23 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = new ArrayList<Item>();
-		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mItemList);
+		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mHeaderHeight, mItemList);
 		mGridView.setAdapter(mGridAdapter);
+	}
 
+
+	private void setScroll(){
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-				onScrollTabHolder();
+				onScrollTabHolder(dy);
 			}
 		});
 	}
-
-
+	
+	
 	private void updateGrid() {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mGridLayout.setVisibility(View.GONE);
@@ -212,11 +227,11 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 			mGridView.setVisibility(View.VISIBLE);
 		}
 	}
-	
-	
-	private void onScrollTabHolder(){
+
+
+	private void onScrollTabHolder(int dy){
 		if (mItUserPageScrollTabHolder != null){
-			mItUserPageScrollTabHolder.onScroll(mGridView, mGridLayoutManager, mPosition);
+			mItUserPageScrollTabHolder.onScroll(mGridView, mGridLayoutManager, dy, mPosition);
 		}
 	}
 }

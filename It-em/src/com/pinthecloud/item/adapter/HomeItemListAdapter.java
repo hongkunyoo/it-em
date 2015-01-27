@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,29 +33,42 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 
-public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
+public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final float MAX_HEIGHT_RATIO = 2.3f;
+
+	private enum TYPE{
+		HEADER,
+		NORMAL
+	}
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 	private ItUser mMyItUser;
+	private int mGridColumnNum;
 
 	private boolean isDoingLikeIt = false;
 
 
-	public HomeItemListAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
+	public HomeItemListAdapter(ItActivity activity, ItFragment frag, int gridColumnNum, List<Item> itemList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mItemList = itemList;
+		this.mGridColumnNum = gridColumnNum;
 		this.mMyItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 	}
 
 
-	public static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+		public HeaderViewHolder(View view) {
+			super(view);
+		}
+	}
+
+	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
 		public CircleImageView profileImage;
@@ -68,7 +82,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public TextView replyNumber;
 		public ImageButton itButton;
 
-		public ViewHolder(View view) {
+		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
 
@@ -87,28 +101,53 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	@Override
-	public HomeItemListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_item_grid, parent, false);
-		return new ViewHolder(view);
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = null;
+		ViewHolder viewHolder = null;
+		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+		if(viewType == TYPE.HEADER.ordinal()){
+			view = inflater.inflate(R.layout.row_home_item_grid_header, parent, false);
+			viewHolder = new HeaderViewHolder(view);
+		} else if(viewType == TYPE.NORMAL.ordinal()){
+			view = inflater.inflate(R.layout.row_home_item_grid, parent, false);
+			viewHolder = new NormalViewHolder(view);
+		} 
+
+		return viewHolder;
 	}
 
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, final int position) {
-		Item item = mItemList.get(position);
-		setComponent(holder, item);
-		setButton(holder, item);
-		setImageView(holder, item, position);
+		int viewType = getItemViewType(position);
+		if(viewType == TYPE.NORMAL.ordinal()){
+			Item item = mItemList.get(position-mGridColumnNum);
+			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
+			setNormalComponent(normalViewHolder, item);
+			setNormalButton(normalViewHolder, item);
+			setNormalImageView(normalViewHolder, item, position);
+		}
 	}
 
 
 	@Override
 	public int getItemCount() {
-		return mItemList.size();
+		return mItemList.size()+mGridColumnNum;
 	}
 
 
-	private void setComponent(ViewHolder holder, Item item){
+	@Override
+	public int getItemViewType(int position) {
+		if (position < mGridColumnNum) {
+			return TYPE.HEADER.ordinal();
+		} else{
+			return TYPE.NORMAL.ordinal();
+		}
+	}
+
+
+	private void setNormalComponent(NormalViewHolder holder, Item item){
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
@@ -123,7 +162,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	}
 
 
-	private void setButton(final ViewHolder holder, final Item item){
+	private void setNormalButton(final NormalViewHolder holder, final Item item){
 		holder.profileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -133,7 +172,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				mActivity.startActivity(intent);
 			}
 		});
-		
+
 		holder.nickName.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -182,7 +221,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				mActivity.startActivity(intent);
 			}
 		});
-		
+
 		holder.itButton.setActivated(item.getPrevLikeId() != null);
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
@@ -231,7 +270,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	}
 
 
-	private void setImageView(final ViewHolder holder, Item item, int position) {
+	private void setNormalImageView(final NormalViewHolder holder, Item item, int position) {
 		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), MAX_HEIGHT_RATIO);
 		holder.itemImage.setHeightRatio(heightRatio);
 		if(heightRatio < MAX_HEIGHT_RATIO){
@@ -253,7 +292,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	}
 
 
-	private void doLikeIt(ViewHolder holder, Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
+	private void doLikeIt(NormalViewHolder holder, Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
 		isDoingLikeIt = false;
 		item.setPrevLikeId(likeItId);
 		setItButton(holder, currentLikeItNum, isDoLikeIt);
@@ -268,7 +307,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	}
 
 
-	private void setItButton(ViewHolder holder, int currentLikeItNum, boolean isDoLikeIt){
+	private void setItButton(NormalViewHolder holder, int currentLikeItNum, boolean isDoLikeIt){
 		if(isDoLikeIt) {
 			// Do like it
 			setItNumber(holder, currentLikeItNum+1);
@@ -281,7 +320,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	}
 
 
-	private void setItNumber(ViewHolder holder, int itNumber){
+	private void setItNumber(NormalViewHolder holder, int itNumber){
 		if(itNumber <= 0){
 			holder.itNumber.setVisibility(View.GONE);
 		} else {
@@ -326,13 +365,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 	public void add(int position, Item item) {
 		mItemList.add(position, item);
-		notifyItemInserted(position);
+		notifyItemInserted(position+mGridColumnNum);
 	}
 
 
 	public void remove(Item item) {
 		int position = mItemList.indexOf(item);
 		mItemList.remove(position);
-		notifyItemRemoved(position);
+		notifyItemRemoved(position+mGridColumnNum);
 	}
 }

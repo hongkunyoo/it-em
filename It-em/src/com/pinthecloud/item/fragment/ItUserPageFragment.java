@@ -1,7 +1,9 @@
 package com.pinthecloud.item.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,19 +38,20 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class ItUserPageFragment extends ItFragment {
 
-	public static int mTabHeight;
 	private final int PROFILE_SETTINGS = 0;
 
 	private ActionBar mActionBar;
 	private ProgressBar mProgressBar;
 	private RelativeLayout mContainer;
 
-	private LinearLayout mHeader;
+	private View mHeader;
 	private ImageView mProfileImage;
+	private ImageView mPro;
 	private TextView mNickName;
 	private TextView mDescription;
 	private TextView mWebsite;
@@ -106,9 +110,24 @@ public class ItUserPageFragment extends ItFragment {
 				setProfile();
 				setProfileImage();
 				setButton();
-				setViewPager();
-				setTab();
-				setTabName();
+
+				mContainer.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+					@SuppressLint("NewApi")
+					@SuppressWarnings("deprecation")
+					@Override
+					public void onGlobalLayout() {
+						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+							mContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+						} else {
+							mContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+						}
+
+						setViewPager();
+						setTab();
+						setTabName();
+					}
+				});
 			}
 		});
 
@@ -163,6 +182,7 @@ public class ItUserPageFragment extends ItFragment {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
 		mProfileImage = (ImageView)view.findViewById(R.id.it_user_page_frag_profile_image);
+		mPro = (ImageView)view.findViewById(R.id.it_user_page_frag_pro);
 		mNickName = (TextView)view.findViewById(R.id.it_user_page_frag_nick_name);
 		mDescription = (TextView)view.findViewById(R.id.it_user_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.it_user_page_frag_website);
@@ -174,7 +194,6 @@ public class ItUserPageFragment extends ItFragment {
 
 	private void setComponent(){
 		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mTabHeight = getResources().getDimensionPixelSize(R.dimen.it_user_page_tab_height);
 	}
 
 
@@ -218,6 +237,24 @@ public class ItUserPageFragment extends ItFragment {
 		mNickName.setText(mItUser.getNickName());
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());
+		
+		if(mItUser.getSelfIntro().equals("")){
+			mDescription.setVisibility(View.GONE);
+		} else {
+			mDescription.setVisibility(View.VISIBLE);
+		}
+		
+		if(mItUser.getWebPage().equals("")){
+			mWebsite.setVisibility(View.GONE);
+		} else {
+			mWebsite.setVisibility(View.VISIBLE);
+		}
+
+		if(mItUser.isPro()){
+			mPro.setVisibility(View.VISIBLE);
+		} else {
+			mPro.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -249,21 +286,34 @@ public class ItUserPageFragment extends ItFragment {
 	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.placeholder(R.drawable.profile_s_default_img)
+		.placeholder(R.drawable.profile_l_default_img)
 		.fit()
 		.into(mProfileImage);
 	}
 
 
 	private void setViewPager(){
-		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), mActivity, mItUser);
+		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), getResources(), mItUser, 
+				mHeader.getHeight(), mTab.getHeight());
+		
+		final View toolbarLayout = mActivity.getToolbarLayout();
 		mViewPagerAdapter.setItUserPageScrollTabHolder(new ItUserPageScrollTabHolder() {
 
 			@Override
-			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
+			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int dy, int pagePosition) {
 				if (mViewPager.getCurrentItem() == pagePosition) {
+					// Scroll Header by current grid scroll y
 					int scrollY = getGridScrollY(view, (GridLayoutManager)layoutManager);
-					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTabHeight));
+					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTab.getHeight()));
+					
+					// Scroll toolbar by dy
+					if(dy < 0 &&  scrollY < mHeader.getHeight() - mTab.getHeight()){
+						// Scroll Up, Toolbar Down
+						toolbarLayout.scrollTo(0, Math.max(toolbarLayout.getScrollY()+dy, 0));
+					} else if(dy > 0) {
+						// Scroll Down, Toolbar Up
+						toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+dy, ViewUtil.getActionBarHeight(mActivity)));
+					}
 				}
 			}
 
@@ -341,7 +391,7 @@ public class ItUserPageFragment extends ItFragment {
 		if (findFirstVisibleItemPosition >= spanCount) {
 			headerHeight = mHeader.getHeight();
 		}
-		
+
 		return -c.getTop() + (findFirstVisibleItemPosition/spanCount)*c.getHeight() + headerHeight;
 	}
 }

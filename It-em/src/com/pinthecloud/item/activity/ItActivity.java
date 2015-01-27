@@ -2,7 +2,7 @@ package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
@@ -22,7 +22,7 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected UserHabitHelper mUserHabitHelper;
 	protected GAHelper mGaHelper;
 
-	public abstract Toolbar getToolbar();
+	public abstract View getToolbarLayout();
 
 
 	public ItActivity(){

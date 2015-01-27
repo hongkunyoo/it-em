@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/bepro_bg"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingTop="?attr/actionBarSize" >
 
     <ImageView
         android:layout_width="wrap_content"

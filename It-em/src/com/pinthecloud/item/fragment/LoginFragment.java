@@ -130,7 +130,7 @@ public class LoginFragment extends ItFragment {
 		mApp.showProgressDialog(mActivity);
 
 		final ItUser itUser = new ItUser(user.getId(), ItUser.FACEBOOK, user.getProperty("email").toString(),
-				user.getFirstName(), "", "", ItUser.TYPE.VIEWER);
+				user.getFirstName().replace(" ", "_"), "", "", ItUser.TYPE.VIEWER);
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override

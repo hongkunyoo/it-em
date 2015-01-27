@@ -2,7 +2,9 @@ package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -10,23 +12,40 @@ import com.pinthecloud.item.fragment.ItemFragment;
 import com.pinthecloud.item.model.Item;
 
 public class ItemActivity extends ItActivity {
-
+	
+	private View mToolbarLayout;
+	private Toolbar mToolbar;
 	private Item mItem;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_frame);
+		setContentView(R.layout.activity_toolbar_frame);
 
 		mItem = getIntent().getParcelableExtra(Item.INTENT_KEY);
+		setToolbar();
 		setFragment();
 	}
 
 
 	@Override
-	public Toolbar getToolbar() {
-		return null;
+	public View getToolbarLayout() {
+		return mToolbarLayout;
+	}
+
+	
+	private void setToolbar(){
+		mToolbarLayout = findViewById(R.id.toolbar_layout);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
+
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 
+				+ " " + getResources().getString(R.string.app_name));
+
+		mToolbarLayout.bringToFront();
 	}
 
 

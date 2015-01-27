@@ -12,15 +12,23 @@ import com.pinthecloud.item.R;
 
 public class ItTextView extends TextView {
 
-	private enum TEXT_TYPE{
-		TITLE,
-		SUBHEAD,
-		BODY,
-		CAPTION,
-		BUTTON
+	public static enum TYPE{
+		TITLE(0),
+		SUBHEAD(1),
+		BODY(2),
+		CAPTION(3),
+		BUTTON(4);
+
+		private int value;
+		private TYPE(int value){
+			this.value = value;
+		}
+		public int getValue(){
+			return this.value;	
+		}
 	}
 
-	private int mTextType = TEXT_TYPE.TITLE.ordinal();
+	private int mTextType = TYPE.TITLE.ordinal();
 
 	public ItTextView(Context context) {
 		this(context, null);
@@ -37,15 +45,24 @@ public class ItTextView extends TextView {
 		mTextType = a.getInt(R.styleable.ItTextView_textType, 0);
 		a.recycle();
 
-		if(mTextType == TEXT_TYPE.TITLE.ordinal()){
+		setTextProperty(mTextType);
+	}
+
+	public void setTextType(TYPE textType) {
+		this.mTextType = textType.getValue();
+		setTextProperty(mTextType);
+	}
+
+	private void setTextProperty(int textType) {
+		if(textType == TYPE.TITLE.ordinal()){
 			setTitle();
-		} else if(mTextType == TEXT_TYPE.SUBHEAD.ordinal()) {
+		} else if(textType == TYPE.SUBHEAD.ordinal()) {
 			setSubhead();
-		} else if(mTextType == TEXT_TYPE.BODY.ordinal()) {
+		} else if(textType == TYPE.BODY.ordinal()) {
 			setBody();
-		} else if(mTextType == TEXT_TYPE.CAPTION.ordinal()) {
+		} else if(textType == TYPE.CAPTION.ordinal()) {
 			setCaption();
-		} else if(mTextType == TEXT_TYPE.BUTTON.ordinal()) {
+		} else if(textType == TYPE.BUTTON.ordinal()) {
 			setButton();
 		}
 	}
@@ -77,7 +94,7 @@ public class ItTextView extends TextView {
 
 	@Override
 	public void setText(CharSequence text, BufferType type) {
-		if(mTextType == TEXT_TYPE.BUTTON.ordinal()){
+		if(mTextType == TYPE.BUTTON.ordinal()){
 			text = text.toString().toUpperCase(Locale.US);
 		}
 		super.setText(text, type);

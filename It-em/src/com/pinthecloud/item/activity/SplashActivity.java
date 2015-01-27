@@ -2,7 +2,7 @@ package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.ItFragment;
@@ -19,7 +19,7 @@ public class SplashActivity extends ItActivity {
 
 
 	@Override
-	public Toolbar getToolbar() {
+	public View getToolbarLayout() {
 		return null;
 	}
 	
