@@ -20,25 +20,25 @@
 
     <!-- Home -->
     <dimen name="home_item_profile_height">48dp</dimen>
-    <dimen name="home_item_margin">10dp</dimen>
-    <dimen name="home_item_spacing">2dp</dimen>
+    <dimen name="home_item_margin">8dp</dimen>
+    <dimen name="home_item_spacing">4dp</dimen>
     <dimen name="home_item_content_margin">2dp</dimen>
 
     <!-- Be Pro -->
+    <dimen name="be_pro_content_bottom_margin">30dp</dimen>
     <dimen name="be_pro_content_margin">12dp</dimen>
     <dimen name="be_pro_code_margin">8dp</dimen>
+    <dimen name="be_pro_mail_height">24dp</dimen>
     
     <!-- Item -->
     <dimen name="item_content_margin">2dp</dimen>
-    <dimen name="item_content_row_height">48dp</dimen>
+    <dimen name="item_content_row_height">40dp</dimen>
     <dimen name="item_button_number_margin">12dp</dimen>
 
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>
 
     <!-- It User Page -->
-    <dimen name="it_user_page_profile_height">200dp</dimen>
-    <dimen name="it_user_page_header_height">248dp</dimen>
     <dimen name="it_user_page_tab_height">48dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
     <dimen name="it_user_page_content_margin">6dp</dimen>
@@ -56,7 +56,6 @@
     <dimen name="reply_margin">8dp</dimen>
     
     <!-- Product Tag -->
-    <dimen name="product_tag_margin">12dp</dimen>
     <dimen name="product_tag_row_height">48dp</dimen>
 
     <!-- Profile Settings -->

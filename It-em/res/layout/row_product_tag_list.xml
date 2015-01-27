@@ -2,7 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/product_tag_row_height" >
+    android:layout_height="@dimen/product_tag_row_height"
+    android:paddingEnd="@dimen/key_line_first"
+    android:paddingLeft="@dimen/key_line_first"
+    android:paddingRight="@dimen/key_line_first"
+    android:paddingStart="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.ItTextView
         android:id="@+id/row_product_tag_name"
@@ -19,6 +23,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/dialog_tag_btn"
+        android:minHeight="@dimen/none"
+        android:minWidth="@dimen/none"
         android:textColor="@color/brand_text_color"
         android:textSize="@dimen/font_micro" />
 

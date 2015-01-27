@@ -28,6 +28,7 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.FileUtil;
+import com.pinthecloud.item.util.ViewUtil;
 
 public class HomeFragment extends ItFragment {
 
@@ -47,7 +48,6 @@ public class HomeFragment extends ItFragment {
 	private ItUser mMyItUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,13 +70,13 @@ public class HomeFragment extends ItFragment {
 		setComponent();
 		setButton();
 		setRefreshLayout();
-		setList();
+		setGrid();
 		setScroll();
 
 		if(mItemList.size() < 1){
 			mProgressBar.setVisibility(View.VISIBLE);
 			mLayout.setVisibility(View.GONE);
-			updateList();
+			updateGrid();
 		}
 
 		return view;
@@ -106,7 +106,7 @@ public class HomeFragment extends ItFragment {
 
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle(getResources().getString(R.string.home));
+		actionBar.setTitle("");
 	}
 
 
@@ -149,26 +149,27 @@ public class HomeFragment extends ItFragment {
 
 			@Override
 			public void onRefresh() {
-				updateList();
+				updateGrid();
 			}
 		});
 	}
 
 
-	private void setList(){
+	private void setGrid(){
 		mGridView.setHasFixedSize(true);
-
+		
 		int gridColumnNum = getResources().getInteger(R.integer.home_item_grid_column_num);
 		mGridLayoutManager = new StaggeredGridLayoutManager(gridColumnNum, StaggeredGridLayoutManager.VERTICAL);
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mGridAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
+		mGridAdapter = new HomeItemListAdapter(mActivity, mThisFragment, gridColumnNum, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 	}
 
 
 	private void setScroll(){
+		final View toolbarLayout = mActivity.getToolbarLayout();
 		final int maxScrollY = mUploadLayout.getLayoutParams().height;
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -180,23 +181,29 @@ public class HomeFragment extends ItFragment {
 				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
 				int totalItemCount = mGridLayoutManager.getItemCount();
 				if (positions[positions.length-1] >= totalItemCount-3 && !mIsAdding) {
-					addNextItemList();
+					addNextItem();
 				}
 
-				// Scroll upload button by dy
+				// Scroll toolbar and upload button by dy
 				if(dy < 0){
 					// Scroll Up, Upload button Up
 					mUploadLayout.scrollTo(0, Math.min(mUploadLayout.getScrollY()-dy, 0));
+
+					// Scroll Up, Toolbar Down
+					toolbarLayout.scrollTo(0, Math.max(toolbarLayout.getScrollY()+dy, 0));
 				} else if(dy > 0) {
 					// Scroll down, Upload button Down
 					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxScrollY));
+
+					// Scroll Down, Toolbar Up
+					toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+dy, ViewUtil.getActionBarHeight(mActivity)));
 				}
 			}
 		});
 	}
 
 
-	public void updateList() {
+	public void updateGrid() {
 		page = 0;
 		mAimHelper.listItem(page, mMyItUser.getId(), new ListCallback<Item>() {
 
@@ -205,6 +212,7 @@ public class HomeFragment extends ItFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mLayout.setVisibility(View.VISIBLE);
 				mRefresh.setRefreshing(false);
+				
 				mItemList.clear();
 				mGridAdapter.addAll(list);
 			}
@@ -212,7 +220,7 @@ public class HomeFragment extends ItFragment {
 	}
 
 
-	private void addNextItemList() {
+	private void addNextItem() {
 		mIsAdding = true;
 		mAimHelper.listItem(++page, mMyItUser.getId(), new ListCallback<Item>() {
 

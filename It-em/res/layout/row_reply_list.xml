@@ -51,6 +51,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/key_line_first"
                 android:layout_marginRight="@dimen/key_line_first"
+                android:drawableLeft="@drawable/feed_comment_time_ic"
+                android:drawableStart="@drawable/feed_comment_time_ic"
                 android:textColor="@color/gray_light"
                 app:textType="caption" />
         </RelativeLayout>
@@ -59,6 +61,8 @@
             android:id="@+id/row_reply_list_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginRight="@dimen/key_line_first"
             android:textColor="@color/brnad_sub_text_color"
             app:textType="body" />
     </LinearLayout>

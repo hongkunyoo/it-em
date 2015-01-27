@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    android:padding="@dimen/key_line_first" >
+    android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/key_line_first" >
+        android:layout_height="@dimen/item_content_row_height" >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
             android:contentDescription="@string/product_tag"
             android:src="@drawable/detail_tag_ic" />
 
@@ -22,41 +22,16 @@
             android:id="@+id/product_tag_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_second"
+            android:layout_marginStart="@dimen/key_line_second"
             android:textColor="@color/gray_light"
             app:textType="body" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <include
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            layout="@layout/custom_progress_bar"
-            android:visibility="gone" />
-
-        <RelativeLayout
-            android:id="@+id/product_tag_frag_list_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/product_tag_frag_list_empty_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/empty_product_tag"
-                android:textColor="@color/brand_text_color"
-                android:visibility="gone"
-                app:textType="subhead" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/product_tag_frag_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
     </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/product_tag_frag_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

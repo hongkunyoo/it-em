@@ -5,7 +5,7 @@
     <string-array name="home_more_string_array">
         <item>Delete</item>
     </string-array>
-    
+
     <!-- Main Drawer -->
     <string-array name="main_drawer_menu_string_array">
         <item>Home</item>
@@ -30,17 +30,36 @@
     <string-array name="upload_image_select_string_array">
         <item>Album</item>
     </string-array>
-    
-     <!-- Profile Settings -->
-     <string-array name="profile_image_select_string_array">
+
+    <!-- Profile Settings -->
+    <string-array name="profile_image_select_string_array">
         <item>Album</item>
         <item>Camera</item>
         <item>Delete</item>
     </string-array>
-    
+
     <!-- Reply -->
     <string-array name="reply_long_click_string_array">
         <item>Delete</item>
+    </string-array>
+
+    <!-- Category -->
+    <string-array name="category_string_array">
+        <item>Outer</item>
+        <item>Shirts</item>
+        <item>Neet</item>
+        <item>ManToMan</item>
+        <item>Hood</item>
+        <item>T_Shirts</item>
+        <item>Pants</item>
+        <item>OnePiece</item>
+        <item>Skirt</item>
+        <item>Shoes</item>
+        <item>Socks</item>
+        <item>Bag</item>
+        <item>Accessory</item>
+        <item>Cap</item>
+        <item>Items</item>
     </string-array>
 
 </resources>

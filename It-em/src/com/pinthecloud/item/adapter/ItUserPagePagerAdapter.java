@@ -1,6 +1,6 @@
 package com.pinthecloud.item.adapter;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,17 +19,21 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 	private SparseArrayCompat<ItUserPageScrollTabHolder> mItUserPageScrollTabHolderList;
 	private ItUserPageScrollTabHolder mItUserPageScrollTabHolder;
 	private ItUser mItUser;
+	private int mHeaderHeight;
+	private int mTabHeight;
 
 
-	public ItUserPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser) {
+	public ItUserPagePagerAdapter(FragmentManager fm, Resources resources, ItUser itUser, int headerHeight, int tabHeight) {
 		super(fm);
 		this.mItUserPageScrollTabHolderList = new SparseArrayCompat<ItUserPageScrollTabHolder>();
 		this.mItUser = itUser;
+		this.mHeaderHeight = headerHeight;
+		this.mTabHeight = tabHeight;
 		
 		if(mItUser.isPro()){
-			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_pro_tab_title_string_array);	
+			this.mTitles = resources.getStringArray(R.array.it_user_page_pro_tab_title_string_array);	
 		} else {
-			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_tab_title_string_array);
+			this.mTitles = resources.getStringArray(R.array.it_user_page_tab_title_string_array);
 		}
 	}
 
@@ -56,7 +60,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	@Override
 	public Fragment getItem(int position) {
-		MyItemFragment fragment = MyItemFragment.newInstance(position, mItUser);
+		MyItemFragment fragment = MyItemFragment.newInstance(position, mItUser, mHeaderHeight, mTabHeight);
 		mItUserPageScrollTabHolderList.put(position, fragment);
 		if (mItUserPageScrollTabHolder != null){
 			fragment.setItUserPageScrollTabHolder(mItUserPageScrollTabHolder);	

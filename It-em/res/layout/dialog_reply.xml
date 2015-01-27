@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" >
+        android:layout_height="@dimen/item_content_row_height" >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -34,7 +33,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content" >
 
         <include
             android:layout_width="wrap_content"
@@ -62,13 +61,15 @@
                     android:layout_marginStart="@dimen/key_line_second"
                     android:gravity="center_vertical"
                     android:text="@string/first_reply"
+                    android:textColor="@color/gray_light"
+                    android:textStyle="italic"
                     android:visibility="gone"
-                    app:textType="body" />
+                    app:textType="caption" />
 
-                <com.pinthecloud.item.view.ExpandableHeightRecyclerView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/reply_frag_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content" />
             </RelativeLayout>
 
             <LinearLayout
@@ -82,16 +83,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingEnd="@dimen/none"
-                    android:paddingLeft="@dimen/reply_margin"
-                    android:paddingRight="@dimen/none"
-                    android:paddingStart="@dimen/reply_margin"
-                    android:paddingTop="@dimen/reply_margin" >
+                    android:padding="@dimen/reply_margin" >
 
                     <EditText
                         android:id="@+id/reply_frag_inputbar_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/reply_margin"
+                        android:layout_marginLeft="@dimen/none"
+                        android:layout_marginRight="@dimen/reply_margin"
+                        android:layout_marginStart="@dimen/none"
                         android:layout_weight="1"
                         android:background="@drawable/general_inputbar_bg"
                         android:ems="10"
@@ -117,9 +118,13 @@
                         android:layout_gravity="bottom"
                         android:background="@android:color/transparent"
                         android:enabled="false"
+                        android:minHeight="@dimen/none"
+                        android:minWidth="@dimen/none"
+                        android:paddingBottom="@dimen/reply_margin"
                         android:text="@string/submit"
                         android:textColor="@color/reply_inputbar_submit_button"
-                        android:textSize="@dimen/font_small" />
+                        android:textSize="@dimen/font_medium"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

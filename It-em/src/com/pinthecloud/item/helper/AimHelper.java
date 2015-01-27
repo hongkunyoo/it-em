@@ -21,7 +21,6 @@ import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 

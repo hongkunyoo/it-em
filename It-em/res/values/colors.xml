@@ -9,6 +9,7 @@
     <color name="accent_color">#ffAB00</color>
     <color name="line_color">#16000000</color>
     <color name="gray_light">#de78909c</color>
+    <color name="gray_dark">#90a4ae</color>
     <color name="gray">#deB0BEC5</color>
     <color name="gray_pressed">#ECEFF1</color>
     <color name="red">#ef5350</color>
@@ -21,7 +22,9 @@
     <color name="main_drawer_menu_name_disabled">#87ffffff</color>
 
     <!-- Reply -->
-    <color name="reply_submit_disable">#42ffab00</color>
+    <color name="reply_submit_disable">#64ffab00</color>
+    <color name="reply_row_press">#ECEFF1</color>
+
 
     <!-- Settings -->
     <color name="settings_logout_text">#deffffff</color>

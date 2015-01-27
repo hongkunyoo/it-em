@@ -31,7 +31,7 @@ import com.pinthecloud.item.view.CircleImageView;
 
 public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private enum VIEW_TYPE{
+	private enum TYPE{
 		PREVIOUS,
 		NORMAL
 	}
@@ -99,10 +99,10 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		ViewHolder viewHolder = null;
 		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-		if(viewType == VIEW_TYPE.PREVIOUS.ordinal()){
+		if(viewType == TYPE.PREVIOUS.ordinal()){
 			view = inflater.inflate(R.layout.row_reply_list_previous, parent, false);
 			viewHolder = new PreviousViewHolder(view);
-		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
+		} else if(viewType == TYPE.NORMAL.ordinal()){
 			view = inflater.inflate(R.layout.row_reply_list, parent, false);
 			viewHolder = new NormalViewHolder(view);
 		}
@@ -114,10 +114,10 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		int viewType = getItemViewType(position);
-		if(viewType == VIEW_TYPE.PREVIOUS.ordinal()){
+		if(viewType == TYPE.PREVIOUS.ordinal()){
 			PreviousViewHolder preiousViewHolder = (PreviousViewHolder)holder;
 			setPreviousButton(preiousViewHolder);
-		} else if (viewType == VIEW_TYPE.NORMAL.ordinal()){
+		} else if (viewType == TYPE.NORMAL.ordinal()){
 			if(mHasPrevious) position--;
 			Reply reply = mReplyList.get(position);
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
@@ -142,12 +142,12 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	public int getItemViewType(int position) {
 		if(mHasPrevious){
 			if (position == 0) {
-				return VIEW_TYPE.PREVIOUS.ordinal();
+				return TYPE.PREVIOUS.ordinal();
 			} else {
-				return VIEW_TYPE.NORMAL.ordinal();
+				return TYPE.NORMAL.ordinal();
 			}
 		} else{
-			return VIEW_TYPE.NORMAL.ordinal();
+			return TYPE.NORMAL.ordinal();
 		}
 	}
 
