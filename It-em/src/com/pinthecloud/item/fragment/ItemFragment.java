@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
@@ -49,7 +52,6 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
-import com.pinthecloud.item.view.ExpandableHeightRecyclerView;
 import com.pinthecloud.item.view.ItTextView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
@@ -71,7 +73,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private TextView mReplyTitle;
 	private TextView mReplyListEmptyView;
-	private ExpandableHeightRecyclerView mReplyListView;
+	private RecyclerView mReplyListView;
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
 	private List<Reply> mReplyList;
@@ -139,8 +141,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mItemImage.setImageBitmap(null);
 		mProfileImage.setImageBitmap(null);
 	}
-	
-	
+
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -204,7 +206,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
-		mReplyListView = (ExpandableHeightRecyclerView)view.findViewById(R.id.reply_frag_list);
+		mReplyListView = (RecyclerView)view.findViewById(R.id.reply_frag_list);
 		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
@@ -213,7 +215,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mNickName = (TextView)view.findViewById(R.id.item_frag_nick_name);
 	}
 
-	
+
 	private void setComponent(){
 		setItNumber(mItem.getLikeItCount());
 
@@ -322,19 +324,19 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				}
 			}
 		});
-		
+
 		mScrollLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			
+
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
 					mScrollLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-		        } else {
-		        	mScrollLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-		        }
-				
+				} else {
+					mScrollLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+
 				mScrollLayout.scrollTo(0, ViewUtil.getActionBarHeight(mActivity));
 			}
 		});
@@ -448,7 +450,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					mItem.setReplyCount(count);
 
 					// Set see previous row
-					int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
+					final int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
 					if(mItem.getReplyCount() > displayReplyNum){
 						mReplyListAdapter.setHasPrevious(true);
 					} else {
@@ -456,8 +458,21 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					}
 
 					// Set reply list expand setting for expand when on draw
-					mReplyListView.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.reply_row_previous_height);
-					mReplyListView.setOnDrawExpandRowCount(Math.min(mItem.getReplyCount(), displayReplyNum+1));
+					mReplyListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+						@SuppressLint("NewApi")
+						@SuppressWarnings("deprecation")
+						@Override
+						public void onGlobalLayout() {
+							if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+								mReplyListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+							} else {
+								mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+							}
+							
+							ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
+						}
+					});
 
 					// Set reply list fragment
 					showReplyEmptyView(mItem.getReplyCount());
