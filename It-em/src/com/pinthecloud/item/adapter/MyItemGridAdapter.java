@@ -30,13 +30,15 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private ItActivity mActivity;
 	private List<Item> mItemList;
 	private int mGridColumnNum;
+	private int mHeaderHeight;
 
 
-	public MyItemGridAdapter(ItActivity activity, int gridColumnNum, List<Item> itemList) {
+	public MyItemGridAdapter(ItActivity activity, int gridColumnNum, int headerHeight, List<Item> itemList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mItemList = itemList;
 		this.mGridColumnNum = gridColumnNum;
+		this.mHeaderHeight = headerHeight;
 	}
 
 
@@ -80,7 +82,10 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		int viewType = getItemViewType(position);
-		if(viewType == VIEW_TYPE.NORMAL.ordinal()){
+		if(viewType == VIEW_TYPE.HEADER.ordinal()){
+			HeaderViewHolder headerViewHolder = (HeaderViewHolder)holder;
+			headerViewHolder.itemView.getLayoutParams().height = mHeaderHeight;
+		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position-mGridColumnNum);
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
 			setNormalButton(normalViewHolder, item);

@@ -1,7 +1,9 @@
 package com.pinthecloud.item.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,18 +37,18 @@ import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
+import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class ItUserPageFragment extends ItFragment {
 
-	public static int mTabHeight;
 	private final int PROFILE_SETTINGS = 0;
 
 	private ActionBar mActionBar;
 	private ProgressBar mProgressBar;
 	private RelativeLayout mContainer;
 
-	private LinearLayout mHeader;
+	private View mHeader;
 	private ImageView mProfileImage;
 	private ImageView mPro;
 	private TextView mNickName;
@@ -106,9 +109,24 @@ public class ItUserPageFragment extends ItFragment {
 				setProfile();
 				setProfileImage();
 				setButton();
-				setViewPager();
-				setTab();
-				setTabName();
+
+				mContainer.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+					@SuppressLint("NewApi")
+					@SuppressWarnings("deprecation")
+					@Override
+					public void onGlobalLayout() {
+						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+							mContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+						} else {
+							mContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+						}
+
+						setViewPager();
+						setTab();
+						setTabName();
+					}
+				});
 			}
 		});
 
@@ -175,7 +193,6 @@ public class ItUserPageFragment extends ItFragment {
 
 	private void setComponent(){
 		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mTabHeight = getResources().getDimensionPixelSize(R.dimen.it_user_page_tab_height);
 	}
 
 
@@ -220,6 +237,18 @@ public class ItUserPageFragment extends ItFragment {
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());
 		
+		if(mItUser.getSelfIntro().equals("")){
+			mDescription.setVisibility(View.GONE);
+		} else {
+			mDescription.setVisibility(View.VISIBLE);
+		}
+		
+		if(mItUser.getWebPage().equals("")){
+			mWebsite.setVisibility(View.GONE);
+		} else {
+			mWebsite.setVisibility(View.VISIBLE);
+		}
+
 		if(mItUser.isPro()){
 			mPro.setVisibility(View.VISIBLE);
 		} else {
@@ -255,7 +284,7 @@ public class ItUserPageFragment extends ItFragment {
 
 	private void setProfileImage(){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.profile_l_default_img)
 		.fit()
 		.into(mProfileImage);
@@ -263,14 +292,15 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setViewPager(){
-		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), mActivity, mItUser);
+		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), getResources(), mItUser, 
+				mHeader.getHeight(), mTab.getHeight());
 		mViewPagerAdapter.setItUserPageScrollTabHolder(new ItUserPageScrollTabHolder() {
 
 			@Override
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 				if (mViewPager.getCurrentItem() == pagePosition) {
 					int scrollY = getGridScrollY(view, (GridLayoutManager)layoutManager);
-					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTabHeight));
+					mHeader.scrollTo(0, Math.min(scrollY, mHeader.getHeight() - mTab.getHeight()));
 				}
 			}
 

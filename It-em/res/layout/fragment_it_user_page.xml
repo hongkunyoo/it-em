@@ -25,19 +25,19 @@
         <LinearLayout
             android:id="@+id/it_user_page_frag_header_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/it_user_page_header_height"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <RelativeLayout
                 android:id="@+id/it_user_page_frag_profile_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/it_user_page_profile_height"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:padding="@dimen/key_line_first" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     android:paddingTop="@dimen/it_user_page_content_margin" >

@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
@@ -138,8 +139,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mItemImage.setImageBitmap(null);
 		mProfileImage.setImageBitmap(null);
 	}
-
-
+	
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -322,7 +323,21 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		});
 		
-		mScrollLayout.scrollTo(0, actionBarHeight);
+		mScrollLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mScrollLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+		        } else {
+		        	mScrollLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+		        }
+				
+				mScrollLayout.scrollTo(0, ViewUtil.getActionBarHeight(mActivity));
+			}
+		});
 	}
 
 

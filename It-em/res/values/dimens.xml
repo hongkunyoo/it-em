@@ -37,8 +37,6 @@
     <dimen name="upload_image_width">72dp</dimen>
 
     <!-- It User Page -->
-    <dimen name="it_user_page_profile_height">200dp</dimen>
-    <dimen name="it_user_page_header_height">249dp</dimen>
     <dimen name="it_user_page_tab_height">48dp</dimen>
     <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
     <dimen name="it_user_page_content_margin">6dp</dimen>
