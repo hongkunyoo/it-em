@@ -25,8 +25,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/key_line_second"
             android:layout_marginStart="@dimen/key_line_second"
-            android:textColor="@color/gray_light"
-            app:textType="body" />
+            android:textColor="@color/brand_text_color"
+            android:textStyle="bold"
+            app:textType="subhead" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
