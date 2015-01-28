@@ -22,7 +22,6 @@ import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.ViewUtil;
 
 public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHolder {
 
@@ -106,13 +105,13 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
-			onScrollTabHolder(-ViewUtil.getActionBarHeight(mActivity));
+			onScrollTabHolder();
 		}
 	}
 
 
 	@Override
-	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int dy, int pagePosition) {
+	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 	}
 
 
@@ -162,7 +161,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-				onScrollTabHolder(dy);
+				onScrollTabHolder();
 			}
 		});
 	}
@@ -229,9 +228,9 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	}
 
 
-	private void onScrollTabHolder(int dy){
+	private void onScrollTabHolder(){
 		if (mItUserPageScrollTabHolder != null){
-			mItUserPageScrollTabHolder.onScroll(mGridView, mGridLayoutManager, dy, mPosition);
+			mItUserPageScrollTabHolder.onScroll(mGridView, mGridLayoutManager, mPosition);
 		}
 	}
 }
