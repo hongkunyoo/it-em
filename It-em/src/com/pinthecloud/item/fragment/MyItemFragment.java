@@ -111,6 +111,12 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 
 	@Override
+	public void updateHeader(int headerHeight) {
+		mGridAdapter.notifyHeader(headerHeight);
+	}
+	
+	
+	@Override
 	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 	}
 
@@ -118,7 +124,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	@Override
 	public void updateTabNumber(int position, int number) {
 	}
-
+	
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);

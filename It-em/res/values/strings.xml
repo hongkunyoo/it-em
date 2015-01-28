@@ -55,7 +55,7 @@
 
     <!-- Be Pro -->
     <string name="pro">Pro</string>
-    <string name="be_pro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque commodo diam non mi laoreet finibus in non magna. Suspendisse potenti. Integer sed eleifend nibh.</string>
+    <string name="be_pro">Be the PRO.\nShare your premium style &amp; Receive a reward for that.\nIf you want to be the PRO, send a request mail to us.</string>
     <string name="item_email">item@pinthecloud.com</string>
     <string name="code">CODE</string>
     <string name="valid_pro">You are pro.</string>
@@ -73,7 +73,7 @@
     <string name="information">Information</string>
     <string name="website">Website</string>
     <string name="min_nick_name_message">Please type in more than 1 letter.</string>
-    <string name="bad_nick_name_message">Special letter is not good as nick name.</string>
+    <string name="bad_nick_name_message">Only normal letter and number is allowed as nick name.</string>
     <string name="duplicated_nick_name_message">The nick name already exists.</string>
     <string name="profile_edited">Profile is edited.</string>
     <string name="profile_image_edited">Profile image is changed.</string>
@@ -97,8 +97,5 @@
 
     <!-- Purchase -->
     <string name="purchase">Purchase</string>
-
-    <!-- Commission -->
-    <string name="commission">Commission</string>
 
 </resources>

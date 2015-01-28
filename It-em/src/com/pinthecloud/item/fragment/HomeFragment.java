@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.UploadActivity;
-import com.pinthecloud.item.adapter.HomeItemListAdapter;
+import com.pinthecloud.item.adapter.HomeItemGridAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
@@ -38,7 +38,7 @@ public class HomeFragment extends ItFragment {
 	private View mLayout;
 	private SwipeRefreshLayout mRefresh;
 	private RecyclerView mGridView;
-	private HomeItemListAdapter mGridAdapter;
+	private HomeItemGridAdapter mGridAdapter;
 	private StaggeredGridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
 
@@ -145,6 +145,7 @@ public class HomeFragment extends ItFragment {
 
 	private void setRefreshLayout(){
 		mRefresh.setColorSchemeResources(R.color.accent_color);
+		mRefresh.setProgressViewOffset(true, ViewUtil.getActionBarHeight(mActivity)/2, ViewUtil.getActionBarHeight(mActivity));
 		mRefresh.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
@@ -157,13 +158,13 @@ public class HomeFragment extends ItFragment {
 
 	private void setGrid(){
 		mGridView.setHasFixedSize(true);
-		
+
 		int gridColumnNum = getResources().getInteger(R.integer.home_item_grid_column_num);
 		mGridLayoutManager = new StaggeredGridLayoutManager(gridColumnNum, StaggeredGridLayoutManager.VERTICAL);
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mGridAdapter = new HomeItemListAdapter(mActivity, mThisFragment, gridColumnNum, mItemList);
+		mGridAdapter = new HomeItemGridAdapter(mActivity, mThisFragment, gridColumnNum, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 	}
 
@@ -212,7 +213,7 @@ public class HomeFragment extends ItFragment {
 				mProgressBar.setVisibility(View.GONE);
 				mLayout.setVisibility(View.VISIBLE);
 				mRefresh.setRefreshing(false);
-				
+
 				mItemList.clear();
 				mGridAdapter.addAll(list);
 			}

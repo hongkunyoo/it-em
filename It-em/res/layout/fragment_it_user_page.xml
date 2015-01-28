@@ -88,7 +88,6 @@
                         android:id="@+id/it_user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/it_user_page_content_margin"
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:textColor="@color/gray_light"
                         app:textType="caption" />
@@ -97,6 +96,7 @@
                         android:id="@+id/it_user_page_frag_profile_settings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:background="@drawable/it_user_page_profile_settings_button"
                         android:drawableEnd="@drawable/mypage_edit_ic"
                         android:drawableRight="@drawable/mypage_edit_ic"
