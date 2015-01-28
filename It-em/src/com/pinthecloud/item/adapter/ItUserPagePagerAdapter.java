@@ -29,7 +29,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 		this.mItUser = itUser;
 		this.mHeaderHeight = headerHeight;
 		this.mTabHeight = tabHeight;
-		
+
 		if(mItUser.isPro()){
 			this.mTitles = resources.getStringArray(R.array.it_user_page_pro_tab_title_string_array);	
 		} else {
@@ -44,7 +44,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 	public SparseArrayCompat<ItUserPageScrollTabHolder> getItUserPageScrollTabHolderList() {
 		return mItUserPageScrollTabHolderList;
 	}
-
+	
 
 	@Override
 	public CharSequence getPageTitle(int position) {
@@ -63,7 +63,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 		MyItemFragment fragment = MyItemFragment.newInstance(position, mItUser, mHeaderHeight, mTabHeight);
 		mItUserPageScrollTabHolderList.put(position, fragment);
 		if (mItUserPageScrollTabHolder != null){
-			fragment.setItUserPageScrollTabHolder(mItUserPageScrollTabHolder);	
+			fragment.setItUserPageScrollTabHolder(mItUserPageScrollTabHolder);
 		}
 		return fragment;
 	}

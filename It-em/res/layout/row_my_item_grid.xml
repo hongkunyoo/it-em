@@ -10,6 +10,7 @@
         android:id="@+id/row_my_item_grid_item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
 
 </RelativeLayout>

@@ -33,7 +33,7 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 
-public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final float MAX_HEIGHT_RATIO = 2.3f;
 
@@ -52,7 +52,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	private boolean isDoingLikeIt = false;
 
 
-	public HomeItemListAdapter(ItActivity activity, ItFragment frag, int gridColumnNum, List<Item> itemList) {
+	public HomeItemGridAdapter(ItActivity activity, ItFragment frag, int gridColumnNum, List<Item> itemList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mFrag = frag;

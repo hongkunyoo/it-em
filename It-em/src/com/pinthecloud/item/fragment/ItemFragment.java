@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -416,6 +417,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 						categoryText.setTextType(ItTextView.TYPE.BODY);
 						categoryText.setText(tag.categoryString(getResources()) + " ");
 						categoryText.setTextColor(getResources().getColor(R.color.gray_light));
+						categoryText.setTypeface(categoryText.getTypeface(), Typeface.BOLD);
 
 						categoryText.setOnClickListener(new OnClickListener() {
 
@@ -469,7 +471,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 							} else {
 								mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 							}
-							
+
 							ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
 						}
 					});

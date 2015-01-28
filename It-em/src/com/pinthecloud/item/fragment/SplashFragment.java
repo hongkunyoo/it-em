@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.HongkunTestActivity;
 import com.pinthecloud.item.activity.LoginActivity;
@@ -55,12 +54,10 @@ public class SplashFragment extends ItFragment {
 
 
 	private void goToNextActivity() {
-		String className = "com.pinthecloud.item.util.HongUtil2";
-		if (GlobalVariable.HONG_DEBUG_MODE) className = "com.pinthecloud.item.util.HongUtil";
 		try {
+			String className = "com.pinthecloud.item.util.HongUtil2";
 			Class.forName(className);
-			Intent hongTent = new Intent();
-			hongTent.setClass(mActivity, HongkunTestActivity.class);
+			Intent hongTent = new Intent(mActivity, HongkunTestActivity.class);
 			startActivity(hongTent);
 		} catch (ClassNotFoundException e) {
 			if(isAdded()){

@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
@@ -109,16 +110,16 @@ public class ItUserPageFragment extends ItFragment {
 				setProfileImage();
 				setButton();
 
-				mContainer.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
 					@SuppressLint("NewApi")
 					@SuppressWarnings("deprecation")
 					@Override
 					public void onGlobalLayout() {
 						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-							mContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+							mViewPager.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 						} else {
-							mContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+							mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 						}
 
 						setViewPager();
@@ -141,6 +142,25 @@ public class ItUserPageFragment extends ItFragment {
 			if (resultCode == Activity.RESULT_OK){
 				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
 				setProfile();
+
+				mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+					@SuppressLint("NewApi")
+					@SuppressWarnings("deprecation")
+					@Override
+					public void onGlobalLayout() {
+						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+							mViewPager.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+						} else {
+							mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+						}
+
+						SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
+						for(int i=0 ; i<itUserPageScrollTabHolderList.size() ; i++){
+							itUserPageScrollTabHolderList.valueAt(i).updateHeader(mHeader.getHeight());
+						}
+					}
+				});
 			}
 			break;
 		}
@@ -257,6 +277,29 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setButton(){
+		mProfileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment replyDialog = ProfileImageDialog.newInstance(mItUser);
+				replyDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		mWebsite.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String webSite = mWebsite.getText().toString();
+				String webSiteRegx = "(http|https)://.*";
+				if(!webSite.matches(webSiteRegx)){
+					webSite = "http://" + webSite;
+				}
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
+				mActivity.startActivity(intent);
+			}
+		});
+
 		if(mItUser.isMe()){
 			mProfileSettings.setOnClickListener(new OnClickListener() {
 
@@ -269,15 +312,6 @@ public class ItUserPageFragment extends ItFragment {
 		} else {
 			mProfileSettings.setVisibility(View.GONE);
 		}
-
-		mProfileImage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment replyDialog = ProfileImageDialog.newInstance(mItUser);
-				replyDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-			}
-		});
 	}
 
 
@@ -313,6 +347,9 @@ public class ItUserPageFragment extends ItFragment {
 
 			@Override
 			public void adjustScroll(int scrollHeight) {
+			}
+			@Override
+			public void updateHeader(int headerHeight) {
 			}
 		});
 		mViewPager.setAdapter(mViewPagerAdapter);

@@ -9,4 +9,5 @@ public interface ItUserPageScrollTabHolder {
 	
 	// ItUserPage to Item
 	public void adjustScroll(int scrollHeight);
+	public void updateHeader(int headerHeight);
 }

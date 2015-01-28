@@ -251,9 +251,9 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void trimProfileSettings(){
-		mNickName.setText(mNickName.getText().toString().trim().replace("\n", ""));
+		mNickName.setText(mNickName.getText().toString().trim().replace(" ", "").replace("\n", ""));
 		mDescription.setText(mDescription.getText().toString().trim().replace("\n", " "));
-		mWebsite.setText(mWebsite.getText().toString().replace("\n", " "));
+		mWebsite.setText(mWebsite.getText().toString().trim().replace(" ", "").replace("\n", ""));
 	}
 
 
@@ -292,12 +292,12 @@ public class ProfileSettingsFragment extends ItFragment {
 		}
 	}
 
-
+	
 	private void updateProfileSettings(){
 		mMyItUser.setNickName(mNickName.getText().toString());
-		mMyItUser.setSelfIntro(mDescription.getText().toString().trim());
+		mMyItUser.setSelfIntro(mDescription.getText().toString());
 		mMyItUser.setWebPage(mWebsite.getText().toString());
-
+		
 		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
 			@Override

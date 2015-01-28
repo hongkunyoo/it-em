@@ -40,8 +40,8 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		this.mGridColumnNum = gridColumnNum;
 		this.mHeaderHeight = headerHeight;
 	}
-
-
+	
+	
 	public static class HeaderViewHolder extends RecyclerView.ViewHolder {
 		public HeaderViewHolder(View view) {
 			super(view);
@@ -126,7 +126,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private void setNormalImageView(NormalViewHolder holder, Item item) {
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
-		.fit()
+		.placeholder(R.drawable.feed_loading_default_img)
 		.into(holder.itemImage);
 	}
 
@@ -134,5 +134,13 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	public void addAll(List<Item> itemList) {
 		mItemList.addAll(itemList);
 		notifyDataSetChanged();
+	}
+	
+	
+	public void notifyHeader(int headerHeight){
+		this.mHeaderHeight = headerHeight;
+		for(int i=0 ; i<mGridColumnNum ; i++){
+			notifyItemChanged(i);
+		}
 	}
 }

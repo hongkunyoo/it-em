@@ -111,7 +111,7 @@ public class UserHelper {
 			EventBus.getDefault().post(new ItException("update", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
-
+		
 		table.update(user, new TableOperationCallback<ItUser>() {
 
 			@Override
