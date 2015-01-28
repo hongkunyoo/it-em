@@ -9,6 +9,9 @@
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
     <dimen name="profile_preview_image_width">40dp</dimen>
 
+    <!-- Login -->
+    <dimen name="login_button_bottom_margin">32dp</dimen>
+
     <!-- Main Drawer -->
     <dimen name="main_drawer_width">280dp</dimen>
     <dimen name="main_drawer_menu_top_margin">56dp</dimen>
@@ -29,7 +32,7 @@
     <dimen name="be_pro_content_margin">12dp</dimen>
     <dimen name="be_pro_code_margin">8dp</dimen>
     <dimen name="be_pro_mail_height">24dp</dimen>
-    
+
     <!-- Item -->
     <dimen name="item_content_margin">2dp</dimen>
     <dimen name="item_content_row_height">40dp</dimen>
@@ -45,7 +48,7 @@
 
     <!-- Profile Image -->
     <dimen name="profile_image_width">212dp</dimen>
-    
+
     <!-- My Item -->
     <dimen name="my_item_progress_bar_bottom_margin">150dp</dimen>
     <dimen name="my_item_empty_bottom_margin">100dp</dimen>
@@ -54,7 +57,7 @@
     <!-- Reply -->
     <dimen name="reply_row_previous_height">36dp</dimen>
     <dimen name="reply_margin">8dp</dimen>
-    
+
     <!-- Product Tag -->
     <dimen name="product_tag_row_height">48dp</dimen>
 
