@@ -414,9 +414,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 						// Add category text view
 						ItTextView categoryText = new ItTextView(mActivity);
-						categoryText.setTextType(ItTextView.TYPE.BODY);
-						categoryText.setText(tag.categoryString(getResources()) + " ");
-						categoryText.setTextColor(getResources().getColor(R.color.gray_light));
+						categoryText.setTextType(ItTextView.TYPE.SUBHEAD);
+						categoryText.setText((tagList.size()==1 ? "" : ", ") + tag.categoryString(getResources()));
+						categoryText.setTextColor(getResources().getColor(R.color.brand_text_color));
 						categoryText.setTypeface(categoryText.getTypeface(), Typeface.BOLD);
 
 						categoryText.setOnClickListener(new OnClickListener() {

@@ -55,7 +55,7 @@
 
     <!-- Be Pro -->
     <string name="pro">Pro</string>
-    <string name="be_pro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque commodo diam non mi laoreet finibus in non magna. Suspendisse potenti. Integer sed eleifend nibh.</string>
+    <string name="be_pro">Be the PRO.\nShare your premium style &amp; Receive a reward for that.\nIf you want to be the PRO, send a request mail to us.</string>
     <string name="item_email">item@pinthecloud.com</string>
     <string name="code">CODE</string>
     <string name="valid_pro">You are pro.</string>

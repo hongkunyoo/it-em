@@ -23,7 +23,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/dialog_tag_btn"
+        android:background="@drawable/product_tag_price_button"
         android:minHeight="@dimen/none"
         android:minWidth="@dimen/none"
         android:textColor="@color/brand_text_color"
