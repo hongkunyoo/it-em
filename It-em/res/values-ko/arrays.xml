@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Reply -->
+    <string-array name="home_more_string_array">
+        <item>삭제</item>
+    </string-array>
+
+    <!-- Main Drawer -->
+    <string-array name="main_drawer_menu_string_array">
+        <item>홈</item>
+        <item>프로 되기</item>
+        <item>설정</item>
+    </string-array>
+
+    <!-- Upload -->
+    <string-array name="upload_image_select_delete_string_array">
+        <item>앨범</item>
+        <item>삭제</item>
+    </string-array>
+    <string-array name="upload_image_select_string_array">
+        <item>앨범</item>
+    </string-array>
+
+    <!-- Profile Settings -->
+    <string-array name="profile_image_select_string_array">
+        <item>앨범</item>
+        <item>카메라</item>
+        <item>삭제</item>
+    </string-array>
+
+    <!-- Reply -->
+    <string-array name="reply_long_click_string_array">
+        <item>삭제</item>
+    </string-array>
+
+    <!-- Category -->
+    <string-array name="category_string_array">
+        <item>아우터</item>
+        <item>셔츠</item>
+        <item>니트</item>
+        <item>맨투맨</item>
+        <item>후드</item>
+        <item>티셔츠</item>
+        <item>바지</item>
+        <item>원피스</item>
+        <item>스커트</item>
+        <item>신발</item>
+        <item>양말</item>
+        <item>가방</item>
+        <item>액세사리</item>
+        <item>모자</item>
+        <item>기타</item>
+    </string-array>
+    
+</resources>

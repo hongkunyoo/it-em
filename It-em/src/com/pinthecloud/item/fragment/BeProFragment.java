@@ -100,7 +100,13 @@ public class BeProFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag, entity);
+						if(entity){
+							AsyncChainer.notifyNext(frag);
+						} else {
+							mApp.dismissProgressDialog();
+							Toast.makeText(mActivity, getResources().getString(R.string.invalid_pro), Toast.LENGTH_LONG).show();
+							AsyncChainer.clearChain(frag);
+						}
 					}
 				});
 			}
@@ -108,44 +114,32 @@ public class BeProFragment extends ItFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				boolean result = (Boolean)params[0];
-				if(result) {
-					mMyItUser.setType(ItUser.TYPE.PRO);
-					mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+				mMyItUser.setType(ItUser.TYPE.PRO);
+				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
-						@Override
-						public void onCompleted(ItUser entity) {
-							mObjectPrefHelper.put(entity);
-							AsyncChainer.notifyNext(frag, entity);
-						}
-					});
-				} else {
-					mApp.dismissProgressDialog();
-					Toast.makeText(mActivity, getResources().getString(R.string.invalid_pro), Toast.LENGTH_LONG).show();
-				}
+					@Override
+					public void onCompleted(ItUser entity) {
+						mObjectPrefHelper.put(entity);
+						AsyncChainer.notifyNext(frag);
+					}
+				});
 			}
 		}, new Chainable() {
-			
+
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
 				mAimHelper.invalidateInviteKey(inviteKey, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
-						// TODO Auto-generated method stub
-						if (!entity) return;
 						mApp.dismissProgressDialog();
 						Toast.makeText(mActivity, getResources().getString(R.string.valid_pro), Toast.LENGTH_LONG).show();
+						
 						Intent intent = new Intent(mActivity, MainActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 					}
 				});
-				
-				
-				
-				
 			}
 		});
 	}

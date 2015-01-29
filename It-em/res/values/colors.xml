@@ -13,6 +13,7 @@
     <color name="gray">#deB0BEC5</color>
     <color name="gray_pressed">#ECEFF1</color>
     <color name="red">#ef5350</color>
+    <color name="blue">#01579b</color>
 
     <!-- Home -->
     <color name="home_item_image_default">#cfd8dc</color>

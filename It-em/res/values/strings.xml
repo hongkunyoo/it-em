@@ -23,10 +23,8 @@
     <string name="image">Image</string>
 
     <!-- Home -->
-    <string name="home">Home</string>
     <string name="plus">+</string>
     <string name="comments">Comments</string>
-    <string name="tags">Tags</string>
     <string name="more">More</string>
     <string name="unfold">Unfold</string>
 
@@ -39,18 +37,17 @@
     <!-- Reply -->
     <string name="delete">Delete</string>
     <string name="submit">SUBMIT</string>
-    <string name="message">Wirte a comment</string>
+    <string name="write_reply">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
-    <string name="first_reply">How about writing a first comment?</string>
+    <string name="first_reply">Be first of comments</string>
 
     <!-- It User Page -->
     <string name="no_user">This user doesn\'t exist.</string>
 
     <!-- My Item -->
-    <string name="it_lower">it</string>
-    <string name="reply_lower">comments</string>
-    <string name="empty_my_item">This user\'s item is empty.</string>
-    <string name="empty_it_item">This user\'s IT item is empty.</string>
+    <string name="it">it</string>
+    <string name="empty_my_item">Item is empty.\nShare your own style!</string>
+    <string name="empty_it_item">IT item is empty.\nGive IT to lovely item!</string>
     <string name="empty">Empty</string>
 
     <!-- Be Pro -->
@@ -58,8 +55,8 @@
     <string name="be_pro">Be the PRO.\nShare your premium style &amp; Receive a reward for that.\nIf you want to be the PRO, send a request mail to us.</string>
     <string name="item_email">item@pinthecloud.com</string>
     <string name="code">CODE</string>
-    <string name="valid_pro">You are pro.</string>
-    <string name="invalid_pro">It is invalid key.</string>
+    <string name="valid_pro">You become PRO.</string>
+    <string name="invalid_pro">It is invalid PRO key.</string>
 
     <!-- Upload -->
     <string name="upload">Upload</string>
@@ -72,7 +69,7 @@
     <string name="nick_name">Nick Name</string>
     <string name="information">Information</string>
     <string name="website">Website</string>
-    <string name="min_nick_name_message">Please type in more than 1 letter.</string>
+    <string name="min_nick_name_message">Please type in more than 1 letter in nick name.</string>
     <string name="bad_nick_name_message">Only normal letter and number is allowed as nick name.</string>
     <string name="duplicated_nick_name_message">The nick name already exists.</string>
     <string name="profile_edited">Profile is edited.</string>
@@ -82,20 +79,15 @@
     <string name="logout">Logout</string>
     <string name="logout_message">Do you want to logout?</string>
     <string name="settings">Settings</string>
-    <string name="alarm">Alarm</string>
 
     <!-- Product Tag -->
     <string name="product_tag">Product Tag</string>
-    <string name="empty_product_tag">Product tag of this item is empty.</string>
 
     <!-- ItDateTime -->
     <string name="second_ago">sec ago</string>
     <string name="minute_ago">min ago</string>
     <string name="hour_ago">hour ago</string>
-    <string name="day_ago"> day ago</string>
+    <string name="day_ago">day ago</string>
     <string name="yesterday">Yesterday</string>
-
-    <!-- Purchase -->
-    <string name="purchase">Purchase</string>
 
 </resources>

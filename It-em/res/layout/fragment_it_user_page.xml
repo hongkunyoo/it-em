@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
-                        android:textColor="@color/gray_light"
+                        android:textColor="@color/blue"
                         app:textType="caption" />
 
                     <Button

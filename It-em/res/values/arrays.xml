@@ -47,7 +47,7 @@
     <string-array name="category_string_array">
         <item>Outer</item>
         <item>Shirts</item>
-        <item>Neet</item>
+        <item>knit</item>
         <item>ManToMan</item>
         <item>Hood</item>
         <item>T_Shirts</item>
@@ -59,7 +59,7 @@
         <item>Bag</item>
         <item>Accessory</item>
         <item>Cap</item>
-        <item>Items</item>
+        <item>etc</item>
     </string-array>
 
 </resources>

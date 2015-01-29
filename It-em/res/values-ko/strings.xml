@@ -1,4 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Common Sentence -->
+    <string name="network_unavailable_message">인터넷이 불안정합니다. 네트워크 상태를 확인해 주세요.</string>
+    <string name="error_message">에러가 났습니다. 다시 시도해 주세요.</string>
+
+    <!-- Login -->
+    <string name="facebook_login">페이스북으로 로그인하기</string>
+
+    <!-- Home -->
+    <string name="comments">댓글</string>
+
+    <!-- Item -->
+    <string name="it_number">개의 IT</string>
+    <string name="of">의</string>
+
+    <!-- Reply -->
+    <string name="delete">삭제</string>
+    <string name="submit">SUBMIT</string>
+    <string name="write_reply">댓글을 써주세요</string>
+    <string name="previous_reply">모든 댓글 보기</string>
+    <string name="first_reply">첫번째 댓글을 써보세요</string>
+
+    <!-- It User Page -->
+    <string name="no_user">이 사용자가 존재하지 않습니다.</string>
+
+    <!-- My Item -->
+    <string name="empty_my_item">아이템이 없습니다.\n자신만의 스타일을 공유해보세요!</string>
+    <string name="empty_it_item">잇 아이템이 없습니다.\n좋은 아이템을 잇 해보세요!</string>
+
+    <!-- Be Pro -->
+    <string name="be_pro">프로가 되어보세요.\n자신의 특별한 스타일을 공유하고 &amp; 그에대한 보상을 받으세요.\n프로가 되고 싶으시다면, 저희에게 요청 메일을 보내주세요.</string>
+    <string name="valid_pro">프로가 되었습니다.</string>
+    <string name="invalid_pro">맞지 않는 키 입니다.</string>
+
+    <!-- Upload -->
+    <string name="upload">업로드</string>
+    <string name="uploaded">아이템이 업로드 되었습니다.</string>
+    <string name="description">설명</string>
+
+    <!-- Profile Settings -->
+    <string name="profile_settings">프로필 수정</string>
+    <string name="nick_name">닉네임</string>
+    <string name="information">자기소개</string>
+    <string name="website">웹사이트</string>
+    <string name="min_nick_name_message">닉네임은 2자 이상으로 해주세요.</string>
+    <string name="bad_nick_name_message">닉네임은 보통 글자와 숫자만 허용되요.</string>
+    <string name="duplicated_nick_name_message">이미 존재하는 닉네임 입니다.</string>
+    <string name="profile_edited">프로필이 수정되었습니다.</string>
+    <string name="profile_image_edited">프로필 이미지를 바꿨습니다.</string>
+
+    <!-- Settings -->
+    <string name="logout">로그아웃</string>
+    <string name="logout_message">로그아웃 하시겠습니까?</string>
+    <string name="settings">설정</string>
+
+    <!-- ItDateTime -->
+    <string name="second_ago">초 전</string>
+    <string name="minute_ago">분 전</string>
+    <string name="hour_ago">시간 전</string>
+    <string name="day_ago">일 전</string>
+    <string name="yesterday">어제</string>
+    
 </resources>

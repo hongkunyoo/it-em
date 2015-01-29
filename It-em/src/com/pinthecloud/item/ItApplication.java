@@ -24,8 +24,8 @@ public class ItApplication extends Application {
 	// Windows Azure Mobile Service Keys
 	private final String AZURE_REAL_URL = "https://it-em.azure-mobile.net/";
 	private final String AZURE_REAL_KEY = "TnmDvNkgfghvrcXjoQhRjEdcyFCEzd99";
-	private final String AZURE_TEST_URL = "https://it-emtest.azure-mobile.net/";
-	private final String AZURE_TEST_KEY = "yHCLhyMsjiaLSbcMKeUdUOoZkbYXfK52";
+	private final String AZURE_TEST_URL = "https://it-em-test.azure-mobile.net/";
+	private final String AZURE_TEST_KEY = "jidjLSdrpbivsOXwsQStSSHGIKxhKa66";
 
 	// Mobile Service
 	private MobileServiceClient mClient;
