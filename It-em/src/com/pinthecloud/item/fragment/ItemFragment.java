@@ -36,6 +36,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
+import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -252,9 +253,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					isDoingLikeIt = true;
 
 					if(isDoLike) {
+						mGaHelper.sendEventGA(
+								mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.ITEM);
+
 						// Do like it
 						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-						mApp.getAimHelper().addUnique(likeIt, new EntityCallback<LikeIt>() {
+						mAimHelper.addUnique(likeIt, new EntityCallback<LikeIt>() {
 
 							@Override
 							public void onCompleted(LikeIt entity) {
@@ -262,9 +266,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 							}
 						});
 					} else {
+						mGaHelper.sendEventGA(
+								mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.ITEM);
+
 						// Cancel like it
 						LikeIt likeIt = new LikeIt(mItem.getPrevLikeId());
-						mApp.getAimHelper().del(likeIt, new EntityCallback<Boolean>() {
+						mAimHelper.del(likeIt, new EntityCallback<Boolean>() {
 
 							@Override
 							public void onCompleted(Boolean entity) {
@@ -291,6 +298,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
+				mGaHelper.sendEventGA(
+						mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
+				
 				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
 				startActivity(intent);
@@ -401,6 +411,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 						mProductTagLayout.setVisibility(View.VISIBLE);
 					}
 
+
 					final Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();
 					for(final ProductTag tag : list){
 						// Add tag list by category
@@ -423,6 +434,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 							@Override
 							public void onClick(View v) {
+								mGaHelper.sendEventGA(
+										mThisFragment.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
+
 								ItDialogFragment productTagDialog = ProductTagDialog.newInstance(tagList.get(""+tag.getCategory()));
 								productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
 							}

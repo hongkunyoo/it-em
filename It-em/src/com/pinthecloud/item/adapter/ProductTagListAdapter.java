@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
+import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.model.ProductTag;
 
 public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAdapter.ViewHolder> {
 
+	private ItApplication mApp;
 	private ItActivity mActivity;
+	private Fragment mFrag;
 	private List<ProductTag> mTagList;
 
 
-	public ProductTagListAdapter(ItActivity activity, List<ProductTag> tagList) {
+	public ProductTagListAdapter(ItActivity activity, Fragment frag, List<ProductTag> tagList) {
+		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
+		this.mFrag = frag;
 		this.mTagList = tagList;
 	}
 
@@ -70,6 +77,9 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAd
 
 			@Override
 			public void onClick(View v) {
+				mApp.getGaHelper().sendEventGA(
+						mFrag.getClass().getSimpleName(), GAHelper.PRICE, GAHelper.ITEM);
+
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tag.getWebPage()));
 				mActivity.startActivity(intent);
 			}

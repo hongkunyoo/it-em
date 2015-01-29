@@ -30,7 +30,7 @@
     <string name="empty_it_item">잇 아이템이 없습니다.\n좋은 아이템을 잇 해보세요!</string>
 
     <!-- Be Pro -->
-    <string name="be_pro">프로가 되어보세요.\n자신의 특별한 스타일을 공유하고 &amp; 그에대한 보상을 받으세요.\n프로가 되고 싶으시다면, 저희에게 요청 메일을 보내주세요.</string>
+    <string name="be_pro">프로가 되어보세요.\n자신의 특별한 스타일을 공유하고, 보상을 받으세요.\n프로가 되고 싶으시다면, 저희에게 요청 메일을 보내주세요.</string>
     <string name="valid_pro">프로가 되었습니다.</string>
     <string name="invalid_pro">맞지 않는 키 입니다.</string>
 

@@ -19,6 +19,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ReplyDialog;
@@ -206,6 +207,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
+				mApp.getGaHelper().sendEventGA(
+						mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
+						
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
 				mActivity.startActivity(intent);
@@ -235,6 +239,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					isDoingLikeIt = true;
 
 					if(isDoLike) {
+						mApp.getGaHelper().sendEventGA(
+								mFrag.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.HOME);
+						
 						// Do like it
 						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
 						mApp.getAimHelper().addUnique(likeIt, new EntityCallback<LikeIt>() {
@@ -245,6 +252,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 							}
 						});
 					} else {
+						mApp.getGaHelper().sendEventGA(
+								mFrag.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.HOME);
+						
 						// Cancel like it
 						LikeIt likeIt = new LikeIt(item.getPrevLikeId());
 						mApp.getAimHelper().del(likeIt, new EntityCallback<Boolean>() {
