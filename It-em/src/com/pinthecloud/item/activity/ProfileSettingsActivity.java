@@ -24,6 +24,7 @@ public class ProfileSettingsActivity extends ItActivity {
 		setFragment();
 	}
 
+	
 
 	@Override
 	public View getToolbarLayout() {
@@ -39,7 +40,7 @@ public class ProfileSettingsActivity extends ItActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowHomeEnabled(true);
 		mToolbar.setNavigationIcon(R.drawable.appbar_close_ic);
-		
+
 		mToolbarLayout.bringToFront();
 	}
 

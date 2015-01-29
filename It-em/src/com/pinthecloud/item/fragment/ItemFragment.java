@@ -38,6 +38,7 @@ import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.LikeItDialog;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
@@ -283,6 +284,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		});
 
+		mItNumber.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment likeItDialog = LikeItDialog.newInstance(mItem);
+				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
 		mReplyInputSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -300,7 +310,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			public void onClick(View v) {
 				mGaHelper.sendEventGA(
 						mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
-				
+
 				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
 				startActivity(intent);

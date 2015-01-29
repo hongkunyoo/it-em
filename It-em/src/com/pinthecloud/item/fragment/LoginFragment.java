@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
 import com.facebook.Session;
@@ -121,7 +122,17 @@ public class LoginFragment extends ItFragment {
 			public void onUserInfoFetched(GraphUser user) {
 				Session session = Session.getActiveSession();
 				if (session != null && session.isOpened() || user != null) {
-					facebookLogin(session, user);
+					if(user.getProperty("email") == null){
+						Toast.makeText(mActivity, getResources().getString(R.string.facebook_email_request),
+								Toast.LENGTH_LONG).show();
+
+						Session.NewPermissionsRequest newPermissionsRequest = 
+								new Session.NewPermissionsRequest(mActivity, Arrays.asList("email"));
+						session.requestNewReadPermissions(newPermissionsRequest);
+						session.close();
+					} else {
+						facebookLogin(session, user);	
+					}
 				}
 			}
 		});
@@ -130,7 +141,7 @@ public class LoginFragment extends ItFragment {
 
 	private void facebookLogin(Session session, final GraphUser user){
 		mApp.showProgressDialog(mActivity);
-
+		
 		final ItUser itUser = new ItUser(user.getId(), ItUser.FACEBOOK, user.getProperty("email").toString(),
 				user.getFirstName().replace(" ", "_"), "", "", ItUser.TYPE.VIEWER);
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){

@@ -22,6 +22,7 @@ import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.LikeItDialog;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -269,6 +270,15 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 
+		holder.itNumber.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment likeItDialog = LikeItDialog.newInstance(item);
+				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+		
 		holder.replyNumber.setOnClickListener(new OnClickListener() {
 
 			@Override

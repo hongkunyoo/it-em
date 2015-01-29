@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <com.pinthecloud.item.view.CircleImageView
+        android:id="@+id/row_like_it_list_profile_image"
+        android:layout_width="@dimen/profile_preview_image_width"
+        android:layout_height="@dimen/profile_preview_image_width"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/key_line_first"
+        android:layout_marginStart="@dimen/key_line_first"
+        app:border_color="@color/line_color"
+        app:border_width="@dimen/line_width" />
+
+    <com.pinthecloud.item.view.ItTextView
+        android:id="@+id/row_like_it_list_nick_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/key_line_second"
+        android:layout_marginStart="@dimen/key_line_second"
+        android:textColor="@color/brand_text_color"
+        android:textStyle="bold"
+        app:textType="subhead" />
+
+</RelativeLayout>

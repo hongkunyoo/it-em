@@ -11,7 +11,6 @@ import android.net.NetworkInfo;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
-import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
@@ -43,7 +42,6 @@ public class ItApplication extends Application {
 	private PrefHelper prefHelper;
 	private ObjectPrefHelper objectPrefHelper;
 	private AimHelper aimHelper;
-	private AimDBHelper aimDBHelper;
 	private UserHelper userHelper;
 	private BlobStorageHelper blobStorageHelper;
 
@@ -62,7 +60,6 @@ public class ItApplication extends Application {
 		objectPrefHelper = getObjectPrefHelper();
 		aimHelper = getAimHelper();
 		userHelper = getUserHelper();
-		aimDBHelper = getAimDBHelper();
 		blobStorageHelper = getBlobStorageHelper();
 	}
 
@@ -114,10 +111,6 @@ public class ItApplication extends Application {
 	public AimHelper getAimHelper() {
 		if(aimHelper == null) aimHelper = new AimHelper(app);
 		return aimHelper;
-	}
-	public AimDBHelper getAimDBHelper() {
-		if(aimDBHelper == null) aimDBHelper = new AimDBHelper(app);
-		return aimDBHelper;
 	}
 	public UserHelper getUserHelper() {
 		if(userHelper == null) userHelper = new UserHelper(app);

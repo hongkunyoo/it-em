@@ -13,9 +13,6 @@ public class PrefHelper {
 	public static final boolean DEFAULT_BOOLEAN = false;
 	public static final float DEFAULT_FLOAT = 0;
 
-	// Key
-	public static final String MAIN_EXIT_TAB = "MAIN_EXIT_TAB";
-
 
 	private SharedPreferences mPref;
 	public PrefHelper(Context context){

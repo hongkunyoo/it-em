@@ -16,8 +16,8 @@ public class SplashActivity extends ItActivity {
 		setContentView(R.layout.activity_frame);
 		setFragment();
 	}
-
-
+	
+	
 	@Override
 	public View getToolbarLayout() {
 		return null;

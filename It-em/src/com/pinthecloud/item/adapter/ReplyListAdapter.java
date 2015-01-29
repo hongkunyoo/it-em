@@ -166,14 +166,6 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	private void setNoramlText(NormalViewHolder holder, final Reply reply){
 		holder.nickName.setText(reply.getWhoMade());
-		holder.nickName.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				goToItUserPageActivity(reply.getWhoMadeId());
-			}
-		});
-
 		holder.content.setText(reply.getContent());
 		if(reply.getRawCreateDateTime() != null){
 			holder.time.setText(reply.getCreateDateTime().getElapsedDateTime(mActivity.getResources()));
@@ -184,6 +176,22 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 	private void setNormalButton(NormalViewHolder holder, final Reply reply){
+		holder.profileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				goToItUserPageActivity(reply.getWhoMadeId());
+			}
+		});
+
+		holder.nickName.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				goToItUserPageActivity(reply.getWhoMadeId());
+			}
+		});
+
 		if(reply.checkIsMine()){
 			holder.view.setOnLongClickListener(new OnLongClickListener() {
 
@@ -210,14 +218,6 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		.placeholder(R.drawable.profile_s_default_img)
 		.fit()
 		.into(holder.profileImage);
-
-		holder.profileImage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				goToItUserPageActivity(reply.getWhoMadeId());
-			}
-		});
 	}
 
 

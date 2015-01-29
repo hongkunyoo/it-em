@@ -53,7 +53,7 @@
     <dimen name="my_item_progress_bar_bottom_margin">150dp</dimen>
     <dimen name="my_item_empty_bottom_margin">100dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
-
+    
     <!-- Reply -->
     <dimen name="reply_row_previous_height">36dp</dimen>
     <dimen name="reply_margin">8dp</dimen>
