@@ -19,13 +19,20 @@ public class ProfileSettingsActivity extends ItActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
 		setContentView(R.layout.activity_toolbar_frame);
 		setToolbar();
 		setFragment();
 	}
-
 	
 
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
+	}
+	
+	
 	@Override
 	public View getToolbarLayout() {
 		return mToolbarLayout;

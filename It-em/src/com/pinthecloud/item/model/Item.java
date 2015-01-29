@@ -11,6 +11,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 
 	private int replyCount;
 	private int likeItCount;
+	private boolean hasProductTag;
 	private int imageWidth;
 	private int imageHeight;
 	private String prevLikeId;
@@ -45,6 +46,12 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setLikeItCount(int likeCount) {
 		this.likeItCount = likeCount;
 	}
+	public boolean isHasProductTag() {
+		return hasProductTag;
+	}
+	public void setHasProductTag(boolean hasProductTag) {
+		this.hasProductTag = hasProductTag;
+	}
 	public int getImageWidth() {
 		return imageWidth;
 	}
@@ -72,6 +79,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setRefId(item.getRefId());
 		this.setReplyCount(item.getReplyCount());
 		this.setLikeItCount(item.getLikeItCount());
+		this.setHasProductTag(item.isHasProductTag());
 		this.setImageWidth(item.getImageWidth());
 		this.setImageHeight(item.getImageHeight());
 		this.setPrevLikeId(item.getPrevLikeId());

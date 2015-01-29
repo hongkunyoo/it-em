@@ -33,7 +33,7 @@ public class ItemActivity extends ItActivity {
 	@Override
 	public void finish() {
 		super.finish();
-		overridePendingTransition(R.anim.zoom_in, android.R.anim.slide_out_right);
+		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
 	}
 
 

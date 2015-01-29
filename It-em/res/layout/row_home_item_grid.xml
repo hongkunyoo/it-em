@@ -117,12 +117,22 @@
                 android:id="@+id/row_home_item_grid_reply_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/home_item_content_margin"
+                android:layout_marginRight="@dimen/home_item_content_margin"
                 android:layout_marginTop="@dimen/home_item_content_margin"
                 android:drawableLeft="@drawable/feed_comment_ic"
                 android:drawableStart="@drawable/feed_comment_ic"
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
                 app:textType="caption" />
+
+            <ImageView
+                android:id="@+id/row_home_item_grid_product_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/home_item_content_margin"
+                android:contentDescription="@string/product_tag"
+                android:src="@drawable/detail_tag_ic" />
         </LinearLayout>
 
         <ImageButton
