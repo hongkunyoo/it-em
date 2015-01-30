@@ -9,23 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_content_row_height" >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/key_line_first"
-            android:layout_marginStart="@dimen/key_line_first"
-            android:contentDescription="@string/comments"
-            android:src="@drawable/feed_it_ic" />
-
         <com.pinthecloud.item.view.ItTextView
             android:id="@+id/like_it_frag_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/key_line_second"
-            android:layout_marginStart="@dimen/key_line_second"
-            android:text="@string/app_name"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
+            android:text="@string/it_title"
             android:textColor="@color/brand_text_color"
             android:textStyle="bold"
             app:textType="subhead" />

@@ -25,7 +25,7 @@
     <dimen name="home_item_profile_height">48dp</dimen>
     <dimen name="home_item_margin">8dp</dimen>
     <dimen name="home_item_spacing">4dp</dimen>
-    <dimen name="home_item_content_margin">2dp</dimen>
+    <dimen name="home_item_content_margin">4dp</dimen>
 
     <!-- Be Pro -->
     <dimen name="be_pro_content_bottom_margin">30dp</dimen>

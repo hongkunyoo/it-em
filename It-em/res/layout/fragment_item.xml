@@ -100,14 +100,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/plus"
                             android:textColor="@color/gray_light"
-                            app:textType="caption" />
+                            android:textStyle="bold"
+                            app:textType="subhead" />
 
                         <com.pinthecloud.item.view.ItTextView
                             android:id="@+id/item_frag_it_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/gray_light"
-                            app:textType="caption" />
+                            android:textStyle="bold"
+                            app:textType="subhead" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

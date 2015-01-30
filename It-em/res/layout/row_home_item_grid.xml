@@ -97,6 +97,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/home_item_content_margin"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
@@ -106,11 +107,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/home_item_content_margin"
                 android:layout_marginRight="@dimen/home_item_content_margin"
-                android:layout_marginTop="@dimen/home_item_content_margin"
                 android:drawableLeft="@drawable/feed_it_ic"
                 android:drawableStart="@drawable/feed_it_ic"
                 android:gravity="center_vertical"
-                android:textColor="@color/gray"
+                android:textColor="@color/gray_light"
                 app:textType="caption" />
 
             <com.pinthecloud.item.view.ItTextView
@@ -119,20 +119,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/home_item_content_margin"
                 android:layout_marginRight="@dimen/home_item_content_margin"
-                android:layout_marginTop="@dimen/home_item_content_margin"
                 android:drawableLeft="@drawable/feed_comment_ic"
                 android:drawableStart="@drawable/feed_comment_ic"
                 android:gravity="center_vertical"
-                android:textColor="@color/gray"
+                android:textColor="@color/gray_light"
                 app:textType="caption" />
 
             <ImageView
                 android:id="@+id/row_home_item_grid_product_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/home_item_content_margin"
+                android:layout_marginLeft="@dimen/home_item_content_margin"
+                android:layout_marginStart="@dimen/home_item_content_margin"
                 android:contentDescription="@string/product_tag"
-                android:src="@drawable/detail_tag_ic" />
+                android:src="@drawable/feed_tag_ic" />
         </LinearLayout>
 
         <ImageButton

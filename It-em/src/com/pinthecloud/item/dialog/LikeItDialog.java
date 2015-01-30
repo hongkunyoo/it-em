@@ -23,8 +23,6 @@ import com.pinthecloud.item.util.ViewUtil;
 
 public class LikeItDialog extends ItDialogFragment {
 
-	private TextView mTitle;
-
 	private ProgressBar mProgressBar;
 	private RecyclerView mListView;
 	private LikeItListAdapter mListAdapter;
@@ -65,7 +63,6 @@ public class LikeItDialog extends ItDialogFragment {
 
 
 	private void findComponent(View view){
-		mTitle = (TextView)view.findViewById(R.id.like_it_frag_title);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListView = (RecyclerView)view.findViewById(R.id.like_it_frag_list);
 	}
@@ -97,20 +94,13 @@ public class LikeItDialog extends ItDialogFragment {
 					mListView.setVisibility(View.VISIBLE);
 
 					mItem.setLikeItCount(count);
-					setTitle(mItem.getLikeItCount());
-					
+
 					mLikeItList.clear();
 					mListAdapter.addAll(list);
-					
+
 					ViewUtil.setListHeightBasedOnChildren(mListView, count);
 				}
 			}
 		});
-	}
-
-
-	private void setTitle(int likeItCount){
-		String title = getResources().getString(R.string.it).toUpperCase(Locale.US) + " " + likeItCount;
-		mTitle.setText(title);
 	}
 }

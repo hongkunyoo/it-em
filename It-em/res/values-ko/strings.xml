@@ -22,6 +22,9 @@
     <string name="previous_reply">모든 댓글 보기</string>
     <string name="first_reply">첫번째 댓글을 써보세요</string>
 
+    <!-- It -->
+    <string name="it_title">이 아이템을 잇한 사람들</string>
+    
     <!-- It User Page -->
     <string name="no_user">이 사용자가 존재하지 않습니다.</string>
 
@@ -61,5 +64,5 @@
     <string name="hour_ago">시간 전</string>
     <string name="day_ago">일 전</string>
     <string name="yesterday">어제</string>
-    
+
 </resources>
