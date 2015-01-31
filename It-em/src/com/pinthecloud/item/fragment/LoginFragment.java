@@ -47,7 +47,6 @@ public class LoginFragment extends ItFragment {
 
 			@Override
 			public void call(Session session, SessionState state, Exception exception) {
-				// Do nothing
 			}
 		});
 		mFacebookUiHelper.onCreate(savedInstanceState);
@@ -131,7 +130,7 @@ public class LoginFragment extends ItFragment {
 						session.requestNewReadPermissions(newPermissionsRequest);
 						session.close();
 					} else {
-						facebookLogin(session, user);	
+						facebookLogin(session, user);
 					}
 				}
 			}

@@ -15,11 +15,11 @@
 
     <!-- It User Page -->
     <string-array name="it_user_page_pro_tab_title_string_array">
-        <item>IT:EM</item>
-        <item>IT</item>
+        <item>My Item</item>
+        <item>IT Item</item>
     </string-array>
     <string-array name="it_user_page_tab_title_string_array">
-        <item>IT</item>
+        <item>IT Item</item>
     </string-array>
 
     <!-- Upload -->

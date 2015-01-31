@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/home_item_spacing"
+    android:layout_margin="@dimen/home_item_content_margin"
     android:background="@drawable/home_item_grid_background"
     android:orientation="vertical" >
 
@@ -97,7 +97,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/home_item_content_margin"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
@@ -107,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/home_item_content_margin"
                 android:layout_marginRight="@dimen/home_item_content_margin"
+                android:layout_marginTop="@dimen/home_item_content_margin"
                 android:drawableLeft="@drawable/feed_it_ic"
                 android:drawableStart="@drawable/feed_it_ic"
                 android:gravity="center_vertical"
@@ -117,8 +117,9 @@
                 android:id="@+id/row_home_item_grid_reply_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/home_item_content_margin"
-                android:layout_marginRight="@dimen/home_item_content_margin"
+                android:layout_marginEnd="@dimen/home_item_margin"
+                android:layout_marginRight="@dimen/home_item_margin"
+                android:layout_marginTop="@dimen/home_item_content_margin"
                 android:drawableLeft="@drawable/feed_comment_ic"
                 android:drawableStart="@drawable/feed_comment_ic"
                 android:gravity="center_vertical"
@@ -129,8 +130,7 @@
                 android:id="@+id/row_home_item_grid_product_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/home_item_content_margin"
-                android:layout_marginStart="@dimen/home_item_content_margin"
+                android:layout_marginTop="@dimen/home_item_content_margin"
                 android:contentDescription="@string/product_tag"
                 android:src="@drawable/feed_tag_ic" />
         </LinearLayout>

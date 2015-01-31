@@ -24,7 +24,6 @@
     <!-- Home -->
     <dimen name="home_item_profile_height">48dp</dimen>
     <dimen name="home_item_margin">8dp</dimen>
-    <dimen name="home_item_spacing">4dp</dimen>
     <dimen name="home_item_content_margin">4dp</dimen>
 
     <!-- Be Pro -->
@@ -54,10 +53,15 @@
     <dimen name="my_item_empty_bottom_margin">100dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
     
+    
     <!-- Reply -->
+    <dimen name="reply_height">300dp</dimen>
     <dimen name="reply_row_previous_height">36dp</dimen>
     <dimen name="reply_margin">8dp</dimen>
 
+    <!-- Like It -->
+    <dimen name="like_it_margin">8dp</dimen>
+    
     <!-- Product Tag -->
     <dimen name="product_tag_row_height">48dp</dimen>
 

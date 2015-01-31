@@ -611,10 +611,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				}
 
-				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));		
 			}
 		});
-
+		
 		// Set reply list fragment
 		showReplyEmptyView(mItem.getReplyCount());
 		setReplyTitle(mItem.getReplyCount());

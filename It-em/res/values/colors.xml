@@ -14,7 +14,6 @@
     <color name="gray_pressed">#ECEFF1</color>
     <color name="red">#ef5350</color>
     <color name="blue">#01579b</color>
-    <color name="white">#ffffff</color>
 
     <!-- Home -->
     <color name="home_item_image_default">#cfd8dc</color>
