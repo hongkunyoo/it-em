@@ -14,7 +14,6 @@
 
     <!-- Login -->
     <string name="facebook_login">SIGN IN with facebook</string>
-    <string name="facebook_email_request">We need email information for sign in.</string>
 
     <!-- Main -->
     <string name="drawer_open">Open drawer</string>
