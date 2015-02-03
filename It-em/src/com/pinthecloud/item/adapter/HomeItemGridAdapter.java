@@ -19,8 +19,10 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.LikeItDialog;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -80,6 +82,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public TextView content;
 		public TextView itNumber;
 		public TextView replyNumber;
+		public ImageView productTag;
 		public ImageButton itButton;
 
 		public NormalViewHolder(View view) {
@@ -95,6 +98,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			this.content = (TextView)view.findViewById(R.id.row_home_item_grid_content);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_grid_it_number);
 			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_grid_reply_number);
+			this.productTag = (ImageView)view.findViewById(R.id.row_home_item_grid_product_tag);
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_grid_it_button);
 		}
 	}
@@ -159,6 +163,12 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			holder.replyNumber.setVisibility(View.VISIBLE);
 		}
 		holder.replyNumber.setText(""+item.getReplyCount());
+		
+		if(item.isHasProductTag()){
+			holder.productTag.setVisibility(View.VISIBLE);
+		} else {
+			holder.productTag.setVisibility(View.GONE);			
+		}
 	}
 
 
@@ -206,6 +216,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			@Override
 			public void onClick(View v) {
+				mApp.getGaHelper().sendEventGA(
+						mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
+
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
 				mActivity.startActivity(intent);
@@ -235,6 +248,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					isDoingLikeIt = true;
 
 					if(isDoLike) {
+						mApp.getGaHelper().sendEventGA(
+								mFrag.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.HOME);
+
 						// Do like it
 						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
 						mApp.getAimHelper().addUnique(likeIt, new EntityCallback<LikeIt>() {
@@ -245,6 +261,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 							}
 						});
 					} else {
+						mApp.getGaHelper().sendEventGA(
+								mFrag.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.HOME);
+
 						// Cancel like it
 						LikeIt likeIt = new LikeIt(item.getPrevLikeId());
 						mApp.getAimHelper().del(likeIt, new EntityCallback<Boolean>() {
@@ -256,6 +275,15 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						});
 					}
 				}
+			}
+		});
+
+		holder.itNumber.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment likeItDialog = LikeItDialog.newInstance(item);
+				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 

@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,19 +38,18 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
+import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.dialog.LikeItDialog;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
-import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
-import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
@@ -57,6 +58,7 @@ import com.pinthecloud.item.view.ItTextView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
+	private SwipeRefreshLayout mRefresh;
 	private ScrollView mScrollLayout;
 	private int mBaseScrollY;
 
@@ -119,10 +121,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		findComponent(view);
 		setComponent();
 		setButton();
+		setRefreshLayout();
 		setImageView();
 		setScroll();
 		setReplyList();
-		setText();
 		updateItemFrag();
 
 		return view;
@@ -191,6 +193,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
+		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.item_frag_scroll_refresh);
 		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 
 		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_item_image);
@@ -218,8 +221,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
-		setItNumber(mItem.getLikeItCount());
-
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -239,7 +240,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setButton(){
-		mItButton.setActivated(mItem.getPrevLikeId() != null);
 		mItButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -252,9 +252,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					isDoingLikeIt = true;
 
 					if(isDoLike) {
+						mGaHelper.sendEventGA(
+								mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.ITEM);
+
 						// Do like it
 						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-						mApp.getAimHelper().addUnique(likeIt, new EntityCallback<LikeIt>() {
+						mAimHelper.addUnique(likeIt, new EntityCallback<LikeIt>() {
 
 							@Override
 							public void onCompleted(LikeIt entity) {
@@ -262,9 +265,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 							}
 						});
 					} else {
+						mGaHelper.sendEventGA(
+								mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.ITEM);
+
 						// Cancel like it
 						LikeIt likeIt = new LikeIt(mItem.getPrevLikeId());
-						mApp.getAimHelper().del(likeIt, new EntityCallback<Boolean>() {
+						mAimHelper.del(likeIt, new EntityCallback<Boolean>() {
 
 							@Override
 							public void onCompleted(Boolean entity) {
@@ -273,6 +279,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 						});
 					}
 				}
+			}
+		});
+
+		mItNumber.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment likeItDialog = LikeItDialog.newInstance(mItem);
+				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 
@@ -291,6 +306,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
+				mGaHelper.sendEventGA(
+						mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
+
 				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 				intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
 				startActivity(intent);
@@ -301,6 +319,19 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setImageView(){
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
+	}
+
+
+	private void setRefreshLayout(){
+		mRefresh.setColorSchemeResources(R.color.accent_color);
+		mRefresh.setProgressViewOffset(true, ViewUtil.getActionBarHeight(mActivity)/2, ViewUtil.getActionBarHeight(mActivity));
+		mRefresh.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				updateItemFrag();
+			}
+		});
 	}
 
 
@@ -358,131 +389,33 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setText(){
-		mContent.setText(mItem.getContent());
-		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(getResources()));
-		mItNumber.setText(""+mItem.getLikeItCount());
-		mNickName.setText(mItem.getWhoMade());
+	private void setItemComponent(Item item){
+		mContent.setText(item.getContent());
+		mNickName.setText(item.getWhoMade());
+		mDate.setText(item.getCreateDateTime().getElapsedDateTime(getResources()));
+		setItNumber(item.getLikeItCount());
+		mItButton.setActivated(item.getPrevLikeId() != null);
 	}
 
 
 	private void updateItemFrag(){
 		mProgressBar.setVisibility(View.VISIBLE);
 		mItemLayout.setVisibility(View.GONE);
+		setItemComponent(mItem);
 
-		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				AsyncChainer.waitChain(2);
-				updateProductTag(frag);
-				updateRecentReplyList(frag);
-			}
-		}, new Chainable(){
+		mAimHelper.getItem(mItem, mMyItUser.getId(), new EntityCallback<Item>() {
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
-				mProgressBar.setVisibility(View.GONE);
-				mItemLayout.setVisibility(View.VISIBLE);
-			}
-		});
-	}
-
-
-	private void updateProductTag(final ItFragment frag) {
-		mAimHelper.list(ProductTag.class, mItem.getId(), new ListCallback<ProductTag>() {
-
-			@Override
-			public void onCompleted(List<ProductTag> list, int count) {
+			public void onCompleted(Item entity) {
 				if(isAdded()){
-					if(count < 1){
-						mProductTagLayout.setVisibility(View.GONE);
-					} else {
-						mProductTagLayout.setVisibility(View.VISIBLE);
-					}
+					mProgressBar.setVisibility(View.GONE);
+					mItemLayout.setVisibility(View.VISIBLE);
+					mRefresh.setRefreshing(false);
 
-					final Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();
-					for(final ProductTag tag : list){
-						// Add tag list by category
-						if(tagList.containsKey(""+tag.getCategory())){
-							tagList.get(""+tag.getCategory()).add(tag);
-							continue;
-						} else {
-							tagList.put(""+tag.getCategory(), new ArrayList<ProductTag>());
-							tagList.get(""+tag.getCategory()).add(tag);
-						}
-
-						// Add category text view
-						ItTextView categoryText = new ItTextView(mActivity);
-						categoryText.setTextType(ItTextView.TYPE.SUBHEAD);
-						categoryText.setText((tagList.size()==1 ? "" : ", ") + tag.categoryString(getResources()));
-						categoryText.setTextColor(getResources().getColor(R.color.brand_text_color));
-						categoryText.setTypeface(categoryText.getTypeface(), Typeface.BOLD);
-
-						categoryText.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								ItDialogFragment productTagDialog = ProductTagDialog.newInstance(tagList.get(""+tag.getCategory()));
-								productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
-							}
-						});
-
-						mProductTagTextLayout.addView(categoryText);
-					}
-
-					AsyncChainer.notifyNext(frag);
-				} else {
-					AsyncChainer.clearChain(frag);
-				}
-			}
-		});
-	}
-
-
-	private void updateRecentReplyList(final ItFragment frag) {
-		mAimHelper.listRecent(Reply.class, mItem.getId(), new ListCallback<Reply>() {
-
-			@Override
-			public void onCompleted(List<Reply> list, int count) {
-				if(isAdded()){
-					// Add reply item
-					mReplyList.clear();
-					mReplyListAdapter.addAll(list);
-					mItem.setReplyCount(count);
-
-					// Set see previous row
-					final int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
-					if(mItem.getReplyCount() > displayReplyNum){
-						mReplyListAdapter.setHasPrevious(true);
-					} else {
-						mReplyListAdapter.setHasPrevious(false);
-					}
-
-					// Set reply list expand setting for expand when on draw
-					mReplyListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-						@SuppressLint("NewApi")
-						@SuppressWarnings("deprecation")
-						@Override
-						public void onGlobalLayout() {
-							if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-								mReplyListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-							} else {
-								mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-							}
-
-							ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
-						}
-					});
-
-					// Set reply list fragment
-					showReplyEmptyView(mItem.getReplyCount());
-					setReplyTitle(mItem.getReplyCount());
-
-					AsyncChainer.notifyNext(frag);
-				} else {
-					AsyncChainer.clearChain(frag);
+					mItem = entity;
+					setItemComponent(mItem);
+					setProductTagFrag();
+					setReplyFrag();
 				}
 			}
 		});
@@ -596,5 +529,94 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			title = title + " " + replyCount;
 		}
 		mReplyTitle.setText(title);
+	}
+
+
+	private void addProductTagCategoryText(List<ProductTag> list){
+		final Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();
+
+		for(final ProductTag tag : list){
+
+			// Map tags by category
+			if(tagList.containsKey(""+tag.getCategory())){
+				tagList.get(""+tag.getCategory()).add(tag);
+				continue;
+			} else {
+				tagList.put(""+tag.getCategory(), new ArrayList<ProductTag>());
+				tagList.get(""+tag.getCategory()).add(tag);
+			}
+
+
+			// Add and set category text
+			ItTextView categoryText = new ItTextView(mActivity);
+			categoryText.setTextType(ItTextView.TYPE.SUBHEAD);
+			categoryText.setText((tagList.size()==1 ? "" : ", ") + tag.categoryString(getResources()));
+			categoryText.setTextColor(getResources().getColor(R.color.brand_text_color));
+			categoryText.setTypeface(categoryText.getTypeface(), Typeface.BOLD);
+
+			categoryText.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					mGaHelper.sendEventGA(
+							mThisFragment.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
+
+					ItDialogFragment productTagDialog = ProductTagDialog.newInstance(tagList.get(""+tag.getCategory()));
+					productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				}
+			});
+
+			mProductTagTextLayout.addView(categoryText);
+		}
+	}
+
+
+	private void setProductTagFrag(){
+		// Show product tag layout
+		if(mItem.getProductTagList().size() > 0){
+			mProductTagLayout.setVisibility(View.VISIBLE);
+		} else {
+			mProductTagLayout.setVisibility(View.GONE);
+		}
+
+		// Set product tag category text layout
+		mProductTagTextLayout.removeAllViews();
+		addProductTagCategoryText(mItem.getProductTagList());
+	}
+
+
+	private void setReplyFrag(){
+		// Add replys
+		mReplyList.clear();
+		mReplyListAdapter.addAll(mItem.getReplyList());
+
+		// Set see previous row
+		final int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
+		if(mItem.getReplyCount() > displayReplyNum){
+			mReplyListAdapter.setHasPrevious(true);
+		} else {
+			mReplyListAdapter.setHasPrevious(false);
+		}
+
+		// Set reply list height for scrollview
+		mReplyListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mReplyListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				} else {
+					mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));		
+			}
+		});
+		
+		// Set reply list fragment
+		showReplyEmptyView(mItem.getReplyCount());
+		setReplyTitle(mItem.getReplyCount());
 	}
 }

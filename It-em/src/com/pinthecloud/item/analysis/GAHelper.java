@@ -13,6 +13,21 @@ import com.pinthecloud.item.R;
 
 public class GAHelper {
 
+	// Label
+	public static final String HOME = "HOME";
+	public static final String ITEM = "ITEM";
+	public static final String DRAWER = "Drawer";
+	
+	// Action
+	public static final String VIEW_ITEM = "view ITEM";
+	public static final String THIS_IS_IT = "This is it";
+	public static final String THIS_IS_IT_CANCEL = "This is it cancel";
+	public static final String ITEM_TAG_INFORMATION = "Item Tag Information";
+	public static final String PRICE = "Price";
+	public static final String VIEW_UPLOADER = "view Uploader";
+	public static final String MY_BOX = "MyBox";
+	
+	
 	/**
 	 * Enum used to identify the tracker that needs to be used for tracking.
 	 *

@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.databases.AimDBHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItDateTime;
@@ -22,7 +21,6 @@ import com.pinthecloud.item.util.ItLog;
 public class HongkunTestFragment extends ItFragment {
 
 	AimHelper aimHelper;
-	AimDBHelper aimDBHelper;
 	ItDateTime today;
 	Button btn;
 	Button btn2;
@@ -52,7 +50,6 @@ public class HongkunTestFragment extends ItFragment {
 
 	private void test() {
 		aimHelper = mApp.getAimHelper();
-		aimDBHelper = mApp.getAimDBHelper();
 		today = ItDateTime.getToday();
 		final ItUser user = mObjectPrefHelper.get(ItUser.class);
 		ItLog.log(user.getId());
@@ -76,8 +73,6 @@ public class HongkunTestFragment extends ItFragment {
 			public void onClick(View v) {
 				Item item = new Item();
 				item.setId(id);
-				Item ii = aimDBHelper.get(item);
-				ItLog.log(ii);
 			}
 		});
 	}

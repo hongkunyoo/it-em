@@ -138,7 +138,7 @@ public class SettingsFragment extends ItFragment {
 						}
 
 						removePreference();
-						
+
 						Intent intent = new Intent(mActivity, LoginActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
@@ -157,17 +157,17 @@ public class SettingsFragment extends ItFragment {
 	private void facebookLogout(){
 		Session session = Session.getActiveSession();
 		if (session != null) {
-			if (!session.isClosed()) {
+			if (session.isOpened()) {
 				session.closeAndClearTokenInformation();
+				return;
 			}
-		} else {
-			session = new Session(mActivity);
-			Session.setActiveSession(session);
-			session.closeAndClearTokenInformation();
 		}
+		session = new Session(mActivity);
+		Session.setActiveSession(session);
+		session.closeAndClearTokenInformation();
 	}
-	
-	
+
+
 	private void removePreference(){
 		mObjectPrefHelper.remove(ItUser.class);
 	}

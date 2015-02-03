@@ -27,7 +27,7 @@ import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.Reply;
-import com.pinthecloud.item.util.ItLog;
+import com.pinthecloud.item.util.ViewUtil;
 
 public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
@@ -89,11 +89,12 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				mItem.setReplyCount(mItem.getReplyCount()-1);
-				setTitle(mItem.getReplyCount());
-				showReplyList(mItem.getReplyCount());
-
 				mListAdapter.remove(reply);
+				mItem.setReplyCount(mItem.getReplyCount()-1);
+				
+				setTitle(mItem.getReplyCount());
+				ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
+				showReplyList(mItem.getReplyCount());
 			}
 		});
 	}
@@ -169,13 +170,14 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 					mProgressBar.setVisibility(View.GONE);
 					mListLayout.setVisibility(View.VISIBLE);
 
-					ItLog.log("count : " + count);
+					mReplyList.clear();
+					mListAdapter.addAll(list);
+					
+					ViewUtil.setListHeightBasedOnChildren(mListView, count);
+					
 					mItem.setReplyCount(count);
 					showReplyList(mItem.getReplyCount());
 					setTitle(mItem.getReplyCount());
-
-					mReplyList.clear();
-					mListAdapter.addAll(list);
 				}
 			}
 		});
@@ -195,6 +197,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 	private void submitReply(final Reply reply){
 		mListAdapter.add(mReplyList.size(), reply);
+		ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
 		showReplyList(mItem.getReplyCount()+1);
 
 		mAimHelper.add(reply, new EntityCallback<Reply>() {

@@ -30,6 +30,7 @@ public class AimHelper {
 
 	private final String AIM_ADD = "aim_add";
 	private final String AIM_ADD_UNIQUE = "aim_add_unique";
+	private final String AIM_GET_ITEM = "aim_get_item";
 	private final String AIM_UPDATE = "aim_update";
 	private final String AIM_DELETE = "aim_delete";	
 	private final String AIM_DELETE_ITEM = "aim_delete_item";
@@ -40,7 +41,7 @@ public class AimHelper {
 	private final String AIM_LIST_IT_ITEM = "aim_list_it_item";
 	private final String IS_VALID = "is_valid";
 	private final String INVALIDATE_INVITE_KEY = "invalidate_invitekey";
-	
+
 
 
 	private ItApplication mApp;
@@ -61,7 +62,7 @@ public class AimHelper {
 
 	public<E extends AbstractItemModel<E>> void listItem(int page, String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.NETWORK_UNAVAILABLE));
+			EventBus.getDefault().post(new ItException("listItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -80,6 +81,31 @@ public class AimHelper {
 					callback.onCompleted(list, list.size());
 				} else {
 					EventBus.getDefault().post(new ItException("listItem", ItException.TYPE.SERVER_ERROR, response));
+				}
+			}
+		});
+	}
+
+
+	public void getItem(Item item, String userId, final EntityCallback<Item> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("getItem", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		JsonObject jo = new JsonObject();
+		jo.addProperty("itemId", item.getId());
+		jo.addProperty("userId", userId);
+
+		mClient.invokeApi(AIM_GET_ITEM, jo, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(new Gson().fromJson(_json, Item.class));	
+				} else {
+					EventBus.getDefault().post(new ItException("getItem", ItException.TYPE.SERVER_ERROR, response));
 				}
 			}
 		});
@@ -199,7 +225,7 @@ public class AimHelper {
 
 						String count = json.get("count").getAsString();
 						JsonArray jsonList = json.get("list").getAsJsonArray();
-						
+
 						List<E> list = new ArrayList<E>();
 						for (int i = 0 ; i < jsonList.size() ; i++) {
 							list.add((E)new Gson().fromJson(jsonList.get(i), obj.getClass()));
@@ -232,9 +258,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					if(callback != null){
-						callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
-					}
+					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 				} else {
 					EventBus.getDefault().post(new ItException("add", ItException.TYPE.SERVER_ERROR, response));
 				}
@@ -402,7 +426,7 @@ public class AimHelper {
 			}
 		});
 	}
-	
+
 	public void invalidateInviteKey(String inviteKey, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("invalidateInviteKey", ItException.TYPE.NETWORK_UNAVAILABLE));

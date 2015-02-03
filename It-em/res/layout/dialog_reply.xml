@@ -15,7 +15,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_first"
-            android:contentDescription="@string/reply_lower"
+            android:contentDescription="@string/comments"
             android:src="@drawable/detail_comment_ic" />
 
         <com.pinthecloud.item.view.ItTextView
@@ -45,13 +45,12 @@
         <LinearLayout
             android:id="@+id/reply_frag_list_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
+                android:layout_height="wrap_content" >
 
                 <com.pinthecloud.item.view.ItTextView
                     android:id="@+id/reply_frag_list_empty_view"
@@ -97,7 +96,7 @@
                         android:background="@drawable/general_inputbar_bg"
                         android:ems="10"
                         android:gravity="center_vertical"
-                        android:hint="@string/message"
+                        android:hint="@string/write_reply"
                         android:inputType="textMultiLine"
                         android:maxLines="3"
                         android:paddingEnd="@dimen/reply_margin"

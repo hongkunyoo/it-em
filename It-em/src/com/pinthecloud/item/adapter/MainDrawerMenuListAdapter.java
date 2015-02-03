@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.MainDrawerFragment;
 import com.pinthecloud.item.fragment.MainDrawerFragment.MainDrawerMenu;
@@ -119,7 +120,7 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 	private void setProfileViewHolder(ProfileViewHolder holder, final MainDrawerMenu menu) {
 		ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
-		
+
 		holder.view.setSelected(menu.isSelected());
 		holder.nickName.setText(myItUser.getNickName());
 
@@ -139,6 +140,9 @@ public class MainDrawerMenuListAdapter extends RecyclerView.Adapter<RecyclerView
 
 			@Override
 			public void onClick(View v) {
+				mApp.getGaHelper().sendEventGA(
+						mfrag.getClass().getSimpleName(), GAHelper.MY_BOX, GAHelper.DRAWER);
+
 				((MainDrawerFragment)mfrag).selectMenu(mMenuList.indexOf(menu));
 			}
 		});

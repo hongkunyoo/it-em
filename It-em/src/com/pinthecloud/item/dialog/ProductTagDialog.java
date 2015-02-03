@@ -73,7 +73,7 @@ public class ProductTagDialog extends ItDialogFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mListAdapter = new ProductTagListAdapter(mActivity, mTagList);
+		mListAdapter = new ProductTagListAdapter(mActivity, mThisFragment, mTagList);
 		mListView.setAdapter(mListAdapter);
 		
 		ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());

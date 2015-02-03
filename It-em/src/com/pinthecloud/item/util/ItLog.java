@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.pinthecloud.item.ItApplication;
 
 public class ItLog {
-	
+
 	public static void log(Object... objs) {
 		if(ItApplication.isDebugging()){
 			Log.e("Log",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -20,8 +20,10 @@ public class ItLog {
 			Log.e("Log","<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		}
 	}
-	
+
 	public static void logObject(Object obj) {
-		log(new Gson().toJson(obj));
+		if(GlobalVariable.DEBUG_MODE){
+			log(new Gson().toJson(obj));
+		}
 	}
 }
