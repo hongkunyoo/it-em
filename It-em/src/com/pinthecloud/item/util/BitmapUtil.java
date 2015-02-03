@@ -1,17 +1,13 @@
 package com.pinthecloud.item.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.net.Uri;
 
 import com.pinthecloud.item.event.ItException;
 
@@ -34,23 +30,6 @@ public class BitmapUtil {
 	}
 
 
-	public static Bitmap decodeInSampleSize(Context context, Uri imageUri, int reqWidth, int reqHeight) {
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		
-		try {
-			InputStream is = context.getContentResolver().openInputStream(imageUri);
-			BitmapFactory.decodeStream(is, null, options);
-			options.inSampleSize = calculateSize(options, reqWidth, reqHeight);
-			options.inJustDecodeBounds = false;
-			return BitmapFactory.decodeStream(is, null, options);
-		} catch (FileNotFoundException e) {
-		}
-
-		return null;
-	}
-	
-	
 	public static Bitmap decodeInSampleSize(Resources res, int resId, int reqWidth, int reqHeight) {
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
