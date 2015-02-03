@@ -71,7 +71,12 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAd
 
 	private void setComponent(ViewHolder holder, final ProductTag tag){
 		holder.name.setText(tag.getShopName());
-		holder.price.setText(""+tag.getPrice());
+		double price = tag.getPrice();
+		if((price*100)%100 > 0){
+			holder.price.setText(price + mActivity.getResources().getString(R.string.price_unit));
+		} else {
+			holder.price.setText((int)price + mActivity.getResources().getString(R.string.price_unit));	
+		}
 
 		holder.price.setOnClickListener(new OnClickListener() {
 

@@ -11,6 +11,11 @@ import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.ItException;
+import com.pinthecloud.item.helper.AimHelper;
+import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.ObjectPrefHelper;
+import com.pinthecloud.item.helper.PrefHelper;
+import com.pinthecloud.item.helper.UserHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 
 import de.greenrobot.event.EventBus;
@@ -19,6 +24,13 @@ public abstract class ItActivity extends ActionBarActivity {
 
 	protected ItApplication mApp;
 	protected ItActivity mThisActivity;
+
+	protected PrefHelper mPrefHelper;
+	protected ObjectPrefHelper mObjectPrefHelper;
+	protected AimHelper mAimHelper;
+	protected UserHelper mUserHelper;
+	protected BlobStorageHelper mBlobStorageHelper;
+
 	protected UserHabitHelper mUserHabitHelper;
 	protected GAHelper mGaHelper;
 
@@ -29,6 +41,13 @@ public abstract class ItActivity extends ActionBarActivity {
 		super();
 		mApp = ItApplication.getInstance();
 		mThisActivity = this;
+
+		mPrefHelper = mApp.getPrefHelper();
+		mObjectPrefHelper = mApp.getObjectPrefHelper();
+		mAimHelper = mApp.getAimHelper();
+		mUserHelper = mApp.getUserHelper();
+		mBlobStorageHelper = mApp.getBlobStorageHelper();
+
 		mUserHabitHelper = mApp.getUserHabitHelper();
 		mGaHelper = mApp.getGaHelper();
 	}
@@ -65,13 +84,7 @@ public abstract class ItActivity extends ActionBarActivity {
 
 
 	public void onEvent(ItException exception) {
-		String message = null;
-		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)){
-			message = getResources().getString(R.string.network_unavailable_message);
-		} else {
-			message = getResources().getString(R.string.error_message);
-		}
-
+		String message = getExceptionMessage(exception);
 		ItAlertDialog exceptionDialog = ItAlertDialog.newInstance(message, null, null, false);
 		exceptionDialog.setCallback(new DialogCallback() {
 
@@ -86,5 +99,14 @@ public abstract class ItActivity extends ActionBarActivity {
 			}
 		});
 		exceptionDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+	}
+
+
+	private String getExceptionMessage(ItException exception){
+		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)){
+			return getResources().getString(R.string.network_unavailable_message);
+		} else {
+			return getResources().getString(R.string.error_message);
+		}
 	}
 }

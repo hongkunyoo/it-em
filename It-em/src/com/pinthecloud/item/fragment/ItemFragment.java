@@ -71,8 +71,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private View mItNumberLayout;
 	private TextView mItNumber;
 
-	private View mProductTagLayout;
 	private LinearLayout mProductTagTextLayout;
+	private TextView mProductTagEmptyView;
 
 	private TextView mReplyTitle;
 	private TextView mReplyListEmptyView;
@@ -205,8 +205,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mItNumberLayout = view.findViewById(R.id.item_frag_it_number_layout);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 
-		mProductTagLayout = view.findViewById(R.id.item_frag_product_tag_layout);
 		mProductTagTextLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_text_layout);
+		mProductTagEmptyView = (TextView)view.findViewById(R.id.item_frag_product_tag_empty_view);
 
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
@@ -432,7 +432,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setImage(){
-		int maxSize = mPrefHelper.getInt(ImageUtil.MAX_TEXTURE_SIZE_KEY);
+		int maxSize = mPrefHelper.getInt(ViewUtil.MAX_TEXTURE_SIZE_KEY);
 		if(mItem.getImageHeight() > maxSize){
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
@@ -572,16 +572,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setProductTagFrag(){
-		// Show product tag layout
 		if(mItem.getProductTagList().size() > 0){
-			mProductTagLayout.setVisibility(View.VISIBLE);
-		} else {
-			mProductTagLayout.setVisibility(View.GONE);
-		}
+			mProductTagEmptyView.setVisibility(View.GONE);
 
-		// Set product tag category text layout
-		mProductTagTextLayout.removeAllViews();
-		addProductTagCategoryText(mItem.getProductTagList());
+			mProductTagTextLayout.removeAllViews();
+			addProductTagCategoryText(mItem.getProductTagList());
+		} else {
+			mProductTagEmptyView.setVisibility(View.VISIBLE);
+		}
 	}
 
 
@@ -614,7 +612,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));		
 			}
 		});
-		
+
 		// Set reply list fragment
 		showReplyEmptyView(mItem.getReplyCount());
 		setReplyTitle(mItem.getReplyCount());

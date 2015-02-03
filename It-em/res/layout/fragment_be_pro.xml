@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bepro_bg"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingEnd="@dimen/key_line_second"
     android:paddingLeft="@dimen/key_line_second"
@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/be_pro_content_margin"
+        android:layout_marginTop="@dimen/be_pro_content_margin"
         android:contentDescription="@string/be_pro"
         android:src="@drawable/bepro_badge_img" />
 
@@ -33,6 +34,7 @@
         android:layout_height="@dimen/be_pro_mail_height"
         android:layout_marginBottom="@dimen/be_pro_code_margin"
         android:background="@drawable/bepro_mail_bg"
+        android:gravity="center"
         android:text="@string/item_email"
         android:textColor="@color/gray_light"
         app:textType="caption" />

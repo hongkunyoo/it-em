@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/key_line_first"
             android:layout_marginRight="@dimen/key_line_first"
-            android:textColor="@color/brnad_sub_text_color"
+            android:textColor="@color/brnad_text_color_light"
             app:textType="body" />
     </LinearLayout>
 

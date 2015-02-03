@@ -5,13 +5,14 @@
     <color name="brand_color">#263238</color>
     <color name="brand_color_dark">#1e292e</color>
     <color name="brand_text_color">#de263238</color>
-    <color name="brnad_sub_text_color">#96263238</color>
+    <color name="brnad_text_color_light">#96263238</color>
     <color name="accent_color">#ffAB00</color>
     <color name="line_color">#16000000</color>
     <color name="gray_light">#de78909c</color>
     <color name="gray_dark">#90a4ae</color>
     <color name="gray">#deB0BEC5</color>
     <color name="gray_pressed">#ECEFF1</color>
+    <color name="black_pressed">#4c000000</color>
     <color name="red">#ef5350</color>
     <color name="blue">#01579b</color>
 
@@ -24,8 +25,6 @@
 
     <!-- Reply -->
     <color name="reply_submit_disable">#64ffab00</color>
-    <color name="reply_row_press">#ECEFF1</color>
-
 
     <!-- Settings -->
     <color name="settings_logout_text">#deffffff</color>

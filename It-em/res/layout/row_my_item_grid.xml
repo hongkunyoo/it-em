@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/my_item_spacing"
-    android:background="@android:color/white"
     android:orientation="vertical" >
 
     <com.pinthecloud.item.view.SquareImageView
@@ -12,5 +11,10 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
+
+    <com.pinthecloud.item.view.SquareImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/my_item_grid_background" />
 
 </RelativeLayout>

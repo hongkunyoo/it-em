@@ -2,6 +2,10 @@ package com.pinthecloud.item;
 
 import java.net.MalformedURLException;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,11 +17,13 @@ import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.CrashHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
 import com.squareup.picasso.Picasso;
 
+@ReportsCrashes(formKey = "", formUri = "", mode = ReportingInteractionMode.TOAST, resToastText = R.string.error_message)
 public class ItApplication extends Application {
 
 	// Windows Azure Mobile Service Keys
@@ -47,9 +53,15 @@ public class ItApplication extends Application {
 
 	@Override
 	public void onCreate() {
+		if(!GlobalVariable.DEBUG_MODE){
+			ACRA.init(this);
+			CrashHelper sender = new CrashHelper(this);
+			ACRA.getErrorReporter().setReportSender(sender);
+		}
+
 		super.onCreate();
 		app = this;
-		
+
 		mClient = getMobileClient();
 
 		userHabitHelper = getUserHabitHelper();

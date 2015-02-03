@@ -26,6 +26,7 @@
             android:layout_marginTop="@dimen/key_line_first"
             android:background="@drawable/edit_text_line"
             android:ems="10"
+            android:gravity="center_vertical"
             android:hint="@string/description"
             android:inputType="textMultiLine"
             android:paddingEnd="@dimen/key_line_first"

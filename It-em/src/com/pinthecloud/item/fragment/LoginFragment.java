@@ -130,8 +130,8 @@ public class LoginFragment extends ItFragment {
 	private void facebookLogin(Session session, final GraphUser user){
 		mApp.showProgressDialog(mActivity);
 
-		String itUserId = user.getProperty("email") == null ? user.getId() : user.getProperty("email").toString();
-		final ItUser itUser = new ItUser(user.getId(), ItUser.FACEBOOK, itUserId,
+		String email = user.getProperty("email") == null ? user.getId() : user.getProperty("email").toString();
+		final ItUser itUser = new ItUser(user.getId(), ItUser.FACEBOOK, email,
 				user.getFirstName().replace(" ", "_"), "", "", ItUser.TYPE.VIEWER);
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
