@@ -36,15 +36,6 @@ public class MainDrawerFragment extends ItFragment {
 	private DrawerLayout mDrawerLayout;
 	private View mFragmentContainerView;
 
-	private ItUser mMyItUser;
-
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,15 +120,16 @@ public class MainDrawerFragment extends ItFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
+		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
 		String[] menuNameList = getResources().getStringArray(R.array.main_drawer_menu_string_array);
 		mMenuList = new ArrayList<MainDrawerMenu>();
 
 		// Profile
-		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(mMyItUser.getId()), false));
+		mMenuList.add(new MainDrawerMenu(0, "", ItUserPageFragment.newInstance(myItUser.getId()), false));
 		// Home
 		mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_home, menuNameList[0], new HomeFragment(), false));
 
-		if(!mMyItUser.isPro()){
+		if(!myItUser.isPro()){
 			// Be Pro
 			mMenuList.add(new MainDrawerMenu(R.drawable.main_drawer_menu_be_pro, menuNameList[1], new BeProFragment(), false));
 		}

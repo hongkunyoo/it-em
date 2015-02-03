@@ -77,7 +77,6 @@ public class ItUserPageFragment extends ItFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
-//		mItUserId = mObjectPrefHelper.get(ItUser.class).getId();
 	}
 
 
@@ -144,16 +143,16 @@ public class ItUserPageFragment extends ItFragment {
 				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
 				setProfile();
 
-				mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
 					@SuppressLint("NewApi")
 					@SuppressWarnings("deprecation")
 					@Override
 					public void onGlobalLayout() {
 						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-							mViewPager.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+							mHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 						} else {
-							mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+							mHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 						}
 
 						SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();

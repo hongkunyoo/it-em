@@ -78,7 +78,7 @@ public class HomeFragment extends ItFragment {
 			mLayout.setVisibility(View.GONE);
 			updateGrid();
 		}
-
+		
 		return view;
 	}
 

@@ -53,7 +53,7 @@ public class BitmapUtil {
 	public static Bitmap decodeInSampleSize(Bitmap bitmap, int reqWidth, int reqHeight) {
 		if(bitmap.getWidth() >= reqWidth*2 && bitmap.getHeight() >= reqHeight*2) {
 			ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
 			byte[] byteArray = byteArrayBitmapStream.toByteArray();
 			bitmap = decodeInSampleSize(byteArray, reqWidth, reqHeight);
 		}

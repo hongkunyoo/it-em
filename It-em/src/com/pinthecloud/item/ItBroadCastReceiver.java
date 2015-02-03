@@ -13,16 +13,15 @@ public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 		String regId = intent.getExtras().getString("registration_id");
 		if(regId != null && !regId.equals("")) {
 			// Save registration id
-//			AhApplication.getInstance().getUserHelper().setMyRegistrationId(regId);
+			//			AhApplication.getInstance().getUserHelper().setMyRegistrationId(regId);
 		} else{
-			
 			/*
 			 * Get push and do intent service by push
 			 */
-			
+
 			// Explicitly specify that GcmIntentService will handle the intent.
 			ComponentName comp = new ComponentName(context.getPackageName(), ItIntentService.class.getName());
-			
+
 			// Start the service, keeping the device awake while it is launching.
 			startWakefulService(context, (intent.setComponent(comp)));
 			setResultCode(Activity.RESULT_OK);

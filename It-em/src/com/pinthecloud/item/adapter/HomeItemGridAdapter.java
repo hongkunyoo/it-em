@@ -163,7 +163,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			holder.replyNumber.setVisibility(View.VISIBLE);
 		}
 		holder.replyNumber.setText(""+item.getReplyCount());
-		
+
 		if(item.isHasProductTag()){
 			holder.productTag.setVisibility(View.VISIBLE);
 		} else {

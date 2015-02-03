@@ -41,7 +41,7 @@
                     android:id="@+id/item_frag_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/item_content_margin"
+                    android:layout_marginBottom="@dimen/item_content_date_margin"
                     android:textColor="@color/brand_text_color"
                     app:textType="subhead" />
 
@@ -91,8 +91,8 @@
                         android:id="@+id/item_frag_it_number_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/item_button_number_margin"
-                        android:layout_marginStart="@dimen/item_button_number_margin"
+                        android:layout_marginLeft="@dimen/item_content_margin"
+                        android:layout_marginStart="@dimen/item_content_margin"
                         android:orientation="horizontal" >
 
                         <com.pinthecloud.item.view.ItTextView
@@ -139,7 +139,6 @@
                     android:orientation="vertical" >
 
                     <RelativeLayout
-                        android:id="@+id/item_frag_product_tag_layout"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/item_content_row_height" >
 
@@ -161,7 +160,18 @@
                             android:paddingEnd="@dimen/key_line_first"
                             android:paddingLeft="@dimen/key_line_second"
                             android:paddingRight="@dimen/key_line_first"
-                            android:paddingStart="@dimen/key_line_second" />
+                            android:paddingStart="@dimen/key_line_second" >
+
+                            <com.pinthecloud.item.view.ItTextView
+                                android:id="@+id/item_frag_product_tag_empty_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/empty_product_tag"
+                                android:textColor="@color/gray_light"
+                                android:textStyle="italic"
+                                android:visibility="gone"
+                                app:textType="caption" />
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <include layout="@layout/custom_line" />
@@ -179,7 +189,6 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/white"
                         android:orientation="vertical"
-                        android:paddingBottom="@dimen/key_line_first"
                         android:paddingEnd="@dimen/key_line_first"
                         android:paddingLeft="@dimen/key_line_first"
                         android:paddingRight="@dimen/key_line_first"
@@ -212,7 +221,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal" >
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/item_content_margin" >
 
                             <com.pinthecloud.item.view.CircleImageView
                                 xmlns:civ="http://schemas.android.com/apk/res-auto"

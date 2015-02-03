@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:id="@+id/my_item_frag_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/my_item_progress_bar_bottom_margin"
-        layout="@layout/custom_progress_bar"
-        android:visibility="gone" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_item_frag_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/my_item_spacing"
+        android:paddingEnd="@dimen/my_item_spacing"
+        android:paddingLeft="@dimen/my_item_spacing"
+        android:paddingRight="@dimen/my_item_spacing"
+        android:paddingStart="@dimen/my_item_spacing"
+        android:scrollbars="none" />
 
     <RelativeLayout
-        android:id="@+id/my_item_frag_grid_layout"
+        android:id="@+id/my_item_frag_component_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            layout="@layout/custom_progress_bar"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/my_item_frag_grid_empty_layout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/my_item_empty_bottom_margin"
+            android:layout_centerInParent="true"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="gone" >
@@ -40,21 +49,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/key_line_first"
-                android:gravity="center"
                 android:textColor="@color/gray_light"
                 app:textType="body" />
         </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_item_frag_grid"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/my_item_spacing"
-            android:paddingEnd="@dimen/my_item_spacing"
-            android:paddingLeft="@dimen/my_item_spacing"
-            android:paddingRight="@dimen/my_item_spacing"
-            android:paddingStart="@dimen/my_item_spacing"
-            android:scrollbars="none" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -3,6 +3,8 @@ package com.pinthecloud.item.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,10 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
@@ -32,17 +34,17 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	private int MY_ITEM;
 	private int IT_ITEM;
 
-	private ProgressBar mProgressBar;
-	private RelativeLayout mGridLayout;
-
-	private LinearLayout mGridEmptyLayout;
-	private TextView mGridEmptyText;
-	private ImageView mGridEmptyImage;
-
+	private View mLayout;
 	private RecyclerView mGridView;
 	private MyItemGridAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
 	private List<Item> mItemList;
+
+	private View mComponentLayout;
+	private ProgressBar mProgressBar;
+	private LinearLayout mGridEmptyLayout;
+	private TextView mGridEmptyText;
+	private ImageView mGridEmptyImage;
 
 	private ItUser mItUser;
 	private int mPosition;
@@ -95,6 +97,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		findComponent(view);
 		setComponent();
 		setGrid();
+		updateHeader(mHeaderHeight);
 		setScroll();
 		updateGrid();
 		return view;
@@ -113,9 +116,26 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	@Override
 	public void updateHeader(int headerHeight) {
 		mGridAdapter.notifyHeader(headerHeight);
+
+		mLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				} else {
+					mLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+
+				mComponentLayout.getLayoutParams().height = mLayout.getHeight() - mHeaderHeight;
+				mComponentLayout.requestLayout();
+			}
+		});
 	}
-	
-	
+
+
 	@Override
 	public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
 	}
@@ -124,15 +144,17 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	@Override
 	public void updateTabNumber(int position, int number) {
 	}
-	
+
 
 	private void findComponent(View view){
+		mLayout = view.findViewById(R.id.my_item_frag_layout);
+		mGridView = (RecyclerView)view.findViewById(R.id.my_item_frag_grid);
+
+		mComponentLayout = view.findViewById(R.id.my_item_frag_component_layout);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mGridLayout = (RelativeLayout)view.findViewById(R.id.my_item_frag_grid_layout);
 		mGridEmptyLayout = (LinearLayout)view.findViewById(R.id.my_item_frag_grid_empty_layout);
 		mGridEmptyText = (TextView)view.findViewById(R.id.my_item_frag_grid_empty_text);
 		mGridEmptyImage = (ImageView)view.findViewById(R.id.my_item_frag_grid_empty_image);
-		mGridView = (RecyclerView)view.findViewById(R.id.my_item_frag_grid);
 	}
 
 
@@ -156,7 +178,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = new ArrayList<Item>();
-		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mHeaderHeight, mItemList);
+		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 	}
 
@@ -171,11 +193,11 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 			}
 		});
 	}
-	
-	
+
+
 	private void updateGrid() {
 		mProgressBar.setVisibility(View.VISIBLE);
-		mGridLayout.setVisibility(View.GONE);
+		mGridView.setVisibility(View.GONE);
 
 		if(mPosition == MY_ITEM){
 			updateMyItemGrid();
@@ -213,7 +235,6 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 	private void setGridItem(List<Item> list, int count){
 		mProgressBar.setVisibility(View.GONE);
-		mGridLayout.setVisibility(View.VISIBLE);
 		showGrid(count);
 
 		mItemList.clear();

@@ -3,6 +3,10 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,6 +18,7 @@ import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.CrashHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
@@ -21,7 +26,11 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.squareup.picasso.Picasso;
 
+@ReportsCrashes(formKey = "", formUri = "", mode = ReportingInteractionMode.TOAST, resToastText = R.string.error_message)
 public class ItApplication extends Application {
+
+	public static int REAL = 0;
+	public static int TEST = 1;
 
 	// Windows Azure Mobile Service Keys
 	private final String AZURE_REAL_URL = "https://it-em.azure-mobile.net/";
@@ -49,12 +58,12 @@ public class ItApplication extends Application {
 	private AimHelper aimHelper;
 	private UserHelper userHelper;
 	private BlobStorageHelper blobStorageHelper;
+	private CrashHelper crashHelper;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-		
 		mClient = getMobileClient();
 
 		userHabitHelper = getUserHabitHelper();
@@ -66,6 +75,10 @@ public class ItApplication extends Application {
 		aimHelper = getAimHelper();
 		userHelper = getUserHelper();
 		blobStorageHelper = getBlobStorageHelper();
+		crashHelper = getCrashHelper();
+
+		ACRA.init(app);
+		ACRA.getErrorReporter().setReportSender(crashHelper);
 	}
 
 	public static ItApplication getInstance(){
@@ -83,52 +96,10 @@ public class ItApplication extends Application {
 						AZURE_TEST_KEY,
 						this);
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
 			}
 			mClient = realClient;
 		}
 		return mClient;
-	}
-	public static boolean isDebugging() {
-		return ItApplication.getInstance().mClient == ItApplication.getInstance().testClient;
-	}
-	public boolean isAdmin() {
-		ArrayList<String> list = new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-		{
-			add("745959165517638"); // SeungMin
-			add("834118693318943"); // ChaeSoo
-			add("677830442331776"); // HongKun
-			add("1536364146612739"); // PintheCloud
-		}};
-		ItUser user = objectPrefHelper.get(ItUser.class);
-		if (user == null) return false;
- 		String myItUserId = user.getItUserId();
-		return list.contains(myItUserId);
-	}
-	public static int REAL = 0;
-	public static int TEST = 1;
-	public void switchClient(int type, final EntityCallback<Boolean> callback) {
-		if (type == REAL) {
-			mClient = realClient;
-		} else {
-			mClient = testClient;
-		}
-		
-		userHelper.setMobileClient(mClient);
-		aimHelper.setMobileClient(mClient);
-		
-		ItUser user = objectPrefHelper.get(ItUser.class);
-		userHelper.getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {
-			
-			@Override
-			public void onCompleted(ItUser entity) {
-				// TODO Auto-generated method stub
-				objectPrefHelper.put(entity);
-				callback.onCompleted(true);
-			}
-		});
-		
 	}
 	public UserHabitHelper getUserHabitHelper() {
 		if(userHabitHelper == null) userHabitHelper = new UserHabitHelper();
@@ -159,8 +130,17 @@ public class ItApplication extends Application {
 		return userHelper;
 	}
 	public BlobStorageHelper getBlobStorageHelper() {
-		if(blobStorageHelper == null)blobStorageHelper = new BlobStorageHelper(app);
+		if(blobStorageHelper == null) blobStorageHelper = new BlobStorageHelper(app);
 		return blobStorageHelper;
+	}
+	public CrashHelper getCrashHelper() {
+		if(crashHelper == null) crashHelper = new CrashHelper(app);
+		return crashHelper;
+	}
+
+
+	public static boolean isDebugging() {
+		return app.mClient == app.testClient;
 	}
 
 	public boolean isOnline(){
@@ -178,5 +158,44 @@ public class ItApplication extends Application {
 
 	public void dismissProgressDialog(){
 		progressDialog.dismiss();
+	}
+
+	public boolean isAdmin() {
+		ItUser user = objectPrefHelper.get(ItUser.class);
+		if (user == null) return false;
+
+		ArrayList<String> list = new ArrayList<String>(){
+			private static final long serialVersionUID = 1L;
+			{
+				add("745959165517638"); // SeungMin
+				add("834118693318943"); // ChaeSoo
+				add("677830442331776"); // HongKun
+				add("1536364146612739"); // PintheCloud
+			}
+		};
+
+		return list.contains(user.getItUserId());
+	}
+
+	public void switchClient(int type, final EntityCallback<Boolean> callback) {
+		if (type == REAL) {
+			mClient = realClient;
+		} else if(type == TEST) {
+			mClient = testClient;
+		}
+
+		aimHelper.setMobileClient(mClient);
+		userHelper.setMobileClient(mClient);
+		crashHelper.setMobileClient(mClient);
+
+		ItUser user = objectPrefHelper.get(ItUser.class);
+		userHelper.getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {
+
+			@Override
+			public void onCompleted(ItUser entity) {
+				objectPrefHelper.put(entity);
+				callback.onCompleted(true);
+			}
+		});
 	}
 }

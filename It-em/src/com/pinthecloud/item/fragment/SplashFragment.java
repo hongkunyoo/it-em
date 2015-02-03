@@ -1,13 +1,16 @@
 package com.pinthecloud.item.fragment;
 
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
 import android.content.Context;
 import android.content.Intent;
 import android.opengl.GLES20;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -18,7 +21,7 @@ import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ViewUtil;
 
 public class SplashFragment extends ItFragment {
 
@@ -30,20 +33,18 @@ public class SplashFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_splash, container, false);
-
-		if(mPrefHelper.getInt(ImageUtil.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
+		if(mPrefHelper.getInt(ViewUtil.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) view.findViewById(R.id.splash_frag_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mActivity));
 		} else {
 			runItem();
 		}
-
 		return view;
 	}
 
 
 	private void runItem() {
-		new Handler().postDelayed(new Runnable() {
+		new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
@@ -65,9 +66,9 @@ public class SplashFragment extends ItFragment {
 				if (!mObjectPrefHelper.get(ItUser.class).isLoggedIn()){
 					// New User
 					intent.setClass(mActivity, LoginActivity.class);
-				} else{
+				} else {
 					// Has Loggined
-					intent.setClass(mActivity, MainActivity.class);			
+					intent.setClass(mActivity, MainActivity.class);
 				}
 				startActivity(intent);
 			}
@@ -75,34 +76,31 @@ public class SplashFragment extends ItFragment {
 	}
 
 
-	private class GetMaxTextureSizeSurfaceView extends SurfaceView implements
-	SurfaceHolder.Callback {
+	private class GetMaxTextureSizeSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
 		public GetMaxTextureSizeSurfaceView(Context context) {
 			super(context);
-			getHolder().addCallback(this);
+			setRenderer(this);
 		}
 
 		@Override
-		public void surfaceCreated(SurfaceHolder holder) {
+		public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 			setMaxTextureSize();
 			runItem();
 		}
 
 		@Override
-		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-			// Do nothing
+		public void onSurfaceChanged(GL10 gl, int width, int height) {
 		}
 
 		@Override
-		public void surfaceDestroyed(SurfaceHolder holder) {
-			// Do nothing
+		public void onDrawFrame(GL10 gl) {
 		}
 
 		private void setMaxTextureSize(){
 			int[] maxTextureSize = new int[1];
 			GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0);
-			mPrefHelper.put(ImageUtil.MAX_TEXTURE_SIZE_KEY, maxTextureSize[0]);
+			mPrefHelper.put(ViewUtil.MAX_TEXTURE_SIZE_KEY, maxTextureSize[0]);
 		}
 	}
 }

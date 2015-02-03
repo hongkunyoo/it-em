@@ -27,15 +27,14 @@
     <dimen name="home_item_content_margin">4dp</dimen>
 
     <!-- Be Pro -->
-    <dimen name="be_pro_content_bottom_margin">30dp</dimen>
     <dimen name="be_pro_content_margin">12dp</dimen>
     <dimen name="be_pro_code_margin">8dp</dimen>
     <dimen name="be_pro_mail_height">24dp</dimen>
 
     <!-- Item -->
-    <dimen name="item_content_margin">2dp</dimen>
+    <dimen name="item_content_date_margin">2dp</dimen>
+    <dimen name="item_content_margin">12dp</dimen>
     <dimen name="item_content_row_height">40dp</dimen>
-    <dimen name="item_button_number_margin">12dp</dimen>
 
     <!-- Upload -->
     <dimen name="upload_image_width">72dp</dimen>
@@ -49,10 +48,7 @@
     <dimen name="profile_image_width">212dp</dimen>
 
     <!-- My Item -->
-    <dimen name="my_item_progress_bar_bottom_margin">150dp</dimen>
-    <dimen name="my_item_empty_bottom_margin">100dp</dimen>
     <dimen name="my_item_spacing">1dp</dimen>
-    
     
     <!-- Reply -->
     <dimen name="reply_height">300dp</dimen>

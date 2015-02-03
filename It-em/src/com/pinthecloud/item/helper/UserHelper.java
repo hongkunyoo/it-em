@@ -31,6 +31,7 @@ public class UserHelper {
 		this.table = mClient.getTable(ItUser.class);
 	}
 	
+	
 	public void setMobileClient(MobileServiceClient client) {
 		this.mClient = client;
 		this.table = mClient.getTable(ItUser.class);

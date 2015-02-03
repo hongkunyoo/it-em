@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import com.facebook.Session;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.LoginActivity;
+import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.interfaces.DialogCallback;
@@ -26,8 +28,6 @@ public class SettingsFragment extends ItFragment {
 
 	private TextView mEmail;
 	private RelativeLayout mLogout;
-	
-	private RadioGroup rg;
 
 	private ItUser mMyItUser;
 
@@ -47,61 +47,9 @@ public class SettingsFragment extends ItFragment {
 		setActionBar();
 		findComponent(view);
 		setComponent();
-		setAdminComponent(view);
 		setButton();
-		
+		setAdminComponent(view);
 		return view;
-	}
-	
-	private void setAdminComponent(View view) {
-		if (!this.mApp.isAdmin()) return;
-		
-		rg = new RadioGroup(this.mActivity);
-		RadioButton real = new RadioButton(this.mActivity);
-		RadioButton test = new RadioButton(this.mActivity);
-		real.setText("Real");
-		real.setId(100001);
-		test.setText("Test");
-		test.setId(100002);
-		test.setChecked(true);
-		
-		rg.addView(real);
-		rg.addView(test);
-		mLogout.addView(rg);
-		
-		real.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.REAL, new EntityCallback<Boolean>() {
-					
-					@Override
-					public void onCompleted(Boolean entity) {
-						// TODO Auto-generated method stub
-						mApp.dismissProgressDialog();
-					}
-				});
-			}
-		});
-		
-		test.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.TEST, new EntityCallback<Boolean>() {
-					
-					@Override
-					public void onCompleted(Boolean entity) {
-						// TODO Auto-generated method stub
-						mApp.dismissProgressDialog();
-					}
-				});
-			}
-		});
 	}
 
 
@@ -151,6 +99,67 @@ public class SettingsFragment extends ItFragment {
 				logoutDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
+	}
+
+
+	private void setAdminComponent(View view) {
+		if (!mApp.isAdmin()) return;
+
+		RadioGroup rg = new RadioGroup(mActivity);
+		RadioButton real = new RadioButton(mActivity);
+		RadioButton test = new RadioButton(mActivity);
+
+		real.setId(100001);
+		real.setText("Real");
+		real.setChecked(!ItApplication.isDebugging());
+
+		test.setId(100002);
+		test.setText("Test");
+		test.setChecked(ItApplication.isDebugging());
+
+		rg.addView(real);
+		rg.addView(test);
+		
+		LinearLayout layout = (LinearLayout)view.findViewById(R.id.settings_frag_layout);
+		layout.addView(rg);
+
+		real.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mApp.showProgressDialog(mActivity);
+				mApp.switchClient(ItApplication.REAL, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						switchClientCallback();
+					}
+				});
+			}
+		});
+
+		test.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mApp.showProgressDialog(mActivity);
+				mApp.switchClient(ItApplication.TEST, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						switchClientCallback();
+					}
+				});
+			}
+		});
+	}
+
+
+	private void switchClientCallback(){
+		mApp.dismissProgressDialog();
+		Intent intent = new Intent(mActivity, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 
 

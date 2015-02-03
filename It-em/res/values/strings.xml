@@ -10,7 +10,7 @@
 
     <!-- Common Sentence -->
     <string name="network_unavailable_message">Internet is unavailable. Please check network status.</string>
-    <string name="error_message">Error happened. Please retry it.</string>
+    <string name="error_message">Ooooops! Error happened. Please retry it.</string>
 
     <!-- Login -->
     <string name="facebook_login">SIGN IN with facebook</string>
@@ -33,14 +33,14 @@
     <string name="it_number">numbers of IT</string>
     <string name="upload_by">Uploaded by</string>
     <string name="of">\'s</string>
-    
+
     <!-- Reply -->
     <string name="delete">Delete</string>
     <string name="submit">SUBMIT</string>
     <string name="write_reply">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
     <string name="first_reply">Be first of comments</string>
-    
+
     <!-- It -->
     <string name="it_title">People who gives IT</string>
 
@@ -53,9 +53,14 @@
     <string name="empty_it_item">IT item is empty.\nGive IT to lovely item!</string>
     <string name="empty">Empty</string>
 
+    <!-- Product Tag -->
+    <string name="price_unit">$</string>
+    <string name="empty_product_tag">Product Tag is empty yet</string>
+
     <!-- Be Pro -->
     <string name="pro">Pro</string>
-    <string name="be_pro">Be the PRO.\nShare your premium style &amp; Receive a reward for that.\nIf you want to be the PRO, send a request mail to us.</string>
+    <string name="be_pro">IT:EM allows PRO to upload item.\nBe PRO and Share your premium style &amp; Receive reward.\nIf you want to be PRO, send a request mail to us.</string>
+    <string name="homepage">it-em.me</string>
     <string name="item_email">item@pinthecloud.com</string>
     <string name="code">CODE</string>
     <string name="valid_pro">You become PRO.</string>

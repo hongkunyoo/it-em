@@ -42,8 +42,6 @@ public class AimHelper {
 	private final String IS_VALID = "is_valid";
 	private final String INVALIDATE_INVITE_KEY = "invalidate_invitekey";
 
-
-
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
 	private BlobStorageHelper mBlobStorageHelper;
@@ -54,6 +52,7 @@ public class AimHelper {
 		this.mClient = app.getMobileClient();
 		this.mBlobStorageHelper = app.getBlobStorageHelper();
 	}
+	
 	
 	public void setMobileClient(MobileServiceClient client) {
 		this.mClient = client;

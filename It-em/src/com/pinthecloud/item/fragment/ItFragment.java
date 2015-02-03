@@ -23,6 +23,7 @@ public class ItFragment extends Fragment {
 	protected AimHelper mAimHelper;
 	protected UserHelper mUserHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
+	
 	protected GAHelper mGaHelper;
 
 	
@@ -36,6 +37,7 @@ public class ItFragment extends Fragment {
 		mAimHelper = mApp.getAimHelper();
 		mUserHelper = mApp.getUserHelper();
 		mBlobStorageHelper = mApp.getBlobStorageHelper();
+		
 		mGaHelper = mApp.getGaHelper();
 	}
 

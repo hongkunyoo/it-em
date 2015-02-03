@@ -33,12 +33,11 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private int mHeaderHeight;
 
 
-	public MyItemGridAdapter(ItActivity activity, int gridColumnNum, int headerHeight, List<Item> itemList) {
+	public MyItemGridAdapter(ItActivity activity, int gridColumnNum, List<Item> itemList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mItemList = itemList;
 		this.mGridColumnNum = gridColumnNum;
-		this.mHeaderHeight = headerHeight;
 	}
 	
 	
