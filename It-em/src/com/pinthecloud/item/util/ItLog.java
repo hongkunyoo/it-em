@@ -22,7 +22,7 @@ public class ItLog {
 	}
 
 	public static void logObject(Object obj) {
-		if(GlobalVariable.DEBUG_MODE){
+		if(ItApplication.isDebugging()){
 			log(new Gson().toJson(obj));
 		}
 	}
