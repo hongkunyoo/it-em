@@ -73,16 +73,6 @@ public class ItApplication extends Application {
 	}
 	public MobileServiceClient getMobileClient() {
 		if(mClient == null){
-//			String AZURE_URL;
-//			String AZURE_KEY;
-//			if (GlobalVariable.DEBUG_MODE) {
-//				AZURE_URL = AZURE_TEST_URL;
-//				AZURE_KEY = AZURE_TEST_KEY;
-//			} else {
-//				AZURE_URL = AZURE_REAL_URL;
-//				AZURE_KEY = AZURE_REAL_KEY;
-//			}
-
 			try {
 				realClient = new MobileServiceClient(
 						AZURE_REAL_URL,
@@ -95,7 +85,7 @@ public class ItApplication extends Application {
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
-			mClient = testClient;
+			mClient = realClient;
 		}
 		return mClient;
 	}
