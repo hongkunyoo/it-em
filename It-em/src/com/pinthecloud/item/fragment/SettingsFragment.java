@@ -7,21 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.Session;
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 
 public class SettingsFragment extends ItFragment {
 
 	private TextView mEmail;
 	private RelativeLayout mLogout;
+	
+	private RadioGroup rg;
 
 	private ItUser mMyItUser;
 
@@ -41,8 +47,61 @@ public class SettingsFragment extends ItFragment {
 		setActionBar();
 		findComponent(view);
 		setComponent();
+		setAdminComponent(view);
 		setButton();
+		
 		return view;
+	}
+	
+	private void setAdminComponent(View view) {
+		if (!this.mApp.isAdmin()) return;
+		
+		rg = new RadioGroup(this.mActivity);
+		RadioButton real = new RadioButton(this.mActivity);
+		RadioButton test = new RadioButton(this.mActivity);
+		real.setText("Real");
+		real.setId(100001);
+		test.setText("Test");
+		test.setId(100002);
+		test.setChecked(true);
+		
+		rg.addView(real);
+		rg.addView(test);
+		mLogout.addView(rg);
+		
+		real.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mApp.showProgressDialog(mActivity);
+				mApp.switchClient(ItApplication.REAL, new EntityCallback<Boolean>() {
+					
+					@Override
+					public void onCompleted(Boolean entity) {
+						// TODO Auto-generated method stub
+						mApp.dismissProgressDialog();
+					}
+				});
+			}
+		});
+		
+		test.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mApp.showProgressDialog(mActivity);
+				mApp.switchClient(ItApplication.TEST, new EntityCallback<Boolean>() {
+					
+					@Override
+					public void onCompleted(Boolean entity) {
+						// TODO Auto-generated method stub
+						mApp.dismissProgressDialog();
+					}
+				});
+			}
+		});
 	}
 
 

@@ -76,7 +76,8 @@ public class ItUserPageFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
+//		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
+		mItUserId = mObjectPrefHelper.get(ItUser.class).getId();
 	}
 
 

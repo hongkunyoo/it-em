@@ -3,12 +3,12 @@ package com.pinthecloud.item.util;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.pinthecloud.item.GlobalVariable;
+import com.pinthecloud.item.ItApplication;
 
 public class ItLog {
 	
 	public static void log(Object... objs) {
-		if(GlobalVariable.DEBUG_MODE){
+		if(ItApplication.isDebugging()){
 			Log.e("Log",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			for (Object obj : objs) {
 				if (obj == null) {

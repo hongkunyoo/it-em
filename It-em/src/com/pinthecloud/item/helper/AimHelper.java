@@ -53,6 +53,10 @@ public class AimHelper {
 		this.mClient = app.getMobileClient();
 		this.mBlobStorageHelper = app.getBlobStorageHelper();
 	}
+	
+	public void setMobileClient(MobileServiceClient client) {
+		this.mClient = client;
+	}
 
 
 	public<E extends AbstractItemModel<E>> void listItem(int page, String userId, final ListCallback<Item> callback) {

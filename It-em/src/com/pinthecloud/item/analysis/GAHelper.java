@@ -8,7 +8,7 @@ import android.content.Context;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.pinthecloud.item.GlobalVariable;
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 
 public class GAHelper {
@@ -49,7 +49,7 @@ public class GAHelper {
 
 
 	public void sendEventGA(String category, String action, String label){
-		if(!GlobalVariable.DEBUG_MODE){
+		if(!ItApplication.isDebugging()){
 			getTracker(TrackerName.APP_TRACKER).send(new HitBuilders.EventBuilder()
 			.setCategory(category)
 			.setAction(action)
@@ -60,7 +60,7 @@ public class GAHelper {
 
 
 	public void sendTimeingGA(String category, String variable, String label){
-		if(!GlobalVariable.DEBUG_MODE){
+		if(!ItApplication.isDebugging()){
 			getTracker(TrackerName.APP_TRACKER).send(new HitBuilders.TimingBuilder()
 			.setCategory(category)
 			.setVariable(variable)
@@ -71,7 +71,7 @@ public class GAHelper {
 
 
 	public void sendScreenGA(String name){
-		if(!GlobalVariable.DEBUG_MODE){
+		if(!ItApplication.isDebugging()){
 			Tracker tracker = getTracker(TrackerName.APP_TRACKER);
 			tracker.setScreenName(name);
 			tracker.send(new HitBuilders.AppViewBuilder().build());
@@ -80,14 +80,14 @@ public class GAHelper {
 
 
 	public void reportActivityStart(Activity activity){
-		if(!GlobalVariable.DEBUG_MODE){
+		if(!ItApplication.isDebugging()){
 			GoogleAnalytics.getInstance(mContext).reportActivityStart(activity);
 		}
 	}
 
 
 	public void reportActivityStop(Activity activity){
-		if(!GlobalVariable.DEBUG_MODE){
+		if(!ItApplication.isDebugging()){
 			GoogleAnalytics.getInstance(mContext).reportActivityStop(activity);
 		}
 	}

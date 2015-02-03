@@ -30,6 +30,11 @@ public class UserHelper {
 		this.mClient = app.getMobileClient();
 		this.table = mClient.getTable(ItUser.class);
 	}
+	
+	public void setMobileClient(MobileServiceClient client) {
+		this.mClient = client;
+		this.table = mClient.getTable(ItUser.class);
+	}
 
 
 	public void add(ItUser user, final PairEntityCallback<ItUser, Exception> callback) {
@@ -100,6 +105,30 @@ public class UserHelper {
 					}
 				} else {
 					EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.SERVER_ERROR, exception));
+				}
+			}
+		});
+	}
+	
+	public void getByItUserId(String itUserId, final EntityCallback<ItUser> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		table.where().field("itUserId").eq(itUserId).execute(new TableQueryCallback<ItUser>() {
+
+			@Override
+			public void onCompleted(List<ItUser> entity, int count, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					if(entity.size() == 0){
+						callback.onCompleted(null);
+					} else {
+						callback.onCompleted(entity.get(0));
+					}
+				} else {
+					EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.SERVER_ERROR, exception));
 				}
 			}
 		});

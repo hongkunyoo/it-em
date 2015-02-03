@@ -3,7 +3,7 @@ package com.pinthecloud.item.analysis;
 import io.userhabit.service.Userhabit;
 import android.app.Activity;
 
-import com.pinthecloud.item.GlobalVariable;
+import com.pinthecloud.item.ItApplication;
 
 public class UserHabitHelper {
 
@@ -11,14 +11,14 @@ public class UserHabitHelper {
 
 
 	public void activityStart(Activity activity){
-		if(!GlobalVariable.DEBUG_MODE){
+		if(!ItApplication.isDebugging()){
 			Userhabit.activityStart(activity, USER_HABIT_KEY);
 		}
 	}
 
 
 	public void activityStop(Activity activity){
-		if(!GlobalVariable.DEBUG_MODE){
+		if(!ItApplication.isDebugging()){
 			Userhabit.activityStop(activity);
 		}
 	}
