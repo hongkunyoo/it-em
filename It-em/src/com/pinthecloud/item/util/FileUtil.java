@@ -5,13 +5,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.text.format.Time;
@@ -81,17 +84,41 @@ public class FileUtil {
 	}
 
 
+	@SuppressLint("NewApi")
 	public static String getMediaPathFromGalleryUri(Context context, Uri mediaUri){
-		String[] filePathColumn = { MediaStore.Images.Media.DATA };
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-		Cursor cursor = context.getContentResolver().query(mediaUri, filePathColumn, null, null, null);
-		cursor.moveToFirst();
+			Cursor cursor = context.getContentResolver().query(mediaUri, filePathColumn, null, null, null);
+			cursor.moveToFirst();
 
-		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-		String imagePath = cursor.getString(columnIndex);
-		cursor.close();
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String imagePath = cursor.getString(columnIndex);
+			cursor.close();
 
-		return imagePath;
+			return imagePath;
+		} else {
+			// Will return "image:x*"
+			String wholeID = DocumentsContract.getDocumentId(mediaUri);
+
+			// Split at colon, use second item in the array
+			String id = wholeID.split(":")[1];
+			String[] column = { MediaStore.Images.Media.DATA };     
+
+			// where id is equal to             
+			String sel = MediaStore.Images.Media._ID + "=?";
+			Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
+					column, sel, new String[]{ id }, null);
+
+			String filePath = "";
+			int columnIndex = cursor.getColumnIndex(column[0]);
+			if (cursor.moveToFirst()) {
+				filePath = cursor.getString(columnIndex);
+			}
+			cursor.close();
+
+			return filePath;
+		}
 	}
 
 
