@@ -27,8 +27,12 @@ public class VersionHelper {
 //	private MobileServiceTable<AppVersion> appVersionTable;
 
 
-	public VersionHelper() {
-		app = ItApplication.getInstance();
+	public VersionHelper(ItApplication app) {
+		this.app = app;
+		this.mClient = app.getMobileClient();
+	}
+	public void setMobileClient(MobileServiceClient mClient) {
+		this.mClient = mClient;
 	}
 
 
@@ -81,9 +85,21 @@ public class VersionHelper {
 	}
 
 
-	public double getClientAppVersion() throws NameNotFoundException {
-		String versionName = app.getPackageManager().getPackageInfo(app.getPackageName(), 0).versionName;
-		return Double.parseDouble(versionName);
+	public double getClientAppVersion() {
+		String versionName = "0.11";
+		double versionNumber = 0.11;
+		try {
+			versionName = app.getPackageManager().getPackageInfo(app.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			versionName = "0.11";
+		}
+		try {
+			versionNumber = Double.parseDouble(versionName);
+		} catch (NumberFormatException ex) {
+			versionNumber = 0.11;
+		}
+		
+		return versionNumber;
 	}
 
 }

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.event.ItException;
@@ -28,6 +31,7 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 
@@ -137,6 +141,13 @@ public class LoginFragment extends ItFragment {
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
+				// Get registration Id from Google Cloud Service
+				getRegistrationId(frag, itUser);
+			}
+		}, new Chainable(){
+			
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
 				addItUser(frag, itUser);
 			}
 		}, new Chainable(){
@@ -155,6 +166,25 @@ public class LoginFragment extends ItFragment {
 	}
 
 
+	private void getRegistrationId(final ItFragment frag, final ItUser itUser) {
+		String androidId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
+		itUser.setMobileId(androidId);
+		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
+			mUserHelper.getRegistrationIdAsync(frag, new EntityCallback<String>(){
+
+				@Override
+				public void onCompleted(String registrationId) {
+					itUser.setRegistrationId(registrationId);
+					ItLog.log(itUser);
+					AsyncChainer.notifyNext(frag);
+				}
+			});
+		}else{
+			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.GCM_REGISTRATION_FAIL));
+		}
+	}
+
+
 	private void addItUser(final ItFragment frag, final ItUser itUser){
 		mUserHelper.add(itUser, new PairEntityCallback<ItUser, Exception>() {
 
@@ -168,6 +198,10 @@ public class LoginFragment extends ItFragment {
 					itUser.setId(entity.getId());
 					AsyncChainer.notifyNext(frag);
 				} else {
+					ItUser user = mObjectPrefHelper.get(ItUser.class);
+					user.setRegistrationId(null);
+					mObjectPrefHelper.put(user);
+					
 					goToNextActivity();
 					AsyncChainer.clearChain(frag);
 				}

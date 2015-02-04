@@ -21,6 +21,7 @@ import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 

@@ -22,6 +22,7 @@ import com.pinthecloud.item.helper.CrashHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
+import com.pinthecloud.item.helper.VersionHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.squareup.picasso.Picasso;
@@ -57,6 +58,7 @@ public class ItApplication extends Application {
 	private ObjectPrefHelper objectPrefHelper;
 	private AimHelper aimHelper;
 	private UserHelper userHelper;
+	private VersionHelper versionHelper;
 	private BlobStorageHelper blobStorageHelper;
 	private CrashHelper crashHelper;
 
@@ -64,7 +66,7 @@ public class ItApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-		mClient = getMobileClient();
+		
 
 		userHabitHelper = getUserHabitHelper();
 		gaHelper = getGaHelper();
@@ -74,9 +76,12 @@ public class ItApplication extends Application {
 		objectPrefHelper = getObjectPrefHelper();
 		aimHelper = getAimHelper();
 		userHelper = getUserHelper();
+		versionHelper = getVersionHelper();
 		blobStorageHelper = getBlobStorageHelper();
 		crashHelper = getCrashHelper();
 
+		mClient = getMobileClient();
+		
 		ACRA.init(app);
 		ACRA.getErrorReporter().setReportSender(crashHelper);
 	}
@@ -102,6 +107,7 @@ public class ItApplication extends Application {
 			} else {
 				mClient = realClient;
 			}
+			mClient = testClient;
 		}
 		return mClient;
 	}
@@ -133,6 +139,10 @@ public class ItApplication extends Application {
 	public UserHelper getUserHelper() {
 		if(userHelper == null) userHelper = new UserHelper(app);
 		return userHelper;
+	}
+	public VersionHelper getVersionHelper() {
+		if(versionHelper == null) versionHelper = new VersionHelper(app);
+		return versionHelper;
 	}
 	public BlobStorageHelper getBlobStorageHelper() {
 		if(blobStorageHelper == null) blobStorageHelper = new BlobStorageHelper(app);
@@ -191,6 +201,7 @@ public class ItApplication extends Application {
 
 		aimHelper.setMobileClient(mClient);
 		userHelper.setMobileClient(mClient);
+		versionHelper.setMobileClient(mClient);
 		crashHelper.setMobileClient(mClient);
 
 		ItUser user = objectPrefHelper.get(ItUser.class);

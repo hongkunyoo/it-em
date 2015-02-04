@@ -11,6 +11,8 @@
     <!-- Common Sentence -->
     <string name="network_unavailable_message">Internet is unavailable. Please check network status.</string>
     <string name="error_message">Ooooops! Error happened. Please retry it.</string>
+    <string name="update_app_message">There is a new version. Please update App.</string>
+    <string name="google_play_services_message">Please check Google Play Service.</string>
 
     <!-- Login -->
     <string name="facebook_login">SIGN IN with facebook</string>

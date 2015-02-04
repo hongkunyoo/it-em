@@ -130,6 +130,12 @@ public class ItUser implements Parcelable {
 	public void setRegistrationId(String registrationId) {
 		this.registrationId = registrationId;
 	}
+	public String getMobileId() {
+		return mobileId;
+	}
+	public void setMobileId(String mobileId) {
+		this.mobileId = mobileId;
+	}
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
