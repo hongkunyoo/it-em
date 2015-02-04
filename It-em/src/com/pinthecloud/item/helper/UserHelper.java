@@ -1,17 +1,23 @@
 package com.pinthecloud.item.helper;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.http.HttpStatus;
 
+import android.os.AsyncTask;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
+import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.event.ItException;
+import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
@@ -30,8 +36,8 @@ public class UserHelper {
 		this.mClient = app.getMobileClient();
 		this.table = mClient.getTable(ItUser.class);
 	}
-	
-	
+
+
 	public void setMobileClient(MobileServiceClient client) {
 		this.mClient = client;
 		this.table = mClient.getTable(ItUser.class);
@@ -110,7 +116,7 @@ public class UserHelper {
 			}
 		});
 	}
-	
+
 	public void getByItUserId(String itUserId, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.NETWORK_UNAVAILABLE));
@@ -141,7 +147,7 @@ public class UserHelper {
 			EventBus.getDefault().post(new ItException("update", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
-		
+
 		table.update(user, new TableOperationCallback<ItUser>() {
 
 			@Override
@@ -154,5 +160,36 @@ public class UserHelper {
 				}
 			}
 		});
+	}
+
+	
+	public void getRegistrationIdAsync(final ItFragment frag, final EntityCallback<String> callback) {
+		if (!mApp.isOnline()) {
+			EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		(new AsyncTask<GoogleCloudMessaging, Void, String>() {
+
+			@Override
+			protected String doInBackground(GoogleCloudMessaging... params) {
+				GoogleCloudMessaging gcm = params[0];
+				try {
+					return gcm.register(GlobalVariable.GCM_SENDER_ID);
+				} catch (IOException e) {
+					return null;
+				}
+			}
+
+			@Override
+			protected void onPostExecute(String result) {
+				super.onPostExecute(result);
+				if (result != null) {
+					callback.onCompleted(result);
+				} else {
+					EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.GCM_REGISTRATION_FAIL));
+				}
+			}
+		}).execute(GoogleCloudMessaging.getInstance(frag.getActivity()));
 	}
 }

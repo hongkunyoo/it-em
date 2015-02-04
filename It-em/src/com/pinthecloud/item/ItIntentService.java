@@ -2,6 +2,8 @@ package com.pinthecloud.item;
 
 import java.util.List;
 
+import com.pinthecloud.item.util.ItLog;
+
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.IntentService;
@@ -32,7 +34,9 @@ public class ItIntentService extends IntentService {
 		 */
 		String unRegisterd = intent.getStringExtra("unregistered");
 		if (unRegisterd != null && unRegisterd.equals(GlobalVariable.GOOGLE_PLAY_APP_ID)) return;
-		String messageStr = intent.getExtras().getString("message");
+		
+		ItLog.log(intent.getExtras(), intent);
+//		String messageStr = intent.getExtras().getString("message");
 	}
 
 

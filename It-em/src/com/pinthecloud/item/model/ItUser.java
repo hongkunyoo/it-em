@@ -46,6 +46,10 @@ public class ItUser implements Parcelable {
 	private String type;
 	@com.google.gson.annotations.SerializedName("password")
 	private String password = "";
+	@com.google.gson.annotations.SerializedName("registrationId")
+	private String registrationId;
+	@com.google.gson.annotations.SerializedName("mobileId")
+	private String mobileId;
 
 	public ItUser() {
 		super();
@@ -120,6 +124,18 @@ public class ItUser implements Parcelable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getRegistrationId() {
+		return registrationId;
+	}
+	public void setRegistrationId(String registrationId) {
+		this.registrationId = registrationId;
+	}
+	public String getMobileId() {
+		return mobileId;
+	}
+	public void setMobileId(String mobileId) {
+		this.mobileId = mobileId;
+	}
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
@@ -130,6 +146,8 @@ public class ItUser implements Parcelable {
 		this.setWebPage(itUser.getWebPage());
 		this.setType(itUser.getType());
 		this.setPassword(itUser.getPassword());
+		this.setRegistrationId(itUser.getRegistrationId());
+		this.setMobileId(itUser.getMobileId());
 	}
 
 

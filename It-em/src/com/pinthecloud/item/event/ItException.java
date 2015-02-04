@@ -1,5 +1,7 @@
 package com.pinthecloud.item.event;
 
+import com.google.gson.Gson;
+
 
 public class ItException extends RuntimeException {
 
@@ -42,12 +44,7 @@ public class ItException extends RuntimeException {
 
 	@Override
 	public String toString() {
-		if (super.getMessage() == null) {
-			return "{ type : " + type + "," +
-					" method : " + methodName + " }";	
-		} else {
-			return "{ message : " + super.getMessage() + " }";
-		}
+		return new Gson().toJson(this);
 	}
 
 	// Client Exception Type
@@ -56,6 +53,7 @@ public class ItException extends RuntimeException {
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
 		INTERNAL_ERROR,
+		GCM_REGISTRATION_FAIL
 	}
 
 	// Azure Mobile Service Exception Code

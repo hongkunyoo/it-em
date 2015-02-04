@@ -17,6 +17,7 @@ import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 
@@ -99,6 +100,7 @@ public abstract class ItActivity extends ActionBarActivity {
 			}
 		});
 		exceptionDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+		ItLog.log(exception);
 	}
 
 

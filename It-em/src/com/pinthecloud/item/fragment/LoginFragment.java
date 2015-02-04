@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.event.ItException;
@@ -133,8 +136,15 @@ public class LoginFragment extends ItFragment {
 		String email = user.getProperty("email") == null ? user.getId() : user.getProperty("email").toString();
 		final ItUser itUser = new ItUser(user.getId(), ItUser.FACEBOOK, email,
 				user.getFirstName().replace(" ", "_"), "", "", ItUser.TYPE.VIEWER);
+		
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
+			@Override
+			public void doNext(ItFragment frag, Object... params) {
+				getRegistrationId(frag, itUser);
+			}
+		}, new Chainable(){
+			
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
 				addItUser(frag, itUser);
@@ -152,6 +162,24 @@ public class LoginFragment extends ItFragment {
 				uploadProfileImage(frag, itUser, (Bitmap)params[0]);
 			}
 		});
+	}
+
+
+	private void getRegistrationId(final ItFragment frag, final ItUser itUser) {
+		String androidId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
+		itUser.setMobileId(androidId);
+		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
+			mUserHelper.getRegistrationIdAsync(frag, new EntityCallback<String>(){
+
+				@Override
+				public void onCompleted(String registrationId) {
+					itUser.setRegistrationId(registrationId);
+					AsyncChainer.notifyNext(frag);
+				}
+			});
+		}else{
+			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.GCM_REGISTRATION_FAIL));
+		}
 	}
 
 
