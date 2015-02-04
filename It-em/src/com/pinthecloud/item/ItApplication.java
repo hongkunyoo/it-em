@@ -97,10 +97,15 @@ public class ItApplication extends Application {
 						this);
 			} catch (MalformedURLException e) {
 			}
-			mClient = realClient;
+			if (isAdmin()) {
+				mClient = testClient;
+			} else {
+				mClient = realClient;
+			}
 		}
 		return mClient;
 	}
+
 	public UserHabitHelper getUserHabitHelper() {
 		if(userHabitHelper == null) userHabitHelper = new UserHabitHelper();
 		return userHabitHelper;
