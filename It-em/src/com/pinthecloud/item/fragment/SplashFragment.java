@@ -111,7 +111,7 @@ public class SplashFragment extends ItFragment {
 				intent.setClass(mActivity, LoginActivity.class);
 			} else {
 				if (user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
-					getRegistrationIdAndUpdate_UNDER_VER_107();
+					getRegistrationIdAndUpdate_UNDER_VER_107(user);
 					return;
 				}
 
@@ -123,19 +123,17 @@ public class SplashFragment extends ItFragment {
 	}
 
 
-	private void getRegistrationIdAndUpdate_UNDER_VER_107() {
-		final ItUser itUser = mObjectPrefHelper.get(ItUser.class);
-
+	private void getRegistrationIdAndUpdate_UNDER_VER_107(final ItUser user) {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				getRegistrationId(frag, itUser);
+				getRegistrationId(frag, user);
 			}
 		}, new Chainable(){
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				updateUser(frag, itUser);
+				updateUser(frag, user);
 			}
 		}, new Chainable(){
 
