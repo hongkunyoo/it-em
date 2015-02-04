@@ -5,7 +5,7 @@
     <string name="network_unavailable_message">인터넷이 불안정합니다. 네트워크 상태를 확인해 주세요.</string>
     <string name="error_message">이런! 에러가 났어요. 다시 시도해 주세요.</string>
     <string name="update_app_message">새로운 버전이 나왔어요. 업데이트를 해주세요.</string>
-    <string name="google_play_services_message">구글 플레이 서비스가 제대로 설치되어 있는지 확인해주세요.</string>
+    <string name="google_play_services_message">구글 플레이 서비스가 설치되어 있는지 확인해주세요.</string>
 
     <!-- Login -->
     <string name="facebook_login">페이스북으로 로그인하기</string>

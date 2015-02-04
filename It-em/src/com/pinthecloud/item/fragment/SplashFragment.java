@@ -109,12 +109,12 @@ public class SplashFragment extends ItFragment {
 			if (!user.isLoggedIn()){
 				// New User
 				intent.setClass(mActivity, LoginActivity.class);
-			} else { 
+			} else {
 				if (user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
 					getRegistrationIdAndUpdate_UNDER_VER_107();
 					return;
 				}
-				
+
 				// Has Loggined
 				intent.setClass(mActivity, MainActivity.class);
 			}
@@ -122,7 +122,7 @@ public class SplashFragment extends ItFragment {
 		}
 	}
 
-	
+
 	private void getRegistrationIdAndUpdate_UNDER_VER_107() {
 		final ItUser itUser = mObjectPrefHelper.get(ItUser.class);
 

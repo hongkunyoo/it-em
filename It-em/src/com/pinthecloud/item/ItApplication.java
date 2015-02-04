@@ -66,7 +66,7 @@ public class ItApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-		
+
 
 		userHabitHelper = getUserHabitHelper();
 		gaHelper = getGaHelper();
@@ -81,7 +81,7 @@ public class ItApplication extends Application {
 		crashHelper = getCrashHelper();
 
 		mClient = getMobileClient();
-		
+
 		ACRA.init(app);
 		ACRA.getErrorReporter().setReportSender(crashHelper);
 	}
