@@ -1,5 +1,8 @@
 package com.pinthecloud.item;
 
+import com.pinthecloud.item.helper.ObjectPrefHelper;
+import com.pinthecloud.item.model.ItUser;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,7 +16,10 @@ public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 		String regId = intent.getExtras().getString("registration_id");
 		if(regId != null && !regId.equals("")) {
 			// Save registration id
-			//			AhApplication.getInstance().getUserHelper().setMyRegistrationId(regId);
+			ObjectPrefHelper objPrefHelper = ItApplication.getInstance().getObjectPrefHelper();
+			ItUser user = objPrefHelper.get(ItUser.class);
+			user.setRegistrationId(regId);
+			objPrefHelper.put(user);
 		} else{
 			/*
 			 * Get push and do intent service by push

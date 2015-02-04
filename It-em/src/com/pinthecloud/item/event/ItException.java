@@ -56,6 +56,7 @@ public class ItException extends RuntimeException {
 		SERVER_ERROR,
 		BLOB_STORAGE_ERROR,
 		INTERNAL_ERROR,
+		GCM_REGISTRATION_FAIL
 	}
 
 	// Azure Mobile Service Exception Code
