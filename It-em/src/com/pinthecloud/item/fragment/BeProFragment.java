@@ -114,7 +114,7 @@ public class BeProFragment extends ItFragment {
 
 			@Override
 			public void doNext(final ItFragment frag, Object... params) {
-				mMyItUser.setType(ItUser.TYPE.PRO);
+				mMyItUser.fixType(ItUser.TYPE.PRO);
 				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
 					@Override

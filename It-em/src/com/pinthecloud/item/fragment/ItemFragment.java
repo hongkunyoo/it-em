@@ -34,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
@@ -432,7 +433,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setImage(){
-		int maxSize = mPrefHelper.getInt(ViewUtil.MAX_TEXTURE_SIZE_KEY);
+		int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
 		if(mItem.getImageHeight() > maxSize){
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))

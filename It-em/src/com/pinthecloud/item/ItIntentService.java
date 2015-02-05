@@ -12,14 +12,13 @@ import android.support.v4.app.TaskStackBuilder;
 
 public class ItIntentService extends IntentService {
 
+	public static final int NOTIFICATION_ID = 1;
+	
 	private Context mThis;
-
 
 	public ItIntentService() {
 		this("ItIntentService");
 	}
-
-
 	public ItIntentService(String name) {
 		super(name);
 		mThis = this;
@@ -28,7 +27,7 @@ public class ItIntentService extends IntentService {
 
 	public void onHandleIntent(Intent intent) {
 		String unRegisterd = intent.getStringExtra("unregistered");
-		if (unRegisterd != null && unRegisterd.equals(GlobalVariable.GOOGLE_PLAY_APP_ID)){
+		if (unRegisterd != null && unRegisterd.equals(ItConstant.GOOGLE_PLAY_APP_ID)){
 			return;	
 		}
 
@@ -64,7 +63,7 @@ public class ItIntentService extends IntentService {
 
 		// Notify
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.notify(GlobalVariable.NOTIFICATION_ID, mBuilder.build());
+		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
 		// For Vibration
 		AudioManager audioManager = (AudioManager) mThis.getSystemService(Context.AUDIO_SERVICE);

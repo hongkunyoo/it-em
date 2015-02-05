@@ -19,14 +19,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.ItConstant;
+import com.pinthecloud.item.ItIntentService;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.GCMRegIdEvent;
+import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
@@ -34,7 +36,6 @@ import com.pinthecloud.item.model.AppVersion;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.ViewUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -53,7 +54,7 @@ public class SplashFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_splash, container, false);
-		if(mPrefHelper.getInt(ViewUtil.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
+		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) view.findViewById(R.id.splash_frag_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mActivity));
 		} else {
@@ -76,7 +77,7 @@ public class SplashFragment extends ItFragment {
 		}
 
 		NotificationManager notiMan = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-		notiMan.cancel(GlobalVariable.NOTIFICATION_ID);
+		notiMan.cancel(ItIntentService.NOTIFICATION_ID);
 
 		mVersionHelper.getServerAppVersionAsync(new EntityCallback<AppVersion>() {
 
@@ -101,7 +102,7 @@ public class SplashFragment extends ItFragment {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + GlobalVariable.GOOGLE_PLAY_APP_ID));
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_APP_ID));
 				startActivity(intent);
 			}
 			@Override
@@ -120,12 +121,12 @@ public class SplashFragment extends ItFragment {
 	private void goToNextActivity() {
 		if(isAdded()){
 			// If registration id doesn't exist, get it
-			ItUser user = mObjectPrefHelper.get(ItUser.class);
-			if (user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
-				getRegistrationId(mThisFragment, user);
+			if(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY).equals(PrefHelper.DEFAULT_STRING)) {
+				getRegistrationId(mThisFragment);
 				return;
 			}
 
+			ItUser user = mObjectPrefHelper.get(ItUser.class);
 			Intent intent = new Intent();
 			if (!user.isLoggedIn()){
 				// New User
@@ -139,7 +140,7 @@ public class SplashFragment extends ItFragment {
 	}
 
 
-	private void getRegistrationId(final ItFragment frag, final ItUser user) {
+	private void getRegistrationId(final ItFragment frag) {
 		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
 			// Get registration id
 			mUserHelper.getRegistrationId(mActivity, new EntityCallback<String>() {
@@ -147,6 +148,11 @@ public class SplashFragment extends ItFragment {
 				@Override
 				public void onCompleted(String entity) {
 					if(entity != null){
+						ObjectPrefHelper objectPrefHelper = mApp.getObjectPrefHelper();
+						ItUser user = objectPrefHelper.get(ItUser.class);
+						user.setRegistrationId(entity);
+						objectPrefHelper.put(user);
+						
 						onEvent(new GCMRegIdEvent(entity));
 					} else {
 						// Get registration id in ItBroadCastReceiver.class
@@ -163,7 +169,7 @@ public class SplashFragment extends ItFragment {
 				@Override
 				public void doPositiveThing(Bundle bundle) {
 					Intent intent = new Intent(Intent.ACTION_VIEW,
-							Uri.parse("market://details?id=" + GlobalVariable.GOOGLE_PLAY_SERVICE_APP_ID));
+							Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_SERVICE_APP_ID));
 					startActivity(intent);
 					mActivity.finish();
 				}
@@ -180,20 +186,16 @@ public class SplashFragment extends ItFragment {
 
 	public void onEvent(GCMRegIdEvent event){
 		if(isAdded()){
+			// Get mobile id
 			final ItUser user = mObjectPrefHelper.get(ItUser.class);
-			if(!user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)){
-				return;
-			}
-			
-			String androidId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
-			user.setMobileId(androidId);
-			user.setRegistrationId(event.getRegId());
+			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
+			user.setMobileId(mobileId);
 
 			AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 				@Override
 				public void doNext(ItFragment frag, Object... params) {
-					if(user.isLoggedIn() && !user.getId().equals(PrefHelper.DEFAULT_STRING)){
+					if(user.isLoggedIn()){
 						// For under ver 107
 						updateUser(mThisFragment, user);
 					} else {
@@ -205,6 +207,8 @@ public class SplashFragment extends ItFragment {
 				@Override
 				public void doNext(ItFragment frag, Object... params) {
 					mObjectPrefHelper.put(user);
+					mPrefHelper.put(ItConstant.REGISTRATION_ID_KEY, user.getRegistrationId());
+					mPrefHelper.put(ItConstant.MOBILE_ID_KEY, user.getMobileId());
 					goToNextActivity();
 				}
 			});
@@ -247,7 +251,7 @@ public class SplashFragment extends ItFragment {
 		private void setMaxTextureSize(){
 			int[] maxTextureSize = new int[1];
 			GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0);
-			mPrefHelper.put(ViewUtil.MAX_TEXTURE_SIZE_KEY, maxTextureSize[0]);
+			mPrefHelper.put(ItConstant.MAX_TEXTURE_SIZE_KEY, maxTextureSize[0]);
 		}
 	}
 }

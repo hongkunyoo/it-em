@@ -3,7 +3,8 @@
 
     <!-- Id -->
     <string name="facebook_app_id">734298746647918</string>
-	<string name="kakao_app_key"> b666460c48c47d1b30537611471b64ea</string>
+	<string name="kakao_app_key">b666460c48c47d1b30537611471b64ea</string>
+	<string name="gcm_sender_id">51874025490</string>
 	
     <!-- Common Word -->
     <string name="app_name">IT:EM</string>

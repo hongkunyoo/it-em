@@ -14,8 +14,8 @@ import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
-import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
@@ -25,7 +25,7 @@ import com.pinthecloud.item.model.ItUser;
 import de.greenrobot.event.EventBus;
 
 public class UserHelper {
-
+	
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
 	private MobileServiceTable<ItUser> table;
@@ -206,7 +206,7 @@ public class UserHelper {
 			protected String doInBackground(GoogleCloudMessaging... params) {
 				GoogleCloudMessaging gcm = params[0];
 				try {
-					return gcm.register(GlobalVariable.GCM_SENDER_ID);
+					return gcm.register(mApp.getResources().getString(R.string.gcm_sender_id));
 				} catch (IOException e) {
 					return null;
 				}

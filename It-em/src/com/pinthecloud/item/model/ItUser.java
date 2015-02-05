@@ -3,7 +3,6 @@ package com.pinthecloud.item.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.maps.MapView.ReticleDrawMode;
 import com.google.gson.Gson;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.helper.PrefHelper;
@@ -114,7 +113,7 @@ public class ItUser implements Parcelable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public void setType(TYPE type) {
+	public void fixType(TYPE type) {
 		this.type = type.toString();
 	}
 	public String getPassword() {

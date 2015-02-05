@@ -7,12 +7,10 @@ import android.preference.PreferenceManager;
 
 public class PrefHelper {
 
-	// Default Vaule
 	public static final String DEFAULT_STRING = "DEFAULT_STRING";
 	public static final int DEFAULT_INT = 0;
 	public static final boolean DEFAULT_BOOLEAN = false;
 	public static final float DEFAULT_FLOAT = 0;
-
 
 	private SharedPreferences mPref;
 	public PrefHelper(Context context){
