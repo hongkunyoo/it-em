@@ -27,17 +27,29 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.6" />
-    </LinearLayout>
 
-    <com.facebook.widget.LoginButton
-        xmlns:facebook="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/login_frag_facebook_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/login_button_bottom_margin"
-        facebook:login_text="@string/facebook_login"
-        facebook:logout_text="@string/facebook_login" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <com.kakao.widget.LoginButton
+                android:id="@+id/com_kakao_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/login_button_bottom_margin" />
+
+            <com.facebook.widget.LoginButton
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/login_frag_facebook_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/login_button_bottom_margin"
+                facebook:login_text="@string/facebook_login"
+                facebook:logout_text="@string/facebook_login" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

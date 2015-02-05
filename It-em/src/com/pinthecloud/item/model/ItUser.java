@@ -10,8 +10,11 @@ import com.pinthecloud.item.helper.PrefHelper;
 public class ItUser implements Parcelable {
 
 	public static final String INTENT_KEY = "IT_USER_INTENT_KEY";
-	public static final String FACEBOOK = "facebook";
 
+	public static enum PLATFORM {
+		FACEBOOK,
+		KAKAO
+	}
 	public static enum TYPE {
 		VIEWER("VIEWER"),
 		SELLER("SELLER"),
@@ -55,10 +58,10 @@ public class ItUser implements Parcelable {
 		super();
 	}
 	
-	public ItUser(String itUserId, String platform, String email, String nickName, String selfIntro, String webPage, TYPE type) {
+	public ItUser(String itUserId, PLATFORM platform, String email, String nickName, String selfIntro, String webPage, TYPE type) {
 		super();
 		this.itUserId = itUserId;
-		this.platform = platform;
+		this.platform = platform.toString();
 		this.email = email;
 		this.nickName = nickName;
 		this.selfIntro = selfIntro;
