@@ -50,9 +50,9 @@ public class ItUser implements Parcelable {
 	@com.google.gson.annotations.SerializedName("password")
 	private String password = "";
 	@com.google.gson.annotations.SerializedName("registrationId")
-	private String registrationId = "";
+	private String registrationId;
 	@com.google.gson.annotations.SerializedName("mobileId")
-	private String mobileId = "";
+	private String mobileId;
 
 	public ItUser() {
 		super();
@@ -150,6 +150,7 @@ public class ItUser implements Parcelable {
 		this.setType(itUser.getType());
 		this.setPassword(itUser.getPassword());
 		this.setRegistrationId(itUser.getRegistrationId());
+		this.setMobileId(itUser.getMobileId());
 	}
 
 

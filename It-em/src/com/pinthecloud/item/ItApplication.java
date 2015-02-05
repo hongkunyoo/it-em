@@ -66,7 +66,7 @@ public class ItApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-		
+
 
 		userHabitHelper = getUserHabitHelper();
 		gaHelper = getGaHelper();
@@ -81,7 +81,7 @@ public class ItApplication extends Application {
 		crashHelper = getCrashHelper();
 
 		mClient = getMobileClient();
-		
+
 		ACRA.init(app);
 		ACRA.getErrorReporter().setReportSender(crashHelper);
 	}
@@ -107,7 +107,6 @@ public class ItApplication extends Application {
 			} else {
 				mClient = realClient;
 			}
-			mClient = testClient;
 		}
 		return mClient;
 	}
@@ -176,7 +175,7 @@ public class ItApplication extends Application {
 	}
 
 	public boolean isAdmin() {
-		ItUser user = objectPrefHelper.get(ItUser.class);
+		ItUser user = getObjectPrefHelper().get(ItUser.class);
 		if (user == null) return false;
 
 		ArrayList<String> list = new ArrayList<String>(){
@@ -186,7 +185,8 @@ public class ItApplication extends Application {
 				add("834118693318943"); // ChaeSoo
 				add("677830442331776"); // HongKun
 				add("13108175"); // HongKun - Kakao
-				add("1536364146612739"); // PintheCloud
+				add("756536111102631"); // HwaJeong
+				add("1536364146612739"); // Item@pinthecloud.com
 			}
 		};
 
@@ -200,17 +200,17 @@ public class ItApplication extends Application {
 			mClient = testClient;
 		}
 
-		aimHelper.setMobileClient(mClient);
-		userHelper.setMobileClient(mClient);
-		versionHelper.setMobileClient(mClient);
-		crashHelper.setMobileClient(mClient);
+		getAimHelper().setMobileClient(mClient);
+		getUserHelper().setMobileClient(mClient);
+		getCrashHelper().setMobileClient(mClient);
+		getVersionHelper().setMobileClient(mClient);
 
-		ItUser user = objectPrefHelper.get(ItUser.class);
-		userHelper.getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {
+		ItUser user = getObjectPrefHelper().get(ItUser.class);
+		getUserHelper().getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
-				objectPrefHelper.put(entity);
+				getObjectPrefHelper().put(entity);
 				callback.onCompleted(true);
 			}
 		});

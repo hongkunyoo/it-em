@@ -21,7 +21,6 @@ import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 
@@ -37,8 +36,8 @@ public class UserHelper {
 		this.mClient = app.getMobileClient();
 		this.table = mClient.getTable(ItUser.class);
 	}
-	
-	
+
+
 	public void setMobileClient(MobileServiceClient client) {
 		this.mClient = client;
 		this.table = mClient.getTable(ItUser.class);
@@ -117,7 +116,7 @@ public class UserHelper {
 			}
 		});
 	}
-	
+
 	public void getByItUserId(String itUserId, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.NETWORK_UNAVAILABLE));
@@ -148,7 +147,7 @@ public class UserHelper {
 			EventBus.getDefault().post(new ItException("update", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
-		
+
 		table.update(user, new TableOperationCallback<ItUser>() {
 
 			@Override
@@ -162,6 +161,7 @@ public class UserHelper {
 			}
 		});
 	}
+
 	
 	public void getRegistrationIdAsync(final ItFragment frag, final EntityCallback<String> callback) {
 		if (!mApp.isOnline()) {
@@ -185,9 +185,7 @@ public class UserHelper {
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
 				if (result != null) {
-					if (callback != null){
-						callback.onCompleted(result);
-					}
+					callback.onCompleted(result);
 				} else {
 					EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.GCM_REGISTRATION_FAIL));
 				}

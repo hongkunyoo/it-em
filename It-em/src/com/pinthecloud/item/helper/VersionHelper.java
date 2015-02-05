@@ -16,69 +16,42 @@ import de.greenrobot.event.EventBus;
 
 public class VersionHelper {
 
-	private String GET_APP_VERSION = "get_app_version";
-	private MobileServiceClient mClient;
+	private final String GET_APP_VERSION = "get_app_version";
+	
 	public enum TYPE {
 		MANDATORY,
 		OPTIONAL
 	}
-
-	private ItApplication app;
-//	private MobileServiceTable<AppVersion> appVersionTable;
-
+	
+	private ItApplication mApp;
+	private MobileServiceClient mClient;
 
 	public VersionHelper(ItApplication app) {
-		this.app = app;
+		this.mApp = app;
 		this.mClient = app.getMobileClient();
 	}
+	
 	public void setMobileClient(MobileServiceClient mClient) {
 		this.mClient = mClient;
 	}
 
 
-//	public void insertAppVersionAsync(final AhFragment frag, AppVersion appVersion, final AhEntityCallback<AppVersion> callback) throws AhException {
-//		if (!app.isOnline()) {
-//			ExceptionManager.fireException(new AhException(frag, "createSquareAsync", AhException.TYPE.INTERNET_NOT_CONNECTED));
-//			return;
-//		}
-//
-//		appVersionTable.insert(appVersion, new TableOperationCallback<AppVersion>() {
-//
-//			@Override
-//			public void onCompleted(AppVersion entity, Exception exception, ServiceFilterResponse response) {
-//				if (exception == null) {
-//					if (callback != null){
-//						callback.onCompleted(entity);
-//					}
-//					AsyncChainer.notifyNext(frag);
-//				} else {
-//					ExceptionManager.fireException(new AhException(frag, "createSquareAsync", AhException.TYPE.SERVER_ERROR));
-//				}
-//			}
-//		});
-//	}
-
-
 	public void getServerAppVersionAsync(final EntityCallback<AppVersion> callback) {
-		if (!app.isOnline()) {
+		if (!mApp.isOnline()) {
 			EventBus.getDefault().post(new ItException("getServerAppVersionAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 		
 		mClient.invokeApi(GET_APP_VERSION, new ApiJsonOperationCallback() {
-			
+
 			@Override
-			public void onCompleted(JsonElement arg0, Exception arg1,
-					ServiceFilterResponse arg2) {
-				// TODO Auto-generated method stub
-				if (arg1 == null) {
-					AppVersion version = new Gson().fromJson(arg0, AppVersion.class);
-					callback.onCompleted(version);
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(new Gson().fromJson(_json, AppVersion.class));
 				} else {
-					arg1.printStackTrace();
-					EventBus.getDefault().post(new ItException("getServerAppVersionAsync", ItException.TYPE.SERVER_ERROR, arg1));
+					EventBus.getDefault().post(new ItException("getServerAppVersionAsync", ItException.TYPE.SERVER_ERROR, exception));
 				}
-				
 			}
 		});
 		
@@ -86,22 +59,13 @@ public class VersionHelper {
 
 
 	public double getClientAppVersion() {
-		String versionName = "0.11";
-		double versionNumber = 0.11;
+		String versionName = "0.1";
 		try {
-			versionName = app.getPackageManager().getPackageInfo(app.getPackageName(), 0).versionName;
+			versionName = mApp.getPackageManager().getPackageInfo(mApp.getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
-			versionName = "0.11";
 		}
-		try {
-			versionNumber = Double.parseDouble(versionName);
-		} catch (NumberFormatException ex) {
-			versionNumber = 0.11;
-		}
-		
-		return versionNumber;
+		return Double.parseDouble(versionName);
 	}
-
 }
 
 

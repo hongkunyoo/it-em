@@ -40,9 +40,6 @@ import de.greenrobot.event.EventBus;
 
 public class SplashFragment extends ItFragment {
 
-//	private final int SPLASH_TIME = 1000;
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -59,44 +56,32 @@ public class SplashFragment extends ItFragment {
 
 
 	private void runItem() {
-		
-		NotificationManager notiMan =
-				(NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-		notiMan.cancel(GlobalVariable.NOTIFICATION_ID);
-		
-		
-		if (mApp.isAdmin())
+		if (mApp.isAdmin()){
 			Toast.makeText(mActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_SHORT).show();
-		
+		}
+
+		NotificationManager notiMan = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+		notiMan.cancel(GlobalVariable.NOTIFICATION_ID);
+
 		mVersionHelper.getServerAppVersionAsync(new EntityCallback<AppVersion>() {
 
 			@Override
 			public void onCompleted(AppVersion serverVer) {
 				double clientVer = mVersionHelper.getClientAppVersion();
-
 				if (serverVer.getVersion() > clientVer) {
 					updateApp(serverVer);
-				}else{
+				} else {
 					goToNextActivity();
 				}
 			}
 		});
-//		new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				goToNextActivity();
-//			}
-//		}, SPLASH_TIME);
 	}
-	
-	private void updateApp(final AppVersion serverVer){
-//		mApp.removeMySquarePreference(thisFragment);
-//		mApp.removeMyUserPreference(thisFragment);
 
+
+	private void updateApp(final AppVersion serverVer){
 		String message = getResources().getString(R.string.update_app_message);
 		ItAlertDialog updateDialog = ItAlertDialog.newInstance(message, null, null, true);
-		
+
 		updateDialog.setCallback(new DialogCallback() {
 
 			@Override
@@ -114,8 +99,8 @@ public class SplashFragment extends ItFragment {
 			}
 		});
 		updateDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-	
 	}
+
 
 	private void goToNextActivity() {
 		if(isAdded()){
@@ -124,56 +109,43 @@ public class SplashFragment extends ItFragment {
 			if (!user.isLoggedIn()){
 				// New User
 				intent.setClass(mActivity, LoginActivity.class);
-			} else { // Has Loggined
-				// Check whether User has Registration Id
-				if (user.getRegistrationId() == PrefHelper.DEFAULT_STRING) {
-					handle_task_under_0_11();
+			} else {
+				if (user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
+					getRegistrationIdAndUpdate_UNDER_VER_107(user);
 					return;
 				}
+
+				// Has Loggined
 				intent.setClass(mActivity, MainActivity.class);
 			}
 			startActivity(intent);
 		}
 	}
-	
-	//////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////
-	/*
-	 * HANDLING under version 0.11
-	 */
-	//////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////
-	
-	private void handle_task_under_0_11() {
-		final ItUser itUser = mObjectPrefHelper.get(ItUser.class);
-		
+
+
+	private void getRegistrationIdAndUpdate_UNDER_VER_107(final ItUser user) {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
-				getRegistrationId_FOR_UNDER_0_11(frag, itUser);
+				getRegistrationId(frag, user);
 			}
 		}, new Chainable(){
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
-				updateUser_FOR_UNDER_0_11(frag, itUser);
+				updateUser(frag, user);
 			}
-			
 		}, new Chainable(){
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(mActivity, MainActivity.class);
-				startActivity(intent);
+				startActivity(new Intent(mActivity, MainActivity.class));
 			}
 		});
 	}
-	
-	private void getRegistrationId_FOR_UNDER_0_11(final ItFragment frag, final ItUser itUser) {
+
+
+	private void getRegistrationId(final ItFragment frag, final ItUser itUser) {
 		String androidId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
 		itUser.setMobileId(androidId);
 		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
@@ -185,12 +157,13 @@ public class SplashFragment extends ItFragment {
 					AsyncChainer.notifyNext(frag);
 				}
 			});
-		}else{
+		} else {
 			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.GCM_REGISTRATION_FAIL));
 		}
 	}
-	
-	private void updateUser_FOR_UNDER_0_11(final ItFragment frag, final ItUser itUser) {
+
+
+	private void updateUser(final ItFragment frag, final ItUser itUser) {
 		mUserHelper.update(itUser, new EntityCallback<ItUser>() {
 
 			@Override
@@ -200,12 +173,8 @@ public class SplashFragment extends ItFragment {
 			}
 		});
 	}
-	
-	//////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////
 
-	
+
 	private class GetMaxTextureSizeSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
 		public GetMaxTextureSizeSurfaceView(Context context) {

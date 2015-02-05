@@ -208,11 +208,10 @@ public class LoginFragment extends ItFragment {
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
-				// Get registration Id from Google Cloud Service
 				getRegistrationId(frag, itUser);
 			}
 		}, new Chainable(){
-			
+
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
 				addItUser(frag, itUser);
@@ -245,7 +244,7 @@ public class LoginFragment extends ItFragment {
 					AsyncChainer.notifyNext(frag);
 				}
 			});
-		}else{
+		} else {
 			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.GCM_REGISTRATION_FAIL));
 		}
 	}
@@ -264,10 +263,6 @@ public class LoginFragment extends ItFragment {
 					itUser.setId(entity.getId());
 					AsyncChainer.notifyNext(frag);
 				} else {
-					ItUser user = mObjectPrefHelper.get(ItUser.class);
-					user.setRegistrationId(null);
-					mObjectPrefHelper.put(user);
-					
 					goToNextActivity();
 					AsyncChainer.clearChain(frag);
 				}
