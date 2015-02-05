@@ -18,7 +18,6 @@ import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.helper.CrashHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
@@ -27,7 +26,8 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.squareup.picasso.Picasso;
 
-@ReportsCrashes(formKey = "", formUri = "", mode = ReportingInteractionMode.TOAST, resToastText = R.string.error_message)
+@ReportsCrashes(formKey = "", mailTo="item@pinthecloud.com", 
+mode = ReportingInteractionMode.TOAST, resToastText=R.string.error_report_message)
 public class ItApplication extends Application {
 
 	public static int REAL = 0;
@@ -60,13 +60,14 @@ public class ItApplication extends Application {
 	private UserHelper userHelper;
 	private VersionHelper versionHelper;
 	private BlobStorageHelper blobStorageHelper;
-	private CrashHelper crashHelper;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		app = this;
 
+		ACRA.init(app);
+		mClient = getMobileClient();
 
 		userHabitHelper = getUserHabitHelper();
 		gaHelper = getGaHelper();
@@ -78,12 +79,6 @@ public class ItApplication extends Application {
 		userHelper = getUserHelper();
 		versionHelper = getVersionHelper();
 		blobStorageHelper = getBlobStorageHelper();
-		crashHelper = getCrashHelper();
-
-		mClient = getMobileClient();
-
-		ACRA.init(app);
-		ACRA.getErrorReporter().setReportSender(crashHelper);
 	}
 
 	public static ItApplication getInstance(){
@@ -147,11 +142,6 @@ public class ItApplication extends Application {
 		if(blobStorageHelper == null) blobStorageHelper = new BlobStorageHelper(app);
 		return blobStorageHelper;
 	}
-	public CrashHelper getCrashHelper() {
-		if(crashHelper == null) crashHelper = new CrashHelper(app);
-		return crashHelper;
-	}
-
 
 	public static boolean isDebugging() {
 		return app.mClient == app.testClient;
@@ -201,7 +191,6 @@ public class ItApplication extends Application {
 
 		getAimHelper().setMobileClient(mClient);
 		getUserHelper().setMobileClient(mClient);
-		getCrashHelper().setMobileClient(mClient);
 		getVersionHelper().setMobileClient(mClient);
 
 		ItUser user = getObjectPrefHelper().get(ItUser.class);

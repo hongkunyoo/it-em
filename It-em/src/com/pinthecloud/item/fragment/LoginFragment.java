@@ -189,7 +189,7 @@ public class LoginFragment extends ItFragment {
 			@Override
 			public void onCompleted(ItUser entity, Exception exception) {
 				mObjectPrefHelper.put(entity);
-
+				
 				// If a new user, add it and get profile image.
 				// Otherwise, go to next activity.
 				if(exception == null) {
