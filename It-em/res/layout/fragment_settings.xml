@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_row_nick_name_height"
+        android:layout_height="@dimen/settings_row_height"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingEnd="@dimen/key_line_first"
@@ -18,7 +18,7 @@
         android:paddingStart="@dimen/key_line_first" >
 
         <com.pinthecloud.item.view.ItTextView
-            android:id="@+id/settings_frag_email"
+            android:id="@+id/settings_frag_nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/gray_light"

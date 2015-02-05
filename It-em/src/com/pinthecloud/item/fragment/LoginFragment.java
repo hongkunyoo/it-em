@@ -15,12 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.AppEventsLogger;
-//import com.facebook.Session;
 import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
-//import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.kakao.APIErrorResult;
@@ -64,14 +62,9 @@ public class LoginFragment extends ItFragment {
 			
 	        @Override
 	        public void onSessionOpened() {
-	            // Login Success
-//	        	kakaoLogin();
 	        }
-
-	        
 	        @Override
 	        public void onSessionClosed(final KakaoException exception) {
-//	        	EventBus.getDefault().post(new ItException("onSessionClosed", ItException.TYPE.KAKAO_LOGIN_FAIL, exception));
 	        	mKakaoButton.setVisibility(View.VISIBLE);
 	        }
 		};
@@ -94,7 +87,12 @@ public class LoginFragment extends ItFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		// Facebook
 		mFacebookUiHelper.onResume();
+		AppEventsLogger.activateApp(mActivity);
+		
+		// Kakao
 		if(com.kakao.Session.initializeSession(mActivity, mKakaoSessionCallback)){
             // In Progress
 			mKakaoButton.setVisibility(View.GONE);
@@ -102,8 +100,6 @@ public class LoginFragment extends ItFragment {
             // Already Opened
         	kakaoLogin();
         }
-		
-		AppEventsLogger.activateApp(mActivity);
 	}
 
 
@@ -168,10 +164,8 @@ public class LoginFragment extends ItFragment {
 
             @Override
             protected void onSuccess(final UserProfile userProfile) {
-                
-                String itUserId = String.valueOf(userProfile.getId());
-        		final ItUser itUser = new ItUser(itUserId, ItUser.PLATFORM.KAKAO, itUserId,
-        				userProfile.getNickname(), "", "", ItUser.TYPE.VIEWER);
+        		final ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname(),
+        				"", "", ItUser.TYPE.VIEWER);
         		itemLogin(itUser, userProfile.getProfileImagePath());
             }
 
@@ -194,13 +188,11 @@ public class LoginFragment extends ItFragment {
 
 
 	private void facebookLogin(com.facebook.Session session, final GraphUser user){
-
-		String email = user.getProperty("email") == null ? user.getId() : user.getProperty("email").toString();
-		final ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, email,
+		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK,
 				user.getFirstName().replace(" ", "_"), "", "", ItUser.TYPE.VIEWER);
-		
 		itemLogin(itUser, "https://graph.facebook.com/"+itUser.getItUserId()+"/picture?type=large");
 	}
+	
 	
 	private void itemLogin(final ItUser itUser, final String imageUrl) {
 		mApp.showProgressDialog(mActivity);
@@ -280,7 +272,6 @@ public class LoginFragment extends ItFragment {
 				try {
 					bitmap = mApp.getPicasso()
 							.load(url)
-//							.resize(ImageUtil.PROFILE_IMAGE_SIZE, ImageUtil.PROFILE_IMAGE_SIZE)
 							.get();
 				} catch (IOException e) {
 					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.SERVER_ERROR));

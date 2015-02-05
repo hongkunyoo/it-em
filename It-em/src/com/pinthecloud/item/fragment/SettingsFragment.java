@@ -34,7 +34,7 @@ import de.greenrobot.event.EventBus;
 
 public class SettingsFragment extends ItFragment {
 
-	private TextView mEmail;
+	private TextView mNickName;
 	private RelativeLayout mLogout;
 
 	private ItUser mMyItUser;
@@ -68,13 +68,13 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mEmail = (TextView)view.findViewById(R.id.settings_frag_email);
+		mNickName = (TextView)view.findViewById(R.id.settings_frag_nick_name);
 		mLogout = (RelativeLayout)view.findViewById(R.id.settings_frag_logout);
 	}
 
 
 	private void setComponent(){
-		mEmail.setText(mMyItUser.getEmail());
+		mNickName.setText(mMyItUser.getNickName());
 	}
 
 
