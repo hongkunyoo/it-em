@@ -13,16 +13,24 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.Session;
+import com.kakao.APIErrorResult;
+import com.kakao.LogoutResponseCallback;
+import com.kakao.SessionCallback;
+import com.kakao.UserManagement;
+import com.kakao.exception.KakaoException;
+//import com.facebook.Session;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
+
+import de.greenrobot.event.EventBus;
 
 public class SettingsFragment extends ItFragment {
 
@@ -81,15 +89,28 @@ public class SettingsFragment extends ItFragment {
 
 					@Override
 					public void doPositiveThing(Bundle bundle) {
-						if(mMyItUser.getPlatform().equals(ItUser.FACEBOOK)){
-							facebookLogout();
+						
+						final EntityCallback<Boolean> logoutCallback = new EntityCallback<Boolean>() {
+
+							@Override
+							public void onCompleted(Boolean entity) {
+								// TODO Auto-generated method stub
+								if (entity) {
+									removePreference();
+									mApp.dismissProgressDialog();
+									Intent intent = new Intent(mActivity, LoginActivity.class);
+									intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+									startActivity(intent);
+								}
+								
+							}
+						};
+						mApp.showProgressDialog(mActivity);
+						if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.FACEBOOK.toString())) {
+							facebookLogout(logoutCallback);
+						} else if (mMyItUser.getPlatform().equals(ItUser.PLATFORM.KAKAO.toString())) {
+							kakaoLogout(logoutCallback);
 						}
-
-						removePreference();
-
-						Intent intent = new Intent(mActivity, LoginActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
 					}
 					@Override
 					public void doNegativeThing(Bundle bundle) {
@@ -163,17 +184,73 @@ public class SettingsFragment extends ItFragment {
 	}
 
 
-	private void facebookLogout(){
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			if (session.isOpened()) {
-				session.closeAndClearTokenInformation();
-				return;
-			}
+	private void facebookLogout(EntityCallback<Boolean> callback){
+		com.facebook.Session session = com.facebook.Session.getActiveSession();
+		
+		if (session == null) {
+			session = new com.facebook.Session(mActivity);
+			com.facebook.Session.setActiveSession(session);
 		}
-		session = new Session(mActivity);
-		Session.setActiveSession(session);
-		session.closeAndClearTokenInformation();
+		
+		if (session.isOpened()) {
+			session.closeAndClearTokenInformation();
+		}
+		
+		callback.onCompleted(true);
+
+	}
+	
+	private void kakaoLogout(final EntityCallback<Boolean> callback){
+		
+		boolean initalizing = com.kakao.Session.initializeSession(mActivity, new SessionCallback() {
+			
+	        @Override
+	        public void onSessionOpened() {
+//	        	UserManagement.requestLogout(new LogoutResponseCallback() {
+//	    			
+//	    			@Override
+//	    			protected void onSuccess(long userId) {
+//	    				// TODO Auto-generated method stub
+//	    				ItLog.log("Logout Success");
+//	    				callback.onCompleted(true);
+//	    			}
+//	    			
+//	    			@Override
+//	    			protected void onFailure(APIErrorResult errorResult) {
+//	    				// TODO Auto-generated method stub
+//	    				ItLog.log("on Failure");
+//	    				EventBus.getDefault().post(new ItException("onFailure", ItException.TYPE.KAKAO_LOGIN_FAIL, errorResult));
+//	    				callback.onCompleted(false);
+//	    			}
+//	    		});
+	        }
+
+	        
+	        @Override
+	        public void onSessionClosed(final KakaoException exception) {
+	        }
+		});
+		
+		if (initalizing){
+	         
+        } else if (com.kakao.Session.getCurrentSession().isOpened()){
+        	UserManagement.requestLogout(new LogoutResponseCallback() {
+    			
+    			@Override
+    			protected void onSuccess(long userId) {
+    				// TODO Auto-generated method stub
+    				callback.onCompleted(true);
+    			}
+    			
+    			@Override
+    			protected void onFailure(APIErrorResult errorResult) {
+    				// TODO Auto-generated method stub
+    				EventBus.getDefault().post(new ItException("onFailure", ItException.TYPE.KAKAO_LOGIN_FAIL, errorResult));
+    				callback.onCompleted(false);
+    			}
+    		});
+        }
+		
 	}
 
 
