@@ -6,8 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
-import com.pinthecloud.item.helper.ObjectPrefHelper;
-import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.event.GCMRegIdEvent;
+
+import de.greenrobot.event.EventBus;
 
 public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 
@@ -15,11 +16,7 @@ public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String regId = intent.getExtras().getString("registration_id");
 		if(regId != null && !regId.equals("")) {
-			// Save registration id
-			ObjectPrefHelper objPrefHelper = ItApplication.getInstance().getObjectPrefHelper();
-			ItUser user = objPrefHelper.get(ItUser.class);
-			user.setRegistrationId(regId);
-			objPrefHelper.put(user);
+			EventBus.getDefault().post(new GCMRegIdEvent(regId));
 		} else {
 			// Explicitly specify that GcmIntentService will handle the intent.
 			ComponentName comp = new ComponentName(context.getPackageName(), ItIntentService.class.getName());

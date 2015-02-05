@@ -10,6 +10,7 @@
 
     <!-- Login -->
     <string name="facebook_login">페이스북으로 로그인하기</string>
+    <string name="kakao_login">카카오로 로그인하기</string>
 
     <!-- Home -->
     <string name="comments">댓글</string>

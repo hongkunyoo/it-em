@@ -50,7 +50,7 @@ public class VersionHelper {
 				if (exception == null) {
 					callback.onCompleted(new Gson().fromJson(_json, AppVersion.class));
 				} else {
-					EventBus.getDefault().post(new ItException("getServerAppVersionAsync", ItException.TYPE.SERVER_ERROR, exception));
+					EventBus.getDefault().post(new ItException("getServerAppVersionAsync", ItException.TYPE.INTERNAL_ERROR, exception));
 				}
 			}
 		});

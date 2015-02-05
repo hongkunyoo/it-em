@@ -40,9 +40,9 @@ public class BlobStorageHelper {
 		try {
 			account = CloudStorageAccount.parse(storageConnectionString);
 		} catch (InvalidKeyException e) {
-			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.INTERNAL_ERROR));
 		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.INTERNAL_ERROR));
 		}
 		this.blobClient = account.createCloudBlobClient();
 	}
@@ -80,11 +80,11 @@ public class BlobStorageHelper {
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
 			baos.close();
 		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		} catch (StorageException e) {
-			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		} catch (IOException e) {
-			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		}
 		return id;
 	}
@@ -101,9 +101,9 @@ public class BlobStorageHelper {
 			blob.download(baos);
 			bm = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
 		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		} catch (StorageException e) {
-			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		}
 		return bm;
 	}
@@ -117,11 +117,11 @@ public class BlobStorageHelper {
 			blob = container.getBlockBlobReference(id);
 			blob.downloadToFile(context.getFilesDir() + "/" + path);
 		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
 		} catch (StorageException e) {
-			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
 		} catch (IOException e) {
-			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
 		}
 		return context.getFilesDir() + "/" + path;
 	}
@@ -135,9 +135,9 @@ public class BlobStorageHelper {
 			blob = container.getBlockBlobReference(id);
 			blob.delete();
 		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		} catch (StorageException e) {
-			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.BLOB_STORAGE_ERROR));
+			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		}
 		return true;
 	}

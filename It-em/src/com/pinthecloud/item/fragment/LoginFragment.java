@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings.Secure;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,6 @@ import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.kakao.APIErrorResult;
 import com.kakao.MeResponseCallback;
 import com.kakao.SessionCallback;
@@ -44,9 +41,9 @@ public class LoginFragment extends ItFragment {
 
 	private com.facebook.widget.LoginButton mFacebookButton;
 	private UiLifecycleHelper mFacebookUiHelper;
-	
+
 	private com.kakao.widget.LoginButton mKakaoButton;
-    private SessionCallback mKakaoSessionCallback;
+	private SessionCallback mKakaoSessionCallback;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,18 +54,18 @@ public class LoginFragment extends ItFragment {
 			public void call(com.facebook.Session session, SessionState state, Exception exception) {
 			}
 		});
-		
+
 		mKakaoSessionCallback = new SessionCallback() {
-			
-	        @Override
-	        public void onSessionOpened() {
-	        }
-	        @Override
-	        public void onSessionClosed(final KakaoException exception) {
-	        	mKakaoButton.setVisibility(View.VISIBLE);
-	        }
+
+			@Override
+			public void onSessionOpened() {
+			}
+			@Override
+			public void onSessionClosed(final KakaoException exception) {
+				mKakaoButton.setVisibility(View.VISIBLE);
+			}
 		};
-		
+
 		mFacebookUiHelper.onCreate(savedInstanceState);
 	}
 
@@ -87,19 +84,19 @@ public class LoginFragment extends ItFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		// Facebook
 		mFacebookUiHelper.onResume();
 		AppEventsLogger.activateApp(mActivity);
 		
 		// Kakao
 		if(com.kakao.Session.initializeSession(mActivity, mKakaoSessionCallback)){
-            // In Progress
+			// In Progress
 			mKakaoButton.setVisibility(View.GONE);
-        } else if (com.kakao.Session.getCurrentSession().isOpened()){
-            // Already Opened
-        	kakaoLogin();
-        }
+		} else if (com.kakao.Session.getCurrentSession().isOpened()){
+			// Already Opened
+			kakaoLogin();
+		}
 	}
 
 
@@ -133,15 +130,15 @@ public class LoginFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mFacebookButton = (com.facebook.widget.LoginButton)view.findViewById(R.id.login_frag_facebook_button);
-		mKakaoButton = (com.kakao.widget.LoginButton) view.findViewById(R.id.com_kakao_login);
+		mFacebookButton = (com.facebook.widget.LoginButton)view.findViewById(R.id.login_frag_facebook);
+		mKakaoButton = (com.kakao.widget.LoginButton) view.findViewById(R.id.login_frag_kakao);
 	}
 
 
 	private void setButton(){
 		mFacebookButton.setFragment(mThisFragment);
 		mFacebookButton.setReadPermissions(Arrays.asList("public_profile", "email"));
-		mFacebookButton.setBackgroundResource(R.drawable.signin_facebook_button);
+		mFacebookButton.setBackgroundResource(R.drawable.signin_button);
 		mFacebookButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 		mFacebookButton.setTypeface(mFacebookButton.getTypeface(), Typeface.BOLD);
 		mFacebookButton.setText(getResources().getString(R.string.facebook_login));
@@ -157,52 +154,56 @@ public class LoginFragment extends ItFragment {
 				}
 			}
 		});
-	}
-	
-	private void kakaoLogin() {
-		UserManagement.requestMe(new MeResponseCallback() {
-
-            @Override
-            protected void onSuccess(final UserProfile userProfile) {
-        		final ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname(),
-        				"", "", ItUser.TYPE.VIEWER);
-        		itemLogin(itUser, userProfile.getProfileImagePath());
-            }
-
-            @Override
-            protected void onNotSignedUp() {
-            	EventBus.getDefault().post(new ItException("onNotSignedUp", ItException.TYPE.KAKAO_LOGIN_FAIL));
-            }
-
-            @Override
-            protected void onSessionClosedFailure(final APIErrorResult errorResult) {
-            	EventBus.getDefault().post(new ItException("onSessionClosedFailure", ItException.TYPE.KAKAO_LOGIN_FAIL, errorResult));
-            }
-
-            @Override
-            protected void onFailure(final APIErrorResult errorResult) {
-            	EventBus.getDefault().post(new ItException("onFailure", ItException.TYPE.KAKAO_LOGIN_FAIL, errorResult));
-            }
-        });
+		
+		mKakaoButton.setBackgroundResource(R.drawable.signin_button);
+		mKakaoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		mKakaoButton.setTypeface(mKakaoButton.getTypeface(), Typeface.BOLD);
+		mKakaoButton.setText(getResources().getString(R.string.kakao_login));
+		mKakaoButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
+		mKakaoButton.setTextColor(getResources().getColor(R.color.brand_color));
 	}
 
 
 	private void facebookLogin(com.facebook.Session session, final GraphUser user){
-		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK,
-				user.getFirstName().replace(" ", "_"), "", "", ItUser.TYPE.VIEWER);
+		ItUser myUser = mObjectPrefHelper.get(ItUser.class);
+		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, user.getFirstName().replace(" ", "_"),
+				"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
 		itemLogin(itUser, "https://graph.facebook.com/"+itUser.getItUserId()+"/picture?type=large");
 	}
-	
-	
+
+
+	private void kakaoLogin() {
+		UserManagement.requestMe(new MeResponseCallback() {
+
+			@Override
+			protected void onSuccess(final UserProfile userProfile) {
+				ItUser myUser = mObjectPrefHelper.get(ItUser.class);
+				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname(),
+						"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
+				itemLogin(itUser, userProfile.getProfileImagePath());
+			}
+
+			@Override
+			protected void onNotSignedUp() {
+				EventBus.getDefault().post(new ItException("onNotSignedUp", ItException.TYPE.INTERNAL_ERROR));
+			}
+
+			@Override
+			protected void onSessionClosedFailure(final APIErrorResult errorResult) {
+				EventBus.getDefault().post(new ItException("onSessionClosedFailure", ItException.TYPE.INTERNAL_ERROR, errorResult));
+			}
+
+			@Override
+			protected void onFailure(final APIErrorResult errorResult) {
+				EventBus.getDefault().post(new ItException("onFailure", ItException.TYPE.INTERNAL_ERROR, errorResult));
+			}
+		});
+	}
+
+
 	private void itemLogin(final ItUser itUser, final String imageUrl) {
 		mApp.showProgressDialog(mActivity);
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				getRegistrationId(frag, itUser);
-			}
-		}, new Chainable(){
 
 			@Override
 			public void doNext(ItFragment frag, Object... params) {
@@ -224,31 +225,13 @@ public class LoginFragment extends ItFragment {
 	}
 
 
-	private void getRegistrationId(final ItFragment frag, final ItUser itUser) {
-		String androidId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
-		itUser.setMobileId(androidId);
-		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
-			mUserHelper.getRegistrationIdAsync(frag, new EntityCallback<String>(){
-
-				@Override
-				public void onCompleted(String registrationId) {
-					itUser.setRegistrationId(registrationId);
-					AsyncChainer.notifyNext(frag);
-				}
-			});
-		} else {
-			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.GCM_REGISTRATION_FAIL));
-		}
-	}
-
-
 	private void addItUser(final ItFragment frag, final ItUser itUser){
 		mUserHelper.add(itUser, new PairEntityCallback<ItUser, Exception>() {
 
 			@Override
 			public void onCompleted(ItUser entity, Exception exception) {
 				mObjectPrefHelper.put(entity);
-				
+
 				// If a new user, add it and get profile image.
 				// Otherwise, go to next activity.
 				if(exception == null) {
@@ -274,7 +257,7 @@ public class LoginFragment extends ItFragment {
 							.load(url)
 							.get();
 				} catch (IOException e) {
-					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.SERVER_ERROR));
+					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.INTERNAL_ERROR));
 				}
 				return bitmap;
 			}

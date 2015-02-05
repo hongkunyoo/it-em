@@ -3,6 +3,7 @@ package com.pinthecloud.item.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.maps.MapView.ReticleDrawMode;
 import com.google.gson.Gson;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.helper.PrefHelper;
@@ -57,7 +58,8 @@ public class ItUser implements Parcelable {
 		super();
 	}
 
-	public ItUser(String itUserId, PLATFORM platform, String nickName, String selfIntro, String webPage, TYPE type) {
+	public ItUser(String itUserId, PLATFORM platform, String nickName, String selfIntro, String webPage, TYPE type,
+			String registrationId, String mobileId) {
 		super();
 		this.itUserId = itUserId;
 		this.platform = platform.toString();
@@ -65,6 +67,8 @@ public class ItUser implements Parcelable {
 		this.selfIntro = selfIntro;
 		this.webPage = webPage;
 		this.type = type.toString();
+		this.registrationId = registrationId;
+		this.mobileId = mobileId;
 	}
 
 

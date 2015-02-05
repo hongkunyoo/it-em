@@ -17,7 +17,6 @@ import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
-import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 
@@ -85,30 +84,30 @@ public abstract class ItActivity extends ActionBarActivity {
 
 
 	public void onEvent(ItException exception) {
-		String message = getExceptionMessage(exception);
-		ItAlertDialog exceptionDialog = ItAlertDialog.newInstance(message, null, null, false);
-		exceptionDialog.setCallback(new DialogCallback() {
+		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)
+				|| exception.getType().equals(ItException.TYPE.INTERNAL_ERROR)){
 
-			@Override
-			public void doPositiveThing(Bundle bundle) {
-				android.os.Process.killProcess(android.os.Process.myPid());
-				System.exit(1);
+			String message = null;
+			if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)){
+				message = getResources().getString(R.string.network_unavailable_message);
+			} else if(exception.getType().equals(ItException.TYPE.INTERNAL_ERROR)){
+				message = getResources().getString(R.string.error_message);
 			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-				// Do nothing
-			}
-		});
-		exceptionDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
-		ItLog.log(exception);
-	}
 
+			ItAlertDialog exceptionDialog = ItAlertDialog.newInstance(message, null, null, false);
+			exceptionDialog.setCallback(new DialogCallback() {
 
-	private String getExceptionMessage(ItException exception){
-		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)){
-			return getResources().getString(R.string.network_unavailable_message);
-		} else {
-			return getResources().getString(R.string.error_message);
+				@Override
+				public void doPositiveThing(Bundle bundle) {
+					android.os.Process.killProcess(android.os.Process.myPid());
+					System.exit(1);
+				}
+				@Override
+				public void doNegativeThing(Bundle bundle) {
+					// Do nothing
+				}
+			});
+			exceptionDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 		}
 	}
 }

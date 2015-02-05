@@ -26,7 +26,7 @@ import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.event.ItException;
+import com.pinthecloud.item.event.GCMRegIdEvent;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
@@ -40,6 +40,14 @@ import de.greenrobot.event.EventBus;
 
 public class SplashFragment extends ItFragment {
 
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		EventBus.getDefault().register(mThisFragment);
+	}
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -52,6 +60,13 @@ public class SplashFragment extends ItFragment {
 			runItem();
 		}
 		return view;
+	}
+
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		EventBus.getDefault().unregister(mThisFragment);
 	}
 
 
@@ -104,17 +119,18 @@ public class SplashFragment extends ItFragment {
 
 	private void goToNextActivity() {
 		if(isAdded()){
+			// If registration id doesn't exist, get it
+			ItUser user = mObjectPrefHelper.get(ItUser.class);
+			if (user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
+				getRegistrationId(mThisFragment, user);
+				return;
+			}
+
 			Intent intent = new Intent();
-			ItUser user = mObjectPrefHelper.get(ItUser.class); 
 			if (!user.isLoggedIn()){
 				// New User
 				intent.setClass(mActivity, LoginActivity.class);
 			} else {
-				if (user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
-					getRegistrationIdAndUpdate_UNDER_VER_107(user);
-					return;
-				}
-
 				// Has Loggined
 				intent.setClass(mActivity, MainActivity.class);
 			}
@@ -123,42 +139,75 @@ public class SplashFragment extends ItFragment {
 	}
 
 
-	private void getRegistrationIdAndUpdate_UNDER_VER_107(final ItUser user) {
-		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				getRegistrationId(frag, user);
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				updateUser(frag, user);
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				startActivity(new Intent(mActivity, MainActivity.class));
-			}
-		});
-	}
-
-
-	private void getRegistrationId(final ItFragment frag, final ItUser itUser) {
-		String androidId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
-		itUser.setMobileId(androidId);
+	private void getRegistrationId(final ItFragment frag, final ItUser user) {
 		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
-			mUserHelper.getRegistrationIdAsync(frag, new EntityCallback<String>(){
+			// Get registration id
+			mUserHelper.getRegistrationId(mActivity, new EntityCallback<String>() {
 
 				@Override
-				public void onCompleted(String registrationId) {
-					itUser.setRegistrationId(registrationId);
-					AsyncChainer.notifyNext(frag);
+				public void onCompleted(String entity) {
+					if(entity != null){
+						onEvent(new GCMRegIdEvent(entity));
+					} else {
+						// Get registration id in ItBroadCastReceiver.class
+						// After get id, goto OnEvent()
+					}
 				}
 			});
 		} else {
-			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.GCM_REGISTRATION_FAIL));
+			// Show dialog user to Install google play service
+			String message = getResources().getString(R.string.google_play_services_message);
+			ItAlertDialog gcmDialog = ItAlertDialog.newInstance(message, null, null, true);
+			gcmDialog.setCallback(new DialogCallback() {
+
+				@Override
+				public void doPositiveThing(Bundle bundle) {
+					Intent intent = new Intent(Intent.ACTION_VIEW,
+							Uri.parse("market://details?id=" + GlobalVariable.GOOGLE_PLAY_SERVICE_APP_ID));
+					startActivity(intent);
+					mActivity.finish();
+				}
+
+				@Override
+				public void doNegativeThing(Bundle bundle) {
+					mActivity.finish();
+				}
+			});
+			gcmDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+		}
+	}
+
+
+	public void onEvent(GCMRegIdEvent event){
+		if(isAdded()){
+			final ItUser user = mObjectPrefHelper.get(ItUser.class);
+			if(!user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)){
+				return;
+			}
+			
+			String androidId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
+			user.setMobileId(androidId);
+			user.setRegistrationId(event.getRegId());
+
+			AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+				@Override
+				public void doNext(ItFragment frag, Object... params) {
+					if(user.isLoggedIn() && !user.getId().equals(PrefHelper.DEFAULT_STRING)){
+						// For under ver 107
+						updateUser(mThisFragment, user);
+					} else {
+						AsyncChainer.notifyNext(mThisFragment);
+					}
+				}
+			}, new Chainable(){
+
+				@Override
+				public void doNext(ItFragment frag, Object... params) {
+					mObjectPrefHelper.put(user);
+					goToNextActivity();
+				}
+			});
 		}
 	}
 
@@ -168,7 +217,6 @@ public class SplashFragment extends ItFragment {
 
 			@Override
 			public void onCompleted(ItUser entity) {
-				mObjectPrefHelper.put(entity);
 				AsyncChainer.notifyNext(frag);
 			}
 		});
