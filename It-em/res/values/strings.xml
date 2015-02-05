@@ -18,6 +18,7 @@
 
     <!-- Login -->
     <string name="facebook_login">SIGN IN with facebook</string>
+    <string name="kakao_login">SIGN IN with kakao</string>
 
     <!-- Main -->
     <string name="drawer_open">Open drawer</string>

@@ -3,6 +3,7 @@ package com.pinthecloud.item.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.maps.MapView.ReticleDrawMode;
 import com.google.gson.Gson;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.helper.PrefHelper;
@@ -15,6 +16,7 @@ public class ItUser implements Parcelable {
 		FACEBOOK,
 		KAKAO
 	}
+	
 	public static enum TYPE {
 		VIEWER("VIEWER"),
 		SELLER("SELLER"),
@@ -37,8 +39,6 @@ public class ItUser implements Parcelable {
 	private String itUserId;
 	@com.google.gson.annotations.SerializedName("platform")
 	private String platform;
-	@com.google.gson.annotations.SerializedName("email")
-	private String email;
 	@com.google.gson.annotations.SerializedName("nickName")
 	private String nickName;
 	@com.google.gson.annotations.SerializedName("selfIntro")
@@ -57,16 +57,18 @@ public class ItUser implements Parcelable {
 	public ItUser() {
 		super();
 	}
-	
-	public ItUser(String itUserId, PLATFORM platform, String email, String nickName, String selfIntro, String webPage, TYPE type) {
+
+	public ItUser(String itUserId, PLATFORM platform, String nickName, String selfIntro, String webPage, TYPE type,
+			String registrationId, String mobileId) {
 		super();
 		this.itUserId = itUserId;
 		this.platform = platform.toString();
-		this.email = email;
 		this.nickName = nickName;
 		this.selfIntro = selfIntro;
 		this.webPage = webPage;
 		this.type = type.toString();
+		this.registrationId = registrationId;
+		this.mobileId = mobileId;
 	}
 
 
@@ -87,12 +89,6 @@ public class ItUser implements Parcelable {
 	}
 	public void setPlatform(String platform) {
 		this.platform = platform;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
 	}
 	public String getNickName() {
 		return nickName;
@@ -143,7 +139,6 @@ public class ItUser implements Parcelable {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
 		this.setPlatform(itUser.getPlatform());
-		this.setEmail(itUser.getEmail());
 		this.setNickName(itUser.getNickName());
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());

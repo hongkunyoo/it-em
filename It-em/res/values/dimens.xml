@@ -67,7 +67,6 @@
 
     <!-- Settings -->
     <dimen name="settings_row_height">48dp</dimen>
-    <dimen name="settings_row_nick_name_height">40dp</dimen>
 
     <!-- Font -->
     <dimen name="font_x_large">24sp</dimen>

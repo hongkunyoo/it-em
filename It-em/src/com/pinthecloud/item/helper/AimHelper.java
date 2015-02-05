@@ -79,7 +79,7 @@ public class AimHelper {
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());
 				} else {
-					EventBus.getDefault().post(new ItException("listItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("listItem", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -104,7 +104,7 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(new Gson().fromJson(_json, Item.class));	
 				} else {
-					EventBus.getDefault().post(new ItException("getItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("getItem", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -130,7 +130,7 @@ public class AimHelper {
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());
 				} else {
-					EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -156,7 +156,7 @@ public class AimHelper {
 					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
 					callback.onCompleted(list, list.size());
 				} else {
-					EventBus.getDefault().post(new ItException("listMyUploadItem", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("listMyUploadItem", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -189,7 +189,7 @@ public class AimHelper {
 						}
 						callback.onCompleted(list, list.size());	
 					} else {
-						EventBus.getDefault().post(new ItException("list", ItException.TYPE.SERVER_ERROR, response));
+						EventBus.getDefault().post(new ItException("list", ItException.TYPE.INTERNAL_ERROR, response));
 					}
 				}
 			});
@@ -232,7 +232,7 @@ public class AimHelper {
 
 						callback.onCompleted(list, Integer.parseInt(count));
 					} else {
-						EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.SERVER_ERROR, response));
+						EventBus.getDefault().post(new ItException("listRecent", ItException.TYPE.INTERNAL_ERROR, response));
 					}
 				}
 			});
@@ -259,7 +259,7 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 				} else {
-					EventBus.getDefault().post(new ItException("add", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -283,7 +283,7 @@ public class AimHelper {
 						callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 					}
 				} else {
-					EventBus.getDefault().post(new ItException("addUnique", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("addUnique", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -314,7 +314,7 @@ public class AimHelper {
 						}
 					}
 
-					EventBus.getDefault().post(new ItException("del", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("del", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -341,7 +341,7 @@ public class AimHelper {
 						if (exception == null) {
 							AsyncChainer.notifyNext(frag, _json.getAsBoolean());
 						} else {
-							EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.SERVER_ERROR, response));
+							EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.INTERNAL_ERROR, response));
 						}
 					}
 				});
@@ -396,7 +396,7 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
-					EventBus.getDefault().post(new ItException("update", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -420,7 +420,7 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
-					EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
@@ -443,7 +443,7 @@ public class AimHelper {
 				if (exception == null) {
 					callback.onCompleted(_json.getAsBoolean());	
 				} else {
-					EventBus.getDefault().post(new ItException("invalidateInviteKey", ItException.TYPE.SERVER_ERROR, response));
+					EventBus.getDefault().post(new ItException("invalidateInviteKey", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});

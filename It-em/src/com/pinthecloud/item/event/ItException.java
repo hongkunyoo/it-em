@@ -50,11 +50,7 @@ public class ItException extends RuntimeException {
 	// Client Exception Type
 	public enum TYPE {
 		NETWORK_UNAVAILABLE,
-		SERVER_ERROR,
-		BLOB_STORAGE_ERROR,
 		INTERNAL_ERROR,
-		GCM_REGISTRATION_FAIL,
-		KAKAO_LOGIN_FAIL
 	}
 
 	// Azure Mobile Service Exception Code

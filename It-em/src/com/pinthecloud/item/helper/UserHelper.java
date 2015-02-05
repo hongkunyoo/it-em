@@ -16,8 +16,8 @@ import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import com.pinthecloud.item.GlobalVariable;
 import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.event.ItException;
-import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
@@ -61,7 +61,7 @@ public class UserHelper {
 					ItUser itUser = (ItUser) new Gson().fromJson(response.getContent(), ItUser.class);
 					callback.onCompleted(itUser, exception);
 				} else {
-					EventBus.getDefault().post(new ItException("add", ItException.TYPE.SERVER_ERROR, exception));
+					EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNAL_ERROR, exception));
 				}
 			}
 		});
@@ -86,7 +86,7 @@ public class UserHelper {
 						callback.onCompleted(entity.get(0));	
 					}
 				} else {
-					EventBus.getDefault().post(new ItException("get", ItException.TYPE.SERVER_ERROR, exception));	
+					EventBus.getDefault().post(new ItException("get", ItException.TYPE.INTERNAL_ERROR, exception));	
 				}
 			}
 		});
@@ -111,7 +111,7 @@ public class UserHelper {
 						callback.onCompleted(entity.get(0));
 					}
 				} else {
-					EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.SERVER_ERROR, exception));
+					EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.INTERNAL_ERROR, exception));
 				}
 			}
 		});
@@ -135,7 +135,7 @@ public class UserHelper {
 						callback.onCompleted(entity.get(0));
 					}
 				} else {
-					EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.SERVER_ERROR, exception));
+					EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.INTERNAL_ERROR, exception));
 				}
 			}
 		});
@@ -156,16 +156,47 @@ public class UserHelper {
 				if (exception == null) {
 					callback.onCompleted(entity);
 				} else {
-					EventBus.getDefault().post(new ItException("update", ItException.TYPE.SERVER_ERROR, exception));
+					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, exception));
 				}
 			}
 		});
 	}
 
-	
-	public void getRegistrationIdAsync(final ItFragment frag, final EntityCallback<String> callback) {
+
+	//	public void getRegistrationIdAsync(final ItFragment frag, final EntityCallback<String> callback) {
+	//		if (!mApp.isOnline()) {
+	//			EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
+	//			return;
+	//		}
+	//
+	//		(new AsyncTask<GoogleCloudMessaging, Void, String>() {
+	//
+	//			@Override
+	//			protected String doInBackground(GoogleCloudMessaging... params) {
+	//				GoogleCloudMessaging gcm = params[0];
+	//				try {
+	//					return gcm.register(GlobalVariable.GCM_SENDER_ID);
+	//				} catch (IOException e) {
+	//					return null;
+	//				}
+	//			}
+	//
+	//			@Override
+	//			protected void onPostExecute(String result) {
+	//				super.onPostExecute(result);
+	//				if (result != null) {
+	//					callback.onCompleted(result);
+	//				} else {
+	//					EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.GCM_REGISTRATION_FAIL));
+	//				}
+	//			}
+	//		}).execute(GoogleCloudMessaging.getInstance(frag.getActivity()));
+	//	}
+
+
+	public void getRegistrationId(ItActivity activity, final EntityCallback<String> callback) {
 		if (!mApp.isOnline()) {
-			EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
+			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
@@ -184,12 +215,8 @@ public class UserHelper {
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-				if (result != null) {
-					callback.onCompleted(result);
-				} else {
-					EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.GCM_REGISTRATION_FAIL));
-				}
+				callback.onCompleted(result);
 			}
-		}).execute(GoogleCloudMessaging.getInstance(frag.getActivity()));
+		}).execute(GoogleCloudMessaging.getInstance(activity));
 	}
 }
