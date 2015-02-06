@@ -171,7 +171,7 @@ public class ItApplication extends Application {
 		ArrayList<String> list = new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-//				add("873390002701821"); // SeungMin
+				add("873390002701821"); // SeungMin
 				add("834118693318943"); // ChaeSoo
 				add("677830442331776"); // HongKun
 				add("13108175"); // HongKun - Kakao

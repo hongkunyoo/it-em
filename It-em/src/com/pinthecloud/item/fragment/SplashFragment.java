@@ -41,6 +41,8 @@ import de.greenrobot.event.EventBus;
 
 public class SplashFragment extends ItFragment {
 
+	private View mProgressLayout;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,15 @@ public class SplashFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_splash, container, false);
+		findComponent(view);
+
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) view.findViewById(R.id.splash_frag_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mActivity));
 		} else {
 			runItem();
 		}
+
 		return view;
 	}
 
@@ -68,6 +73,11 @@ public class SplashFragment extends ItFragment {
 	public void onDestroy() {
 		super.onDestroy();
 		EventBus.getDefault().unregister(mThisFragment);
+	}
+
+
+	private void findComponent(View view){
+		mProgressLayout = view.findViewById(R.id.splash_frag_progress_layout);
 	}
 
 
@@ -143,6 +153,7 @@ public class SplashFragment extends ItFragment {
 	private void getRegistrationId(final ItFragment frag) {
 		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
 			// Get registration id
+			mProgressLayout.setVisibility(View.VISIBLE);
 			mUserHelper.getRegistrationId(mActivity, new EntityCallback<String>() {
 
 				@Override
@@ -152,7 +163,7 @@ public class SplashFragment extends ItFragment {
 						ItUser user = objectPrefHelper.get(ItUser.class);
 						user.setRegistrationId(entity);
 						objectPrefHelper.put(user);
-						
+
 						onEvent(new GCMRegIdEvent(entity));
 					} else {
 						// Get registration id in ItBroadCastReceiver.class
@@ -206,6 +217,8 @@ public class SplashFragment extends ItFragment {
 
 				@Override
 				public void doNext(ItFragment frag, Object... params) {
+					mProgressLayout.setVisibility(View.GONE);
+					
 					mObjectPrefHelper.put(user);
 					mPrefHelper.put(ItConstant.REGISTRATION_ID_KEY, user.getRegistrationId());
 					mPrefHelper.put(ItConstant.MOBILE_ID_KEY, user.getMobileId());

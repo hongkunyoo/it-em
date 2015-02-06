@@ -8,6 +8,9 @@
     <string name="update_app_message">새로운 버전이 나왔어요. 업데이트를 해주세요.</string>
     <string name="google_play_services_message">구글 플레이 서비스가 설치되어 있는지 확인해주세요.</string>
 
+    <!-- Splash -->
+    <string name="progress_setting">설정중</string>
+    
     <!-- Login -->
     <string name="facebook_login">페이스북으로 로그인하기</string>
     <string name="kakao_login">카카오로 로그인하기</string>
