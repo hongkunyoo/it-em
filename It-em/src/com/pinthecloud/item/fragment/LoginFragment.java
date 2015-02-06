@@ -24,6 +24,7 @@ import com.kakao.SessionCallback;
 import com.kakao.UserManagement;
 import com.kakao.UserProfile;
 import com.kakao.exception.KakaoException;
+import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.event.ItException;
@@ -62,7 +63,7 @@ public class LoginFragment extends ItFragment {
 			}
 			@Override
 			public void onSessionClosed(final KakaoException exception) {
-				mKakaoButton.setVisibility(View.VISIBLE);
+				//				mKakaoButton.setVisibility(View.VISIBLE);
 			}
 		};
 
@@ -88,14 +89,14 @@ public class LoginFragment extends ItFragment {
 		// Facebook
 		mFacebookUiHelper.onResume();
 		AppEventsLogger.activateApp(mActivity);
-		
+
 		// Kakao
 		if(com.kakao.Session.initializeSession(mActivity, mKakaoSessionCallback)){
 			// In Progress
-			mKakaoButton.setVisibility(View.GONE);
+			//			mKakaoButton.setVisibility(View.GONE);
 		} else if (com.kakao.Session.getCurrentSession().isOpened()){
 			// Already Opened
-			kakaoLogin();
+			//			kakaoLogin();
 		}
 	}
 
@@ -154,7 +155,7 @@ public class LoginFragment extends ItFragment {
 				}
 			}
 		});
-		
+
 		mKakaoButton.setBackgroundResource(R.drawable.signin_button);
 		mKakaoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 		mKakaoButton.setTypeface(mKakaoButton.getTypeface(), Typeface.BOLD);
@@ -238,8 +239,22 @@ public class LoginFragment extends ItFragment {
 					itUser.setId(entity.getId());
 					AsyncChainer.notifyNext(frag);
 				} else {
-					goToNextActivity();
-					AsyncChainer.clearChain(frag);
+					if(entity.getRegistrationId() == null){
+						// For under ver 107
+						entity.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
+						entity.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
+						mUserHelper.update(entity, new EntityCallback<ItUser>() {
+
+							@Override
+							public void onCompleted(ItUser entity) {
+								goToNextActivity();
+								AsyncChainer.clearChain(frag);
+							}
+						});
+					} else {
+						goToNextActivity();
+						AsyncChainer.clearChain(frag);	
+					}
 				}
 			}
 		});

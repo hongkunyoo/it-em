@@ -86,8 +86,8 @@ public class SplashFragment extends ItFragment {
 			Toast.makeText(mActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_SHORT).show();
 		}
 
-		NotificationManager notiMan = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-		notiMan.cancel(ItIntentService.NOTIFICATION_ID);
+		NotificationManager notificationManger = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
 
 		mVersionHelper.getServerAppVersionAsync(new EntityCallback<AppVersion>() {
 

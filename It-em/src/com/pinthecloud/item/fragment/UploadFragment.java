@@ -30,7 +30,6 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.ItLog;
 
 public class UploadFragment extends ItFragment {
 
@@ -227,8 +226,6 @@ public class UploadFragment extends ItFragment {
 		mApp.showProgressDialog(mActivity);
 
 		final String itemImagePath = FileUtil.getMediaPathFromGalleryUri(mActivity, mItemImageUri);
-		ItLog.log(mItemImageUri);
-		ItLog.log(itemImagePath);
 		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
 		final Item item = new Item(mContent.getText().toString(), mMyItUser.getNickName(), mMyItUser.getId(),
 				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());

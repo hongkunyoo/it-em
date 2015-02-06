@@ -100,14 +100,13 @@ public class SettingsFragment extends ItFragment {
 									intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 									startActivity(intent);
 								}
-
 							}
 						};
 
 						mApp.showProgressDialog(mActivity);
 						if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.FACEBOOK.toString())) {
 							facebookLogout(logoutCallback);
-						} else if (mMyItUser.getPlatform().equals(ItUser.PLATFORM.KAKAO.toString())) {
+						} else if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.KAKAO.toString())) {
 							kakaoLogout(logoutCallback);
 						}
 					}
@@ -185,16 +184,11 @@ public class SettingsFragment extends ItFragment {
 
 	private void facebookLogout(EntityCallback<Boolean> callback){
 		com.facebook.Session session = com.facebook.Session.getActiveSession();
-
 		if (session == null) {
 			session = new com.facebook.Session(mActivity);
 			com.facebook.Session.setActiveSession(session);
 		}
-
-		if (session.isOpened()) {
-			session.closeAndClearTokenInformation();
-		}
-
+		session.closeAndClearTokenInformation();
 		callback.onCompleted(true);
 	}
 
