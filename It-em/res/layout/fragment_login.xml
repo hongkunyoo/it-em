@@ -41,8 +41,7 @@
             android:id="@+id/login_frag_kakao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/key_line_first"
-            android:visibility="gone" />
+            android:layout_marginBottom="@dimen/key_line_first" />
 
         <com.facebook.widget.LoginButton
             xmlns:facebook="http://schemas.android.com/apk/res-auto"

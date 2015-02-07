@@ -30,6 +30,7 @@ import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 
@@ -105,9 +106,12 @@ public class SettingsFragment extends ItFragment {
 						};
 
 						mApp.showProgressDialog(mActivity);
+						ItLog.log(mMyItUser.getPlatform());
 						if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.FACEBOOK.toString())) {
+							ItLog.log("in facebook logout");
 							facebookLogout(logoutCallback);
 						} else if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.KAKAO.toString())) {
+							ItLog.log("in kakao logout");
 							kakaoLogout(logoutCallback);
 						}
 					}
@@ -202,22 +206,27 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onSessionOpened() {
+				ItLog.log("logout inializeSession onSessionOpened");
 			}
 			@Override
 			public void onSessionClosed(final KakaoException exception) {
+				ItLog.log("logout inializeSession onSessionClosed");
 			}
 		});
 
 		if (!initalizing && com.kakao.Session.getCurrentSession().isOpened()){
+			ItLog.log("if (!initalizing && com.kakao.Session.getCurrentSession().isOpened()) : "+com.kakao.Session.getCurrentSession().isOpened());
 			UserManagement.requestLogout(new LogoutResponseCallback() {
 
 				@Override
 				protected void onSuccess(long userId) {
+					ItLog.log("onSuccess : " +userId);
 					callback.onCompleted(true);
 				}
 
 				@Override
 				protected void onFailure(APIErrorResult errorResult) {
+					ItLog.log("onFailure : " +errorResult);
 					callback.onCompleted(false);
 					EventBus.getDefault().post(new ItException("onFailure", ItException.TYPE.INTERNAL_ERROR, errorResult));
 				}

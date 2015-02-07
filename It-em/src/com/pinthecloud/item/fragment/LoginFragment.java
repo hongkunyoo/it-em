@@ -33,6 +33,7 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 
@@ -60,10 +61,12 @@ public class LoginFragment extends ItFragment {
 
 			@Override
 			public void onSessionOpened() {
+				ItLog.log("onSessionOpened");
 			}
 			@Override
 			public void onSessionClosed(final KakaoException exception) {
-				//				mKakaoButton.setVisibility(View.VISIBLE);
+				ItLog.log("onSessionClosed");
+				mKakaoButton.setVisibility(View.VISIBLE);
 			}
 		};
 
@@ -93,10 +96,12 @@ public class LoginFragment extends ItFragment {
 		// Kakao
 		if(com.kakao.Session.initializeSession(mActivity, mKakaoSessionCallback)){
 			// In Progress
-			//			mKakaoButton.setVisibility(View.GONE);
+			ItLog.log("onResume in if : " + com.kakao.Session.getCurrentSession().isOpened());
+			mKakaoButton.setVisibility(View.GONE);
 		} else if (com.kakao.Session.getCurrentSession().isOpened()){
 			// Already Opened
-			//			kakaoLogin();
+			ItLog.log("onResume else if KakaoLogin : " + com.kakao.Session.getCurrentSession().isOpened());
+			kakaoLogin();
 		}
 	}
 
@@ -167,6 +172,10 @@ public class LoginFragment extends ItFragment {
 
 	private void facebookLogin(com.facebook.Session session, final GraphUser user){
 		ItUser myUser = mObjectPrefHelper.get(ItUser.class);
+		myUser.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
+		myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
+		mObjectPrefHelper.put(myUser);
+		
 		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, user.getFirstName().replace(" ", "_"),
 				"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
 		itemLogin(itUser, "https://graph.facebook.com/"+itUser.getItUserId()+"/picture?type=large");
@@ -179,6 +188,10 @@ public class LoginFragment extends ItFragment {
 			@Override
 			protected void onSuccess(final UserProfile userProfile) {
 				ItUser myUser = mObjectPrefHelper.get(ItUser.class);
+				myUser.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
+				myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
+				mObjectPrefHelper.put(myUser);
+				
 				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname(),
 						"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
 				itemLogin(itUser, userProfile.getProfileImagePath());

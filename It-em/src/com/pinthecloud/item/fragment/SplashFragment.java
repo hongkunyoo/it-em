@@ -137,6 +137,10 @@ public class SplashFragment extends ItFragment {
 			}
 
 			ItUser user = mObjectPrefHelper.get(ItUser.class);
+			user.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
+			user.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
+			mObjectPrefHelper.put(user);
+			
 			Intent intent = new Intent();
 			if (!user.isLoggedIn()){
 				// New User
