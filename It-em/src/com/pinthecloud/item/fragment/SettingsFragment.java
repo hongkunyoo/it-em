@@ -20,6 +20,7 @@ import com.kakao.UserManagement;
 import com.kakao.exception.KakaoException;
 //import com.facebook.Session;
 import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
@@ -147,7 +148,8 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.REAL, new EntityCallback<Boolean>() {
+				mPrefHelper.put(ItConstant.CURRENT_MODE, ItApplication.REAL);
+				mApp.switchClient(new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -162,7 +164,8 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.TEST, new EntityCallback<Boolean>() {
+				mPrefHelper.put(ItConstant.CURRENT_MODE, ItApplication.TEST);
+				mApp.switchClient(new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

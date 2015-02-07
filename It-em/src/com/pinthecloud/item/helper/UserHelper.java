@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.HttpStatus;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -16,7 +17,6 @@ import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
@@ -194,7 +194,7 @@ public class UserHelper {
 	//	}
 
 
-	public void getRegistrationId(ItActivity activity, final EntityCallback<String> callback) {
+	public void getRegistrationId(Context context, final EntityCallback<String> callback) {
 		if (!mApp.isOnline()) {
 			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -217,6 +217,6 @@ public class UserHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(GoogleCloudMessaging.getInstance(activity));
+		}).execute(GoogleCloudMessaging.getInstance(context));
 	}
 }

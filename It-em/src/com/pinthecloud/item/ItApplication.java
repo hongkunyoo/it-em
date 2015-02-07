@@ -43,6 +43,8 @@ public class ItApplication extends Application {
 	private MobileServiceClient mClient;
 	private MobileServiceClient realClient;
 	private MobileServiceClient testClient;
+	
+	private ArrayList<String> adminList;
 
 	// Application
 	private static ItApplication app;
@@ -97,7 +99,9 @@ public class ItApplication extends Application {
 						this);
 			} catch (MalformedURLException e) {
 			}
-			if (isAdmin()) {
+			
+			// Default is REAL (int 0)
+			if (getPrefHelper().getInt(ItConstant.CURRENT_MODE) == TEST) {
 				mClient = testClient;
 			} else {
 				mClient = realClient;
@@ -144,7 +148,7 @@ public class ItApplication extends Application {
 	}
 
 	public static boolean isDebugging() {
-		return app.mClient == app.testClient;
+		return (ItApplication.getInstance().getPrefHelper().getInt(ItConstant.CURRENT_MODE)) == ItApplication.TEST;
 	}
 
 	public boolean isOnline(){
@@ -163,27 +167,30 @@ public class ItApplication extends Application {
 	public void dismissProgressDialog(){
 		progressDialog.dismiss();
 	}
-
+	
+	
 	public boolean isAdmin() {
 		ItUser user = getObjectPrefHelper().get(ItUser.class);
 		if (user == null) return false;
-
-		ArrayList<String> list = new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add("873390002701821"); // SeungMin
-				add("834118693318943"); // ChaeSoo
-				add("677830442331776"); // HongKun
-				add("13108175"); // HongKun - Kakao
-				add("756536111102631"); // HwaJeong
-				add("1536364146612739"); // Item@pinthecloud.com
-			}
-		};
-
-		return list.contains(user.getItUserId());
+		
+		if (adminList == null) {
+			adminList = new ArrayList<String>(){
+				private static final long serialVersionUID = 1L;
+				{
+					add("873390002701821"); // SeungMin
+					add("834118693318943"); // ChaeSoo
+					add("677830442331776"); // HongKun
+					add("13108175"); // HongKun - Kakao
+					add("756536111102631"); // HwaJeong
+					add("1536364146612739"); // Item@pinthecloud.com
+				}
+			};
+		}
+		return adminList.contains(user.getItUserId());
 	}
 
-	public void switchClient(int type, final EntityCallback<Boolean> callback) {
+	public void switchClient(final EntityCallback<Boolean> callback) {
+		int type = prefHelper.getInt(ItConstant.CURRENT_MODE);
 		if (type == REAL) {
 			mClient = realClient;
 		} else if(type == TEST) {

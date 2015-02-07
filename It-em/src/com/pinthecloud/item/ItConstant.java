@@ -11,4 +11,5 @@ public class ItConstant {
 	public static final String MAX_TEXTURE_SIZE_KEY = "MAX_TEXTURE_SIZE_KEY";
 	public static final String REGISTRATION_ID_KEY = "REGISTRATION_ID_KEY";
 	public static final String MOBILE_ID_KEY = "MOBILE_ID_KEY";
+	public static final String CURRENT_MODE = "CURRENT_MODE";
 }
