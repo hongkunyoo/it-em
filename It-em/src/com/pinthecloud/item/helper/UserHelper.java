@@ -163,38 +163,7 @@ public class UserHelper {
 	}
 
 
-	//	public void getRegistrationIdAsync(final ItFragment frag, final EntityCallback<String> callback) {
-	//		if (!mApp.isOnline()) {
-	//			EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
-	//			return;
-	//		}
-	//
-	//		(new AsyncTask<GoogleCloudMessaging, Void, String>() {
-	//
-	//			@Override
-	//			protected String doInBackground(GoogleCloudMessaging... params) {
-	//				GoogleCloudMessaging gcm = params[0];
-	//				try {
-	//					return gcm.register(GlobalVariable.GCM_SENDER_ID);
-	//				} catch (IOException e) {
-	//					return null;
-	//				}
-	//			}
-	//
-	//			@Override
-	//			protected void onPostExecute(String result) {
-	//				super.onPostExecute(result);
-	//				if (result != null) {
-	//					callback.onCompleted(result);
-	//				} else {
-	//					EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.GCM_REGISTRATION_FAIL));
-	//				}
-	//			}
-	//		}).execute(GoogleCloudMessaging.getInstance(frag.getActivity()));
-	//	}
-
-
-	public void getRegistrationId(Context context, final EntityCallback<String> callback) {
+	public void getRegistrationIdAsync(Context context, final EntityCallback<String> callback) {
 		if (!mApp.isOnline()) {
 			EventBus.getDefault().post(new ItException("getRegistrationId", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;

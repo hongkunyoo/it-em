@@ -28,7 +28,6 @@ import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.GCMRegIdEvent;
-import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
@@ -57,14 +56,12 @@ public class SplashFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_splash, container, false);
 		findComponent(view);
-
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) view.findViewById(R.id.splash_frag_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mActivity));
 		} else {
 			runItem();
 		}
-
 		return view;
 	}
 
@@ -137,10 +134,6 @@ public class SplashFragment extends ItFragment {
 			}
 
 			ItUser user = mObjectPrefHelper.get(ItUser.class);
-			user.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
-			user.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
-			mObjectPrefHelper.put(user);
-			
 			Intent intent = new Intent();
 			if (!user.isLoggedIn()){
 				// New User
@@ -158,15 +151,14 @@ public class SplashFragment extends ItFragment {
 		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) == ConnectionResult.SUCCESS) {
 			// Get registration id
 			mProgressLayout.setVisibility(View.VISIBLE);
-			mUserHelper.getRegistrationId(mActivity, new EntityCallback<String>() {
+			mUserHelper.getRegistrationIdAsync(mActivity, new EntityCallback<String>() {
 
 				@Override
 				public void onCompleted(String entity) {
 					if(entity != null){
-						ObjectPrefHelper objectPrefHelper = mApp.getObjectPrefHelper();
-						ItUser user = objectPrefHelper.get(ItUser.class);
+						ItUser user = mObjectPrefHelper.get(ItUser.class);
 						user.setRegistrationId(entity);
-						objectPrefHelper.put(user);
+						mObjectPrefHelper.put(user);
 
 						onEvent(new GCMRegIdEvent(entity));
 					} else {
@@ -222,7 +214,7 @@ public class SplashFragment extends ItFragment {
 				@Override
 				public void doNext(ItFragment frag, Object... params) {
 					mProgressLayout.setVisibility(View.GONE);
-					
+
 					mObjectPrefHelper.put(user);
 					mPrefHelper.put(ItConstant.REGISTRATION_ID_KEY, user.getRegistrationId());
 					mPrefHelper.put(ItConstant.MOBILE_ID_KEY, user.getMobileId());

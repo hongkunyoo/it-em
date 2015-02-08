@@ -43,7 +43,7 @@ public class ItApplication extends Application {
 	private MobileServiceClient mClient;
 	private MobileServiceClient realClient;
 	private MobileServiceClient testClient;
-	
+
 	private ArrayList<String> adminList;
 
 	// Application
@@ -99,7 +99,7 @@ public class ItApplication extends Application {
 						this);
 			} catch (MalformedURLException e) {
 			}
-			
+
 			// Default is REAL (int 0)
 			if (getPrefHelper().getInt(ItConstant.CURRENT_MODE) == TEST) {
 				mClient = testClient;
@@ -109,7 +109,6 @@ public class ItApplication extends Application {
 		}
 		return mClient;
 	}
-
 	public UserHabitHelper getUserHabitHelper() {
 		if(userHabitHelper == null) userHabitHelper = new UserHabitHelper();
 		return userHabitHelper;
@@ -148,7 +147,7 @@ public class ItApplication extends Application {
 	}
 
 	public static boolean isDebugging() {
-		return (ItApplication.getInstance().getPrefHelper().getInt(ItConstant.CURRENT_MODE)) == ItApplication.TEST;
+		return app.getPrefHelper().getInt(ItConstant.CURRENT_MODE) == ItApplication.TEST;
 	}
 
 	public boolean isOnline(){
@@ -167,22 +166,22 @@ public class ItApplication extends Application {
 	public void dismissProgressDialog(){
 		progressDialog.dismiss();
 	}
-	
-	
+
 	public boolean isAdmin() {
 		ItUser user = getObjectPrefHelper().get(ItUser.class);
 		if (user == null) return false;
-		
+
 		if (adminList == null) {
 			adminList = new ArrayList<String>(){
 				private static final long serialVersionUID = 1L;
 				{
-					add("873390002701821"); // SeungMin
-					add("834118693318943"); // ChaeSoo
-					add("677830442331776"); // HongKun
+					add("873390002701821"); // SeungMin - Facebook
+					add("13276876"); // Seungmin - Kakao
+					add("834118693318943"); // ChaeSoo - Facebook
+					add("677830442331776"); // HongKun - Facebook
 					add("13108175"); // HongKun - Kakao
-					add("756536111102631"); // HwaJeong
-					add("1536364146612739"); // Item@pinthecloud.com
+					add("756536111102631"); // HwaJeong - Facebook
+					add("1536364146612739"); // Item@pinthecloud.com - Facebook
 				}
 			};
 		}

@@ -33,7 +33,6 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 
@@ -47,30 +46,29 @@ public class LoginFragment extends ItFragment {
 	private com.kakao.widget.LoginButton mKakaoButton;
 	private SessionCallback mKakaoSessionCallback;
 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		mFacebookUiHelper = new UiLifecycleHelper(mActivity, new StatusCallback() {
 
 			@Override
 			public void call(com.facebook.Session session, SessionState state, Exception exception) {
 			}
 		});
-
+		mFacebookUiHelper.onCreate(savedInstanceState);
+		
 		mKakaoSessionCallback = new SessionCallback() {
 
 			@Override
 			public void onSessionOpened() {
-				ItLog.log("onSessionOpened");
 			}
 			@Override
 			public void onSessionClosed(final KakaoException exception) {
-				ItLog.log("onSessionClosed");
 				mKakaoButton.setVisibility(View.VISIBLE);
 			}
 		};
-
-		mFacebookUiHelper.onCreate(savedInstanceState);
 	}
 
 
@@ -96,11 +94,9 @@ public class LoginFragment extends ItFragment {
 		// Kakao
 		if(com.kakao.Session.initializeSession(mActivity, mKakaoSessionCallback)){
 			// In Progress
-			ItLog.log("onResume in if : " + com.kakao.Session.getCurrentSession().isOpened());
 			mKakaoButton.setVisibility(View.GONE);
 		} else if (com.kakao.Session.getCurrentSession().isOpened()){
 			// Already Opened
-			ItLog.log("onResume else if KakaoLogin : " + com.kakao.Session.getCurrentSession().isOpened());
 			kakaoLogin();
 		}
 	}
@@ -174,7 +170,6 @@ public class LoginFragment extends ItFragment {
 		ItUser myUser = mObjectPrefHelper.get(ItUser.class);
 		myUser.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
 		myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
-		mObjectPrefHelper.put(myUser);
 		
 		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, user.getFirstName().replace(" ", "_"),
 				"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
@@ -190,7 +185,6 @@ public class LoginFragment extends ItFragment {
 				ItUser myUser = mObjectPrefHelper.get(ItUser.class);
 				myUser.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
 				myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
-				mObjectPrefHelper.put(myUser);
 				
 				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname(),
 						"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
@@ -256,6 +250,8 @@ public class LoginFragment extends ItFragment {
 						// For under ver 107
 						entity.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
 						entity.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
+						mObjectPrefHelper.put(entity);
+						
 						mUserHelper.update(entity, new EntityCallback<ItUser>() {
 
 							@Override
