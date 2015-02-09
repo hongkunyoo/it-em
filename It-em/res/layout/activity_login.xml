@@ -38,14 +38,14 @@
         android:orientation="vertical" >
 
         <com.kakao.widget.LoginButton
-            android:id="@+id/login_frag_kakao"
+            android:id="@+id/login_kakao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/key_line_first" />
 
         <com.facebook.widget.LoginButton
             xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/login_frag_facebook"
+            android:id="@+id/login_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             facebook:login_text="@string/facebook_login"

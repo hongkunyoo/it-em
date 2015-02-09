@@ -8,6 +8,8 @@
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
     <dimen name="profile_preview_image_width">40dp</dimen>
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="tab_indicator_height">4dp</dimen>
 
     <!-- Login -->
     <dimen name="login_button_bottom_margin">32dp</dimen>
@@ -40,8 +42,6 @@
     <dimen name="upload_image_width">72dp</dimen>
 
     <!-- It User Page -->
-    <dimen name="it_user_page_tab_height">48dp</dimen>
-    <dimen name="it_user_page_tab_indicator_height">4dp</dimen>
     <dimen name="it_user_page_content_margin">6dp</dimen>
 
     <!-- Profile Image -->
@@ -49,7 +49,7 @@
 
     <!-- My Item -->
     <dimen name="my_item_spacing">1dp</dimen>
-    
+
     <!-- Reply -->
     <dimen name="reply_height">300dp</dimen>
     <dimen name="reply_row_previous_height">36dp</dimen>
@@ -57,7 +57,7 @@
 
     <!-- Like It -->
     <dimen name="like_it_margin">8dp</dimen>
-    
+
     <!-- Product Tag -->
     <dimen name="product_tag_row_height">48dp</dimen>
 

@@ -31,7 +31,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/splash_frag_progress_layout"
+        android:id="@+id/splash_progress_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -50,7 +50,7 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/splash_frag_surface_layout"
+        android:id="@+id/splash_surface_layout"
         android:layout_width="@dimen/line_width"
         android:layout_height="@dimen/line_width" />
 

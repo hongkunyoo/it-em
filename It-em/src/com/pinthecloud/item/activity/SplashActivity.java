@@ -43,7 +43,7 @@ public class SplashActivity extends ItActivity {
 		setContentView(R.layout.activity_splash);
 		findComponent();
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
-			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_frag_surface_layout);
+			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mThisActivity));
 		} else {
 			runItem();
@@ -64,7 +64,7 @@ public class SplashActivity extends ItActivity {
 
 
 	private void findComponent(){
-		mProgressLayout = findViewById(R.id.splash_frag_progress_layout);
+		mProgressLayout = findViewById(R.id.splash_progress_layout);
 	}
 
 

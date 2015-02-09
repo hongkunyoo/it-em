@@ -132,8 +132,8 @@ public class LoginActivity extends ItActivity {
 
 
 	private void findComponent(){
-		mFacebookButton = (com.facebook.widget.LoginButton)findViewById(R.id.login_frag_facebook);
-		mKakaoButton = (com.kakao.widget.LoginButton)findViewById(R.id.login_frag_kakao);
+		mFacebookButton = (com.facebook.widget.LoginButton)findViewById(R.id.login_facebook);
+		mKakaoButton = (com.kakao.widget.LoginButton)findViewById(R.id.login_kakao);
 	}
 
 
