@@ -26,7 +26,7 @@ public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 				objectPrefHelper.put(user);
 				
 				// After get id, goto SplashFragment.OnEvent()
-				EventBus.getDefault().post(new GCMRegIdEvent(regId));
+				EventBus.getDefault().post(new GCMRegIdEvent());
 			} else {
 				// Got registration id in UserHelper getRegisterationId
 			}

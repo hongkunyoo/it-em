@@ -14,7 +14,7 @@ public class HongkunTestActivity extends ItActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_frame);
+		setContentView(R.layout.activity_toolbar_frame);
 		setFragment();
 	}
 	
