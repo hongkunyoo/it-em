@@ -93,16 +93,16 @@ public class ItUserPageFragment extends ItFragment {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(Object obj, Object... params) {
 				mProgressBar.setVisibility(View.VISIBLE);
 				mContainer.setVisibility(View.GONE);
 
-				setItUser(frag);
+				setItUser(obj);
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(Object obj, Object... params) {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
 
@@ -215,10 +215,10 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setItUser(final ItFragment frag){
+	private void setItUser(final Object obj){
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItUserId.equals(mItUser.getId())){
-			AsyncChainer.notifyNext(frag);
+			AsyncChainer.notifyNext(obj);
 		} else {
 			mUserHelper.get(mItUserId, new EntityCallback<ItUser>() {
 
@@ -239,10 +239,10 @@ public class ItUserPageFragment extends ItFragment {
 							}
 						});
 						noUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-						AsyncChainer.clearChain(frag);
+						AsyncChainer.clearChain(obj);
 					} else {
 						mItUser = entity;
-						AsyncChainer.notifyNext(frag);	
+						AsyncChainer.notifyNext(obj);	
 					}
 				}
 			});

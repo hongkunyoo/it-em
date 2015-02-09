@@ -330,7 +330,7 @@ public class AimHelper {
 		AsyncChainer.asyncChain(frag, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(4);
 
 				mClient.invokeApi(AIM_DELETE_ITEM, item.toJson(), new ApiJsonOperationCallback() {
@@ -339,7 +339,7 @@ public class AimHelper {
 					public void onCompleted(JsonElement _json, Exception exception,
 							ServiceFilterResponse response) {
 						if (exception == null) {
-							AsyncChainer.notifyNext(frag, _json.getAsBoolean());
+							AsyncChainer.notifyNext(obj, _json.getAsBoolean());
 						} else {
 							EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.INTERNAL_ERROR, response));
 						}
@@ -350,7 +350,7 @@ public class AimHelper {
 
 					@Override
 					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag, entity);
+						AsyncChainer.notifyNext(obj, entity);
 					}
 				});
 
@@ -358,7 +358,7 @@ public class AimHelper {
 
 					@Override
 					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag, entity);	
+						AsyncChainer.notifyNext(obj, entity);	
 					}
 				});
 
@@ -366,7 +366,7 @@ public class AimHelper {
 
 					@Override
 					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(frag, entity);
+						AsyncChainer.notifyNext(obj, entity);
 					}
 				});
 			}
@@ -374,7 +374,7 @@ public class AimHelper {
 		}, new Chainable(){
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
+			public void doNext(Object obj, Object... params) {
 				boolean result = (Boolean)params[0];
 				callback.onCompleted(result);	
 			}

@@ -5,71 +5,44 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import com.pinthecloud.item.fragment.ItFragment;
-
 public class AsyncChainer {
 
 	private static int mCurrentCount = 0;
 	private static int mCount = 0;
 
 	private static final int NUM_OF_QUEUE = 16;
-	private static Map<String, Queue<Chainable>> mMapQueue;
+	private static Map<Object, Queue<Chainable>> mMapQueue;
 	static {
-		mMapQueue = new HashMap<String, Queue<Chainable>>();
+		mMapQueue = new HashMap<Object, Queue<Chainable>>();
 	}
 
 
-	public static void asyncChain(ItFragment frag, Chainable...chains) {
-		Class<?> clazz = null;
-		if (frag == null) {
-			clazz = ItFragment.class;
-		} else {
-			clazz = frag.getClass();
-		}
-
-		Queue<Chainable> queue = mMapQueue.get(clazz.getName());
+	public static void asyncChain(Object obj, Chainable...chains) {
+		Queue<Chainable> queue = mMapQueue.get(obj);
 		if (queue == null) {
-			mMapQueue.put(clazz.getName(), new ArrayBlockingQueue<Chainable>(NUM_OF_QUEUE));
-			queue = mMapQueue.get(clazz.getName());
+			mMapQueue.put(obj, new ArrayBlockingQueue<Chainable>(NUM_OF_QUEUE));
+			queue = mMapQueue.get(obj);
 		}
-
 		for(Chainable c : chains) {
 			queue.add(c);
 		}
-
-		AsyncChainer.notifyNext(frag);
+		AsyncChainer.notifyNext(obj);
 	}
 
 
-	public static void notifyNext(ItFragment frag, Object... params) {
+	public static void notifyNext(Object obj, Object... params) {
 		if (++mCurrentCount < mCount) return;
-
-		Class<?> clazz = null;
-		if (frag == null) {
-			clazz = ItFragment.class;
-		} else {
-			clazz = frag.getClass();
-		}
-
-		Queue<Chainable> queue = mMapQueue.get(clazz.getName());
+		Queue<Chainable> queue = mMapQueue.get(obj);
 		if (queue != null && !queue.isEmpty()) {
 			Chainable c = queue.poll();
-			c.doNext(frag, params);
+			c.doNext(obj, params);
 		}
 	}
 
 
-	public static void clearChain(ItFragment frag) {
+	public static void clearChain(Object obj) {
 		mCount = 0;
-		
-		Class<?> clazz = null;
-		if (frag == null) {
-			clazz = ItFragment.class;
-		} else {
-			clazz = frag.getClass();
-		}
-
-		Queue<Chainable> queue = mMapQueue.get(clazz.getName());
+		Queue<Chainable> queue = mMapQueue.get(obj);
 		queue.clear();
 	}
 
@@ -81,6 +54,6 @@ public class AsyncChainer {
 
 
 	public static interface Chainable {
-		public void doNext(ItFragment frag, Object... params);
+		public void doNext(Object obj, Object... params);
 	}
 }

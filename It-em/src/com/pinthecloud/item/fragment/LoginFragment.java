@@ -214,26 +214,26 @@ public class LoginFragment extends ItFragment {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				addItUser(frag, itUser);
+			public void doNext(Object object, Object... params) {
+				addItUser(object, itUser);
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				getProfileImageFromService(frag, imageUrl);
+			public void doNext(Object obj, Object... params) {
+				getProfileImageFromService(obj, imageUrl);
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
-				uploadProfileImage(frag, itUser, (Bitmap)params[0]);
+			public void doNext(Object obj, Object... params) {
+				uploadProfileImage(obj, itUser, (Bitmap)params[0]);
 			}
 		});
 	}
 
 
-	private void addItUser(final ItFragment frag, final ItUser itUser){
+	private void addItUser(final Object obj, final ItUser itUser){
 		mUserHelper.add(itUser, new PairEntityCallback<ItUser, Exception>() {
 
 			@Override
@@ -244,7 +244,7 @@ public class LoginFragment extends ItFragment {
 				// Otherwise, go to next activity.
 				if(exception == null) {
 					itUser.setId(entity.getId());
-					AsyncChainer.notifyNext(frag);
+					AsyncChainer.notifyNext(obj);
 				} else {
 					if(entity.getRegistrationId() == null){
 						// For under ver 107
@@ -257,12 +257,12 @@ public class LoginFragment extends ItFragment {
 							@Override
 							public void onCompleted(ItUser entity) {
 								goToNextActivity();
-								AsyncChainer.clearChain(frag);
+								AsyncChainer.clearChain(obj);
 							}
 						});
 					} else {
 						goToNextActivity();
-						AsyncChainer.clearChain(frag);	
+						AsyncChainer.clearChain(obj);	
 					}
 				}
 			}
@@ -270,7 +270,7 @@ public class LoginFragment extends ItFragment {
 	}
 
 
-	private void getProfileImageFromService(final ItFragment frag, final String url){
+	private void getProfileImageFromService(final Object obj, final String url){
 		(new AsyncTask<Void,Void,Bitmap>(){
 
 			@Override
@@ -288,17 +288,17 @@ public class LoginFragment extends ItFragment {
 
 			@Override
 			protected void onPostExecute(Bitmap result) {
-				AsyncChainer.notifyNext(frag, (Object)result);
+				AsyncChainer.notifyNext(obj, (Object)result);
 			};
 		}).execute();
 	}
 
 
-	private void uploadProfileImage(ItFragment frag, final ItUser itUser, final Bitmap profileImage){
+	private void uploadProfileImage(Object obj, final ItUser itUser, final Bitmap profileImage){
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(2);
 
 				Bitmap profileImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_IMAGE_SIZE);
@@ -307,7 +307,7 @@ public class LoginFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 
@@ -317,14 +317,14 @@ public class LoginFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
+			public void doNext(Object obj, Object... params) {
 				goToNextActivity();
 			}
 		});

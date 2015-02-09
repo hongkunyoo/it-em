@@ -233,21 +233,21 @@ public class UploadFragment extends ItFragment {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(final Object obj, Object... params) {
 				mAimHelper.add(item, new EntityCallback<Item>() {
 
 					@Override
 					public void onCompleted(Item entity) {
 						item.setId(entity.getId());
 						item.setRawCreateDateTime(entity.getRawCreateDateTime());
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(3);
 
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(),
@@ -255,7 +255,7 @@ public class UploadFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 
@@ -265,7 +265,7 @@ public class UploadFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 
@@ -275,14 +275,14 @@ public class UploadFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
+			public void doNext(Object obj, Object... params) {
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
 

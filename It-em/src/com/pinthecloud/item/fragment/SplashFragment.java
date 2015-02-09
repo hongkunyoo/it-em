@@ -201,18 +201,18 @@ public class SplashFragment extends ItFragment {
 			AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 				@Override
-				public void doNext(ItFragment frag, Object... params) {
+				public void doNext(Object obj, Object... params) {
 					if(user.isLoggedIn()){
 						// For under ver 107
-						updateUser(mThisFragment, user);
+						updateUser(obj, user);
 					} else {
-						AsyncChainer.notifyNext(mThisFragment);
+						AsyncChainer.notifyNext(obj);
 					}
 				}
 			}, new Chainable(){
 
 				@Override
-				public void doNext(ItFragment frag, Object... params) {
+				public void doNext(Object obj, Object... params) {
 					mProgressLayout.setVisibility(View.GONE);
 
 					mObjectPrefHelper.put(user);
@@ -225,12 +225,12 @@ public class SplashFragment extends ItFragment {
 	}
 
 
-	private void updateUser(final ItFragment frag, final ItUser itUser) {
+	private void updateUser(final Object obj, final ItUser itUser) {
 		mUserHelper.update(itUser, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
-				AsyncChainer.notifyNext(frag);
+				AsyncChainer.notifyNext(obj);
 			}
 		});
 	}

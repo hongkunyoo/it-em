@@ -95,17 +95,17 @@ public class BeProFragment extends ItFragment {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(final Object obj, Object... params) {
 				mAimHelper.isValid(inviteKey, ItUser.TYPE.PRO, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
 						if(entity){
-							AsyncChainer.notifyNext(frag);
+							AsyncChainer.notifyNext(obj);
 						} else {
 							mApp.dismissProgressDialog();
 							Toast.makeText(mActivity, getResources().getString(R.string.invalid_pro), Toast.LENGTH_LONG).show();
-							AsyncChainer.clearChain(frag);
+							AsyncChainer.clearChain(obj);
 						}
 					}
 				});
@@ -113,21 +113,21 @@ public class BeProFragment extends ItFragment {
 		}, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(final Object obj, Object... params) {
 				mMyItUser.fixType(ItUser.TYPE.PRO);
 				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
 					@Override
 					public void onCompleted(ItUser entity) {
 						mObjectPrefHelper.put(entity);
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 			}
 		}, new Chainable() {
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
+			public void doNext(Object obj, Object... params) {
 				mAimHelper.invalidateInviteKey(inviteKey, new EntityCallback<Boolean>() {
 
 					@Override

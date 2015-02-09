@@ -129,13 +129,13 @@ public class ProfileSettingsFragment extends ItFragment {
 				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 					@Override
-					public void doNext(final ItFragment frag, Object... params) {
-						checkNickName(frag, mNickName.getText().toString());
+					public void doNext(Object obj, Object... params) {
+						checkNickName(obj, mNickName.getText().toString());
 					}
 				}, new Chainable(){
 
 					@Override
-					public void doNext(ItFragment frag, Object... params) {
+					public void doNext(Object obj, Object... params) {
 						String message = params[0].toString();
 						if(message.equals("")){
 							updateProfileSettings();
@@ -264,27 +264,27 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void checkNickName(final ItFragment frag, String nickName){
+	private void checkNickName(final Object obj, String nickName){
 		int nickNameMinLength = getResources().getInteger(R.integer.nick_name_min_length);
 		int nickNameMaxLength = getResources().getInteger(R.integer.nick_name_max_length);
 		String nickNameRegx = "^[a-zA-Z0-9가-힣_-]{" + nickNameMinLength + "," + nickNameMaxLength + "}$";
 		
 		if(nickName.length() < nickNameMinLength){
-			AsyncChainer.notifyNext(frag, getResources().getString(R.string.min_nick_name_message));
+			AsyncChainer.notifyNext(obj, getResources().getString(R.string.min_nick_name_message));
 		} else if(!nickName.matches(nickNameRegx)){
-			AsyncChainer.notifyNext(frag, getResources().getString(R.string.bad_nick_name_message));
+			AsyncChainer.notifyNext(obj, getResources().getString(R.string.bad_nick_name_message));
 		} else {
 			mUserHelper.getByNickName(nickName, new EntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
 					if(entity == null){
-						AsyncChainer.notifyNext(frag, "");
+						AsyncChainer.notifyNext(obj, "");
 					} else {
 						if(entity.getId().equals(mMyItUser.getId())){
-							AsyncChainer.notifyNext(frag, "");
+							AsyncChainer.notifyNext(obj, "");
 						} else {
-							AsyncChainer.notifyNext(frag, getResources().getString(R.string.duplicated_nick_name_message));
+							AsyncChainer.notifyNext(obj, getResources().getString(R.string.duplicated_nick_name_message));
 						}
 					}
 				}
@@ -336,7 +336,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
-			public void doNext(final ItFragment frag, Object... params) {
+			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(2);
 
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
@@ -344,7 +344,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 
@@ -353,14 +353,14 @@ public class ProfileSettingsFragment extends ItFragment {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(frag);
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 			}
 		}, new Chainable(){
 
 			@Override
-			public void doNext(ItFragment frag, Object... params) {
+			public void doNext(Object obj, Object... params) {
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.profile_image_edited), Toast.LENGTH_LONG).show();
 
