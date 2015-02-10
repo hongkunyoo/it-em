@@ -197,7 +197,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 				@Override
 				public boolean onLongClick(View v) {
-					String[] itemList = mActivity.getResources().getStringArray(R.array.reply_long_click_string_array);
+					String[] itemList = mActivity.getResources().getStringArray(R.array.reply_long_click_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
 
 					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);

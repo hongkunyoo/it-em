@@ -176,9 +176,9 @@ public class UploadFragment extends ItFragment {
 
 	private String[] getDialogItemList(){
 		if(mItemImageUri != null){
-			return getResources().getStringArray(R.array.upload_image_select_delete_string_array);
+			return getResources().getStringArray(R.array.upload_image_select_delete_array);
 		}else{
-			return getResources().getStringArray(R.array.upload_image_select_string_array);
+			return getResources().getStringArray(R.array.upload_image_select_array);
 		}
 	}
 

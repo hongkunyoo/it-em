@@ -189,7 +189,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				String[] itemList = getResources().getStringArray(R.array.profile_image_select_string_array);
+				String[] itemList = getResources().getStringArray(R.array.profile_image_select_array);
 				DialogCallback[] callbacks = getDialogCallbacks(itemList);
 
 				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);

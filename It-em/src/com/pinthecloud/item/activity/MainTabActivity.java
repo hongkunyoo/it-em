@@ -6,14 +6,14 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.adapter.MainPagerAdapter;
+import com.pinthecloud.item.adapter.MainTabPagerAdapter;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MainTabActivity extends ItActivity {
 
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
-	private MainPagerAdapter mViewPagerAdapter;
+	private MainTabPagerAdapter mViewPagerAdapter;
 	
 	
 	@Override
@@ -39,7 +39,7 @@ public class MainTabActivity extends ItActivity {
 	
 	
 	private void setViewPager(){
-		mViewPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+		mViewPagerAdapter = new MainTabPagerAdapter(getSupportFragmentManager(), mThisActivity);
 		mViewPager.setAdapter(mViewPagerAdapter);
 	}
 

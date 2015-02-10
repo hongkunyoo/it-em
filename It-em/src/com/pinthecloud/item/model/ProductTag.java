@@ -24,7 +24,7 @@ public class ProductTag extends AbstractItemModel<ProductTag> implements Parcela
 		return category;
 	}
 	public String categoryString(Resources resources){
-		String[] categoryArray = resources.getStringArray(R.array.category_string_array);
+		String[] categoryArray = resources.getStringArray(R.array.category_array);
 		return categoryArray[category];
 	}
 	public void setCategory(int category) {

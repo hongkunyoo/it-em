@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
-import com.pinthecloud.item.event.GCMRegIdEvent;
+import com.pinthecloud.item.event.GcmRegIdEvent;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.model.ItUser;
@@ -26,7 +26,7 @@ public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 				objectPrefHelper.put(user);
 				
 				// After get id, goto SplashFragment.OnEvent()
-				EventBus.getDefault().post(new GCMRegIdEvent());
+				EventBus.getDefault().post(new GcmRegIdEvent());
 			} else {
 				// Got registration id in UserHelper getRegisterationId
 			}

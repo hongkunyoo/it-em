@@ -34,37 +34,38 @@ public class ItUser implements Parcelable {
 
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
+	
 	@com.google.gson.annotations.SerializedName("itUserId")
 	private String itUserId;
 	@com.google.gson.annotations.SerializedName("platform")
 	private String platform;
 	@com.google.gson.annotations.SerializedName("nickName")
 	private String nickName;
-	@com.google.gson.annotations.SerializedName("selfIntro")
-	private String selfIntro;
-	@com.google.gson.annotations.SerializedName("webPage")
-	private String webPage;
 	@com.google.gson.annotations.SerializedName("type")
 	private String type;
-	@com.google.gson.annotations.SerializedName("password")
-	private String password = "";
 	@com.google.gson.annotations.SerializedName("registrationId")
 	private String registrationId;
 	@com.google.gson.annotations.SerializedName("mobileId")
 	private String mobileId;
+	
+	@com.google.gson.annotations.SerializedName("password")
+	private String password = "";
+	@com.google.gson.annotations.SerializedName("selfIntro")
+	private String selfIntro = "";
+	@com.google.gson.annotations.SerializedName("webPage")
+	private String webPage = "";
+	@com.google.gson.annotations.SerializedName("email")
+	private String email = "";
 
 	public ItUser() {
 		super();
 	}
 
-	public ItUser(String itUserId, PLATFORM platform, String nickName, String selfIntro, String webPage, TYPE type,
-			String registrationId, String mobileId) {
+	public ItUser(String itUserId, PLATFORM platform, String nickName, TYPE type, String registrationId, String mobileId) {
 		super();
 		this.itUserId = itUserId;
 		this.platform = platform.toString();
 		this.nickName = nickName;
-		this.selfIntro = selfIntro;
-		this.webPage = webPage;
 		this.type = type.toString();
 		this.registrationId = registrationId;
 		this.mobileId = mobileId;
@@ -88,6 +89,12 @@ public class ItUser implements Parcelable {
 	}
 	public void setPlatform(String platform) {
 		this.platform = platform;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getNickName() {
 		return nickName;
@@ -138,6 +145,7 @@ public class ItUser implements Parcelable {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
 		this.setPlatform(itUser.getPlatform());
+		this.setEmail(itUser.getEmail());
 		this.setNickName(itUser.getNickName());
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());

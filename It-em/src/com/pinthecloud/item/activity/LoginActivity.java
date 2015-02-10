@@ -138,7 +138,7 @@ public class LoginActivity extends ItActivity {
 
 
 	private void setButton(){
-		mFacebookButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+		mFacebookButton.setReadPermissions(Arrays.asList("public_profile"));
 		mFacebookButton.setBackgroundResource(R.drawable.signin_button);
 		mFacebookButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 		mFacebookButton.setTypeface(mFacebookButton.getTypeface(), Typeface.BOLD);
@@ -171,7 +171,7 @@ public class LoginActivity extends ItActivity {
 		myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
 
 		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, user.getFirstName().replace(" ", "_"),
-				"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
+				ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
 		itemLogin(itUser, "https://graph.facebook.com/"+itUser.getItUserId()+"/picture?type=large");
 	}
 
@@ -185,8 +185,8 @@ public class LoginActivity extends ItActivity {
 				myUser.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
 				myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
 
-				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname(),
-						"", "", ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
+				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname().replace(" ", "_"),
+						ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
 				itemLogin(itUser, userProfile.getProfileImagePath());
 			}
 

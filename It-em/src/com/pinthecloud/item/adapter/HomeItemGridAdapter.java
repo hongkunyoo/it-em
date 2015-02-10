@@ -199,7 +199,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 				@Override
 				public void onClick(View v) {
-					String[] itemList = mActivity.getResources().getStringArray(R.array.home_more_string_array);
+					String[] itemList = mActivity.getResources().getStringArray(R.array.home_more_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, item);
 
 					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);

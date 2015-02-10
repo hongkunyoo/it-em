@@ -325,7 +325,7 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setViewPager(){
-		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), getResources(), mItUser, 
+		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), mActivity, mItUser, 
 				mHeader.getHeight(), mTab.getHeight());
 		mViewPagerAdapter.setItUserPageScrollTabHolder(new ItUserPageScrollTabHolder() {
 

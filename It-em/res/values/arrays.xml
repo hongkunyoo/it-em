@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Reply -->
-    <string-array name="home_more_string_array">
-        <item>Delete</item>
-    </string-array>
-
     <!-- Main Drawer -->
-    <string-array name="main_drawer_menu_string_array">
+    <string-array name="main_drawer_menu_array">
         <item>Home</item>
         <item>Be Pro</item>
         <item>Settings</item>
     </string-array>
+    
+    <!-- Main -->
+    <string-array name="main_tab_title_array">
+        <item>Home</item>
+        <item>My Page</item>
+    </string-array>
 
+    <!-- Home -->
+    <string-array name="home_more_array">
+        <item>Delete</item>
+    </string-array>
+    
     <!-- It User Page -->
-    <string-array name="it_user_page_pro_tab_title_string_array">
+    <string-array name="it_user_page_pro_tab_title_array">
         <item>My Item</item>
         <item>IT Item</item>
     </string-array>
-    <string-array name="it_user_page_tab_title_string_array">
+    <string-array name="it_user_page_tab_title_array">
         <item>IT Item</item>
     </string-array>
 
     <!-- Upload -->
-    <string-array name="upload_image_select_delete_string_array">
+    <string-array name="upload_image_select_delete_array">
         <item>Album</item>
         <item>Delete</item>
     </string-array>
-    <string-array name="upload_image_select_string_array">
+    <string-array name="upload_image_select_array">
         <item>Album</item>
     </string-array>
 
     <!-- Profile Settings -->
-    <string-array name="profile_image_select_string_array">
+    <string-array name="profile_image_select_array">
         <item>Album</item>
         <item>Camera</item>
         <item>Delete</item>
     </string-array>
 
     <!-- Reply -->
-    <string-array name="reply_long_click_string_array">
+    <string-array name="reply_long_click_array">
         <item>Delete</item>
     </string-array>
-
+    
     <!-- Category -->
-    <string-array name="category_string_array">
+    <string-array name="category_array">
         <item>Outer</item>
         <item>Shirts</item>
         <item>knit</item>

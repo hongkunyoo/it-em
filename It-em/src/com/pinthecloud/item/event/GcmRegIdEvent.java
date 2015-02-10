@@ -1,4 +1,4 @@
 package com.pinthecloud.item.event;
 
-public class GCMRegIdEvent {
+public class GcmRegIdEvent {
 }

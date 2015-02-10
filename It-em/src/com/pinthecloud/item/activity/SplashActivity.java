@@ -23,7 +23,7 @@ import com.pinthecloud.item.ItIntentService;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.event.GCMRegIdEvent;
+import com.pinthecloud.item.event.GcmRegIdEvent;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
@@ -148,7 +148,7 @@ public class SplashActivity extends ItActivity {
 						user.setRegistrationId(entity);
 						mObjectPrefHelper.put(user);
 
-						onEvent(new GCMRegIdEvent());
+						onEvent(new GcmRegIdEvent());
 					} else {
 						// Get registration id in ItBroadCastReceiver.class
 						// After get id, goto OnEvent()
@@ -179,7 +179,7 @@ public class SplashActivity extends ItActivity {
 	}
 
 
-	public void onEvent(GCMRegIdEvent event){
+	public void onEvent(GcmRegIdEvent event){
 		// Get mobile id
 		final ItUser user = mObjectPrefHelper.get(ItUser.class);
 		String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);

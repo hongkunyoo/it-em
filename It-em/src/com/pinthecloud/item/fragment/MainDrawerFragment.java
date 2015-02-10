@@ -121,7 +121,7 @@ public class MainDrawerFragment extends ItFragment {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
-		String[] menuNameList = getResources().getStringArray(R.array.main_drawer_menu_string_array);
+		String[] menuNameList = getResources().getStringArray(R.array.main_drawer_menu_array);
 		mMenuList = new ArrayList<MainDrawerMenu>();
 
 		// Profile
