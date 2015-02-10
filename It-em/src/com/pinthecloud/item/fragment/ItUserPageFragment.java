@@ -211,7 +211,7 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setComponent(){
-		mActionBar.setDisplayHomeAsUpEnabled(true);
+		if(mActionBar != null) mActionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 
@@ -251,7 +251,7 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void setProfile(){
-		mActionBar.setTitle(mItUser.getNickName());
+		if(mActionBar != null) mActionBar.setTitle(mItUser.getNickName());
 		mNickName.setText(mItUser.getNickName());
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());

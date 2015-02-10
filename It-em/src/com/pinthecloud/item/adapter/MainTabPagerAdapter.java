@@ -1,6 +1,7 @@
 package com.pinthecloud.item.adapter;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -58,5 +59,11 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter implements Ic
 	@Override
 	public int getCount() {
 		return this.mTitles.length;
+	}
+	
+	
+	@Override
+	public Parcelable saveState() {
+		return null;
 	}
 }

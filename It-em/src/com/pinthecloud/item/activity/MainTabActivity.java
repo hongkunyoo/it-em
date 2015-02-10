@@ -45,6 +45,7 @@ public class MainTabActivity extends ItActivity {
 
 
 	private void setTab(){
+		mTab.bringToFront();
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 

@@ -30,11 +30,7 @@ public class ViewUtil {
 
 
 	public static int getActionBarHeight(ItActivity activity){
-		int actionBarHeight = activity.getSupportActionBar().getHeight();
-		if (actionBarHeight != 0){
-			return actionBarHeight;
-		}
-
+		int actionBarHeight = 0;
 		final TypedValue tv = new TypedValue();
 		if (activity.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)){
 			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, activity.getResources().getDisplayMetrics());

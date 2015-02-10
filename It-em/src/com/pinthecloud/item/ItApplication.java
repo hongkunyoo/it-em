@@ -68,7 +68,7 @@ public class ItApplication extends Application {
 		super.onCreate();
 		app = this;
 
-		ACRA.init(app);
+//		ACRA.init(app);
 		mClient = getMobileClient();
 
 		userHabitHelper = getUserHabitHelper();

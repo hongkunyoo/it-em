@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -65,7 +64,6 @@ public class HomeFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-		setActionBar();
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -101,12 +99,6 @@ public class HomeFragment extends ItFragment {
 				break;
 			}
 		}
-	}
-
-
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle("");
 	}
 
 
@@ -170,8 +162,7 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setScroll(){
-		final View toolbarLayout = mActivity.getToolbarLayout();
-		final int maxScrollY = mUploadLayout.getLayoutParams().height;
+		final int maxUploadScrollY = mUploadLayout.getLayoutParams().height;
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
@@ -185,19 +176,13 @@ public class HomeFragment extends ItFragment {
 					addNextItem();
 				}
 
-				// Scroll toolbar and upload button by dy
+				// Scroll upload button by dy
 				if(dy < 0){
 					// Scroll Up, Upload button Up
 					mUploadLayout.scrollTo(0, Math.min(mUploadLayout.getScrollY()-dy, 0));
-
-					// Scroll Up, Toolbar Down
-					toolbarLayout.scrollTo(0, Math.max(toolbarLayout.getScrollY()+dy, 0));
 				} else if(dy > 0) {
 					// Scroll down, Upload button Down
-					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxScrollY));
-
-					// Scroll Down, Toolbar Up
-					toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+dy, ViewUtil.getActionBarHeight(mActivity)));
+					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxUploadScrollY));
 				}
 			}
 		});
