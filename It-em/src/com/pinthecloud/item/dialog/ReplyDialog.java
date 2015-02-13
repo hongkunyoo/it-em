@@ -135,8 +135,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				Reply reply = new Reply(mInputText.getText().toString().trim(),
-						mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+				Reply reply = new Reply(mInputText.getText().toString().trim(), mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
 				mInputText.setText("");
 				submitReply(reply);
 			}

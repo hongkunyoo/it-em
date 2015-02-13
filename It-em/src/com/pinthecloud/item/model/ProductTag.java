@@ -1,6 +1,6 @@
 package com.pinthecloud.item.model;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,8 +23,8 @@ public class ProductTag extends AbstractItemModel<ProductTag> implements Parcela
 	public int getCategory() {
 		return category;
 	}
-	public String categoryString(Resources resources){
-		String[] categoryArray = resources.getStringArray(R.array.category_array);
+	public String categoryString(Context context){
+		String[] categoryArray = context.getResources().getStringArray(R.array.category_array);
 		return categoryArray[category];
 	}
 	public void setCategory(int category) {

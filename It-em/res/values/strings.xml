@@ -42,9 +42,9 @@
     <string name="it_number">numbers of IT</string>
     <string name="upload_by">Uploaded by</string>
     <string name="of">\'s</string>
+    <string name="delete">Delete</string>
 
     <!-- Reply -->
-    <string name="delete">Delete</string>
     <string name="submit">SUBMIT</string>
     <string name="write_reply">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
@@ -76,6 +76,8 @@
     <string name="uploaded">The item is uploaded.</string>
     <string name="description">Description</string>
     <string name="select_picture">Select Picture</string>
+    <string name="brand_information">Brand Information</string>
+    <string name="brand">Brand</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">Profile Edit</string>
@@ -101,6 +103,7 @@
     <string name="product_tag">Product Label</string>
     <string name="price_unit">won</string>
     <string name="empty_product_tag">Product Label is empty yet</string>
+    <string name="get_product_label">GET!</string>
     
     <!-- ItDateTime -->
     <string name="second_ago">sec ago</string>

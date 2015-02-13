@@ -28,43 +28,38 @@
 
         <include layout="@layout/custom_line" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/reply_margin" >
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginRight="@dimen/key_line_first"
+            android:layout_marginTop="@dimen/reply_margin"
+            android:orientation="vertical" >
 
             <com.pinthecloud.item.view.ItTextView
                 android:id="@+id/row_reply_list_nick_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:textColor="@color/brand_text_color"
                 android:textStyle="bold"
                 app:textType="subhead" />
 
             <com.pinthecloud.item.view.ItTextView
+                android:id="@+id/row_reply_list_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brnad_text_color_light"
+                app:textType="body" />
+
+            <com.pinthecloud.item.view.ItTextView
                 android:id="@+id/row_reply_list_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/key_line_first"
-                android:layout_marginRight="@dimen/key_line_first"
                 android:drawableLeft="@drawable/feed_comment_time_ic"
                 android:drawableStart="@drawable/feed_comment_time_ic"
                 android:textColor="@color/gray_light"
                 app:textType="caption" />
-        </RelativeLayout>
-
-        <com.pinthecloud.item.view.ItTextView
-            android:id="@+id/row_reply_list_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/key_line_first"
-            android:layout_marginRight="@dimen/key_line_first"
-            android:textColor="@color/brnad_text_color_light"
-            app:textType="body" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

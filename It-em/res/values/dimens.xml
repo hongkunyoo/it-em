@@ -34,8 +34,8 @@
     <dimen name="be_pro_mail_height">24dp</dimen>
 
     <!-- Item -->
-    <dimen name="item_content_date_margin">2dp</dimen>
-    <dimen name="item_content_margin">12dp</dimen>
+    <dimen name="item_content_margin">2dp</dimen>
+    <dimen name="item_layout_margin">12dp</dimen>
     <dimen name="item_content_row_height">40dp</dimen>
 
     <!-- Upload -->

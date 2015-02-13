@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <com.pinthecloud.item.view.ItTextView
+        android:id="@+id/row_brand_information_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/key_line_first"
+        android:layout_marginRight="@dimen/key_line_first"
+        app:textType="subhead" />
+
+    <EditText
+        android:id="@+id/row_brand_information_brand"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:background="@drawable/edit_text_line"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="@string/brand"
+        android:inputType="textMultiLine"
+        android:maxLength="@integer/brand_information_max_length"
+        android:maxLines="@integer/general_max_line"
+        android:paddingEnd="@dimen/key_line_first"
+        android:paddingLeft="@dimen/key_line_first"
+        android:paddingRight="@dimen/key_line_first"
+        android:paddingStart="@dimen/key_line_first"
+        android:textColor="@color/brand_text_color"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/font_small" >
+
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/row_brand_information_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/key_line_first"
+        android:layout_marginStart="@dimen/key_line_first"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/delete"
+        android:src="@drawable/appbar_close_ic" />
+
+</LinearLayout>

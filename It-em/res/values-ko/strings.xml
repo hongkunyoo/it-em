@@ -21,10 +21,9 @@
     <!-- Item -->
     <string name="it_number">개의 IT</string>
     <string name="of">의</string>
+    <string name="delete">삭제</string>
 
     <!-- Reply -->
-    <string name="delete">삭제</string>
-    <string name="submit">SUBMIT</string>
     <string name="write_reply">댓글을 써주세요</string>
     <string name="previous_reply">모든 댓글 보기</string>
     <string name="first_reply">첫번째 댓글을 써보세요</string>
@@ -54,6 +53,8 @@
     <string name="upload">업로드</string>
     <string name="uploaded">아이템이 업로드 되었습니다.</string>
     <string name="description">설명</string>
+    <string name="brand_information">브랜드 정보</string>
+    <string name="brand">브랜드</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">프로필 수정</string>

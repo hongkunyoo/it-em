@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.model.ItUser;
 
-public class NotiFragment extends ItFragment {
+public class NotificationFragment extends ItFragment {
 	
 	private ItUser mMyItUser;
 
@@ -24,7 +24,7 @@ public class NotiFragment extends ItFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_noti, container, false);
+		View view = inflater.inflate(R.layout.fragment_notification, container, false);
 		return view;
 	}
 }

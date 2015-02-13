@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/key_line_first" >
 
@@ -17,18 +17,19 @@
             android:id="@+id/upload_frag_item_image"
             android:layout_width="@dimen/upload_image_width"
             android:layout_height="@dimen/upload_image_width"
+            android:layout_marginBottom="@dimen/key_line_first"
             app:riv_corner_radius="@dimen/corner_radius" />
 
         <EditText
             android:id="@+id/upload_frag_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/key_line_first"
             android:background="@drawable/edit_text_line"
             android:ems="10"
             android:gravity="center_vertical"
             android:hint="@string/description"
             android:inputType="textMultiLine"
+            android:maxLines="@integer/upload_content_max_line"
             android:paddingEnd="@dimen/key_line_first"
             android:paddingLeft="@dimen/key_line_first"
             android:paddingRight="@dimen/key_line_first"
@@ -39,6 +40,43 @@
 
             <requestFocus />
         </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/key_line_first"
+        android:paddingEnd="@dimen/key_line_first"
+        android:paddingLeft="@dimen/key_line_first"
+        android:paddingRight="@dimen/key_line_first"
+        android:paddingStart="@dimen/key_line_first" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.pinthecloud.item.view.ItTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/brand_information"
+                app:textType="subhead" />
+
+            <Button
+                android:id="@+id/upload_frag_brand_information_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/upload_frag_brand_information_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
     </LinearLayout>
 
 </LinearLayout>

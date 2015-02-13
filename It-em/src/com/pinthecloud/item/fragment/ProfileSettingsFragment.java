@@ -249,7 +249,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void trimProfileSettings(){
-		mNickName.setText(mNickName.getText().toString().trim().replace(" ", "").replace("\n", ""));
+		mNickName.setText(mNickName.getText().toString().trim().replace(" ", "_").replace("\n", ""));
 		mDescription.setText(mDescription.getText().toString().trim().replace("\n", " "));
 		mWebsite.setText(mWebsite.getText().toString().trim().replace(" ", "").replace("\n", ""));
 	}

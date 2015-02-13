@@ -1,10 +1,16 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,11 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.adapter.BrandInformationListAdapter;
+import com.pinthecloud.item.dialog.CategoryDialog;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
@@ -33,10 +42,19 @@ import com.pinthecloud.item.util.ImageUtil;
 
 public class UploadFragment extends ItFragment {
 
+	public static final String CATEGORY_INTENT_KEY = "CATEGORY_INTENT_KEY";
+	
 	private Uri mItemImageUri;
 
 	private ImageView mItemImage;
 	private EditText mContent;
+
+	private Button mBrandInformationAdd;
+	private RecyclerView mListView;
+	private BrandInformationListAdapter mListAdapter;
+	private LinearLayoutManager mListLayoutManager;
+	private List<BrandInformation> mBrandInformationList;
+
 	private ItUser mMyItUser;
 
 
@@ -62,12 +80,11 @@ public class UploadFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_upload, container, false);
-
 		setHasOptionsMenu(true);
 		findComponent(view);
 		setComponent();
 		setButton();
-
+		setList();
 		return view;
 	}
 
@@ -137,6 +154,8 @@ public class UploadFragment extends ItFragment {
 	private void findComponent(View view){
 		mItemImage = (ImageView)view.findViewById(R.id.upload_frag_item_image);
 		mContent = (EditText)view.findViewById(R.id.upload_frag_content);
+		mBrandInformationAdd = (Button)view.findViewById(R.id.upload_frag_brand_information_add);
+		mListView = (RecyclerView)view.findViewById(R.id.upload_frag_brand_information_list);
 	}
 
 
@@ -171,6 +190,40 @@ public class UploadFragment extends ItFragment {
 				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
+
+		mBrandInformationAdd.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				final CategoryDialog categoryDialog = new CategoryDialog();
+				categoryDialog.setCallback(new DialogCallback() {
+					
+					@Override
+					public void doPositiveThing(Bundle bundle) {
+						String category = bundle.getString(CATEGORY_INTENT_KEY);
+						mListAdapter.add(mBrandInformationList.size(), new BrandInformation(category));
+						categoryDialog.dismiss();
+					}
+					@Override
+					public void doNegativeThing(Bundle bundle) {
+					}
+				});
+				categoryDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+	}
+
+
+	private void setList(){
+		mListView.setHasFixedSize(true);
+
+		mListLayoutManager = new LinearLayoutManager(mActivity);
+		mListView.setLayoutManager(mListLayoutManager);
+		mListView.setItemAnimator(new DefaultItemAnimator());
+
+		mBrandInformationList = new ArrayList<BrandInformation>();
+		mListAdapter = new BrandInformationListAdapter(mBrandInformationList);
+		mListView.setAdapter(mListAdapter);
 	}
 
 
@@ -297,10 +350,40 @@ public class UploadFragment extends ItFragment {
 
 	private void trimContent(){
 		mContent.setText(mContent.getText().toString().trim());
+		for(BrandInformation brandInformation : mBrandInformationList){
+			brandInformation.setBrand(brandInformation.getBrand().trim().replace(" ", "_").replace("\n", ""));
+		}
 	}
 
 
 	private boolean isSubmitEnable(){
 		return mContent.getText().toString().trim().length() > 0 && mItemImageUri != null;
+	}
+	
+	
+	public class BrandInformation {
+		private String category;
+		private String brand;
+		
+		public BrandInformation() {
+			super();
+		}
+		public BrandInformation(String category) {
+			super();
+			this.category = category;
+		}
+		
+		public String getCategory() {
+			return category;
+		}
+		public void setCategory(String category) {
+			this.category = category;
+		}
+		public String getBrand() {
+			return brand;
+		}
+		public void setBrand(String brand) {
+			this.brand = brand;
+		}
 	}
 }

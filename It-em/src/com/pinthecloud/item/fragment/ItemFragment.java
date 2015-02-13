@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,7 +28,6 @@ import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -55,7 +53,6 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
-import com.pinthecloud.item.view.ItTextView;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
@@ -72,8 +69,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private View mItNumberLayout;
 	private TextView mItNumber;
 
-	private LinearLayout mProductTagTextLayout;
+	private View mProductTagLayout;
 	private TextView mProductTagEmptyView;
+	private View mProductTagTextLayout;
+	private TextView mProductTagText;
 
 	private TextView mReplyTitle;
 	private TextView mReplyListEmptyView;
@@ -123,9 +122,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		setComponent();
 		setButton();
 		setRefreshLayout();
-		setImageView();
 		setScroll();
 		setReplyList();
+
 		updateItemFrag();
 
 		return view;
@@ -206,8 +205,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mItNumberLayout = view.findViewById(R.id.item_frag_it_number_layout);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 
-		mProductTagTextLayout = (LinearLayout)view.findViewById(R.id.item_frag_product_tag_text_layout);
+		mProductTagLayout = view.findViewById(R.id.item_frag_product_tag_layout);
 		mProductTagEmptyView = (TextView)view.findViewById(R.id.item_frag_product_tag_empty_view);
+		mProductTagTextLayout = view.findViewById(R.id.item_frag_product_tag_text_layout);
+		mProductTagText = (TextView)view.findViewById(R.id.item_frag_product_tag_text);
 
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
@@ -222,6 +223,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
+		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
+
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -292,12 +295,23 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		});
 
+		mProductTagLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mGaHelper.sendEventGA(
+						mThisFragment.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
+
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem, (ArrayList<ProductTag>)mItem.getProductTagList());
+				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
 		mReplyInputSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Reply reply = new Reply(mReplyInputText.getText().toString().trim(),
-						mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+				Reply reply = new Reply(mReplyInputText.getText().toString().trim(), mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
 				mReplyInputText.setText("");
 				submitReply(reply);
 			}
@@ -315,11 +329,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				startActivity(intent);
 			}
 		});
-	}
-
-
-	private void setImageView(){
-		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 	}
 
 
@@ -390,19 +399,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setItemComponent(Item item){
-		mContent.setText(item.getContent());
-		mNickName.setText(item.getWhoMade());
-		mDate.setText(item.getCreateDateTime().getElapsedDateTime(getResources()));
-		setItNumber(item.getLikeItCount());
-		mItButton.setActivated(item.getPrevLikeId() != null);
-	}
-
-
 	private void updateItemFrag(){
 		mProgressBar.setVisibility(View.VISIBLE);
 		mItemLayout.setVisibility(View.GONE);
-		setItemComponent(mItem);
 
 		mAimHelper.getItem(mItem, mMyItUser.getId(), new EntityCallback<Item>() {
 
@@ -423,50 +422,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void showReplyEmptyView(int replyCount){
-		if(replyCount > 0){
-			mReplyListEmptyView.setVisibility(View.GONE);
-		} else {
-			mReplyListEmptyView.setVisibility(View.VISIBLE);
-		}
-	}
-
-
-	private void setImage(){
-		int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
-		if(mItem.getImageHeight() > maxSize){
-			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-			.resize((int)(mItem.getImageWidth()*((float)maxSize/mItem.getImageHeight())), maxSize)
-			.into(mItemImage);
-		} else {
-			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-			.into(mItemImage);
-		}
-
-		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.fit()
-		.into(mProfileImage);
-	}
-
-
-	private void submitReply(final Reply reply){
-		mReplyListAdapter.add(mReplyList.size(), reply);
-		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-		showReplyEmptyView(mItem.getReplyCount()+1);
-
-		mAimHelper.add(reply, new EntityCallback<Reply>() {
-
-			@Override
-			public void onCompleted(Reply entity) {
-				mItem.setReplyCount(mItem.getReplyCount()+1);
-				setReplyTitle(mItem.getReplyCount());
-
-				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
-			}
-		});
+	private void setItemComponent(Item item){
+		mContent.setText(item.getContent());
+		mNickName.setText(item.getWhoMade());
+		mDate.setText(item.getCreateDateTime().getElapsedDateTime(getResources()));
+		setItNumber(item.getLikeItCount());
+		mItButton.setActivated(item.getPrevLikeId() != null);
 	}
 
 
@@ -524,6 +485,33 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void showReplyEmptyView(int replyCount){
+		if(replyCount > 0){
+			mReplyListEmptyView.setVisibility(View.GONE);
+		} else {
+			mReplyListEmptyView.setVisibility(View.VISIBLE);
+		}
+	}
+
+
+	private void submitReply(final Reply reply){
+		mReplyListAdapter.add(mReplyList.size(), reply);
+		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
+		showReplyEmptyView(mItem.getReplyCount()+1);
+
+		mAimHelper.add(reply, new EntityCallback<Reply>() {
+
+			@Override
+			public void onCompleted(Reply entity) {
+				mItem.setReplyCount(mItem.getReplyCount()+1);
+				setReplyTitle(mItem.getReplyCount());
+
+				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
+			}
+		});
+	}
+
+
 	private void setReplyTitle(int replyCount){
 		String title = getResources().getString(R.string.comments);
 		if(replyCount != 0){
@@ -534,11 +522,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void addProductTagCategoryText(List<ProductTag> list){
-		final Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();
-
+		String categoryString = "";
+		Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();
+		
 		for(final ProductTag tag : list){
-
-			// Map tags by category
 			if(tagList.containsKey(""+tag.getCategory())){
 				tagList.get(""+tag.getCategory()).add(tag);
 				continue;
@@ -546,40 +533,23 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				tagList.put(""+tag.getCategory(), new ArrayList<ProductTag>());
 				tagList.get(""+tag.getCategory()).add(tag);
 			}
-
-
-			// Add and set category text
-			ItTextView categoryText = new ItTextView(mActivity);
-			categoryText.setTextType(ItTextView.TYPE.SUBHEAD);
-			categoryText.setText((tagList.size()==1 ? "" : ", ") + tag.categoryString(getResources()));
-			categoryText.setTextColor(getResources().getColor(R.color.brand_text_color));
-			categoryText.setTypeface(categoryText.getTypeface(), Typeface.BOLD);
-
-			categoryText.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					mGaHelper.sendEventGA(
-							mThisFragment.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
-
-					ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem, tagList.get(""+tag.getCategory()));
-					productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
-				}
-			});
-
-			mProductTagTextLayout.addView(categoryText);
+			categoryString = categoryString + (tagList.size()==1 ? "" : ", ") + tag.categoryString(mActivity);
 		}
+		
+		mProductTagText.setText(categoryString);
 	}
 
 
 	private void setProductTagFrag(){
 		if(mItem.getProductTagList().size() > 0){
 			mProductTagEmptyView.setVisibility(View.GONE);
+			mProductTagTextLayout.setVisibility(View.VISIBLE);
 
-			mProductTagTextLayout.removeAllViews();
+			mProductTagText.setText(getResources().getString(R.string.get_product_label));
 			addProductTagCategoryText(mItem.getProductTagList());
 		} else {
 			mProductTagEmptyView.setVisibility(View.VISIBLE);
+			mProductTagTextLayout.setVisibility(View.GONE);
 		}
 	}
 
@@ -617,5 +587,25 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		// Set reply list fragment
 		showReplyEmptyView(mItem.getReplyCount());
 		setReplyTitle(mItem.getReplyCount());
+	}
+
+
+	private void setImage(){
+		int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
+		if(mItem.getImageHeight() > maxSize){
+			mApp.getPicasso()
+			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+			.resize((int)(mItem.getImageWidth()*((float)maxSize/mItem.getImageHeight())), maxSize)
+			.into(mItemImage);
+		} else {
+			mApp.getPicasso()
+			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+			.into(mItemImage);
+		}
+
+		mApp.getPicasso()
+		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.fit()
+		.into(mProfileImage);
 	}
 }
