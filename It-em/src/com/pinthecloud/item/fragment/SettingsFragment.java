@@ -1,9 +1,10 @@
 package com.pinthecloud.item.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,12 +19,13 @@ import com.kakao.LogoutResponseCallback;
 import com.kakao.SessionCallback;
 import com.kakao.UserManagement;
 import com.kakao.exception.KakaoException;
-//import com.facebook.Session;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.BeProActivity;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.ItException;
@@ -35,6 +37,10 @@ import de.greenrobot.event.EventBus;
 
 public class SettingsFragment extends ItFragment {
 
+	private final int PROFILE_SETTINGS = 0;
+
+	private View mProfileSettings;
+	private View mBePro;
 	private TextView mNickName;
 	private RelativeLayout mLogout;
 
@@ -53,57 +59,97 @@ public class SettingsFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
-		setActionBar();
+		setHasOptionsMenu(true);
 		findComponent(view);
-		setComponent();
+		setProfile();
 		setButton();
 		setAdminComponent(view);
 		return view;
 	}
 
 
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle(getResources().getString(R.string.settings));
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode){
+		case PROFILE_SETTINGS:
+			if (resultCode == Activity.RESULT_OK){
+				mMyItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
+				setProfile();
+			}
+			break;
+		}
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			mActivity.onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 
 	private void findComponent(View view){
+		mProfileSettings = view.findViewById(R.id.settings_frag_profile_settings);
+		mBePro = view.findViewById(R.id.settings_frag_be_pro);
 		mNickName = (TextView)view.findViewById(R.id.settings_frag_nick_name);
 		mLogout = (RelativeLayout)view.findViewById(R.id.settings_frag_logout);
 	}
 
 
-	private void setComponent(){
+	private void setProfile(){
 		mNickName.setText(mMyItUser.getNickName());
 	}
 
 
 	private void setButton(){
+		mProfileSettings.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
+				startActivityForResult(intent, PROFILE_SETTINGS);
+			}
+		});
+
+		mBePro.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, BeProActivity.class);
+				startActivity(intent);
+			}
+		});
+
 		mLogout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				String message = getResources().getString(R.string.logout_message);
 				ItAlertDialog logoutDialog = ItAlertDialog.newInstance(message, null, null, true);
+				final EntityCallback<Boolean> logoutCallback = new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						if (entity) {
+							mApp.dismissProgressDialog();
+							removePreference();
+
+							Intent intent = new Intent(mActivity, LoginActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(intent);
+						}
+					}
+				};
+
 				logoutDialog.setCallback(new DialogCallback() {
 
 					@Override
 					public void doPositiveThing(Bundle bundle) {
-						EntityCallback<Boolean> logoutCallback = new EntityCallback<Boolean>() {
-
-							@Override
-							public void onCompleted(Boolean entity) {
-								if (entity) {
-									removePreference();
-									mApp.dismissProgressDialog();
-									Intent intent = new Intent(mActivity, LoginActivity.class);
-									intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-									startActivity(intent);
-								}
-							}
-						};
-
 						mApp.showProgressDialog(mActivity);
 						if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.FACEBOOK.toString())) {
 							facebookLogout(logoutCallback);

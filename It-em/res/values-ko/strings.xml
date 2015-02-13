@@ -33,18 +33,20 @@
     <string name="it_title">이 아이템을 잇한 사람들</string>
 
     <!-- It User Page -->
-    <string name="no_user">이 사용자가 존재하지 않습니다.</string>
+    <string name="not_exist_user">이 사용자가 존재하지 않습니다.</string>
 
     <!-- My Item -->
     <string name="empty_my_item">아이템이 없습니다.\n자신만의 스타일을 공유해보세요!</string>
     <string name="empty_it_item">잇 아이템이 없습니다.\n좋은 아이템을 잇 해보세요!</string>
-
+    
     <!-- Product Tag -->
+    <string name="product_tag">상품라벨</string>
     <string name="price_unit">원</string>
-    <string name="empty_product_tag">아직 달려있는 상품 태그가 없어요</string>
+    <string name="empty_product_tag">아직 달려있는 상품라벨이 없어요</string>
     
     <!-- Be Pro -->
-    <string name="be_pro">잇템은 프로로 초대받은 사람만 업로드를 할 수 있어요.\n프로가 되어 자신의 특별한 스타일을 공유하고, 보상을 받아보세요.\n프로가 되고 싶으시다면, 저희에게 요청 메일을 보내주세요.</string>
+    <string name="be_pro">에디터 되기</string>
+    <string name="be_pro_description">잇템은 에디터로 초대받은 사람만 업로드를 할 수 있어요.\n에디터가 되어 자신의 특별한 스타일을 공유하고, 보상을 받아보세요.\n에디터가 되고 싶으시다면, 저희에게 요청 메일을 보내주세요.</string>
     <string name="valid_pro">프로가 되었습니다.</string>
     <string name="invalid_pro">맞지 않는 키 입니다.</string>
 

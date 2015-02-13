@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/main_drawer_menu_profile_pro_margin"
             android:layout_marginRight="@dimen/main_drawer_menu_profile_pro_margin"
-            android:contentDescription="@string/pro"
+            android:contentDescription="@string/be_pro"
             android:src="@drawable/general_pro_ic" />
 
         <com.pinthecloud.item.view.ItTextView

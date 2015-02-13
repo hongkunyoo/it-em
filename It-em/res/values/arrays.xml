@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Main Drawer -->
-    <string-array name="main_drawer_menu_array">
-        <item>Home</item>
-        <item>Be Pro</item>
-        <item>Settings</item>
-    </string-array>
-
     <!-- Home -->
     <string-array name="home_more_array">
         <item>Delete</item>

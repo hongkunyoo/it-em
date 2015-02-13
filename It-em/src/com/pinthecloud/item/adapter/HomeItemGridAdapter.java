@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,8 +21,7 @@ import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.dialog.LikeItDialog;
-import com.pinthecloud.item.dialog.ReplyDialog;
+import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
@@ -35,42 +33,29 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 
-public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapter.ViewHolder> {
 
 	private final float MAX_HEIGHT_RATIO = 2.3f;
-
-	private enum TYPE{
-		HEADER,
-		NORMAL
-	}
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 	private ItUser mMyItUser;
-	private int mGridColumnNum;
 
 	private boolean isDoingLikeIt = false;
 
 
-	public HomeItemGridAdapter(ItActivity activity, ItFragment frag, int gridColumnNum, List<Item> itemList) {
+	public HomeItemGridAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mItemList = itemList;
-		this.mGridColumnNum = gridColumnNum;
 		this.mMyItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 	}
 
 
-	public static class HeaderViewHolder extends RecyclerView.ViewHolder {
-		public HeaderViewHolder(View view) {
-			super(view);
-		}
-	}
-
-	public static class NormalViewHolder extends RecyclerView.ViewHolder {
+	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 
 		public CircleImageView profileImage;
@@ -82,10 +67,10 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public TextView content;
 		public TextView itNumber;
 		public TextView replyNumber;
-		public ImageView productTag;
 		public ImageButton itButton;
+		public ImageButton productTag;
 
-		public NormalViewHolder(View view) {
+		public ViewHolder(View view) {
 			super(view);
 			this.view = view;
 
@@ -98,60 +83,35 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			this.content = (TextView)view.findViewById(R.id.row_home_item_grid_content);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_grid_it_number);
 			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_grid_reply_number);
-			this.productTag = (ImageView)view.findViewById(R.id.row_home_item_grid_product_tag);
+			this.productTag = (ImageButton)view.findViewById(R.id.row_home_item_grid_product_tag);
 			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_grid_it_button);
 		}
 	}
 
 
 	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = null;
-		ViewHolder viewHolder = null;
-		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
-		if(viewType == TYPE.HEADER.ordinal()){
-			view = inflater.inflate(R.layout.row_home_item_grid_header, parent, false);
-			viewHolder = new HeaderViewHolder(view);
-		} else if(viewType == TYPE.NORMAL.ordinal()){
-			view = inflater.inflate(R.layout.row_home_item_grid, parent, false);
-			viewHolder = new NormalViewHolder(view);
-		} 
-
-		return viewHolder;
+	public HomeItemGridAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_item_grid, parent, false);
+		return new ViewHolder(view);
 	}
 
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, final int position) {
-		int viewType = getItemViewType(position);
-		if(viewType == TYPE.NORMAL.ordinal()){
-			Item item = mItemList.get(position-mGridColumnNum);
-			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
-			setNormalComponent(normalViewHolder, item);
-			setNormalButton(normalViewHolder, item);
-			setNormalImageView(normalViewHolder, item, position);
-		}
+		Item item = mItemList.get(position);
+		setComponent(holder, item);
+		setButton(holder, item);
+		setImageView(holder, item);
 	}
 
 
 	@Override
 	public int getItemCount() {
-		return mItemList.size()+mGridColumnNum;
+		return mItemList.size();
 	}
 
 
-	@Override
-	public int getItemViewType(int position) {
-		if (position < mGridColumnNum) {
-			return TYPE.HEADER.ordinal();
-		} else{
-			return TYPE.NORMAL.ordinal();
-		}
-	}
-
-
-	private void setNormalComponent(NormalViewHolder holder, Item item){
+	private void setComponent(ViewHolder holder, Item item){
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
@@ -164,15 +124,11 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		}
 		holder.replyNumber.setText(""+item.getReplyCount());
 
-		if(item.isHasProductTag()){
-			holder.productTag.setVisibility(View.VISIBLE);
-		} else {
-			holder.productTag.setVisibility(View.GONE);			
-		}
+		holder.productTag.setEnabled(item.isHasProductTag());
 	}
 
 
-	private void setNormalButton(final NormalViewHolder holder, final Item item){
+	private void setButton(final ViewHolder holder, final Item item){
 		holder.profileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -212,23 +168,13 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			holder.more.setOnClickListener(null);
 		}
 
-		holder.itemImage.setOnClickListener(new OnClickListener() {
+		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				mApp.getGaHelper().sendEventGA(
 						mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
 
-				Intent intent = new Intent(mActivity, ItemActivity.class);
-				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.startActivity(intent);
-			}
-		});
-
-		holder.content.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
 				mActivity.startActivity(intent);
@@ -278,27 +224,21 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 
-		holder.itNumber.setOnClickListener(new OnClickListener() {
+		holder.productTag.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				ItDialogFragment likeItDialog = LikeItDialog.newInstance(item);
-				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
-			}
-		});
+				mApp.getGaHelper().sendEventGA(
+						mFrag.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
 
-		holder.replyNumber.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment replyDialog = ReplyDialog.newInstance(item);
-				replyDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(item, null);
+				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}
 
 
-	private void setNormalImageView(final NormalViewHolder holder, Item item, int position) {
+	private void setImageView(final ViewHolder holder, Item item) {
 		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), MAX_HEIGHT_RATIO);
 		holder.itemImage.setHeightRatio(heightRatio);
 		if(heightRatio < MAX_HEIGHT_RATIO){
@@ -320,7 +260,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	private void doLikeIt(NormalViewHolder holder, Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
+	private void doLikeIt(ViewHolder holder, Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
 		isDoingLikeIt = false;
 		item.setPrevLikeId(likeItId);
 		setItButton(holder, currentLikeItNum, isDoLikeIt);
@@ -335,7 +275,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	private void setItButton(NormalViewHolder holder, int currentLikeItNum, boolean isDoLikeIt){
+	private void setItButton(ViewHolder holder, int currentLikeItNum, boolean isDoLikeIt){
 		if(isDoLikeIt) {
 			// Do like it
 			setItNumber(holder, currentLikeItNum+1);
@@ -348,7 +288,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 
-	private void setItNumber(NormalViewHolder holder, int itNumber){
+	private void setItNumber(ViewHolder holder, int itNumber){
 		if(itNumber <= 0){
 			holder.itNumber.setVisibility(View.GONE);
 		} else {
@@ -393,13 +333,13 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	public void add(int position, Item item) {
 		mItemList.add(position, item);
-		notifyItemInserted(position+mGridColumnNum);
+		notifyItemInserted(position);
 	}
 
 
 	public void remove(Item item) {
 		int position = mItemList.indexOf(item);
 		mItemList.remove(position);
-		notifyItemRemoved(position+mGridColumnNum);
+		notifyItemRemoved(position);
 	}
 }

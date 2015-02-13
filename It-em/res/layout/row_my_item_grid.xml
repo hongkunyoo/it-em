@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/my_item_spacing"
-    android:orientation="vertical" >
+    android:foreground="@drawable/list_transparent_selector" >
 
     <com.pinthecloud.item.view.SquareImageView
         android:id="@+id/row_my_item_grid_item_image"
@@ -12,9 +12,4 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
-    <com.pinthecloud.item.view.SquareImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/my_item_grid_background" />
-
-</RelativeLayout>
+</FrameLayout>

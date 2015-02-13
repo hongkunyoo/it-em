@@ -15,13 +15,13 @@ import com.pinthecloud.item.fragment.NotiFragment;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
 
-public class MainTabPagerAdapter extends FragmentStatePagerAdapter implements IconTabProvider {
+public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconTabProvider {
 
 	private ItApplication mApp;
 	private int[] mTitleIcons = {R.drawable.launcher, R.drawable.launcher, R.drawable.launcher};
 
 
-	public MainTabPagerAdapter(FragmentManager fm, Context context) {
+	public MainPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		this.mApp = ItApplication.getInstance();
 	}

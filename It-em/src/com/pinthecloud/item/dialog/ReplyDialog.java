@@ -33,8 +33,8 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 	private TextView mTitle;
 
-	private View mListLayout;
 	private ProgressBar mProgressBar;
+	private View mListLayout;
 	private TextView mListEmptyView;
 	private RecyclerView mListView;
 	private ReplyListAdapter mListAdapter;

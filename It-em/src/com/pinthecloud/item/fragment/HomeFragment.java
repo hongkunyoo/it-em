@@ -27,7 +27,6 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.FileUtil;
-import com.pinthecloud.item.util.ViewUtil;
 
 public class HomeFragment extends ItFragment {
 
@@ -52,9 +51,6 @@ public class HomeFragment extends ItFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-		if(mItemList == null){
-			mItemList = new ArrayList<Item>();
-		}
 	}
 
 
@@ -71,12 +67,10 @@ public class HomeFragment extends ItFragment {
 		setGrid();
 		setScroll();
 
-		if(mItemList.size() < 1){
-			mProgressBar.setVisibility(View.VISIBLE);
-			mLayout.setVisibility(View.GONE);
-			updateGrid();
-		}
-		
+		mProgressBar.setVisibility(View.VISIBLE);
+		mLayout.setVisibility(View.GONE);
+		updateGrid();
+
 		return view;
 	}
 
@@ -137,7 +131,6 @@ public class HomeFragment extends ItFragment {
 
 	private void setRefreshLayout(){
 		mRefresh.setColorSchemeResources(R.color.accent_color);
-		mRefresh.setProgressViewOffset(true, ViewUtil.getActionBarHeight(mActivity)/2, ViewUtil.getActionBarHeight(mActivity));
 		mRefresh.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
@@ -156,7 +149,8 @@ public class HomeFragment extends ItFragment {
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mGridAdapter = new HomeItemGridAdapter(mActivity, mThisFragment, gridColumnNum, mItemList);
+		mItemList = new ArrayList<Item>();
+		mGridAdapter = new HomeItemGridAdapter(mActivity, mThisFragment, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 	}
 

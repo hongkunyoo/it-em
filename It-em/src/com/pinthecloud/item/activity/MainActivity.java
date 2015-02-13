@@ -1,74 +1,63 @@
 package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItFragment;
-import com.pinthecloud.item.fragment.MainDrawerFragment;
+import com.pinthecloud.item.adapter.MainPagerAdapter;
+import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
-public class MainActivity extends ItActivity implements MainDrawerFragment.DrawerCallbacks {
+public class MainActivity extends ItActivity {
 
-	private View mToolbarLayout;
-	private Toolbar mToolbar;
-	private DrawerLayout mDrawerLayout;
-	private MainDrawerFragment mDrawerFragment;
-	private int mCurrentSelectedPosition;
+	private PagerSlidingTabStrip mTab;
+	private ViewPager mViewPager;
+	private MainPagerAdapter mViewPagerAdapter;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		setToolbar();
-		setDrawer();
-	}
-
-
-	@Override
-	public void onBackPressed() {
-		if(mCurrentSelectedPosition == MainDrawerFragment.HOME_POSITION){
-			super.onBackPressed();
-		} else {
-			mDrawerFragment.selectMenu(MainDrawerFragment.HOME_POSITION);
-		}
-	}
-
-
-	@Override
-	public void onDrawerItemSelected(int position, ItFragment fragment) {
-		mCurrentSelectedPosition = position;
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.main_container, fragment);
-		transaction.commit();
-		
-		if(mToolbarLayout != null){
-			mToolbarLayout.scrollTo(0, 0);	
-		}
+		findComponent();
+		setViewPager();
+		setTab();
 	}
 
 
 	@Override
 	public View getToolbarLayout() {
-		return mToolbarLayout;
-	}
-	
-	
-	private void setToolbar(){
-		mToolbarLayout = findViewById(R.id.toolbar_layout);
-		mToolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(mToolbar);
-		
-		mToolbarLayout.bringToFront();
+		return null;
 	}
 
 
-	private void setDrawer(){
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-		mDrawerFragment = (MainDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.main_drawer_fragment);
-		mDrawerFragment.setUp(R.id.main_drawer_fragment, mDrawerLayout, mToolbar);
+	private void findComponent(){
+		mTab = (PagerSlidingTabStrip)findViewById(R.id.main_tab);
+		mViewPager = (ViewPager)findViewById(R.id.main_pager); 
+	}
+
+
+	private void setViewPager(){
+		mViewPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), mThisActivity);
+		mViewPager.setOffscreenPageLimit(mViewPagerAdapter.getCount());
+		mViewPager.setAdapter(mViewPagerAdapter);
+	}
+
+
+	private void setTab(){
+		mTab.setViewPager(mViewPager);
+		mTab.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+			@Override
+			public void onPageSelected(int position) {
+			}
+			@Override
+			public void onPageScrollStateChanged(int state) {
+			}
+		});
 	}
 }

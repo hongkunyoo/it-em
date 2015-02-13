@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Main Drawer -->
-    <string-array name="main_drawer_menu_array">
-        <item>홈</item>
-        <item>프로 되기</item>
-        <item>설정</item>
-    </string-array>
-    
     <!-- Reply -->
     <string-array name="home_more_array">
         <item>삭제</item>

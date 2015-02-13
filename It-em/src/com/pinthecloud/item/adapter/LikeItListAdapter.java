@@ -72,7 +72,6 @@ public class LikeItListAdapter extends RecyclerView.Adapter<LikeItListAdapter.Vi
 
 	private void setText(ViewHolder holder, final LikeIt likeIt){
 		holder.nickName.setText(likeIt.getWhoMade());
-
 	}
 
 

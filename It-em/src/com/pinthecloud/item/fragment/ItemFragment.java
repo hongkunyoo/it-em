@@ -562,7 +562,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					mGaHelper.sendEventGA(
 							mThisFragment.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
 
-					ItDialogFragment productTagDialog = ProductTagDialog.newInstance(tagList.get(""+tag.getCategory()));
+					ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem, tagList.get(""+tag.getCategory()));
 					productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
 				}
 			});

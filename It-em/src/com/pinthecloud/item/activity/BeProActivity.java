@@ -1,61 +1,85 @@
-package com.pinthecloud.item.fragment;
+package com.pinthecloud.item.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 
-public class BeProFragment extends ItFragment {
+public class BeProActivity extends ItActivity {
 
+	private View mToolbarLayout;
+	private Toolbar mToolbar;
+	
 	private EditText mCode;
 	private Button mSubmit;
 	private ItUser mMyItUser;
-
-
+	
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
+		setContentView(R.layout.activity_be_pro);
+		
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-	}
-
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_be_pro, container, false);
-		setActionBar();
-		findComponent(view);
+		setToolbar();
+		findComponent();
 		setComponent();
 		setButton();
-		return view;
 	}
 
 
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle("");
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
 	}
 
 
-	private void findComponent(View view){
-		mCode = (EditText)view.findViewById(R.id.be_pro_frag_code);
-		mSubmit = (Button)view.findViewById(R.id.be_pro_frag_submit);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	@Override
+	public View getToolbarLayout() {
+		return mToolbarLayout;
+	}
+	
+	
+	private void setToolbar(){
+		mToolbarLayout = findViewById(R.id.toolbar_layout);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
+
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
+
+
+	private void findComponent(){
+		mCode = (EditText)findViewById(R.id.be_pro_code);
+		mSubmit = (Button)findViewById(R.id.be_pro_submit);
 	}
 
 
@@ -83,16 +107,16 @@ public class BeProFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mApp.showProgressDialog(mActivity);
+				mApp.showProgressDialog(mThisActivity);
 				trimCode();
 				bePro(mCode.getText().toString());
 			}
 		});
 	}
-
-
+	
+	
 	private void bePro(final String inviteKey){
-		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
@@ -104,7 +128,7 @@ public class BeProFragment extends ItFragment {
 							AsyncChainer.notifyNext(obj);
 						} else {
 							mApp.dismissProgressDialog();
-							Toast.makeText(mActivity, getResources().getString(R.string.invalid_pro), Toast.LENGTH_LONG).show();
+							Toast.makeText(mThisActivity, getResources().getString(R.string.invalid_pro), Toast.LENGTH_LONG).show();
 							AsyncChainer.clearChain(obj);
 						}
 					}
@@ -133,9 +157,9 @@ public class BeProFragment extends ItFragment {
 					@Override
 					public void onCompleted(Boolean entity) {
 						mApp.dismissProgressDialog();
-						Toast.makeText(mActivity, getResources().getString(R.string.valid_pro), Toast.LENGTH_LONG).show();
+						Toast.makeText(mThisActivity, getResources().getString(R.string.valid_pro), Toast.LENGTH_LONG).show();
 						
-						Intent intent = new Intent(mActivity, MainActivity.class);
+						Intent intent = new Intent(mThisActivity, MainActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 					}
@@ -144,7 +168,7 @@ public class BeProFragment extends ItFragment {
 		});
 	}
 
-
+	
 	private void trimCode(){
 		mCode.setText(mCode.getText().toString().trim().replace("\n", ""));
 	}

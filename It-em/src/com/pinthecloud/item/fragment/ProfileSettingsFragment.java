@@ -54,12 +54,10 @@ public class ProfileSettingsFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile_settings, container, false);
-
 		setHasOptionsMenu(true);
 		findComponent(view);
 		setComponent();
 		setButton();
-
 		return view;
 	}
 

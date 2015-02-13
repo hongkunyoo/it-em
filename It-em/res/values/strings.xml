@@ -54,7 +54,7 @@
     <string name="it_title">People who gives IT</string>
 
     <!-- It User Page -->
-    <string name="no_user">This user doesn\'t exist.</string>
+    <string name="not_exist_user">This user doesn\'t exist.</string>
 
     <!-- My Item -->
     <string name="it">it</string>
@@ -62,13 +62,9 @@
     <string name="empty_it_item">IT item is empty.\nGive IT to lovely item!</string>
     <string name="empty">Empty</string>
 
-    <!-- Product Tag -->
-    <string name="price_unit">$</string>
-    <string name="empty_product_tag">Product Tag is empty yet</string>
-
     <!-- Be Pro -->
-    <string name="pro">Pro</string>
-    <string name="be_pro">IT:EM allows PRO to upload item.\nBe PRO and Share your premium style &amp; Receive reward.\nIf you want to be PRO, send a request mail to us.</string>
+    <string name="be_pro">Be Editor</string>
+    <string name="be_pro_description">IT:EM allows Editor to upload item.\nBe Editor and Share your premium style &amp; Receive reward.\nIf you want to be Editor, send a request mail to us.</string>
     <string name="homepage">it-em.me</string>
     <string name="item_email">item@pinthecloud.com</string>
     <string name="code">CODE</string>
@@ -82,7 +78,7 @@
     <string name="select_picture">Select Picture</string>
 
     <!-- Profile Settings -->
-    <string name="profile_settings">PROFILE EDIT</string>
+    <string name="profile_settings">Profile Edit</string>
     <string name="nick_name">Nick Name</string>
     <string name="information">Information</string>
     <string name="website">Website</string>
@@ -96,10 +92,16 @@
     <string name="logout">Logout</string>
     <string name="logout_message">Do you want to logout?</string>
     <string name="settings">Settings</string>
+    <string name="notification">Notification</string>
+    <string name="notification_my_item">about my item</string>
+    <string name="notification_like_it_item">about item I it</string>
+    <string name="notification_reply_item">about item I commented</string>
 
     <!-- Product Tag -->
-    <string name="product_tag">Product Tag</string>
-
+    <string name="product_tag">Product Label</string>
+    <string name="price_unit">won</string>
+    <string name="empty_product_tag">Product Label is empty yet</string>
+    
     <!-- ItDateTime -->
     <string name="second_ago">sec ago</string>
     <string name="minute_ago">min ago</string>

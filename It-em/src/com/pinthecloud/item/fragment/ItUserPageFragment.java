@@ -1,7 +1,6 @@
 package com.pinthecloud.item.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -26,7 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ProfileSettingsActivity;
+import com.pinthecloud.item.activity.SettingsActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -42,8 +41,6 @@ import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class ItUserPageFragment extends ItFragment {
 
-	private final int PROFILE_SETTINGS = 0;
-
 	private ActionBar mActionBar;
 	private ProgressBar mProgressBar;
 	private RelativeLayout mContainer;
@@ -54,7 +51,7 @@ public class ItUserPageFragment extends ItFragment {
 	private TextView mNickName;
 	private TextView mDescription;
 	private TextView mWebsite;
-	private Button mProfileSettings;
+	private Button mSettings;
 
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
@@ -87,6 +84,7 @@ public class ItUserPageFragment extends ItFragment {
 		final View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 
 		setHasOptionsMenu(true);
+		setActionBar();
 		findComponent(view);
 		setComponent();
 
@@ -108,7 +106,7 @@ public class ItUserPageFragment extends ItFragment {
 
 				setProfile();
 				setProfileImage();
-				setButton();
+				setButtonByProfile();
 
 				mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -135,41 +133,14 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch(requestCode){
-		case PROFILE_SETTINGS:
-			if (resultCode == Activity.RESULT_OK){
-				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
-				setProfile();
-
-				mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-					@SuppressLint("NewApi")
-					@SuppressWarnings("deprecation")
-					@Override
-					public void onGlobalLayout() {
-						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-							mHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-						} else {
-							mHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-						}
-
-						SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
-						for(int i=0 ; i<itUserPageScrollTabHolderList.size() ; i++){
-							itUserPageScrollTabHolderList.valueAt(i).updateHeader(mHeader.getHeight());
-						}
-					}
-				});
-			}
-			break;
-		}
-	}
-
-
-	@Override
 	public void onStart() {
 		super.onStart();
+		if(mItUser.isMe()){
+			mItUser = mObjectPrefHelper.get(ItUser.class);
+			setProfile();
+			setButtonByProfile();
+		}
+		
 		if(mItUserId.equals(mItUser.getId())){
 			setProfileImage();
 		}
@@ -195,7 +166,6 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	private void findComponent(View view){
-		mActionBar = mActivity.getSupportActionBar();
 		mContainer = (RelativeLayout)view.findViewById(R.id.it_user_page_frag_container_layout);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
@@ -204,17 +174,35 @@ public class ItUserPageFragment extends ItFragment {
 		mNickName = (TextView)view.findViewById(R.id.it_user_page_frag_nick_name);
 		mDescription = (TextView)view.findViewById(R.id.it_user_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.it_user_page_frag_website);
-		mProfileSettings = (Button)view.findViewById(R.id.it_user_page_frag_profile_settings);
+		mSettings = (Button)view.findViewById(R.id.it_user_page_frag_settings);
 		mViewPager = (ViewPager)view.findViewById(R.id.it_user_page_frag_pager);
 		mTab = (PagerSlidingTabStrip)view.findViewById(R.id.it_user_page_frag_tab);
 	}
 
 
-	private void setComponent(){
+	private void setActionBar(){
+		mActionBar = mActivity.getSupportActionBar();
 		if(mActionBar != null) mActionBar.setDisplayHomeAsUpEnabled(true);
 	}
+	
 
+	private void setComponent(){
+		mWebsite.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				String webSite = mWebsite.getText().toString();
+				String webSiteRegx = "(http|https)://.*";
+				if(!webSite.matches(webSiteRegx)){
+					webSite = "http://" + webSite;
+				}
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
+				mActivity.startActivity(intent);
+			}
+		});
+	}
+	
+	
 	private void setItUser(final Object obj){
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItUserId.equals(mItUser.getId())){
@@ -224,10 +212,13 @@ public class ItUserPageFragment extends ItFragment {
 
 				@Override
 				public void onCompleted(ItUser entity) {
-					if(entity == null){
-						String message = getResources().getString(R.string.no_user);
-						ItAlertDialog noUserDialog = ItAlertDialog.newInstance(message, null, null, false);
-						noUserDialog.setCallback(new DialogCallback() {
+					if(entity != null){
+						mItUser = entity;
+						AsyncChainer.notifyNext(obj);	
+					} else {
+						String message = getResources().getString(R.string.not_exist_user);
+						ItAlertDialog notExistUserDialog = ItAlertDialog.newInstance(message, null, null, false);
+						notExistUserDialog.setCallback(new DialogCallback() {
 
 							@Override
 							public void doPositiveThing(Bundle bundle) {
@@ -238,11 +229,8 @@ public class ItUserPageFragment extends ItFragment {
 								// Do nothing
 							}
 						});
-						noUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+						notExistUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 						AsyncChainer.clearChain(obj);
-					} else {
-						mItUser = entity;
-						AsyncChainer.notifyNext(obj);	
 					}
 				}
 			});
@@ -276,7 +264,7 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setButton(){
+	private void setButtonByProfile(){
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -286,31 +274,17 @@ public class ItUserPageFragment extends ItFragment {
 			}
 		});
 
-		mWebsite.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				String webSite = mWebsite.getText().toString();
-				String webSiteRegx = "(http|https)://.*";
-				if(!webSite.matches(webSiteRegx)){
-					webSite = "http://" + webSite;
-				}
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
-				mActivity.startActivity(intent);
-			}
-		});
-
 		if(mItUser.isMe()){
-			mProfileSettings.setOnClickListener(new OnClickListener() {
+			mSettings.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
-					startActivityForResult(intent, PROFILE_SETTINGS);
+					Intent intent = new Intent(mActivity, SettingsActivity.class);
+					startActivity(intent);
 				}
 			});
 		} else {
-			mProfileSettings.setVisibility(View.GONE);
+			mSettings.setVisibility(View.GONE);
 		}
 	}
 
