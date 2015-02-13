@@ -67,16 +67,6 @@ public class AbstractItemModel<T> {
 		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.whoMadeId);
 	}
 
-	@Override
-	public String toString() {
-		return new Gson().toJson(this);
-	}
-
-	public JsonElement toJson() {
-		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractItemModelAdapter()).create().toJson(this);
-		return new Gson().fromJson(jsonStr, JsonElement.class);
-	}
-
 	public T rand() {
 		return this.rand(false);
 	}
@@ -94,6 +84,16 @@ public class AbstractItemModel<T> {
 		return (T)this;
 	}
 
+	@Override
+	public String toString() {
+		return new Gson().toJson(this);
+	}
+	
+	public JsonElement toJson() {
+		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractItemModelAdapter()).create().toJson(this);
+		return new Gson().fromJson(jsonStr, JsonElement.class);
+	}
+	
 	private class AbstractItemModelAdapter implements JsonSerializer<T> {
 
 		@Override

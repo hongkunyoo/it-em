@@ -250,7 +250,7 @@ public class UploadFragment extends ItFragment {
 			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(3);
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(),
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId(),
 						itemImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -260,7 +260,7 @@ public class UploadFragment extends ItFragment {
 				});
 
 				Bitmap itemPreviewImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
 						itemPreviewImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -270,7 +270,7 @@ public class UploadFragment extends ItFragment {
 				});
 
 				Bitmap itemThumbnailImageBitmap = ImageUtil.refineSquareImage(itemImagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
 						itemThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override

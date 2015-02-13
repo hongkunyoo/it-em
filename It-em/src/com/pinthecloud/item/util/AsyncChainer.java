@@ -1,6 +1,9 @@
 package com.pinthecloud.item.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -23,9 +26,7 @@ public class AsyncChainer {
 			mMapQueue.put(obj, new ArrayBlockingQueue<Chainable>(NUM_OF_QUEUE));
 			queue = mMapQueue.get(obj);
 		}
-		for(Chainable c : chains) {
-			queue.add(c);
-		}
+		queue.addAll(Arrays.asList(chains));
 		AsyncChainer.notifyNext(obj);
 	}
 

@@ -102,21 +102,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setImageHeight(item.getImageHeight());
 		this.setPrevLikeId(item.getPrevLikeId());
 	}
-
-
-	@Override
-	public Item rand() {
-		Item item = super.rand();
-		return item;
-	}
-
-
-	@Override
-	public Item rand(boolean hasId) {
-		Item item = super.rand(hasId);
-		return item;
-	}
-
+	
 
 	/*
 	 * Parcelable

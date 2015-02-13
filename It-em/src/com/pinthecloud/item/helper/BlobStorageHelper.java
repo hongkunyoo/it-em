@@ -26,8 +26,8 @@ public class BlobStorageHelper {
 
 	private static final String storageConnectionString = 
 			"DefaultEndpointsProtocol=http;AccountName=athere;AccountKey=ldhgydlWndSIl7XfiaAQ+sibsNtVZ1Psebba1RpBKxMbyFVYUCMvvuQir0Ty7f0+8TnNLfFKc9yFlYpP6ZSuQQ==";
-	public static final String USER_PROFILE = "item-user-profile";
-	public static final String ITEM_IMAGE = "item-image-container";
+	public static final String CONTAINER_USER_PROFILE = "item-user-profile";
+	public static final String CONTAINER_ITEM_IMAGE = "item-image-container";
 
 	private ItApplication mApp;
 	private CloudBlobClient blobClient;
@@ -55,28 +55,50 @@ public class BlobStorageHelper {
 		return "https://athere.blob.core.windows.net/" + uri + "/";
 	}
 	public static String getUserProfileHostUrl() {
-		return getHostUrl(USER_PROFILE);
+		return getHostUrl(CONTAINER_USER_PROFILE);
 	}
 	public static String getUserProfileImgUrl(String id) {
-		return getHostUrl(USER_PROFILE) + id;
+		return getHostUrl(CONTAINER_USER_PROFILE) + id;
 	}
 	public static String getItemImgHostUrl() {
-		return getHostUrl(ITEM_IMAGE);
+		return getHostUrl(CONTAINER_ITEM_IMAGE);
 	}
 	public static String getItemImgUrl(String id) {
-		return getHostUrl(ITEM_IMAGE)+id;
+		return getHostUrl(CONTAINER_ITEM_IMAGE)+id;
 	}
 
 
-	public String uploadBitmapSync(String containerName, String id, Bitmap bitmap) {
+	private boolean isExistSync(String containerName, String id) {
+		CloudBlobContainer container = null;
+		CloudBlockBlob blob = null;
+		boolean result = true;
+		try {
+			container = blobClient.getContainerReference(containerName);
+			blob = container.getBlockBlobReference(id);
+			result = blob.exists();
+		} catch (URISyntaxException e) {
+			EventBus.getDefault().post(new ItException("isExistSync", ItException.TYPE.INTERNAL_ERROR));
+		} catch (StorageException e) {
+			EventBus.getDefault().post(new ItException("isExistSync", ItException.TYPE.INTERNAL_ERROR));
+		}
+		return result;
+	}
+
+
+	private String uploadBitmapSync(String containerName, String id, Bitmap bitmap) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
 			container = blobClient.getContainerReference(containerName);
 			blob = container.getBlockBlobReference(id);
+
+			// Compress Bitmap
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+
+			// Add header for picasso
 			blob.getProperties().setCacheControl("only-if-cached, max-age=" + Integer.MAX_VALUE);
+
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
 			baos.close();
 		} catch (URISyntaxException e) {
@@ -90,7 +112,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public Bitmap downloadBitmapSync(String containerName, String id) {
+	private Bitmap downloadBitmapSync(String containerName, String id) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		Bitmap bm = null;
@@ -109,7 +131,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public String downloadToFileSync(Context context, String containerName, String id, String path) {
+	private String downloadToFileSync(Context context, String containerName, String id, String path) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
@@ -127,7 +149,7 @@ public class BlobStorageHelper {
 	}
 
 
-	public boolean deleteBitmapSync(String containerName, String id) {
+	private boolean deleteBitmapSync(String containerName, String id) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
@@ -143,6 +165,29 @@ public class BlobStorageHelper {
 	}
 
 
+	public void isExistAsync(final String containerName, String id, final EntityCallback<Boolean> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("isExistAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		(new AsyncTask<String, Void, Boolean>() {
+
+			@Override
+			protected Boolean doInBackground(String... params) {
+				String id = params[0];
+				return isExistSync(containerName, id);
+			}
+
+			@Override
+			protected void onPostExecute(Boolean result) {
+				super.onPostExecute(result);
+				callback.onCompleted(result);
+			}
+		}).execute(id);
+	}
+	
+	
 	public void uploadBitmapAsync(final String containerName, String id, final Bitmap bitmap, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.NETWORK_UNAVAILABLE));

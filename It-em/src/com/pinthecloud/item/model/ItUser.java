@@ -17,24 +17,13 @@ public class ItUser implements Parcelable {
 	}
 	
 	public static enum TYPE {
-		VIEWER("VIEWER"),
-		SELLER("SELLER"),
-		PRO("PRO");
-
-		private final String value;
-
-		private TYPE(final String value) {
-			this.value = value;
-		}
-		@Override
-		public String toString() {
-			return this.value;
-		}
+		VIEWER,
+		SELLER,
+		PRO
 	}
 
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
-	
 	@com.google.gson.annotations.SerializedName("itUserId")
 	private String itUserId;
 	@com.google.gson.annotations.SerializedName("platform")
@@ -43,34 +32,30 @@ public class ItUser implements Parcelable {
 	private String nickName;
 	@com.google.gson.annotations.SerializedName("type")
 	private String type;
-	@com.google.gson.annotations.SerializedName("registrationId")
-	private String registrationId;
-	@com.google.gson.annotations.SerializedName("mobileId")
-	private String mobileId;
-	
 	@com.google.gson.annotations.SerializedName("password")
-	private String password = "";
+	private String password;
 	@com.google.gson.annotations.SerializedName("selfIntro")
-	private String selfIntro = "";
+	private String selfIntro;
 	@com.google.gson.annotations.SerializedName("webPage")
-	private String webPage = "";
+	private String webPage;
 	@com.google.gson.annotations.SerializedName("email")
-	private String email = "";
+	private String email;
 
 	public ItUser() {
 		super();
 	}
 
-	public ItUser(String itUserId, PLATFORM platform, String nickName, TYPE type, String registrationId, String mobileId) {
+	public ItUser(String itUserId, PLATFORM platform, String nickName, TYPE type) {
 		super();
 		this.itUserId = itUserId;
 		this.platform = platform.toString();
 		this.nickName = nickName;
 		this.type = type.toString();
-		this.registrationId = registrationId;
-		this.mobileId = mobileId;
+		this.password = "";
+		this.selfIntro = "";
+		this.webPage = "";
+		this.email = "";
 	}
-
 
 	public String getId() {
 		return id;
@@ -129,18 +114,6 @@ public class ItUser implements Parcelable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getRegistrationId() {
-		return registrationId;
-	}
-	public void setRegistrationId(String registrationId) {
-		this.registrationId = registrationId;
-	}
-	public String getMobileId() {
-		return mobileId;
-	}
-	public void setMobileId(String mobileId) {
-		this.mobileId = mobileId;
-	}
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
@@ -151,32 +124,26 @@ public class ItUser implements Parcelable {
 		this.setWebPage(itUser.getWebPage());
 		this.setType(itUser.getType());
 		this.setPassword(itUser.getPassword());
-		this.setRegistrationId(itUser.getRegistrationId());
-		this.setMobileId(itUser.getMobileId());
 	}
 
+	public boolean isLoggedIn() {
+		return (this.itUserId != null && !this.itUserId.equals(PrefHelper.DEFAULT_STRING)); 
+	}
+
+	public boolean isMe(){
+		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getItUserId().equals(this.itUserId);
+	}
+
+	public boolean isPro(){
+		return TYPE.PRO.toString().equals(this.type);
+	}
 
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);
 	}
 
-
-	public boolean isLoggedIn() {
-		return (this.id != null && !this.id.equals(PrefHelper.DEFAULT_STRING)); 
-	}
-
-
-	public boolean isMe(){
-		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.id);
-	}
-
-
-	public boolean isPro(){
-		return TYPE.PRO.toString().equals(this.type);
-	}
-
-
+	
 	/*
 	 * Parcelable
 	 */

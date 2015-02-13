@@ -339,7 +339,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mMyItUser.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -348,7 +348,7 @@ public class ProfileSettingsFragment extends ItFragment {
 					}
 				});
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
 						profileThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override

@@ -3,13 +3,14 @@ package com.pinthecloud.item.helper;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.http.HttpStatus;
-
 import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
@@ -20,11 +21,14 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
+import com.pinthecloud.item.model.DeviceInfo;
 import com.pinthecloud.item.model.ItUser;
 
 import de.greenrobot.event.EventBus;
 
 public class UserHelper {
+	
+	private final String SIGNIN = "signin";
 	
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
@@ -44,7 +48,37 @@ public class UserHelper {
 	}
 
 
-	public void add(ItUser user, final PairEntityCallback<ItUser, Exception> callback) {
+	public void signin(final ItUser user, DeviceInfo deviceInfo, final PairEntityCallback<ItUser, DeviceInfo> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("signin", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		JsonObject jo = new JsonObject();
+		jo.addProperty("user", user.toString());
+		jo.addProperty("deviceInfo", deviceInfo.toString());
+		
+		mClient.invokeApi(SIGNIN, jo, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					JsonObject json = _json.getAsJsonObject();
+
+					ItUser user = new Gson().fromJson(json.get("user"), ItUser.class);
+					DeviceInfo deviceInfo = new Gson().fromJson(json.get("deviceInfo"), DeviceInfo.class);
+
+					callback.onCompleted(user, deviceInfo);
+				} else {
+					EventBus.getDefault().post(new ItException("signin", ItException.TYPE.INTERNAL_ERROR, response));
+				}
+			}
+		});
+	}
+	
+	
+	public void add(ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("add", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -56,10 +90,7 @@ public class UserHelper {
 			public void onCompleted(ItUser entity, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(entity, exception);
-				} else if(response.getStatus().getStatusCode() == HttpStatus.SC_FORBIDDEN) {	// Duplicate user
-					ItUser itUser = (ItUser) new Gson().fromJson(response.getContent(), ItUser.class);
-					callback.onCompleted(itUser, exception);
+					callback.onCompleted(entity);
 				} else {
 					EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNAL_ERROR, exception));
 				}

@@ -7,12 +7,6 @@
         <item>프로 되기</item>
         <item>설정</item>
     </string-array>
-
-    <!-- Main -->
-    <string-array name="main_tab_title_array">
-        <item>홈</item>
-        <item>내 페이지</item>
-    </string-array>
     
     <!-- Reply -->
     <string-array name="home_more_array">

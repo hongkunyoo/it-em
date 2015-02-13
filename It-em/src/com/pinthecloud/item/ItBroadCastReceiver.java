@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
-import com.pinthecloud.item.event.GcmRegIdEvent;
+import com.pinthecloud.item.event.GcmRegistrationIdEvent;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
-import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.model.DeviceInfo;
 
 import de.greenrobot.event.EventBus;
 
@@ -17,18 +17,17 @@ public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		String regId = intent.getExtras().getString("registration_id");
-		if(regId != null && !regId.equals("")) {
+		String registrationId = intent.getExtras().getString("registration_id");
+		if(registrationId != null && !registrationId.equals("")) {
+			// Get registration id
 			ObjectPrefHelper objectPrefHelper = ItApplication.getInstance().getObjectPrefHelper();
-			ItUser user = objectPrefHelper.get(ItUser.class);
-			if(user.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)){
-				user.setRegistrationId(regId);
-				objectPrefHelper.put(user);
-				
-				// After get id, goto SplashFragment.OnEvent()
-				EventBus.getDefault().post(new GcmRegIdEvent());
+			DeviceInfo deviceInfo = objectPrefHelper.get(DeviceInfo.class);
+			
+			if(deviceInfo.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)){
+				// After get id, goto SplashActivity.OnEvent()
+				EventBus.getDefault().post(new GcmRegistrationIdEvent(registrationId));
 			} else {
-				// Got registration id in UserHelper getRegisterationId
+				// Got registration id in UserHelper getRegisterationId()
 			}
 		} else {
 			// Explicitly specify that GcmIntentService will handle the intent.

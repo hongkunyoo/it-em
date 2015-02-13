@@ -52,8 +52,8 @@ public class AimHelper {
 		this.mClient = app.getMobileClient();
 		this.mBlobStorageHelper = app.getBlobStorageHelper();
 	}
-	
-	
+
+
 	public void setMobileClient(MobileServiceClient client) {
 		this.mClient = client;
 	}
@@ -215,7 +215,6 @@ public class AimHelper {
 
 			mClient.invokeApi(AIM_LIST_RECENT, jo, new ApiJsonOperationCallback() {
 
-				@SuppressWarnings("unchecked")
 				@Override
 				public void onCompleted(JsonElement _json, Exception exception,
 						ServiceFilterResponse response) {
@@ -223,12 +222,8 @@ public class AimHelper {
 						JsonObject json = _json.getAsJsonObject();
 
 						String count = json.get("count").getAsString();
-						JsonArray jsonList = json.get("list").getAsJsonArray();
-
-						List<E> list = new ArrayList<E>();
-						for (int i = 0 ; i < jsonList.size() ; i++) {
-							list.add((E)new Gson().fromJson(jsonList.get(i), obj.getClass()));
-						}
+						JsonElement jsonList = json.get("list").getAsJsonArray();
+						List<E> list = new Gson().fromJson(jsonList, new TypeToken<List<E>>(){}.getType());
 
 						callback.onCompleted(list, Integer.parseInt(count));
 					} else {
@@ -346,7 +341,7 @@ public class AimHelper {
 					}
 				});
 
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -354,7 +349,7 @@ public class AimHelper {
 					}
 				});
 
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -362,7 +357,7 @@ public class AimHelper {
 					}
 				});
 
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
+				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

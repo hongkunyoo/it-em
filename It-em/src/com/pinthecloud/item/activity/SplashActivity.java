@@ -23,11 +23,12 @@ import com.pinthecloud.item.ItIntentService;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.event.GcmRegIdEvent;
+import com.pinthecloud.item.event.GcmRegistrationIdEvent;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.AppVersion;
+import com.pinthecloud.item.model.DeviceInfo;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -69,45 +70,91 @@ public class SplashActivity extends ItActivity {
 
 
 	private void runItem() {
-		if (mApp.isAdmin()){
-			Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_SHORT).show();
-		}
+		if (mApp.isAdmin()) Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_SHORT).show();
 
+		// Remove noti
 		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
 
+		// Check google play service
+		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mThisActivity) != ConnectionResult.SUCCESS) {
+			installGooglePlayService();
+			return;
+		}
+
+		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
+
+			@Override
+			public void doNext(Object obj, Object... params) {
+				checkUpdate(obj);
+			}
+		}, new Chainable() {
+
+			@Override
+			public void doNext(Object obj, Object... params) {
+				checkDeviceInfo();
+			}
+		});
+	}
+
+
+	private void installGooglePlayService(){
+		String message = getResources().getString(R.string.google_play_services_message);
+		ItAlertDialog gcmDialog = ItAlertDialog.newInstance(message, null, null, true);
+		gcmDialog.setCallback(new DialogCallback() {
+
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_SERVICE_APP_ID));
+				startActivity(intent);
+				finish();
+			}
+
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+				finish();
+			}
+		});
+		gcmDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+	}
+
+
+	private void checkUpdate(final Object obj){
 		mVersionHelper.getServerAppVersionAsync(new EntityCallback<AppVersion>() {
 
 			@Override
 			public void onCompleted(AppVersion serverVer) {
 				double clientVer = mVersionHelper.getClientAppVersion();
 				if (serverVer.getVersion() > clientVer) {
-					updateApp(serverVer);
+					updateApp(obj, serverVer);
 				} else {
-					goToNextActivity();
+					AsyncChainer.notifyNext(obj);
 				}
 			}
 		});
 	}
 
 
-	private void updateApp(final AppVersion serverVer){
+	private void updateApp(final Object obj, final AppVersion serverVer){
 		String message = getResources().getString(R.string.update_app_message);
 		ItAlertDialog updateDialog = ItAlertDialog.newInstance(message, null, null, true);
-
 		updateDialog.setCallback(new DialogCallback() {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_APP_ID));
 				startActivity(intent);
+
+				AsyncChainer.clearChain(obj);
+				finish();
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
 				if (serverVer.getType().equals(AppVersion.TYPE.MANDATORY.toString())){
+					AsyncChainer.clearChain(obj);
 					finish();
 				} else {
-					goToNextActivity();
+					AsyncChainer.notifyNext(obj);
 				}
 			}
 		});
@@ -116,12 +163,6 @@ public class SplashActivity extends ItActivity {
 
 
 	private void goToNextActivity() {
-		// If registration id doesn't exist, get it
-		if(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY).equals(PrefHelper.DEFAULT_STRING)) {
-			getRegistrationId();
-			return;
-		}
-
 		ItUser user = mObjectPrefHelper.get(ItUser.class);
 		Intent intent = new Intent();
 		if (!user.isLoggedIn()){
@@ -135,90 +176,59 @@ public class SplashActivity extends ItActivity {
 	}
 
 
-	private void getRegistrationId() {
-		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mThisActivity) == ConnectionResult.SUCCESS) {
-			// Get registration id
-			mProgressLayout.setVisibility(View.VISIBLE);
-			mUserHelper.getRegistrationIdAsync(mThisActivity, new EntityCallback<String>() {
+	private void checkDeviceInfo(){
+		// If mobile id doesn't exist, get it
+		DeviceInfo deviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
+		if(deviceInfo.getMobileId().equals(PrefHelper.DEFAULT_STRING)) {
+			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
+			deviceInfo.setMobileId(mobileId);
+			mObjectPrefHelper.put(deviceInfo);
 
-				@Override
-				public void onCompleted(String entity) {
-					if(entity != null){
-						ItUser user = mObjectPrefHelper.get(ItUser.class);
-						user.setRegistrationId(entity);
-						mObjectPrefHelper.put(user);
-
-						onEvent(new GcmRegIdEvent());
-					} else {
-						// Get registration id in ItBroadCastReceiver.class
-						// After get id, goto OnEvent()
-					}
-				}
-			});
-		} else {
-			// Show dialog user to Install google play service
-			String message = getResources().getString(R.string.google_play_services_message);
-			ItAlertDialog gcmDialog = ItAlertDialog.newInstance(message, null, null, true);
-			gcmDialog.setCallback(new DialogCallback() {
-
-				@Override
-				public void doPositiveThing(Bundle bundle) {
-					Intent intent = new Intent(Intent.ACTION_VIEW,
-							Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_SERVICE_APP_ID));
-					startActivity(intent);
-					finish();
-				}
-
-				@Override
-				public void doNegativeThing(Bundle bundle) {
-					finish();
-				}
-			});
-			gcmDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
-		}
-	}
-
-
-	public void onEvent(GcmRegIdEvent event){
-		// Get mobile id
-		final ItUser user = mObjectPrefHelper.get(ItUser.class);
-		String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
-		user.setMobileId(mobileId);
-
-		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
-
-			@Override
-			public void doNext(Object obj, Object... params) {
-				if(user.isLoggedIn()){
-					// For under ver 107
-					updateUser(obj, user);
-				} else {
-					AsyncChainer.notifyNext(obj);
-				}
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(Object obj, Object... params) {
-				mProgressLayout.setVisibility(View.GONE);
-
+			// For under ver 107
+			ItUser user = mObjectPrefHelper.get(ItUser.class);
+			if(user.isLoggedIn()){
+				user.setItUserId(PrefHelper.DEFAULT_STRING);
 				mObjectPrefHelper.put(user);
-				mPrefHelper.put(ItConstant.REGISTRATION_ID_KEY, user.getRegistrationId());
-				mPrefHelper.put(ItConstant.MOBILE_ID_KEY, user.getMobileId());
-				goToNextActivity();
+			}
+		}
+
+		// If registration id doesn't exist, get it
+		deviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
+		if(deviceInfo.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
+			setRegistrationId();
+			return;
+		}
+		
+		goToNextActivity();
+	}
+
+
+	private void setRegistrationId() {
+		// Get registration id
+		mProgressLayout.setVisibility(View.VISIBLE);
+		mUserHelper.getRegistrationIdAsync(mThisActivity, new EntityCallback<String>() {
+
+			@Override
+			public void onCompleted(String entity) {
+				if(entity != null){
+					onEvent(new GcmRegistrationIdEvent(entity));
+				} else {
+					// Get registration id in ItBroadCastReceiver.class
+					// After get id, goto OnEvent()
+				}
 			}
 		});
 	}
 
 
-	private void updateUser(final Object obj, final ItUser itUser) {
-		mUserHelper.update(itUser, new EntityCallback<ItUser>() {
+	public void onEvent(GcmRegistrationIdEvent event){
+		mProgressLayout.setVisibility(View.GONE);
 
-			@Override
-			public void onCompleted(ItUser entity) {
-				AsyncChainer.notifyNext(obj);
-			}
-		});
+		DeviceInfo deviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
+		deviceInfo.setRegistrationId(event.getRegistrationId());
+		mObjectPrefHelper.put(deviceInfo);
+
+		checkDeviceInfo();
 	}
 
 

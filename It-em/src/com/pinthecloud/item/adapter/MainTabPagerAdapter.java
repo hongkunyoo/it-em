@@ -11,20 +11,19 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HomeFragment;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.ItUserPageFragment;
+import com.pinthecloud.item.fragment.NotiFragment;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
 
 public class MainTabPagerAdapter extends FragmentStatePagerAdapter implements IconTabProvider {
 
 	private ItApplication mApp;
-	private String[] mTitles;
-	private int[] mTitleIcons = {R.drawable.launcher, R.drawable.launcher};
+	private int[] mTitleIcons = {R.drawable.launcher, R.drawable.launcher, R.drawable.launcher};
 
 
 	public MainTabPagerAdapter(FragmentManager fm, Context context) {
 		super(fm);
 		this.mApp = ItApplication.getInstance();
-		this.mTitles = context.getResources().getStringArray(R.array.main_tab_title_array);
 	}
 
 
@@ -33,12 +32,6 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter implements Ic
 		return mTitleIcons[position];
 	}
 
-
-	@Override
-	public CharSequence getPageTitle(int position) {
-		return this.mTitles[position];
-	}
-	
 	
 	@Override
 	public Fragment getItem(int position) {
@@ -48,6 +41,9 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter implements Ic
 			fragment = new HomeFragment();
 			break;
 		case 1:
+			fragment = new NotiFragment();
+			break;
+		case 2:
 			ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 			fragment = ItUserPageFragment.newInstance(myItUser.getId());
 			break;
@@ -58,7 +54,7 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter implements Ic
 
 	@Override
 	public int getCount() {
-		return this.mTitles.length;
+		return mTitleIcons.length;
 	}
 	
 	

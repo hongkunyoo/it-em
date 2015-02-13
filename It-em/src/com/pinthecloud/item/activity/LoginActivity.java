@@ -22,14 +22,15 @@ import com.kakao.SessionCallback;
 import com.kakao.UserManagement;
 import com.kakao.UserProfile;
 import com.kakao.exception.KakaoException;
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
+import com.pinthecloud.item.model.DeviceInfo;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 
@@ -49,7 +50,7 @@ public class LoginActivity extends ItActivity {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		setContentView(R.layout.activity_login);
-		
+
 		// Facebook
 		mFacebookUiHelper = new UiLifecycleHelper(mThisActivity, new StatusCallback() {
 
@@ -58,7 +59,7 @@ public class LoginActivity extends ItActivity {
 			}
 		});
 		mFacebookUiHelper.onCreate(savedInstanceState);
-		
+
 		// Kakao
 		mKakaoSessionCallback = new SessionCallback() {
 
@@ -70,7 +71,7 @@ public class LoginActivity extends ItActivity {
 				mKakaoButton.setVisibility(View.VISIBLE);
 			}
 		};
-		
+
 		// Set Activity
 		findComponent();
 		setButton();
@@ -166,12 +167,7 @@ public class LoginActivity extends ItActivity {
 
 
 	private void facebookLogin(com.facebook.Session session, final GraphUser user){
-		ItUser myUser = mObjectPrefHelper.get(ItUser.class);
-		myUser.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
-		myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
-
-		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, user.getFirstName().replace(" ", "_"),
-				ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
+		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, user.getFirstName().replace(" ", "_"), ItUser.TYPE.VIEWER);
 		itemLogin(itUser, "https://graph.facebook.com/"+itUser.getItUserId()+"/picture?type=large");
 	}
 
@@ -181,12 +177,7 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			protected void onSuccess(final UserProfile userProfile) {
-				ItUser myUser = mObjectPrefHelper.get(ItUser.class);
-				myUser.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
-				myUser.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
-
-				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname().replace(" ", "_"),
-						ItUser.TYPE.VIEWER, myUser.getRegistrationId(), myUser.getMobileId());
+				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname().replace(" ", "_"), ItUser.TYPE.VIEWER);
 				itemLogin(itUser, userProfile.getProfileImagePath());
 			}
 
@@ -214,62 +205,47 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			public void doNext(Object object, Object... params) {
-				addItUser(object, itUser);
+				DeviceInfo myDeviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
+				DeviceInfo deviceInfo = new DeviceInfo(itUser.getItUserId(), myDeviceInfo.getMobileId(), myDeviceInfo.getRegistrationId());
+				signin(object, itUser, deviceInfo);
 			}
 		}, new Chainable(){
 
 			@Override
 			public void doNext(Object obj, Object... params) {
-				getProfileImageFromService(obj, imageUrl);
-			}
-		}, new Chainable(){
+				mBlobStorageHelper.isExistAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, itUser.getId(), new EntityCallback<Boolean>() {
 
-			@Override
-			public void doNext(Object obj, Object... params) {
-				uploadProfileImage(obj, itUser, (Bitmap)params[0]);
-			}
-		});
-	}
-
-
-	private void addItUser(final Object obj, final ItUser itUser){
-		mUserHelper.add(itUser, new PairEntityCallback<ItUser, Exception>() {
-
-			@Override
-			public void onCompleted(ItUser entity, Exception exception) {
-				mObjectPrefHelper.put(entity);
-
-				// If a new user, add it and get profile image.
-				// Otherwise, go to next activity.
-				if(exception == null) {
-					itUser.setId(entity.getId());
-					AsyncChainer.notifyNext(obj);
-				} else {
-					if(entity.getRegistrationId() == null){
-						// For under ver 107
-						entity.setRegistrationId(mPrefHelper.getString(ItConstant.REGISTRATION_ID_KEY));
-						entity.setMobileId(mPrefHelper.getString(ItConstant.MOBILE_ID_KEY));
-						mObjectPrefHelper.put(entity);
-
-						mUserHelper.update(entity, new EntityCallback<ItUser>() {
-
-							@Override
-							public void onCompleted(ItUser entity) {
-								goToNextActivity();
-								AsyncChainer.clearChain(obj);
-							}
-						});
-					} else {
-						goToNextActivity();
-						AsyncChainer.clearChain(obj);	
+					@Override
+					public void onCompleted(Boolean entity) {
+						ItLog.log(entity);
+						if(entity){
+							goToNextActivity();
+						} else {
+							getProfileImageFromService(imageUrl, itUser);
+						}
 					}
-				}
+				});
 			}
 		});
 	}
 
 
-	private void getProfileImageFromService(final Object obj, final String url){
+	private void signin(final Object obj, final ItUser itUser, DeviceInfo deviceInfo){
+		mUserHelper.signin(itUser, deviceInfo, new PairEntityCallback<ItUser, DeviceInfo>() {
+
+			@Override
+			public void onCompleted(ItUser user, DeviceInfo deviceInfo) {
+				mObjectPrefHelper.put(user);
+				mObjectPrefHelper.put(deviceInfo);
+
+				itUser.setId(user.getId());
+				AsyncChainer.notifyNext(obj);
+			}
+		});
+	}
+
+
+	private void getProfileImageFromService(final String url, final ItUser itUser){
 		(new AsyncTask<Void,Void,Bitmap>(){
 
 			@Override
@@ -287,13 +263,13 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			protected void onPostExecute(Bitmap result) {
-				AsyncChainer.notifyNext(obj, (Object)result);
+				uploadProfileImage(itUser, result);
 			};
 		}).execute();
 	}
 
 
-	private void uploadProfileImage(Object obj, final ItUser itUser, final Bitmap profileImage){
+	private void uploadProfileImage(final ItUser itUser, final Bitmap profileImage){
 		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
 
 			@Override
@@ -301,7 +277,7 @@ public class LoginActivity extends ItActivity {
 				AsyncChainer.waitChain(2);
 
 				Bitmap profileImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_IMAGE_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, itUser.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -311,7 +287,7 @@ public class LoginActivity extends ItActivity {
 				});
 
 				Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.USER_PROFILE, itUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, itUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
 						profileThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override
