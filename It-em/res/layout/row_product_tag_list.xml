@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/product_tag_row_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:paddingEnd="@dimen/key_line_first"
     android:paddingLeft="@dimen/key_line_first"
     android:paddingRight="@dimen/key_line_first"
@@ -10,9 +12,11 @@
 
     <com.pinthecloud.item.view.ItTextView
         android:id="@+id/row_product_tag_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/key_line_first"
+        android:layout_marginRight="@dimen/key_line_first"
+        android:layout_weight="1"
         android:textColor="@color/brand_text_color"
         app:textType="subhead" />
 
@@ -20,13 +24,10 @@
         android:id="@+id/row_product_tag_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:background="@drawable/product_tag_price_button"
         android:minHeight="@dimen/none"
         android:minWidth="@dimen/none"
         android:textColor="@android:color/white"
         android:textSize="@dimen/font_micro" />
 
-</RelativeLayout>
+</LinearLayout>

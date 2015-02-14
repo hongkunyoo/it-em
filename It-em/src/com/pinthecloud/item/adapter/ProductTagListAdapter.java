@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +20,12 @@ import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.model.ProductTag;
 
-public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAdapter.ViewHolder> {
+public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+	private enum VIEW_TYPE{
+		HEADER,
+		NORMAL
+	}
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
@@ -35,12 +41,24 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAd
 	}
 
 
-	public static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+		public View view;
+		public TextView category;
+
+		public HeaderViewHolder(View view) {
+			super(view);
+			this.view = view;
+			this.category = (TextView)view.findViewById(R.id.row_product_tag_list_header_category);
+		}
+	}
+
+
+	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public TextView name;
 		public Button price;
 
-		public ViewHolder(View view) {
+		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
 			this.name = (TextView)view.findViewById(R.id.row_product_tag_name);
@@ -50,16 +68,34 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAd
 
 
 	@Override
-	public ProductTagListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_product_tag_list, parent, false);
-		return new ViewHolder(view);
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = null;
+		ViewHolder viewHolder = null;
+		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+		if(viewType == VIEW_TYPE.HEADER.ordinal()){
+			view = inflater.inflate(R.layout.row_product_tag_list_header, parent, false);
+			viewHolder = new HeaderViewHolder(view);
+		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
+			view = inflater.inflate(R.layout.row_product_tag_list, parent, false);
+			viewHolder = new NormalViewHolder(view);
+		} 
+
+		return viewHolder;
 	}
 
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		ProductTag tag = mTagList.get(position);
-		setComponent(holder, tag);
+		int viewType = getItemViewType(position);
+		if(viewType == VIEW_TYPE.HEADER.ordinal()){
+			HeaderViewHolder headerViewHolder = (HeaderViewHolder)holder;
+			headerViewHolder.category.setText(tag.categoryString(mActivity));
+		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
+			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;
+			setNormalComponent(normalViewHolder, tag);
+		}
 	}
 
 
@@ -69,7 +105,18 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<ProductTagListAd
 	}
 
 
-	private void setComponent(ViewHolder holder, final ProductTag tag){
+	@Override
+	public int getItemViewType(int position) {
+		ProductTag tag = mTagList.get(position);
+		if (tag.getShopName() == null) {
+			return VIEW_TYPE.HEADER.ordinal();
+		} else{
+			return VIEW_TYPE.NORMAL.ordinal();
+		}
+	}
+
+
+	private void setNormalComponent(NormalViewHolder holder, final ProductTag tag){
 		holder.name.setText(tag.getShopName());
 		double price = tag.getPrice();
 		if((price*100)%100 > 0){

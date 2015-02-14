@@ -19,6 +19,10 @@ public class ProductTag extends AbstractItemModel<ProductTag> implements Parcela
 	public ProductTag() {
 		super();
 	}
+	public ProductTag(int category) {
+		super();
+		this.category = category;
+	}
 
 	public int getCategory() {
 		return category;

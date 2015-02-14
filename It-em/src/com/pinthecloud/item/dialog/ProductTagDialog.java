@@ -1,8 +1,12 @@
 package com.pinthecloud.item.dialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,6 +33,7 @@ public class ProductTagDialog extends ItDialogFragment {
 	private RecyclerView mListView;
 	private ProductTagListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
+	private List<ProductTag> mOriginTagList;
 	private List<ProductTag> mTagList;
 	private Item mItem;
 
@@ -46,10 +52,7 @@ public class ProductTagDialog extends ItDialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mItem = getArguments().getParcelable(Item.INTENT_KEY);
-		mTagList = getArguments().getParcelableArrayList(ProductTag.INTENT_KEY);
-		if(mTagList == null){
-			mTagList = new ArrayList<ProductTag>();
-		}
+		mOriginTagList = getArguments().getParcelableArrayList(ProductTag.INTENT_KEY);
 	}
 
 
@@ -61,10 +64,10 @@ public class ProductTagDialog extends ItDialogFragment {
 		findComponent(view);
 		setList();
 
-		if(mTagList.size() < 1){
-			updateList();
-		} else {
+		if(mTagList.size() > 0){
 			setTitle();
+		} else {
+			updateList();
 		}
 
 		return view;
@@ -85,10 +88,30 @@ public class ProductTagDialog extends ItDialogFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
+		if(mOriginTagList != null){
+			mTagList = getProductTagList(mOriginTagList);
+		} else {
+			mTagList = new ArrayList<ProductTag>();
+		}
+		
 		mListAdapter = new ProductTagListAdapter(mActivity, mThisFragment, mTagList);
 		mListView.setAdapter(mListAdapter);
 
-		ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
+		mListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				} else {
+					mListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+				
+				ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
+			}
+		});
 	}
 
 
@@ -105,16 +128,40 @@ public class ProductTagDialog extends ItDialogFragment {
 					mListView.setVisibility(View.VISIBLE);
 
 					mTagList.clear();
-					mListAdapter.addAll(list);
+					mListAdapter.addAll(getProductTagList(list));
 
-					ViewUtil.setListHeightBasedOnChildren(mListView, count);
+					ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
 					setTitle();
 				}
 			}
 		});
 	}
-	
-	
+
+
+	private List<ProductTag> getProductTagList(List<ProductTag> originTagList){
+		List<ProductTag> tagList = new ArrayList<ProductTag>();
+		tagList.addAll(originTagList);
+		
+		Collections.sort(tagList, new Comparator<ProductTag>(){
+
+			@Override
+			public int compare(ProductTag lhs, ProductTag rhs) {
+				return lhs.getCategory() > rhs.getCategory() ? 1 : 
+					lhs.getCategory() == rhs.getCategory() ? 0 : -1;
+			}
+		});
+		
+		tagList.add(0, new ProductTag(tagList.get(0).getCategory()));
+		for(int i=1 ; i<tagList.size()-1 ; i++){
+			if(tagList.get(i).getCategory() != tagList.get(i+1).getCategory()){
+				tagList.add(i+1, new ProductTag(tagList.get(i+1).getCategory()));
+				i++;
+			}
+		}
+		return tagList;
+	}
+
+
 	private void setTitle(){
 		mTitle.setText(getResources().getString(R.string.product_tag));
 	}

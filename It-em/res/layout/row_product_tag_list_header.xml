@@ -2,12 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/product_tag_row_height"
+    android:gravity="center_vertical"
     android:orientation="vertical"
-    android:padding="@dimen/key_line_first" >
+    android:paddingEnd="@dimen/key_line_first"
+    android:paddingLeft="@dimen/key_line_first"
+    android:paddingRight="@dimen/key_line_first"
+    android:paddingStart="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.ItTextView
-        android:id="@+id/row_category_content"
+        android:id="@+id/row_product_tag_list_header_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:textType="subhead" />

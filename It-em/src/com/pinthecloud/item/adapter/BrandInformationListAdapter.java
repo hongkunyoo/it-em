@@ -70,7 +70,6 @@ public class BrandInformationListAdapter extends RecyclerView.Adapter<BrandInfor
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				String text = s.toString();
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,

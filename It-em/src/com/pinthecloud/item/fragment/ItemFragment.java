@@ -1,9 +1,7 @@
 package com.pinthecloud.item.fragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -521,22 +519,16 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void addProductTagCategoryText(List<ProductTag> list){
+	private String getProductTagCategoryText(List<ProductTag> list){
 		String categoryString = "";
-		Map<String, ArrayList<ProductTag>> tagList = new HashMap<String, ArrayList<ProductTag>>();
-		
+		List<ProductTag> tagList = new ArrayList<ProductTag>();
 		for(final ProductTag tag : list){
-			if(tagList.containsKey(""+tag.getCategory())){
-				tagList.get(""+tag.getCategory()).add(tag);
-				continue;
-			} else {
-				tagList.put(""+tag.getCategory(), new ArrayList<ProductTag>());
-				tagList.get(""+tag.getCategory()).add(tag);
+			if(!tagList.contains(tag)){
+				tagList.add(tag);
+				categoryString = categoryString + (tagList.size()==1 ? "" : ", ") + tag.categoryString(mActivity);
 			}
-			categoryString = categoryString + (tagList.size()==1 ? "" : ", ") + tag.categoryString(mActivity);
 		}
-		
-		mProductTagText.setText(categoryString);
+		return categoryString;
 	}
 
 
@@ -544,12 +536,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		if(mItem.getProductTagList().size() > 0){
 			mProductTagEmptyView.setVisibility(View.GONE);
 			mProductTagTextLayout.setVisibility(View.VISIBLE);
-
-			mProductTagText.setText(getResources().getString(R.string.get_product_label));
-			addProductTagCategoryText(mItem.getProductTagList());
+			
+			mProductTagLayout.setEnabled(true);
+			mProductTagText.setText(getProductTagCategoryText(mItem.getProductTagList()));
 		} else {
 			mProductTagEmptyView.setVisibility(View.VISIBLE);
 			mProductTagTextLayout.setVisibility(View.GONE);
+			
+			mProductTagLayout.setEnabled(false);
+			mProductTagText.setText("");
 		}
 	}
 
