@@ -168,7 +168,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 			holder.more.setOnClickListener(null);
 		}
 
-		holder.view.setOnClickListener(new OnClickListener() {
+		holder.itemImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -181,6 +181,19 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 			}
 		});
 
+		holder.content.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mApp.getGaHelper().sendEventGA(
+						mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
+
+				Intent intent = new Intent(mActivity, ItemActivity.class);
+				intent.putExtra(Item.INTENT_KEY, item);
+				mActivity.startActivity(intent);
+			}
+		});
+		
 		holder.itButton.setActivated(item.getPrevLikeId() != null);
 		holder.itButton.setOnClickListener(new OnClickListener() {
 

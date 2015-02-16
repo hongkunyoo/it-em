@@ -11,7 +11,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HomeFragment;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.ItUserPageFragment;
-import com.pinthecloud.item.fragment.NotificationFragment;
+import com.pinthecloud.item.fragment.NotiFragment;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
 
@@ -41,7 +41,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 			fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new NotificationFragment();
+			fragment = new NotiFragment();
 			break;
 		case 2:
 			ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);

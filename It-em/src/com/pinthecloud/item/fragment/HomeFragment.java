@@ -99,7 +99,7 @@ public class HomeFragment extends ItFragment {
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mLayout = view.findViewById(R.id.home_frag_layout);
-		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_item_list_refresh);
+		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_refresh);
 		mUploadLayout = view.findViewById(R.id.home_frag_upload_layout);
 		mUploadButton = (ImageButton)view.findViewById(R.id.home_frag_upload_button);
 		mGridView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);

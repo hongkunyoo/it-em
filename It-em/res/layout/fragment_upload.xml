@@ -60,11 +60,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/brand_information"
+                android:text="@string/brand_info"
                 app:textType="subhead" />
 
             <Button
-                android:id="@+id/upload_frag_brand_information_add"
+                android:id="@+id/upload_frag_brand_info_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -73,7 +73,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/upload_frag_brand_information_list"
+            android:id="@+id/upload_frag_brand_info_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none" />

@@ -23,7 +23,6 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public Item() {
 		super();
 	}
-
 	public Item(String content, String whoMade, String whoMadeId, int imageWidth, int imageHeight) {
 		super();
 		this.setContent(content);
@@ -33,9 +32,11 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setImageHeight(imageHeight);
 	}
 
+	@Override
 	public String getRefId() {
 		return null;
 	}
+	@Override
 	public void setRefId(String refId) {
 	}
 	public int getReplyCount() {

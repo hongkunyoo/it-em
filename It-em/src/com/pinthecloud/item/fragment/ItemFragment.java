@@ -48,6 +48,7 @@ import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.TextUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
@@ -179,12 +180,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				mReplyListAdapter.remove(reply);
-				mItem.setReplyCount(mItem.getReplyCount()-1);
+				if(isAdded()){
+					mReplyListAdapter.remove(reply);
+					mItem.setReplyCount(mItem.getReplyCount()-1);
 
-				setReplyTitle(mItem.getReplyCount());
-				ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-				showReplyEmptyView(mItem.getReplyCount());
+					setReplyTitle(mItem.getReplyCount());
+					ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
+					showReplyEmptyView(mItem.getReplyCount());
+				}
 			}
 		});
 	}
@@ -309,7 +312,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				Reply reply = new Reply(mReplyInputText.getText().toString().trim(), mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+				String content = mReplyInputText.getText().toString().trim();
+				Reply reply = new Reply(content, mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
 				mReplyInputText.setText("");
 				submitReply(reply);
 			}
@@ -419,9 +423,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		});
 	}
 
-
+	
 	private void setItemComponent(Item item){
-		mContent.setText(item.getContent());
+		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
 		mNickName.setText(item.getWhoMade());
 		mDate.setText(item.getCreateDateTime().getElapsedDateTime(getResources()));
 		setItNumber(item.getLikeItCount());
@@ -521,11 +525,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private String getProductTagCategoryText(List<ProductTag> list){
 		String categoryString = "";
-		List<ProductTag> tagList = new ArrayList<ProductTag>();
-		for(final ProductTag tag : list){
-			if(!tagList.contains(tag)){
-				tagList.add(tag);
-				categoryString = categoryString + (tagList.size()==1 ? "" : ", ") + tag.categoryString(mActivity);
+		List<String> categoryList = new ArrayList<String>();
+		for(ProductTag tag : list){
+			if(!categoryList.contains(tag.categoryString(mActivity))){
+				categoryList.add(tag.categoryString(mActivity));
+				categoryString = categoryString + (categoryList.size()==1 ? "" : ", ") + tag.categoryString(mActivity);
 			}
 		}
 		return categoryString;
@@ -536,13 +540,13 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		if(mItem.getProductTagList().size() > 0){
 			mProductTagEmptyView.setVisibility(View.GONE);
 			mProductTagTextLayout.setVisibility(View.VISIBLE);
-			
+
 			mProductTagLayout.setEnabled(true);
 			mProductTagText.setText(getProductTagCategoryText(mItem.getProductTagList()));
 		} else {
 			mProductTagEmptyView.setVisibility(View.VISIBLE);
 			mProductTagTextLayout.setVisibility(View.GONE);
-			
+
 			mProductTagLayout.setEnabled(false);
 			mProductTagText.setText("");
 		}

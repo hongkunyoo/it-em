@@ -1,14 +1,14 @@
 package com.pinthecloud.item.model;
 
 
-public class ItemHashTag extends AbstractItemModel<ItemHashTag>{
+public class HashTag extends AbstractItemModel<HashTag>{
 	
 	public static String INTENT_KEY = "ITEM_HASH_TAG_INTENT_KEY";
 	
-	public ItemHashTag() {
+	public HashTag() {
 		super();
 	}
-	public ItemHashTag(String content, String refId) {
+	public HashTag(String content, String refId) {
 		super();
 		this.content = content;
 		this.refId = refId;

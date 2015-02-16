@@ -30,7 +30,7 @@ public class ItIntentService extends IntentService {
 		if (unRegisterd != null && unRegisterd.equals(ItConstant.GOOGLE_PLAY_APP_ID)){
 			return;	
 		}
-
+		
 		String message = intent.getExtras().getString("message");
 		alertNotification(message);
 	}

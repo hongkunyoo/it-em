@@ -7,7 +7,7 @@
     android:orientation="horizontal" >
 
     <com.pinthecloud.item.view.ItTextView
-        android:id="@+id/row_brand_information_category"
+        android:id="@+id/row_brand_info_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/key_line_first"
@@ -15,7 +15,7 @@
         app:textType="subhead" />
 
     <EditText
-        android:id="@+id/row_brand_information_brand"
+        android:id="@+id/row_brand_info_brand"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
@@ -24,7 +24,7 @@
         android:gravity="center_vertical"
         android:hint="@string/brand"
         android:inputType="textMultiLine"
-        android:maxLength="@integer/brand_information_max_length"
+        android:maxLength="@integer/brand_info_max_length"
         android:maxLines="@integer/general_max_line"
         android:paddingEnd="@dimen/key_line_first"
         android:paddingLeft="@dimen/key_line_first"
@@ -38,7 +38,7 @@
     </EditText>
 
     <ImageButton
-        android:id="@+id/row_brand_information_remove"
+        android:id="@+id/row_brand_info_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/key_line_first"

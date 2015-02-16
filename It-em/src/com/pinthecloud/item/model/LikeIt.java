@@ -17,10 +17,10 @@ public class LikeIt extends AbstractItemModel<LikeIt>{
 	}
 
 	@Override
-	public final String getContent() {
+	public String getContent() {
 		return null;
 	}
 	@Override
-	public final void setContent(String content) {
+	public void setContent(String content) {
 	}
 }

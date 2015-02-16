@@ -65,7 +65,6 @@ public class UserHelper {
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					JsonObject json = _json.getAsJsonObject();
-
 					ItUser user = new Gson().fromJson(json.get("user"), ItUser.class);
 					DeviceInfo deviceInfo = new Gson().fromJson(json.get("deviceInfo"), DeviceInfo.class);
 

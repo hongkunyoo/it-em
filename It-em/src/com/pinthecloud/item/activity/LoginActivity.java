@@ -30,9 +30,9 @@ import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.DeviceInfo;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 
@@ -206,7 +206,7 @@ public class LoginActivity extends ItActivity {
 			@Override
 			public void doNext(Object object, Object... params) {
 				DeviceInfo myDeviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
-				DeviceInfo deviceInfo = new DeviceInfo(itUser.getItUserId(), myDeviceInfo.getMobileId(), myDeviceInfo.getRegistrationId());
+				DeviceInfo deviceInfo = new DeviceInfo(itUser.getId(), myDeviceInfo.getMobileId(), myDeviceInfo.getRegistrationId());
 				signin(object, itUser, deviceInfo);
 			}
 		}, new Chainable(){

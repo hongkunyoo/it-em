@@ -53,7 +53,7 @@
     <string name="upload">업로드</string>
     <string name="uploaded">아이템이 업로드 되었습니다.</string>
     <string name="description">설명</string>
-    <string name="brand_information">브랜드 정보</string>
+    <string name="brand_info">브랜드 정보</string>
     <string name="brand">브랜드</string>
 
     <!-- Profile Settings -->

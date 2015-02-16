@@ -9,8 +9,8 @@ public class DeviceInfo implements Parcelable {
 
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
-	@com.google.gson.annotations.SerializedName("itUserId")
-	private String itUserId;
+	@com.google.gson.annotations.SerializedName("whoMadeId")
+	private String whoMadeId;
 	@com.google.gson.annotations.SerializedName("mobileId")
 	private String mobileId;
 	@com.google.gson.annotations.SerializedName("registrationId")
@@ -21,25 +21,25 @@ public class DeviceInfo implements Parcelable {
 	public DeviceInfo() {
 		super();
 	}
-	public DeviceInfo(String itUserId, String mobileId, String registrationId) {
+	public DeviceInfo(String whoMadeId, String mobileId, String registrationId) {
 		super();
-		this.itUserId = itUserId;
+		this.whoMadeId = whoMadeId;
 		this.mobileId = mobileId;
 		this.registrationId = registrationId;
 		this.mobileOs = "ANDROID";
 	}
-	
+
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getItUserId() {
-		return itUserId;
+	public String getWhoMadeId() {
+		return whoMadeId;
 	}
-	public void setItUserId(String itUserId) {
-		this.itUserId = itUserId;
+	public void setWhoMadeId(String whoMadeId) {
+		this.whoMadeId = whoMadeId;
 	}
 	public String getMobileId() {
 		return mobileId;
@@ -61,7 +61,7 @@ public class DeviceInfo implements Parcelable {
 	}
 	public void readDeviceInfo(DeviceInfo deviceInfo) {
 		this.setId(deviceInfo.getId());
-		this.setItUserId(deviceInfo.getItUserId());
+		this.setWhoMadeId(deviceInfo.getWhoMadeId());
 		this.setMobileId(deviceInfo.getMobileId());
 		this.setRegistrationId(deviceInfo.getRegistrationId());
 		this.setMobileOs(deviceInfo.getMobileOs());

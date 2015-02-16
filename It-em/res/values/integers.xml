@@ -16,7 +16,7 @@
     
     <!-- Upload -->
     <integer name="upload_content_max_line">5</integer>
-    <integer name="brand_information_max_length">15</integer>
+    <integer name="brand_info_max_length">15</integer>
     
     <!-- Profile Settings -->
     <integer name="general_max_line">2</integer>

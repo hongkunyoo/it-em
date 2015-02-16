@@ -158,6 +158,7 @@ public class ProductTagDialog extends ItDialogFragment {
 				i++;
 			}
 		}
+		
 		return tagList;
 	}
 

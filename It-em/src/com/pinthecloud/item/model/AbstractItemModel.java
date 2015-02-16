@@ -1,13 +1,8 @@
 package com.pinthecloud.item.model;
 
-import java.lang.reflect.Type;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.util.RandomUtil;
 
@@ -88,22 +83,29 @@ public class AbstractItemModel<T> {
 	public String toString() {
 		return new Gson().toJson(this);
 	}
-	
-	public JsonElement toJson() {
-		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractItemModelAdapter()).create().toJson(this);
-		return new Gson().fromJson(jsonStr, JsonElement.class);
-	}
-	
-	private class AbstractItemModelAdapter implements JsonSerializer<T> {
 
-		@Override
-		public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
-			Gson gson = new Gson();
-			JsonObject json = gson.fromJson(gson.toJson(src), JsonObject.class);
-			JsonObject jo = new JsonObject();
-			jo.addProperty("table", src.getClass().getSimpleName());
-			jo.add("data", json);
-			return jo;
-		}
+	public JsonElement toJson() {
+		Gson gson = new Gson();
+		JsonObject json = gson.fromJson(gson.toJson(this), JsonObject.class);
+		JsonObject jo = new JsonObject();
+		jo.addProperty("table", getClass().getSimpleName());
+		jo.add("data", json);
+		return jo;
+
+		//		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractItemModelAdapter()).create().toJson(this);
+		//		return new Gson().fromJson(jsonStr, JsonElement.class);
 	}
+
+	//	private class AbstractItemModelAdapter implements JsonSerializer<T> {
+	//
+	//		@Override
+	//		public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
+	//			Gson gson = new Gson();
+	//			JsonObject json = gson.fromJson(gson.toJson(src), JsonObject.class);
+	//			JsonObject jo = new JsonObject();
+	//			jo.addProperty("table", src.getClass().getSimpleName());
+	//			jo.add("data", json);
+	//			return jo;
+	//		}
+	//	}
 }

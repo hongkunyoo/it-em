@@ -76,7 +76,7 @@
     <string name="uploaded">The item is uploaded.</string>
     <string name="description">Description</string>
     <string name="select_picture">Select Picture</string>
-    <string name="brand_information">Brand Information</string>
+    <string name="brand_info">Brand Information</string>
     <string name="brand">Brand</string>
 
     <!-- Profile Settings -->
