@@ -45,6 +45,7 @@ import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.model.NotiRecord;
 import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ImageUtil;
@@ -253,36 +254,39 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				final int currentLikeItNum = Integer.parseInt(mItNumber.getText().toString());
 				setItButton(currentLikeItNum, isDoLike);
 
-				if(!isDoingLikeIt){
-					isDoingLikeIt = true;
+				if(isDoingLikeIt){
+					return;
+				}
+				
+				isDoingLikeIt = true;
+				if(isDoLike) {
+					mGaHelper.sendEventGA(
+							mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.ITEM);
 
-					if(isDoLike) {
-						mGaHelper.sendEventGA(
-								mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.ITEM);
+					// Do like it
+					LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+					NotiRecord noti = new NotiRecord(mItem.getId(), mItem.getWhoMade(), mItem.getWhoMadeId(),
+							"", NotiRecord.TYPE.LikeIt);
+					mAimHelper.addUnique(likeIt, noti, new EntityCallback<LikeIt>() {
 
-						// Do like it
-						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-						mAimHelper.addUnique(likeIt, new EntityCallback<LikeIt>() {
+						@Override
+						public void onCompleted(LikeIt entity) {
+							doLikeIt(mItem, entity.getId(), currentLikeItNum, isDoLike);
+						}
+					});
+				} else {
+					mGaHelper.sendEventGA(
+							mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.ITEM);
 
-							@Override
-							public void onCompleted(LikeIt entity) {
-								doLikeIt(mItem, entity.getId(), currentLikeItNum, isDoLike);
-							}
-						});
-					} else {
-						mGaHelper.sendEventGA(
-								mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.ITEM);
+					// Cancel like it
+					LikeIt likeIt = new LikeIt(mItem.getPrevLikeId());
+					mAimHelper.del(likeIt, new EntityCallback<Boolean>() {
 
-						// Cancel like it
-						LikeIt likeIt = new LikeIt(mItem.getPrevLikeId());
-						mAimHelper.del(likeIt, new EntityCallback<Boolean>() {
-
-							@Override
-							public void onCompleted(Boolean entity) {
-								doLikeIt(mItem, null, currentLikeItNum, isDoLike);
-							}
-						});
-					}
+						@Override
+						public void onCompleted(Boolean entity) {
+							doLikeIt(mItem, null, currentLikeItNum, isDoLike);
+						}
+					});
 				}
 			}
 		});
@@ -423,7 +427,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		});
 	}
 
-	
+
 	private void setItemComponent(Item item){
 		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
 		mNickName.setText(item.getWhoMade());
@@ -501,7 +505,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
 		showReplyEmptyView(mItem.getReplyCount()+1);
 
-		mAimHelper.add(reply, new EntityCallback<Reply>() {
+		NotiRecord noti = new NotiRecord(mItem.getId(), mItem.getWhoMade(), mItem.getWhoMadeId(),
+				reply.getContent(), NotiRecord.TYPE.Reply);
+		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {
@@ -557,7 +563,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		// Add replys
 		mReplyList.clear();
 		mReplyListAdapter.addAll(mItem.getReplyList());
-
+		
 		// Set see previous row
 		final int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
 		if(mItem.getReplyCount() > displayReplyNum){

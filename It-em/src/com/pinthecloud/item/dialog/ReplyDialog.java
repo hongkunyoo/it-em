@@ -26,6 +26,7 @@ import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.model.NotiRecord;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ViewUtil;
 
@@ -200,7 +201,9 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
 		showReplyList(mItem.getReplyCount()+1);
 
-		mAimHelper.add(reply, new EntityCallback<Reply>() {
+		NotiRecord noti = new NotiRecord(mItem.getId(), mItem.getWhoMade(), mItem.getWhoMadeId(),
+				reply.getContent(), NotiRecord.TYPE.Reply);
+		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
 
 			@Override
 			public void onCompleted(Reply entity) {

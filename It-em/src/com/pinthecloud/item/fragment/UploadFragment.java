@@ -35,7 +35,6 @@ import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
-import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.HashTag;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
@@ -283,19 +282,27 @@ public class UploadFragment extends ItFragment {
 	private void uploadItem(){
 		mApp.showProgressDialog(mActivity);
 
-		String content = mContent.getText().toString() + (mBrandInfoList.size()>0 ? "\n" : "")
-				+ getBrandInfoContent(mBrandInfoList);
 		final String itemImagePath = FileUtil.getMediaPathFromGalleryUri(mActivity, mItemImageUri);
 		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
 
+		String content = mContent.getText().toString() + (mBrandInfoList.size()>0 ? "\n" : "")
+				+ getBrandInfoContent(mBrandInfoList);
 		final Item item = new Item(content, mMyItUser.getNickName(), mMyItUser.getId(),
 				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
+
+		final List<HashTag> hashTagList = new ArrayList<HashTag>();
+		for(BrandInfo brandInfo : mBrandInfoList){
+			List<String> hashTags = TextUtil.getSpanBodys(brandInfo.getBrand());
+			for(String hashTag : hashTags){
+				hashTagList.add(new HashTag(hashTag));
+			}
+		}
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
-				mAimHelper.add(item, new EntityCallback<Item>() {
+				mAimHelper.addItem(item, hashTagList, new EntityCallback<Item>() {
 
 					@Override
 					public void onCompleted(Item entity) {
@@ -304,16 +311,6 @@ public class UploadFragment extends ItFragment {
 						AsyncChainer.notifyNext(obj);
 					}
 				});
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(final Object obj, Object... params) {
-				if(mBrandInfoList.size() > 0){
-					uploadHashTag(obj, item);
-				} else {
-					AsyncChainer.notifyNext(obj);
-				}
 			}
 		}, new Chainable(){
 
@@ -363,25 +360,6 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void uploadHashTag(final Object obj, Item item){
-		List<HashTag> hashTagList = new ArrayList<HashTag>();
-		for(BrandInfo brandInfo : mBrandInfoList){
-			List<String> hashTags = TextUtil.getSpanBodys(brandInfo.getBrand());
-			for(String hashTag : hashTags){
-				hashTagList.add(new HashTag(hashTag, item.getId()));
-			}
-		}
-
-		mAimHelper.addList(HashTag.class, hashTagList, new ListCallback<HashTag>() {
-
-			@Override
-			public void onCompleted(List<HashTag> list, int count) {
-				AsyncChainer.notifyNext(obj);
-			}
-		});
-	}
-	
-	
 	private void uploadItemImage(final Object obj, Item item, String itemImagePath, Bitmap itemImageBitmap){
 		AsyncChainer.waitChain(3);
 

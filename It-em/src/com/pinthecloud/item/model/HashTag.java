@@ -8,10 +8,9 @@ public class HashTag extends AbstractItemModel<HashTag>{
 	public HashTag() {
 		super();
 	}
-	public HashTag(String content, String refId) {
+	public HashTag(String content) {
 		super();
 		this.content = content;
-		this.refId = refId;
 	}
 
 	@Override

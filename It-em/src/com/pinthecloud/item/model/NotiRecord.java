@@ -1,26 +1,57 @@
 package com.pinthecloud.item.model;
 
+import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
 
-public class NotiRecord extends AbstractItemModel<LikeIt> implements Parcelable {
+public class NotiRecord extends AbstractItemModel<NotiRecord> implements Parcelable {
 
 	public static enum TYPE {
 		LikeIt,
 		Reply,
 		ProductTag
 	}
-	
+
+	private List<String> whoMadeList;
 	private String refWhoMade;
 	private String refWhoMadeId;
 	private String type;
-	
+
 	public NotiRecord() {
 		super();
 	}
+	public NotiRecord(String refId, String refWhoMade, String refWhoMadeId, String content, TYPE type) {
+		super();
+		this.setRefId(refId);
+		this.setRefWhoMade(refWhoMade);
+		this.setRefWhoMadeId(refWhoMadeId);
+		this.setContent(content);
+		this.setType(type.toString());
+	}
 
+	@Override
+	public String getWhoMade() {
+		return null;
+	}
+	@Override
+	public void setWhoMade(String whoMade) {
+	}
+	@Override
+	public String getWhoMadeId() {
+		return null;
+	}
+	@Override
+	public void setWhoMadeId(String whoMadeId) {
+	}
+	public List<String> getWhoMadeList() {
+		return whoMadeList;
+	}
+	public void setWhoMadeList(List<String> whoMadeList) {
+		this.whoMadeList = whoMadeList;
+	}
 	public String getRefWhoMade() {
 		return refWhoMade;
 	}
@@ -45,13 +76,12 @@ public class NotiRecord extends AbstractItemModel<LikeIt> implements Parcelable 
 	public void readNotiRecord(NotiRecord noti) {
 		this.setId(noti.getId());
 		this.setRawCreateDateTime(noti.getRawCreateDateTime());
-		this.setWhoMade(noti.getWhoMade());
-		this.setWhoMadeId(noti.getWhoMadeId());
+		this.setWhoMadeList(noti.getWhoMadeList());
 		this.setRefId(noti.getRefId());
 		this.setRefWhoMade(noti.getRefWhoMade());
 		this.setRefWhoMadeId(noti.getRefWhoMadeId());
-		this.setType(noti.getType());
 		this.setContent(noti.getContent());
+		this.setType(noti.getType());
 	}
 
 

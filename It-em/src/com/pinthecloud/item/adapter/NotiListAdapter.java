@@ -37,12 +37,18 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, final int position) {
-		NotiRecord notiRecord = mNotiList.get(position);
+		NotiRecord noti = mNotiList.get(position);
 	}
 
 
 	@Override
 	public int getItemCount() {
 		return mNotiList.size();
+	}
+	
+	
+	public void addAll(List<NotiRecord> notiList) {
+		mNotiList.addAll(notiList);
+		notifyDataSetChanged();
 	}
 }

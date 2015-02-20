@@ -91,21 +91,5 @@ public class AbstractItemModel<T> {
 		jo.addProperty("table", getClass().getSimpleName());
 		jo.add("data", json);
 		return jo;
-
-		//		String jsonStr = new GsonBuilder().registerTypeAdapter(this.getClass(), new AbstractItemModelAdapter()).create().toJson(this);
-		//		return new Gson().fromJson(jsonStr, JsonElement.class);
 	}
-
-	//	private class AbstractItemModelAdapter implements JsonSerializer<T> {
-	//
-	//		@Override
-	//		public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
-	//			Gson gson = new Gson();
-	//			JsonObject json = gson.fromJson(gson.toJson(src), JsonObject.class);
-	//			JsonObject jo = new JsonObject();
-	//			jo.addProperty("table", src.getClass().getSimpleName());
-	//			jo.add("data", json);
-	//			return jo;
-	//		}
-	//	}
 }

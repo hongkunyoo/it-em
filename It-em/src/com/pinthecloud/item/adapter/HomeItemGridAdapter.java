@@ -29,6 +29,7 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.model.NotiRecord;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
@@ -212,7 +213,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 						// Do like it
 						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
-						mApp.getAimHelper().addUnique(likeIt, new EntityCallback<LikeIt>() {
+						NotiRecord noti = new NotiRecord(item.getId(), item.getWhoMade(), item.getWhoMadeId(),
+								"", NotiRecord.TYPE.LikeIt);
+						mApp.getAimHelper().addUnique(likeIt, noti, new EntityCallback<LikeIt>() {
 
 							@Override
 							public void onCompleted(LikeIt entity) {

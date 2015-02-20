@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.NotiListAdapter;
+import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.NotiRecord;
 
@@ -29,8 +30,10 @@ public class NotiFragment extends ItFragment {
 	private List<NotiRecord> mNotiList;
 
 	private ItUser mMyItUser;
+	private boolean mIsAdding = false;
+	private int page = 0;
 
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +49,12 @@ public class NotiFragment extends ItFragment {
 		findComponent(view);
 		setRefreshLayout();
 		setList();
+		setScroll();
+
+		mProgressBar.setVisibility(View.VISIBLE);
+		mRefresh.setVisibility(View.GONE);
 		updateList();
+
 		return view;
 	}
 
@@ -83,6 +91,50 @@ public class NotiFragment extends ItFragment {
 	}
 
 
+	private void setScroll(){
+		mListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+
+				// Add more items when grid reaches bottom
+				int position = mListLayoutManager.findLastVisibleItemPosition();
+				int totalItemCount = mListLayoutManager.getItemCount();
+				if (position >= totalItemCount-2 && !mIsAdding) {
+					addNextItem();
+				}
+			}
+		});
+	}
+
+
 	private void updateList(){
+		page = 0;
+		mAimHelper.listMyNoti(page, mMyItUser.getId(), new ListCallback<NotiRecord>() {
+
+			@Override
+			public void onCompleted(List<NotiRecord> list, int count) {
+				mProgressBar.setVisibility(View.GONE);
+				mRefresh.setVisibility(View.VISIBLE);
+				mRefresh.setRefreshing(false);
+
+				mNotiList.clear();
+				mListAdapter.addAll(list);
+			}
+		});
+	}
+
+
+	private void addNextItem() {
+		mIsAdding = true;
+		mAimHelper.listMyNoti(++page, mMyItUser.getId(), new ListCallback<NotiRecord>() {
+
+			@Override
+			public void onCompleted(List<NotiRecord> list, int count) {
+				mIsAdding = false;
+				mListAdapter.addAll(list);
+			}
+		});
 	}
 }

@@ -10,10 +10,13 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.google.gson.Gson;
+import com.pinthecloud.item.model.NotiRecord;
+
 public class ItIntentService extends IntentService {
 
 	public static final int NOTIFICATION_ID = 1;
-	
+
 	private Context mThis;
 
 	public ItIntentService() {
@@ -30,7 +33,7 @@ public class ItIntentService extends IntentService {
 		if (unRegisterd != null && unRegisterd.equals(ItConstant.GOOGLE_PLAY_APP_ID)){
 			return;	
 		}
-		
+
 		String message = intent.getExtras().getString("message");
 		alertNotification(message);
 	}
@@ -38,8 +41,6 @@ public class ItIntentService extends IntentService {
 
 	private void alertNotification(String message){
 		Intent resultIntent = new Intent();
-		String title = "";
-		String content = message;
 
 		// The stack builder object will contain an artificial back stack for the
 		// started Activity.
@@ -56,8 +57,8 @@ public class ItIntentService extends IntentService {
 		// Set Notification
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mThis)
 		.setSmallIcon(R.drawable.launcher)
-		.setContentTitle(title)
-		.setContentText(content)
+		.setContentTitle(mThis.getResources().getString(R.string.app_name))
+		.setContentText(getNotiContent(message))
 		.setAutoCancel(true);
 		mBuilder.setContentIntent(resultPendingIntent);
 
@@ -70,6 +71,16 @@ public class ItIntentService extends IntentService {
 		if(AudioManager.RINGER_MODE_SILENT != audioManager.getRingerMode()){
 			((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(500);
 		}
+	}
+
+
+	private String getNotiContent(String message){
+		NotiRecord noti = new Gson().fromJson(message, NotiRecord.class);
+		String content = noti.getWhoMade() + " " + noti.getRefWhoMade() + " " + noti.getType();
+		if(noti.getContent() != null && noti.getContent().equals("")){
+			content += noti.getContent();
+		}
+		return content;
 	}
 
 
