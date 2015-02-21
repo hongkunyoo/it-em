@@ -5,31 +5,19 @@
     <color name="brand_color">#263238</color>
     <color name="brand_color_dark">#1e292e</color>
     <color name="brand_text_color">#de263238</color>
-    <color name="brnad_text_color_light">#96263238</color>
+    <color name="brand_text_color_light">#96263238</color>
     <color name="accent_color">#ffAB00</color>
     <color name="line_color">#16000000</color>
-    <color name="gray_light">#de78909c</color>
-    <color name="gray_dark">#90a4ae</color>
-    <color name="gray">#deB0BEC5</color>
+    <color name="gray_light">#78909c</color>
     <color name="gray_pressed">#4cECEFF1</color>
     <color name="red">#ef5350</color>
     <color name="blue">#01579b</color>
-
-    <!-- Home -->
-    <color name="home_item_image_default">#cfd8dc</color>
-
-    <!-- Main Drawer -->
-    <color name="main_drawer_menu_profile_nick_name">#deffffff</color>
-    <color name="main_drawer_menu_name_disabled">#87ffffff</color>
-
+    <color name="green">#00897b</color>
+    
     <!-- Reply -->
     <color name="reply_submit_disable">#64ffab00</color>
 
-    <!-- Settings -->
-    <color name="settings_logout_text">#deffffff</color>
-
     <!-- Be Pro -->
-    <color name="be_pro_text">#deffffff</color>
     <color name="be_pro_code_hint">#87ffffff</color>
 
 </resources>

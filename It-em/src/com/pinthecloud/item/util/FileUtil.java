@@ -8,7 +8,6 @@ import java.io.IOException;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -33,16 +32,16 @@ public class FileUtil {
 	public static final int CAMERA = 11;
 
 
-	public static Uri getOutputMediaFileUri(Resources resources){
-		return Uri.fromFile(getOutputMediaFile(resources));
+	public static Uri getOutputMediaFileUri(Context context){
+		return Uri.fromFile(getOutputMediaFile(context));
 	}
 
 
-	public static File getOutputMediaFile(Resources resources){
+	public static File getOutputMediaFile(Context context){
 		// To be safe, you should check that the SDCard is mounted
 		// using Environment.getExternalStorageState() before doing this.
 		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES), resources.getString(R.string.app_name));
+				Environment.DIRECTORY_PICTURES), context.getResources().getString(R.string.app_name));
 
 		// This location works best if you want the created images to be shared
 		// between applications and persist after your app has been uninstalled.
@@ -75,12 +74,14 @@ public class FileUtil {
 		}
 		return file;
 	}
-
-
+	
+	
 	public static void getMediaFromGallery(ItFragment frag){
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, Media.EXTERNAL_CONTENT_URI);
 		intent.setType("image/*");
-		frag.startActivityForResult(Intent.createChooser(intent, frag.getResources().getString(R.string.select_picture)), GALLERY);
+		
+		Intent chooser = Intent.createChooser(intent, frag.getResources().getString(R.string.select_picture));
+		frag.startActivityForResult(chooser, GALLERY);
 	}
 
 
@@ -132,11 +133,11 @@ public class FileUtil {
 
 		return filePath;
 	}
-
-
+	
+	
 	public static Uri getMediaFromCamera(ItFragment frag){
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		Uri mediaUri = getOutputMediaFileUri(frag.getResources());
+		Uri mediaUri = getOutputMediaFileUri(frag.getActivity());
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri);
 		frag.startActivityForResult(intent, CAMERA);
 		return mediaUri;
@@ -152,7 +153,7 @@ public class FileUtil {
 				if(mediaUri == null){
 					// Intent pass data as Bitmap
 					Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-					mediaUri = getOutputMediaFileUri(context.getResources());
+					mediaUri = getOutputMediaFileUri(context);
 					saveBitmapToFile(context, mediaUri, bitmap);
 				}
 			}

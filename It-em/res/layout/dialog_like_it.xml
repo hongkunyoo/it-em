@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_content_row_height" >
+        android:layout_height="@dimen/row_height" >
 
         <com.pinthecloud.item.view.ItTextView
             android:id="@+id/like_it_frag_title"
@@ -42,7 +43,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/like_it_frag_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
     </RelativeLayout>
 
 </LinearLayout>

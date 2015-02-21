@@ -73,17 +73,14 @@ public class ItTextView extends TextView {
 
 	private void setSubhead(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
-		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_x_large), 0);
 	}
 
 	private void setBody(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_small));
-		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_large), 0);
 	}
 
 	private void setCaption(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_micro));
-		setLineSpacing(getResources().getDimensionPixelSize(R.dimen.font_micro), 0.3f);
 	}
 
 	private void setButton(){

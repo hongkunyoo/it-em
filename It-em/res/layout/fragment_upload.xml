@@ -3,22 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingTop="?attr/actionBarSize" >
+    android:padding="@dimen/key_line_first" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/key_line_first" >
+        android:layout_marginBottom="@dimen/upload_content_margin"
+        android:orientation="vertical" >
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/upload_frag_item_image"
+        <RelativeLayout
             android:layout_width="@dimen/upload_image_width"
-            android:layout_height="@dimen/upload_image_width"
-            android:layout_marginBottom="@dimen/key_line_first"
-            app:riv_corner_radius="@dimen/corner_radius" />
+            android:layout_height="@dimen/upload_image_width" >
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/upload_frag_item_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/upload_content_margin"
+                app:riv_corner_radius="@dimen/corner_radius" />
+
+            <ImageButton
+                android:id="@+id/upload_frag_item_image_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/delete"
+                android:src="@drawable/appbar_close_ic"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/upload_frag_content"
@@ -35,7 +54,7 @@
             android:paddingRight="@dimen/key_line_first"
             android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
-            android:textColorHint="@color/gray"
+            android:textColorHint="@color/brand_text_color_light"
             android:textSize="@dimen/font_small" >
 
             <requestFocus />
@@ -45,23 +64,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/key_line_first"
-        android:paddingEnd="@dimen/key_line_first"
-        android:paddingLeft="@dimen/key_line_first"
-        android:paddingRight="@dimen/key_line_first"
-        android:paddingStart="@dimen/key_line_first" >
+        android:orientation="vertical" >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="@dimen/row_height" >
 
             <com.pinthecloud.item.view.ItTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/brand_info"
-                app:textType="subhead" />
+                android:textColor="@color/gray_light"
+                app:textType="caption" />
 
             <Button
                 android:id="@+id/upload_frag_brand_info_add"
@@ -69,7 +84,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:minHeight="@dimen/none"
+                android:minWidth="@dimen/none"
+                android:text="@string/add"
+                android:textColor="@color/brand_text_color"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView

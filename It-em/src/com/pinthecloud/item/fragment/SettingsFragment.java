@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.kakao.APIErrorResult;
 import com.kakao.LogoutResponseCallback;
@@ -41,6 +42,11 @@ public class SettingsFragment extends ItFragment {
 
 	private View mProfileSettings;
 	private View mBePro;
+
+	private ToggleButton mNotiMyItem;
+	private ToggleButton mNotiItItem;
+	private ToggleButton mNotiReplyItem;
+
 	private TextView mNickName;
 	private RelativeLayout mLogout;
 
@@ -96,6 +102,9 @@ public class SettingsFragment extends ItFragment {
 	private void findComponent(View view){
 		mProfileSettings = view.findViewById(R.id.settings_frag_profile_settings);
 		mBePro = view.findViewById(R.id.settings_frag_be_pro);
+		mNotiMyItem = (ToggleButton)view.findViewById(R.id.settings_frag_noti_my_item);
+		mNotiItItem = (ToggleButton)view.findViewById(R.id.settings_frag_noti_it_item);
+		mNotiReplyItem = (ToggleButton)view.findViewById(R.id.settings_frag_noti_reply_item);
 		mNickName = (TextView)view.findViewById(R.id.settings_frag_nick_name);
 		mLogout = (RelativeLayout)view.findViewById(R.id.settings_frag_logout);
 	}
@@ -125,12 +134,37 @@ public class SettingsFragment extends ItFragment {
 			}
 		});
 
+		mNotiMyItem.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				
+			}
+		});
+
+		mNotiItItem.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		mNotiReplyItem.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
 		mLogout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				String message = getResources().getString(R.string.logout_message);
 				ItAlertDialog logoutDialog = ItAlertDialog.newInstance(message, null, null, true);
+
 				final EntityCallback<Boolean> logoutCallback = new EntityCallback<Boolean>() {
 
 					@Override

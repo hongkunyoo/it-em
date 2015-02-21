@@ -34,13 +34,13 @@
             android:hint="@string/nick_name"
             android:inputType="textMultiLine"
             android:maxLength="@integer/nick_name_max_length"
-            android:maxLines="@integer/general_max_line"
+            android:maxLines="@integer/edit_text_max_line"
             android:paddingEnd="@dimen/key_line_first"
             android:paddingLeft="@dimen/key_line_first"
             android:paddingRight="@dimen/key_line_first"
             android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
-            android:textColorHint="@color/gray"
+            android:textColorHint="@color/brand_text_color_light"
             android:textSize="@dimen/font_small" >
 
             <requestFocus />
@@ -58,13 +58,13 @@
             android:hint="@string/information"
             android:inputType="textMultiLine"
             android:maxLength="@integer/long_text_max_length"
-            android:maxLines="@integer/general_max_line"
+            android:maxLines="@integer/edit_text_max_line"
             android:paddingEnd="@dimen/key_line_first"
             android:paddingLeft="@dimen/key_line_first"
             android:paddingRight="@dimen/key_line_first"
             android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
-            android:textColorHint="@color/gray"
+            android:textColorHint="@color/brand_text_color_light"
             android:textSize="@dimen/font_small" />
 
         <EditText
@@ -79,13 +79,13 @@
             android:hint="@string/website"
             android:inputType="textMultiLine"
             android:maxLength="@integer/long_text_max_length"
-            android:maxLines="@integer/general_max_line"
+            android:maxLines="@integer/edit_text_max_line"
             android:paddingEnd="@dimen/key_line_first"
             android:paddingLeft="@dimen/key_line_first"
             android:paddingRight="@dimen/key_line_first"
             android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
-            android:textColorHint="@color/gray"
+            android:textColorHint="@color/brand_text_color_light"
             android:textSize="@dimen/font_small" />
     </LinearLayout>
 

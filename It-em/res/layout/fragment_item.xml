@@ -59,7 +59,7 @@
                             android:id="@+id/item_frag_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/item_content_margin"
+                            android:layout_marginBottom="@dimen/item_layout_margin"
                             android:textColor="@color/brand_text_color"
                             app:textType="subhead" />
 
@@ -139,6 +139,7 @@
                         android:id="@+id/item_frag_product_tag_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/green"
                         android:paddingBottom="@dimen/item_layout_margin"
                         android:paddingTop="@dimen/item_layout_margin" >
 
@@ -167,9 +168,8 @@
                                 android:layout_centerVertical="true"
                                 android:text="@string/empty_product_tag"
                                 android:textColor="@color/gray_light"
-                                android:textStyle="italic"
                                 android:visibility="gone"
-                                app:textType="caption" />
+                                app:textType="body" />
 
                             <LinearLayout
                                 android:id="@+id/item_frag_product_tag_text_layout"
@@ -185,17 +185,17 @@
                                     android:layout_marginEnd="@dimen/item_layout_margin"
                                     android:layout_marginRight="@dimen/item_layout_margin"
                                     android:text="@string/get_product_label"
-                                    android:textColor="@color/gray_light"
-                                    android:textStyle="italic"
-                                    app:textType="caption" />
+                                    android:textColor="@android:color/white"
+                                    android:textStyle="bold"
+                                    app:textType="body" />
 
                                 <com.pinthecloud.item.view.ItTextView
                                     android:id="@+id/item_frag_product_tag_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textColor="@color/gray_light"
-                                    android:textStyle="italic"
-                                    app:textType="caption" />
+                                    android:textColor="@android:color/white"
+                                    android:textStyle="bold"
+                                    app:textType="body" />
                             </LinearLayout>
                         </RelativeLayout>
                     </RelativeLayout>
@@ -225,7 +225,7 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/item_content_row_height" >
+                            android:layout_height="@dimen/row_height" >
 
                             <com.pinthecloud.item.view.ItTextView
                                 android:layout_width="wrap_content"

@@ -139,7 +139,7 @@ public class ProfileSettingsFragment extends ItFragment {
 							updateProfileSettings();
 						} else {
 							mApp.dismissProgressDialog();
-							Toast.makeText(mActivity, params[0].toString(), Toast.LENGTH_LONG).show();	
+							Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
 						}
 					}
 				});
@@ -264,9 +264,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void checkNickName(final Object obj, String nickName){
 		int nickNameMinLength = getResources().getInteger(R.integer.nick_name_min_length);
-		int nickNameMaxLength = getResources().getInteger(R.integer.nick_name_max_length);
-		String nickNameRegx = "^[a-zA-Z0-9가-힣_-]{" + nickNameMinLength + "," + nickNameMaxLength + "}$";
-		
+		String nickNameRegx = "\\w+";
 		if(nickName.length() < nickNameMinLength){
 			AsyncChainer.notifyNext(obj, getResources().getString(R.string.min_nick_name_message));
 		} else if(!nickName.matches(nickNameRegx)){
@@ -290,12 +288,12 @@ public class ProfileSettingsFragment extends ItFragment {
 		}
 	}
 
-	
+
 	private void updateProfileSettings(){
 		mMyItUser.setNickName(mNickName.getText().toString());
 		mMyItUser.setSelfIntro(mDescription.getText().toString());
 		mMyItUser.setWebPage(mWebsite.getText().toString());
-		
+
 		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
 			@Override

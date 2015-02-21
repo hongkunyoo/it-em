@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ProductTagListAdapter;
@@ -26,8 +25,6 @@ import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.util.ViewUtil;
 
 public class ProductTagDialog extends ItDialogFragment {
-
-	private TextView mTitle;
 
 	private ProgressBar mProgressBar;
 	private RecyclerView mListView;
@@ -64,9 +61,7 @@ public class ProductTagDialog extends ItDialogFragment {
 		findComponent(view);
 		setList();
 
-		if(mTagList.size() > 0){
-			setTitle();
-		} else {
+		if(mTagList.size() < 1){
 			updateList();
 		}
 
@@ -75,7 +70,6 @@ public class ProductTagDialog extends ItDialogFragment {
 
 
 	private void findComponent(View view){
-		mTitle = (TextView)view.findViewById(R.id.product_tag_title);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListView = (RecyclerView)view.findViewById(R.id.product_tag_frag_list);
 	}
@@ -93,12 +87,12 @@ public class ProductTagDialog extends ItDialogFragment {
 		} else {
 			mTagList = new ArrayList<ProductTag>();
 		}
-		
+
 		mListAdapter = new ProductTagListAdapter(mActivity, mThisFragment, mTagList);
 		mListView.setAdapter(mListAdapter);
 
 		mListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			
+
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
@@ -108,8 +102,8 @@ public class ProductTagDialog extends ItDialogFragment {
 				} else {
 					mListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				}
-				
-				ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
+
+				ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
 			}
 		});
 	}
@@ -131,7 +125,6 @@ public class ProductTagDialog extends ItDialogFragment {
 					mListAdapter.addAll(getProductTagList(list));
 
 					ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
-					setTitle();
 				}
 			}
 		});
@@ -141,7 +134,7 @@ public class ProductTagDialog extends ItDialogFragment {
 	private List<ProductTag> getProductTagList(List<ProductTag> originTagList){
 		List<ProductTag> tagList = new ArrayList<ProductTag>();
 		tagList.addAll(originTagList);
-		
+
 		Collections.sort(tagList, new Comparator<ProductTag>(){
 
 			@Override
@@ -150,7 +143,7 @@ public class ProductTagDialog extends ItDialogFragment {
 					lhs.getCategory() == rhs.getCategory() ? 0 : -1;
 			}
 		});
-		
+
 		tagList.add(0, new ProductTag(tagList.get(0).getCategory()));
 		for(int i=1 ; i<tagList.size()-1 ; i++){
 			if(tagList.get(i).getCategory() != tagList.get(i+1).getCategory()){
@@ -158,12 +151,7 @@ public class ProductTagDialog extends ItDialogFragment {
 				i++;
 			}
 		}
-		
+
 		return tagList;
-	}
-
-
-	private void setTitle(){
-		mTitle.setText(getResources().getString(R.string.product_tag));
 	}
 }

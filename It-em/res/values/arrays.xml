@@ -16,10 +16,6 @@
     </string-array>
 
     <!-- Upload -->
-    <string-array name="upload_image_select_delete_array">
-        <item>Album</item>
-        <item>Delete</item>
-    </string-array>
     <string-array name="upload_image_select_array">
         <item>Album</item>
     </string-array>

@@ -97,7 +97,7 @@
                         android:paddingRight="@dimen/none"
                         android:paddingStart="@dimen/it_user_page_content_margin"
                         android:text="@string/profile_settings"
-                        android:textColor="@color/gray_dark"
+                        android:textColor="@color/brand_text_color"
                         android:textSize="@dimen/font_micro"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -109,7 +109,7 @@
                 xmlns:psts="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/it_user_page_frag_tab"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/tab_height"
+                android:layout_height="@dimen/row_height"
                 android:background="@android:color/white"
                 psts:pstsDividerColor="@android:color/transparent"
                 psts:pstsIndicatorColor="@android:color/transparent"

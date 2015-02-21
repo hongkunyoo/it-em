@@ -32,7 +32,7 @@
             android:layout_marginBottom="@dimen/be_pro_content_margin"
             android:gravity="center"
             android:text="@string/be_pro_description"
-            android:textColor="@color/be_pro_text"
+            android:textColor="@android:color/white"
             app:textType="subhead" />
 
         <com.pinthecloud.item.view.ItTextView
@@ -55,7 +55,7 @@
             android:gravity="center"
             android:hint="@string/code"
             android:maxLength="@integer/long_text_max_length"
-            android:textColor="@color/be_pro_text"
+            android:textColor="@android:color/white"
             android:textColorHint="@color/be_pro_code_hint"
             android:textSize="@dimen/font_medium" >
 

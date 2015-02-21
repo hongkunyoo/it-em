@@ -24,10 +24,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItemImageActivity;
 import com.pinthecloud.item.adapter.BrandInfoListAdapter;
 import com.pinthecloud.item.dialog.CategoryDialog;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
@@ -51,6 +53,7 @@ public class UploadFragment extends ItFragment {
 	private Uri mItemImageUri;
 
 	private ImageView mItemImage;
+	private ImageButton mItemImageDelete;
 	private EditText mContent;
 
 	private Button mBrandInfoAddButton;
@@ -101,6 +104,8 @@ public class UploadFragment extends ItFragment {
 		.placeholder(R.drawable.upload_thumbnail_default_img)
 		.fit().centerCrop()
 		.into(mItemImage);
+
+		mItemImageDelete.setVisibility(mItemImageUri == null ? View.GONE : View.VISIBLE);
 	}
 
 
@@ -148,7 +153,12 @@ public class UploadFragment extends ItFragment {
 			break;
 		case R.id.upload_submit:
 			trimContent();
-			uploadItem();
+			String message = checkBrand();
+			if(message.equals("")){
+				uploadItem();
+			} else {
+				Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+			}
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
@@ -157,6 +167,7 @@ public class UploadFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mItemImage = (ImageView)view.findViewById(R.id.upload_frag_item_image);
+		mItemImageDelete = (ImageButton)view.findViewById(R.id.upload_frag_item_image_delete);
 		mContent = (EditText)view.findViewById(R.id.upload_frag_content);
 		mBrandInfoAddButton = (Button)view.findViewById(R.id.upload_frag_brand_info_add);
 		mListView = (RecyclerView)view.findViewById(R.id.upload_frag_brand_info_list);
@@ -186,12 +197,31 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				String[] itemList = getDialogItemList();
-				DialogCallback[] callbacks = getDialogCallbacks(itemList);
+				if(mItemImageUri == null){
+					String[] itemList = getResources().getStringArray(R.array.upload_image_select_array);
+					DialogCallback[] callbacks = getDialogCallbacks(itemList);
 
-				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
-				listDialog.setCallbacks(callbacks);
-				listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+					listDialog.setCallbacks(callbacks);
+					listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				} else {
+					Intent intent = new Intent(mActivity, ItemImageActivity.class);
+					intent.putExtra(Item.INTENT_KEY, mItemImageUri);
+					startActivity(intent);
+				}
+			}
+		});
+
+		mItemImageDelete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// Set profile image default
+				mItemImageUri = null;
+				mItemImage.setImageResource(R.drawable.upload_thumbnail_default_img);
+
+				mActivity.invalidateOptionsMenu();
+				mItemImageDelete.setVisibility(View.GONE);
 			}
 		});
 
@@ -231,15 +261,6 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private String[] getDialogItemList(){
-		if(mItemImageUri != null){
-			return getResources().getStringArray(R.array.upload_image_select_delete_array);
-		}else{
-			return getResources().getStringArray(R.array.upload_image_select_array);
-		}
-	}
-
-
 	private DialogCallback[] getDialogCallbacks(String[] itemList){
 		DialogCallback[] callbacks = new DialogCallback[itemList.length];
 
@@ -251,21 +272,6 @@ public class UploadFragment extends ItFragment {
 					@Override
 					public void doPositiveThing(Bundle bundle) {
 						FileUtil.getMediaFromGallery(mThisFragment);
-					}
-					@Override
-					public void doNegativeThing(Bundle bundle) {
-					}
-				};
-				break;
-			case 1:
-				callbacks[1] = new DialogCallback() {
-
-					@Override
-					public void doPositiveThing(Bundle bundle) {
-						// Set profile image default
-						mItemImageUri = null;
-						mItemImage.setImageResource(R.drawable.upload_thumbnail_default_img);
-						mActivity.invalidateOptionsMenu();
 					}
 					@Override
 					public void doNegativeThing(Bundle bundle) {
@@ -353,7 +359,7 @@ public class UploadFragment extends ItFragment {
 				categoryList.add(brandInfo.getCategory());
 				content = content + brandInfo.getCategory() + " ";
 			}
-			content = content + brandInfo.getBrand() + 
+			content = content + "#" + brandInfo.getBrand() + 
 					(brandInfoList.indexOf(brandInfo) != brandInfoList.size()-1 ? " " : "");
 		}
 		return content;
@@ -402,9 +408,21 @@ public class UploadFragment extends ItFragment {
 				i--;
 			} else {
 				mBrandInfoList.get(i).setBrand(
-						"#"+mBrandInfoList.get(i).getBrand().trim().replace(" ", "_").replace("\n", ""));	
+						mBrandInfoList.get(i).getBrand().trim().replace(" ", "_").replace("\n", ""));
 			}
 		}
+	}
+
+
+	private String checkBrand(){
+		String brandRegx = "\\w+";
+		for(int i=0 ; i<mBrandInfoList.size() ; i++){
+			String brand = mBrandInfoList.get(i).getBrand(); 
+			if(!brand.matches(brandRegx)){
+				return getResources().getString(R.string.bad_brand_message) + "\n" + brand;
+			}
+		}
+		return "";
 	}
 
 

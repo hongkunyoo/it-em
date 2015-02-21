@@ -8,24 +8,14 @@
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
     <dimen name="profile_preview_image_width">40dp</dimen>
-    <dimen name="tab_height">48dp</dimen>
+    <dimen name="row_height">48dp</dimen>
     <dimen name="tab_indicator_height">4dp</dimen>
 
     <!-- Login -->
     <dimen name="login_button_bottom_margin">32dp</dimen>
 
-    <!-- Main Drawer -->
-    <dimen name="main_drawer_width">280dp</dimen>
-    <dimen name="main_drawer_menu_top_margin">56dp</dimen>
-    <dimen name="main_drawer_menu_height">48dp</dimen>
-    <dimen name="main_drawer_menu_profile_image_left_margin">38dp</dimen>
-    <dimen name="main_drawer_menu_profile_pro_margin">9dp</dimen>
-    <dimen name="main_drawer_menu_image_left_margin">40dp</dimen>
-    <dimen name="main_drawer_menu_name_left_margin">92dp</dimen>
-
     <!-- Home -->
-    <dimen name="home_item_profile_height">48dp</dimen>
-    <dimen name="home_item_margin">8dp</dimen>
+    <dimen name="home_item_margin">10dp</dimen>
     <dimen name="home_item_content_margin">4dp</dimen>
 
     <!-- Be Pro -->
@@ -34,15 +24,17 @@
     <dimen name="be_pro_mail_height">24dp</dimen>
 
     <!-- Item -->
-    <dimen name="item_content_margin">2dp</dimen>
     <dimen name="item_layout_margin">12dp</dimen>
-    <dimen name="item_content_row_height">40dp</dimen>
 
+    <!-- Product Tag -->
+    <dimen name="product_tag_content_margin">8dp</dimen>
+    
     <!-- Upload -->
     <dimen name="upload_image_width">100dp</dimen>
+    <dimen name="upload_content_margin">8dp</dimen>
 
     <!-- It User Page -->
-    <dimen name="it_user_page_content_margin">6dp</dimen>
+    <dimen name="it_user_page_content_margin">8dp</dimen>
 
     <!-- Profile Image -->
     <dimen name="profile_image_width">212dp</dimen>
@@ -63,7 +55,9 @@
     <dimen name="profile_settings_image_width">128dp</dimen>
 
     <!-- Settings -->
-    <dimen name="settings_row_height">48dp</dimen>
+    <dimen name="settings_layout_margin">12dp</dimen>
+    <dimen name="settings_row_height">36dp</dimen>
+    <dimen name="settings_content_margin">8dp</dimen>
 
     <!-- Font -->
     <dimen name="font_x_large">24sp</dimen>

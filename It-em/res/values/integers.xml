@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Common -->
+    <integer name="edit_text_max_line">2</integer>
+    
     <!-- Home -->
     <integer name="home_item_grid_column_num">2</integer>
     <integer name="home_item_content_max_line">3</integer>
@@ -18,8 +21,10 @@
     <integer name="upload_content_max_line">5</integer>
     <integer name="brand_info_max_length">15</integer>
     
+    <!-- Category -->
+    <integer name="category_grid_column_num">3</integer>
+    
     <!-- Profile Settings -->
-    <integer name="general_max_line">2</integer>
     <integer name="nick_name_min_length">2</integer>
     <integer name="nick_name_max_length">15</integer>
     <integer name="long_text_max_length">40</integer>

@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
     android:orientation="vertical"
-    android:padding="@dimen/key_line_first" >
+    android:paddingBottom="@dimen/product_tag_content_margin"
+    android:paddingTop="@dimen/product_tag_content_margin" >
 
     <com.pinthecloud.item.view.ItTextView
         android:id="@+id/row_product_tag_list_header_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:textType="subhead" />
+        android:textColor="@color/gray_light"
+        app:textType="caption" />
 
 </LinearLayout>

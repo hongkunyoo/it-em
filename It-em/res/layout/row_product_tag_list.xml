@@ -5,17 +5,17 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/key_line_first" >
+    android:paddingBottom="@dimen/product_tag_content_margin"
+    android:paddingTop="@dimen/product_tag_content_margin" >
 
     <com.pinthecloud.item.view.ItTextView
         android:id="@+id/row_product_tag_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/key_line_first"
-        android:layout_marginRight="@dimen/key_line_first"
         android:layout_weight="1"
         android:textColor="@color/brand_text_color"
-        app:textType="subhead" />
+        android:textStyle="bold"
+        app:textType="body" />
 
     <Button
         android:id="@+id/row_product_tag_price"

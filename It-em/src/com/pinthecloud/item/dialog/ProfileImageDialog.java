@@ -1,6 +1,5 @@
 package com.pinthecloud.item.dialog;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +10,13 @@ import android.widget.TextView;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class ProfileImageDialog extends ItDialogFragment {
 
 	private TextView mNickName;
 	private ImageView mProfileImage;
-	private PhotoViewAttacher mAttacher;
+
 	private ItUser mItUser;
 
 
@@ -71,7 +69,6 @@ public class ProfileImageDialog extends ItDialogFragment {
 
 	private void setComponent(){
 		mNickName.setText(mItUser.getNickName());
-		mAttacher = new PhotoViewAttacher(mProfileImage);
 	}
 
 
@@ -80,15 +77,6 @@ public class ProfileImageDialog extends ItDialogFragment {
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
 		.placeholder(R.drawable.profile_l_default_img)
 		.fit()
-		.into(mProfileImage, new Callback(){
-
-			@Override
-			public void onSuccess() {
-				mAttacher.update();
-			}
-			@Override
-			public void onError() {
-			}
-		});
+		.into(mProfileImage);
 	}
 }

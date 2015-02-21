@@ -48,7 +48,7 @@
                 android:id="@+id/row_reply_list_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/brnad_text_color_light"
+                android:textColor="@color/brand_text_color_light"
                 app:textType="body" />
 
             <com.pinthecloud.item.view.ItTextView

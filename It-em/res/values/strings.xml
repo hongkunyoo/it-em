@@ -9,6 +9,7 @@
     <!-- Common Word -->
     <string name="app_name">IT:EM</string>
     <string name="space">&#160;</string>
+    <string name="none"></string>
 
     <!-- Common Sentence -->
     <string name="network_unavailable_message">Internet is unavailable. Please check network status.</string>
@@ -23,10 +24,6 @@
     <!-- Login -->
     <string name="facebook_login">SIGN IN with facebook</string>
     <string name="kakao_login">SIGN IN with kakao</string>
-
-    <!-- Main -->
-    <string name="drawer_open">Open drawer</string>
-    <string name="drawer_close">Close drawer</string>
 
     <!-- Main Drawer -->
     <string name="image">Image</string>
@@ -56,6 +53,9 @@
     <!-- It User Page -->
     <string name="not_exist_user">This user doesn\'t exist.</string>
 
+    <!-- Item -->
+    <string name="item">Item</string>
+    
     <!-- My Item -->
     <string name="it">it</string>
     <string name="empty_my_item">Item is empty.\nShare your own style!</string>
@@ -78,6 +78,8 @@
     <string name="select_picture">Select Picture</string>
     <string name="brand_info">Brand Information</string>
     <string name="brand">Brand</string>
+    <string name="add">Add</string>
+    <string name="bad_brand_message">Only normal letter and number is allowed as brand.</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">Profile Edit</string>
