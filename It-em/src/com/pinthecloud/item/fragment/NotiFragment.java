@@ -18,7 +18,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.NotiListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.model.NotiRecord;
+import com.pinthecloud.item.model.ItNotification;
 
 public class NotiFragment extends ItFragment {
 
@@ -27,7 +27,7 @@ public class NotiFragment extends ItFragment {
 	private RecyclerView mListView;
 	private NotiListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
-	private List<NotiRecord> mNotiList;
+	private List<ItNotification> mNotiList;
 
 	private ItUser mMyItUser;
 	private boolean mIsAdding = false;
@@ -85,7 +85,7 @@ public class NotiFragment extends ItFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mNotiList = new ArrayList<NotiRecord>();
+		mNotiList = new ArrayList<ItNotification>();
 		mListAdapter = new NotiListAdapter(mNotiList);
 		mListView.setAdapter(mListAdapter);
 	}
@@ -111,10 +111,10 @@ public class NotiFragment extends ItFragment {
 
 	private void updateList(){
 		page = 0;
-		mAimHelper.listMyNoti(page, mMyItUser.getId(), new ListCallback<NotiRecord>() {
+		mAimHelper.listMyNoti(page, mMyItUser.getId(), new ListCallback<ItNotification>() {
 
 			@Override
-			public void onCompleted(List<NotiRecord> list, int count) {
+			public void onCompleted(List<ItNotification> list, int count) {
 				mProgressBar.setVisibility(View.GONE);
 				mRefresh.setVisibility(View.VISIBLE);
 				mRefresh.setRefreshing(false);
@@ -128,10 +128,10 @@ public class NotiFragment extends ItFragment {
 
 	private void addNextItem() {
 		mIsAdding = true;
-		mAimHelper.listMyNoti(++page, mMyItUser.getId(), new ListCallback<NotiRecord>() {
+		mAimHelper.listMyNoti(++page, mMyItUser.getId(), new ListCallback<ItNotification>() {
 
 			@Override
-			public void onCompleted(List<NotiRecord> list, int count) {
+			public void onCompleted(List<ItNotification> list, int count) {
 				mIsAdding = false;
 				mListAdapter.addAll(list);
 			}

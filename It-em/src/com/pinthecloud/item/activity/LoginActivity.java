@@ -27,7 +27,7 @@ import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.PairEntityCallback;
-import com.pinthecloud.item.model.DeviceInfo;
+import com.pinthecloud.item.model.ItDevice;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -205,8 +205,8 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			public void doNext(Object object, Object... params) {
-				DeviceInfo myDeviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
-				DeviceInfo deviceInfo = new DeviceInfo(itUser.getId(), myDeviceInfo.getMobileId(), myDeviceInfo.getRegistrationId());
+				ItDevice myDeviceInfo = mObjectPrefHelper.get(ItDevice.class);
+				ItDevice deviceInfo = new ItDevice(myDeviceInfo.getMobileId(), myDeviceInfo.getRegistrationId());
 				signin(object, itUser, deviceInfo);
 			}
 		}, new Chainable(){
@@ -230,11 +230,11 @@ public class LoginActivity extends ItActivity {
 	}
 
 
-	private void signin(final Object obj, final ItUser itUser, DeviceInfo deviceInfo){
-		mUserHelper.signin(itUser, deviceInfo, new PairEntityCallback<ItUser, DeviceInfo>() {
+	private void signin(final Object obj, final ItUser itUser, ItDevice deviceInfo){
+		mUserHelper.signin(itUser, deviceInfo, new PairEntityCallback<ItUser, ItDevice>() {
 
 			@Override
-			public void onCompleted(ItUser user, DeviceInfo deviceInfo) {
+			public void onCompleted(ItUser user, ItDevice deviceInfo) {
 				mObjectPrefHelper.put(user);
 				mObjectPrefHelper.put(deviceInfo);
 

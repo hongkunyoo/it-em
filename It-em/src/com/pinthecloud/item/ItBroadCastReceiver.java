@@ -9,7 +9,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import com.pinthecloud.item.event.GcmRegistrationIdEvent;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
-import com.pinthecloud.item.model.DeviceInfo;
+import com.pinthecloud.item.model.ItDevice;
 
 import de.greenrobot.event.EventBus;
 
@@ -21,7 +21,7 @@ public class ItBroadCastReceiver extends WakefulBroadcastReceiver {
 		if(registrationId != null && !registrationId.equals("")) {
 			// Get registration id
 			ObjectPrefHelper objectPrefHelper = ItApplication.getInstance().getObjectPrefHelper();
-			DeviceInfo deviceInfo = objectPrefHelper.get(DeviceInfo.class);
+			ItDevice deviceInfo = objectPrefHelper.get(ItDevice.class);
 			
 			if(deviceInfo.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)){
 				// After get id, goto SplashActivity.OnEvent()

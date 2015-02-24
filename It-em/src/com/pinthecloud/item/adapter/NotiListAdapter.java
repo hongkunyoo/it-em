@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.model.NotiRecord;
+import com.pinthecloud.item.model.ItNotification;
 
 public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHolder> {
 
-	private List<NotiRecord> mNotiList;
+	private List<ItNotification> mNotiList;
 
-	public NotiListAdapter(List<NotiRecord> notiList) {
+	public NotiListAdapter(List<ItNotification> notiList) {
 		this.mNotiList = notiList;
 	}
 
@@ -30,14 +30,14 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 
 	@Override
 	public NotiListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_noti_list, parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_noti_my_list, parent, false);
 		return new ViewHolder(view);
 	}
 
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, final int position) {
-		NotiRecord noti = mNotiList.get(position);
+		ItNotification noti = mNotiList.get(position);
 	}
 
 
@@ -47,7 +47,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 	}
 	
 	
-	public void addAll(List<NotiRecord> notiList) {
+	public void addAll(List<ItNotification> notiList) {
 		mNotiList.addAll(notiList);
 		notifyDataSetChanged();
 	}

@@ -85,10 +85,10 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.profileImage = (CircleImageView)view.findViewById(R.id.row_reply_list_profile_image);
-			this.nickName = (TextView)view.findViewById(R.id.row_reply_list_nick_name);
-			this.time = (TextView)view.findViewById(R.id.row_reply_list_time);
-			this.content = (TextView)view.findViewById(R.id.row_reply_list_content);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_reply_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_reply_nick_name);
+			this.time = (TextView)view.findViewById(R.id.row_reply_time);
+			this.content = (TextView)view.findViewById(R.id.row_reply_content);
 		}
 	}
 

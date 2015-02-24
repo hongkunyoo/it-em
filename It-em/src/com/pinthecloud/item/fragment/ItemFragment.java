@@ -45,7 +45,7 @@ import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
-import com.pinthecloud.item.model.NotiRecord;
+import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ImageUtil;
@@ -265,8 +265,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 					// Do like it
 					LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-					NotiRecord noti = new NotiRecord(mItem.getId(), mItem.getWhoMade(), mItem.getWhoMadeId(),
-							"", NotiRecord.TYPE.LikeIt);
+					ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
+							mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.LikeIt);
 					mAimHelper.addUnique(likeIt, noti, new EntityCallback<LikeIt>() {
 
 						@Override
@@ -505,8 +505,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
 		showReplyEmptyView(mItem.getReplyCount()+1);
 
-		NotiRecord noti = new NotiRecord(mItem.getId(), mItem.getWhoMade(), mItem.getWhoMadeId(),
-				reply.getContent(), NotiRecord.TYPE.Reply);
+		ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
+				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply);
 		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
 
 			@Override

@@ -5,8 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.Gson;
 
-public class DeviceInfo implements Parcelable {
+public class ItDevice implements Parcelable {
 
+	private final String ANDROID = "ANDROID";
+	
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
 	@com.google.gson.annotations.SerializedName("whoMadeId")
@@ -18,15 +20,14 @@ public class DeviceInfo implements Parcelable {
 	@com.google.gson.annotations.SerializedName("mobileOs")
 	private String mobileOs;
 
-	public DeviceInfo() {
+	public ItDevice() {
 		super();
 	}
-	public DeviceInfo(String whoMadeId, String mobileId, String registrationId) {
+	public ItDevice(String mobileId, String registrationId) {
 		super();
-		this.whoMadeId = whoMadeId;
 		this.mobileId = mobileId;
 		this.registrationId = registrationId;
-		this.mobileOs = "ANDROID";
+		this.mobileOs = ANDROID;
 	}
 
 	public String getId() {
@@ -59,7 +60,7 @@ public class DeviceInfo implements Parcelable {
 	public void setMobileOs(String mobileOs) {
 		this.mobileOs = mobileOs;
 	}
-	public void readDeviceInfo(DeviceInfo deviceInfo) {
+	public void readDeviceInfo(ItDevice deviceInfo) {
 		this.setId(deviceInfo.getId());
 		this.setWhoMadeId(deviceInfo.getWhoMadeId());
 		this.setMobileId(deviceInfo.getMobileId());
@@ -76,16 +77,16 @@ public class DeviceInfo implements Parcelable {
 	/*
 	 * Parcelable
 	 */
-	public static final Parcelable.Creator<DeviceInfo> CREATOR = new Creator<DeviceInfo>(){
-		public DeviceInfo createFromParcel(Parcel in){
-			return new DeviceInfo(in);
+	public static final Parcelable.Creator<ItDevice> CREATOR = new Creator<ItDevice>(){
+		public ItDevice createFromParcel(Parcel in){
+			return new ItDevice(in);
 		}
-		public DeviceInfo[] newArray(int size){
-			return new DeviceInfo[size]; 
+		public ItDevice[] newArray(int size){
+			return new ItDevice[size]; 
 		}
 	};
 
-	public DeviceInfo(Parcel in){
+	public ItDevice(Parcel in){
 		this();
 		readToParcel(in);
 	}
@@ -96,7 +97,7 @@ public class DeviceInfo implements Parcelable {
 	}
 
 	public void readToParcel(Parcel in){
-		this.readDeviceInfo(new Gson().fromJson(in.readString(), DeviceInfo.class));
+		this.readDeviceInfo(new Gson().fromJson(in.readString(), ItDevice.class));
 	}
 
 	@Override

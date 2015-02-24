@@ -48,7 +48,7 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		public HeaderViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.category = (TextView)view.findViewById(R.id.row_product_tag_list_header_category);
+			this.category = (TextView)view.findViewById(R.id.row_product_tag_header_category);
 		}
 	}
 

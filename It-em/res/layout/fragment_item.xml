@@ -103,7 +103,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@android:color/transparent"
                                 android:contentDescription="@string/it"
-                                android:src="@drawable/home_item_grid_it_button" />
+                                android:src="@drawable/home_item_it_button" />
 
                             <LinearLayout
                                 android:id="@+id/item_frag_it_number_layout"

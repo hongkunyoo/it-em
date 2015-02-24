@@ -42,8 +42,8 @@ public class LikeItListAdapter extends RecyclerView.Adapter<LikeItListAdapter.Vi
 		public ViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.profileImage = (CircleImageView)view.findViewById(R.id.row_like_it_list_profile_image);
-			this.nickName = (TextView)view.findViewById(R.id.row_like_it_list_nick_name);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_like_it_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_like_it_nick_name);
 		}
 	}
 

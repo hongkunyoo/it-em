@@ -20,7 +20,7 @@ import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.HashTag;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.model.NotiRecord;
+import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
@@ -61,7 +61,7 @@ public class AimHelper {
 	}
 
 
-	public <E extends AbstractItemModel<E>> void add(final E obj, NotiRecord noti, final EntityCallback<E> callback) {
+	public <E extends AbstractItemModel<E>> void add(final E obj, ItNotification noti, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("add", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -87,7 +87,7 @@ public class AimHelper {
 	}
 
 
-	public <E extends AbstractItemModel<E>> void addUnique(final E obj, NotiRecord noti, final EntityCallback<E> callback) {
+	public <E extends AbstractItemModel<E>> void addUnique(final E obj, ItNotification noti, final EntityCallback<E> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("addUnique", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -284,7 +284,7 @@ public class AimHelper {
 	}
 
 
-	public void listMyNoti(int page, String userId, final ListCallback<NotiRecord> callback) {
+	public void listMyNoti(int page, String userId, final ListCallback<ItNotification> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("listMyNoti", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -301,7 +301,7 @@ public class AimHelper {
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					JsonElement json = _json.getAsJsonArray();
-					List<NotiRecord> list = new Gson().fromJson(json, new TypeToken<List<NotiRecord>>(){}.getType());
+					List<ItNotification> list = new Gson().fromJson(json, new TypeToken<List<ItNotification>>(){}.getType());
 					callback.onCompleted(list, list.size());
 				} else {
 					EventBus.getDefault().post(new ItException("listMyNoti", ItException.TYPE.INTERNAL_ERROR, response));

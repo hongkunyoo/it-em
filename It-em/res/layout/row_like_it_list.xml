@@ -18,7 +18,7 @@
         android:layout_marginBottom="@dimen/like_it_margin" >
 
         <com.pinthecloud.item.view.CircleImageView
-            android:id="@+id/row_like_it_list_profile_image"
+            android:id="@+id/row_like_it_profile_image"
             android:layout_width="@dimen/profile_preview_image_width"
             android:layout_height="@dimen/profile_preview_image_width"
             android:layout_centerVertical="true"
@@ -29,7 +29,7 @@
             app:border_width="@dimen/line_width" />
 
         <com.pinthecloud.item.view.ItTextView
-            android:id="@+id/row_like_it_list_nick_name"
+            android:id="@+id/row_like_it_nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

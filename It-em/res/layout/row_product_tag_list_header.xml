@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/product_tag_content_margin" >
 
     <com.pinthecloud.item.view.ItTextView
-        android:id="@+id/row_product_tag_list_header_category"
+        android:id="@+id/row_product_tag_header_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/gray_light"

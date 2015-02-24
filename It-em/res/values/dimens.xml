@@ -29,6 +29,11 @@
     <!-- Product Tag -->
     <dimen name="product_tag_content_margin">8dp</dimen>
     
+    <!-- Noti -->
+    <dimen name="noti_margin">10dp</dimen>
+    <dimen name="noti_my_item_image_width">52dp</dimen>
+    <dimen name="noti_it_item_image_width">40dp</dimen>
+    
     <!-- Upload -->
     <dimen name="upload_image_width">100dp</dimen>
     <dimen name="upload_content_margin">8dp</dimen>

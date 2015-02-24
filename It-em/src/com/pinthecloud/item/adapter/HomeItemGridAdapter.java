@@ -29,7 +29,7 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
-import com.pinthecloud.item.model.NotiRecord;
+import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
@@ -75,17 +75,17 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 			super(view);
 			this.view = view;
 
-			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_grid_profile_image);
-			this.nickName = (TextView)view.findViewById(R.id.row_home_item_grid_nick_name);
-			this.more = (ImageButton)view.findViewById(R.id.row_home_item_grid_more);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_home_item_nick_name);
+			this.more = (ImageButton)view.findViewById(R.id.row_home_item_more);
 
-			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_grid_item_image);
-			this.unfold = (ImageView)view.findViewById(R.id.row_home_item_grid_unfold);
-			this.content = (TextView)view.findViewById(R.id.row_home_item_grid_content);
-			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_grid_it_number);
-			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_grid_reply_number);
-			this.productTag = (ImageButton)view.findViewById(R.id.row_home_item_grid_product_tag);
-			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_grid_it_button);
+			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_item_image);
+			this.unfold = (ImageView)view.findViewById(R.id.row_home_item_unfold);
+			this.content = (TextView)view.findViewById(R.id.row_home_item_content);
+			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_it_number);
+			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_reply_number);
+			this.productTag = (ImageButton)view.findViewById(R.id.row_home_item_product_tag);
+			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_it_button);
 		}
 	}
 
@@ -213,8 +213,8 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 						// Do like it
 						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
-						NotiRecord noti = new NotiRecord(item.getId(), item.getWhoMade(), item.getWhoMadeId(),
-								"", NotiRecord.TYPE.LikeIt);
+						ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(),
+								item.getId(), item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt);
 						mApp.getAimHelper().addUnique(likeIt, noti, new EntityCallback<LikeIt>() {
 
 							@Override

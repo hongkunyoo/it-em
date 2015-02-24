@@ -11,6 +11,7 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.DeviceHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
@@ -27,6 +28,7 @@ public class ItDialogFragment extends DialogFragment {
 	protected ObjectPrefHelper mObjectPrefHelper;
 	protected AimHelper mAimHelper;
 	protected UserHelper mUserHelper;
+	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper blobStorageHelper;
 
 
@@ -39,6 +41,7 @@ public class ItDialogFragment extends DialogFragment {
 		mObjectPrefHelper = mApp.getObjectPrefHelper();
 		mAimHelper = mApp.getAimHelper();
 		mUserHelper = mApp.getUserHelper();
+		mDeviceHelper = mApp.getDeviceHelper();
 		blobStorageHelper = mApp.getBlobStorageHelper();
 	}
 

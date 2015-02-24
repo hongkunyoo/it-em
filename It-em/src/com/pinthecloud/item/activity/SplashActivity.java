@@ -28,7 +28,7 @@ import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.AppVersion;
-import com.pinthecloud.item.model.DeviceInfo;
+import com.pinthecloud.item.model.ItDevice;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -178,7 +178,7 @@ public class SplashActivity extends ItActivity {
 
 	private void checkDeviceInfo(){
 		// If mobile id doesn't exist, get it
-		DeviceInfo deviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
+		ItDevice deviceInfo = mObjectPrefHelper.get(ItDevice.class);
 		if(deviceInfo.getMobileId().equals(PrefHelper.DEFAULT_STRING)) {
 			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
 			deviceInfo.setMobileId(mobileId);
@@ -193,7 +193,7 @@ public class SplashActivity extends ItActivity {
 		}
 
 		// If registration id doesn't exist, get it
-		deviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
+		deviceInfo = mObjectPrefHelper.get(ItDevice.class);
 		if(deviceInfo.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
 			setRegistrationId();
 			return;
@@ -206,7 +206,7 @@ public class SplashActivity extends ItActivity {
 	private void setRegistrationId() {
 		// Get registration id
 		mProgressLayout.setVisibility(View.VISIBLE);
-		mUserHelper.getRegistrationIdAsync(mThisActivity, new EntityCallback<String>() {
+		mDeviceHelper.getRegistrationIdAsync(mThisActivity, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
@@ -224,7 +224,7 @@ public class SplashActivity extends ItActivity {
 	public void onEvent(GcmRegistrationIdEvent event){
 		mProgressLayout.setVisibility(View.GONE);
 
-		DeviceInfo deviceInfo = mObjectPrefHelper.get(DeviceInfo.class);
+		ItDevice deviceInfo = mObjectPrefHelper.get(ItDevice.class);
 		deviceInfo.setRegistrationId(event.getRegistrationId());
 		mObjectPrefHelper.put(deviceInfo);
 

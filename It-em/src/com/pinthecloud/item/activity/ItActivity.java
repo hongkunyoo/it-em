@@ -13,6 +13,7 @@ import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.DeviceHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
@@ -31,6 +32,7 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected AimHelper mAimHelper;
 	protected UserHelper mUserHelper;
 	protected VersionHelper mVersionHelper;
+	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 
 	protected UserHabitHelper mUserHabitHelper;
@@ -49,6 +51,7 @@ public abstract class ItActivity extends ActionBarActivity {
 		mAimHelper = mApp.getAimHelper();
 		mUserHelper = mApp.getUserHelper();
 		mVersionHelper = mApp.getVersionHelper();
+		mDeviceHelper = mApp.getDeviceHelper();
 		mBlobStorageHelper = mApp.getBlobStorageHelper();
 
 		mUserHabitHelper = mApp.getUserHabitHelper();

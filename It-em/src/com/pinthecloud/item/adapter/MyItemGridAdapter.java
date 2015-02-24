@@ -55,7 +55,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		public NormalViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.itemImage = (ImageView)view.findViewById(R.id.row_my_item_grid_item_image);
+			this.itemImage = (ImageView)view.findViewById(R.id.row_my_item_item_image);
 		}
 	}
 

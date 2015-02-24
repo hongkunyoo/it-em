@@ -11,7 +11,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.google.gson.Gson;
-import com.pinthecloud.item.model.NotiRecord;
+import com.pinthecloud.item.model.ItNotification;
+import com.pinthecloud.item.util.ItLog;
 
 public class ItIntentService extends IntentService {
 
@@ -75,11 +76,18 @@ public class ItIntentService extends IntentService {
 
 
 	private String getNotiContent(String message){
-		NotiRecord noti = new Gson().fromJson(message, NotiRecord.class);
-		String content = noti.getWhoMade() + " " + noti.getRefWhoMade() + " " + noti.getType();
-		if(noti.getContent() != null && noti.getContent().equals("")){
-			content += noti.getContent();
+		ItLog.log(message);
+		
+		String content = "";
+		ItNotification noti = new Gson().fromJson(message, ItNotification.class);
+		
+		ItLog.logObject(noti);		
+		
+		content = content + noti.getWhoMade() + noti.getRefWhoMade() + " " + noti.getType();
+		if(noti.getContent() != null && !noti.getContent().equals("")){
+			content = content + " " + noti.getContent();
 		}
+		
 		return content;
 	}
 

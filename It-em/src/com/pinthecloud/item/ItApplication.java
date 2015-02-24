@@ -17,6 +17,7 @@ import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.DeviceHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
@@ -60,6 +61,7 @@ public class ItApplication extends Application {
 	private AimHelper aimHelper;
 	private UserHelper userHelper;
 	private VersionHelper versionHelper;
+	private DeviceHelper deviceHelper;
 	private BlobStorageHelper blobStorageHelper;
 
 	@Override
@@ -79,6 +81,7 @@ public class ItApplication extends Application {
 		aimHelper = getAimHelper();
 		userHelper = getUserHelper();
 		versionHelper = getVersionHelper();
+		deviceHelper = getDeviceHelper();
 		blobStorageHelper = getBlobStorageHelper();
 	}
 
@@ -140,6 +143,10 @@ public class ItApplication extends Application {
 		if(versionHelper == null) versionHelper = new VersionHelper(app);
 		return versionHelper;
 	}
+	public DeviceHelper getDeviceHelper() {
+		if(deviceHelper == null) deviceHelper = new DeviceHelper(app);
+		return deviceHelper;
+	}
 	public BlobStorageHelper getBlobStorageHelper() {
 		if(blobStorageHelper == null) blobStorageHelper = new BlobStorageHelper(app);
 		return blobStorageHelper;
@@ -198,6 +205,7 @@ public class ItApplication extends Application {
 		getAimHelper().setMobileClient(mClient);
 		getUserHelper().setMobileClient(mClient);
 		getVersionHelper().setMobileClient(mClient);
+		getDeviceHelper().setMobileClient(mClient);
 
 		ItUser user = getObjectPrefHelper().get(ItUser.class);
 		getUserHelper().getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {

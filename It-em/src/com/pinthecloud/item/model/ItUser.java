@@ -26,25 +26,30 @@ public class ItUser implements Parcelable {
 	private String id;
 	@com.google.gson.annotations.SerializedName("itUserId")
 	private String itUserId;
+	@com.google.gson.annotations.SerializedName("password")
+	private String password;
 	@com.google.gson.annotations.SerializedName("platform")
 	private String platform;
 	@com.google.gson.annotations.SerializedName("nickName")
 	private String nickName;
 	@com.google.gson.annotations.SerializedName("type")
 	private String type;
-	@com.google.gson.annotations.SerializedName("password")
-	private String password;
 	@com.google.gson.annotations.SerializedName("selfIntro")
 	private String selfIntro;
 	@com.google.gson.annotations.SerializedName("webPage")
 	private String webPage;
 	@com.google.gson.annotations.SerializedName("email")
 	private String email;
+	@com.google.gson.annotations.SerializedName("notiMyItem")
+	private boolean notiMyItem;
+	@com.google.gson.annotations.SerializedName("notiItItem")
+	private boolean notiItItem;
+	@com.google.gson.annotations.SerializedName("notiReplyItem")
+	private boolean notiReplyItem;
 
 	public ItUser() {
 		super();
 	}
-
 	public ItUser(String itUserId, PLATFORM platform, String nickName, TYPE type) {
 		super();
 		this.itUserId = itUserId;
@@ -55,6 +60,10 @@ public class ItUser implements Parcelable {
 		this.selfIntro = "";
 		this.webPage = "";
 		this.email = "";
+		this.notiMyItem = true;
+		this.notiItItem = true;
+		this.notiReplyItem = true;
+		
 	}
 
 	public String getId() {
@@ -68,6 +77,12 @@ public class ItUser implements Parcelable {
 	}
 	public void setItUserId(String itUserId) {
 		this.itUserId = itUserId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getPlatform() {
 		return platform;
@@ -108,22 +123,37 @@ public class ItUser implements Parcelable {
 	public void fixType(TYPE type) {
 		this.type = type.toString();
 	}
-	public String getPassword() {
-		return password;
+	public boolean isNotiMyItem() {
+		return notiMyItem;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setNotiMyItem(boolean notiMyItem) {
+		this.notiMyItem = notiMyItem;
+	}
+	public boolean isNotiItItem() {
+		return notiItItem;
+	}
+	public void setNotiItItem(boolean notiItItem) {
+		this.notiItItem = notiItItem;
+	}
+	public boolean isNotiReplyItem() {
+		return notiReplyItem;
+	}
+	public void setNotiReplyItem(boolean notiReplyItem) {
+		this.notiReplyItem = notiReplyItem;
 	}
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
+		this.setPassword(itUser.getPassword());
 		this.setPlatform(itUser.getPlatform());
 		this.setEmail(itUser.getEmail());
 		this.setNickName(itUser.getNickName());
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());
 		this.setType(itUser.getType());
-		this.setPassword(itUser.getPassword());
+		this.setNotiMyItem(itUser.isNotiMyItem());
+		this.setNotiItItem(itUser.isNotiItItem());
+		this.setNotiReplyItem(itUser.isNotiReplyItem());
 	}
 
 	public boolean isLoggedIn() {

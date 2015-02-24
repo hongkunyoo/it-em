@@ -12,7 +12,7 @@
     android:paddingStart="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.CircleImageView
-        android:id="@+id/row_reply_list_profile_image"
+        android:id="@+id/row_reply_profile_image"
         android:layout_width="@dimen/profile_preview_image_width"
         android:layout_height="@dimen/profile_preview_image_width"
         android:layout_marginTop="@dimen/reply_margin"
@@ -37,7 +37,7 @@
             android:orientation="vertical" >
 
             <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/row_reply_list_nick_name"
+                android:id="@+id/row_reply_nick_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/brand_text_color"
@@ -45,18 +45,19 @@
                 app:textType="subhead" />
 
             <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/row_reply_list_content"
+                android:id="@+id/row_reply_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/brand_text_color_light"
                 app:textType="body" />
 
             <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/row_reply_list_time"
+                android:id="@+id/row_reply_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/feed_comment_time_ic"
                 android:drawableStart="@drawable/feed_comment_time_ic"
+                android:gravity="center_vertical"
                 android:textColor="@color/gray_light"
                 app:textType="caption" />
         </LinearLayout>
