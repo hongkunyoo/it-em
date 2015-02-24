@@ -51,7 +51,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="0dp"
+                android:layout_weight="1" >
 
                 <com.pinthecloud.item.view.ItTextView
                     android:id="@+id/reply_frag_list_empty_view"
@@ -100,7 +101,7 @@
                         android:gravity="center_vertical"
                         android:hint="@string/write_reply"
                         android:inputType="textMultiLine"
-                        android:maxLines="@integer/reply_inputbar_max_line"
+                        android:maxLines="3"
                         android:paddingEnd="@dimen/reply_margin"
                         android:paddingLeft="@dimen/reply_margin"
                         android:paddingRight="@dimen/reply_margin"

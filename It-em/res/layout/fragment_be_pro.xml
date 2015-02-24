@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bepro_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/key_line_second"
+    android:paddingLeft="@dimen/key_line_second"
+    android:paddingRight="@dimen/key_line_second"
+    android:paddingStart="@dimen/key_line_second"
+    android:paddingTop="?attr/actionBarSize" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/be_pro_content_margin"
+        android:contentDescription="@string/be_pro"
+        android:src="@drawable/bepro_badge_img" />
+
+    <com.pinthecloud.item.view.ItTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/be_pro_content_margin"
+        android:gravity="center"
+        android:text="@string/be_pro_description"
+        android:textColor="@android:color/white"
+        app:textType="subhead" />
+
+    <com.pinthecloud.item.view.ItTextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/be_pro_mail_height"
+        android:layout_marginBottom="@dimen/be_pro_code_margin"
+        android:background="@drawable/bepro_mail_bg"
+        android:gravity="center"
+        android:text="@string/item_email"
+        android:textColor="@color/gray_light"
+        app:textType="caption" />
+
+    <EditText
+        android:id="@+id/be_pro_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/be_pro_code_margin"
+        android:background="@drawable/edit_text_line"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/code"
+        android:maxLength="@integer/long_text_max_length"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/be_pro_code_hint"
+        android:textSize="@dimen/font_medium" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/be_pro_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/be_pro_submit_button"
+        android:enabled="false"
+        android:gravity="center"
+        android:minHeight="@dimen/none"
+        android:minWidth="@dimen/none"
+        android:text="@string/submit"
+        android:textColor="@color/brand_text_color"
+        android:textSize="@dimen/font_small"
+        android:textStyle="bold" />
+
+</LinearLayout>

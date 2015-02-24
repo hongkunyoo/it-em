@@ -47,6 +47,7 @@ public class HomeFragment extends ItFragment {
 	private boolean mIsAdding = false;
 	private int page = 0;
 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,7 +108,7 @@ public class HomeFragment extends ItFragment {
 
 
 	private void setComponent(){
-		if(mMyItUser.isPro()){
+		if(mMyItUser.checkPro()){
 			mUploadLayout.setVisibility(View.VISIBLE);
 			int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
 			int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);

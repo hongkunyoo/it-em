@@ -72,4 +72,10 @@ public class PrefHelper {
 		editor.remove(key);
 		return editor.commit();
 	}
+	
+	public boolean clear(){
+		Editor editor = mPref.edit();
+		editor.clear();
+		return editor.commit();
+	}
 }

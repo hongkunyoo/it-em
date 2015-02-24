@@ -32,7 +32,6 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 
@@ -205,9 +204,9 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			public void doNext(Object object, Object... params) {
-				ItDevice myDeviceInfo = mObjectPrefHelper.get(ItDevice.class);
-				ItDevice deviceInfo = new ItDevice(myDeviceInfo.getMobileId(), myDeviceInfo.getRegistrationId());
-				signin(object, itUser, deviceInfo);
+				ItDevice myDevice = mObjectPrefHelper.get(ItDevice.class);
+				ItDevice device = new ItDevice(myDevice.getMobileId(), myDevice.getRegistrationId());
+				signin(object, itUser, device);
 			}
 		}, new Chainable(){
 
@@ -217,7 +216,6 @@ public class LoginActivity extends ItActivity {
 
 					@Override
 					public void onCompleted(Boolean entity) {
-						ItLog.log(entity);
 						if(entity){
 							goToNextActivity();
 						} else {
@@ -230,13 +228,13 @@ public class LoginActivity extends ItActivity {
 	}
 
 
-	private void signin(final Object obj, final ItUser itUser, ItDevice deviceInfo){
-		mUserHelper.signin(itUser, deviceInfo, new PairEntityCallback<ItUser, ItDevice>() {
+	private void signin(final Object obj, final ItUser itUser, ItDevice device){
+		mUserHelper.signin(itUser, device, new PairEntityCallback<ItUser, ItDevice>() {
 
 			@Override
-			public void onCompleted(ItUser user, ItDevice deviceInfo) {
+			public void onCompleted(ItUser user, ItDevice device) {
 				mObjectPrefHelper.put(user);
-				mObjectPrefHelper.put(deviceInfo);
+				mObjectPrefHelper.put(device);
 
 				itUser.setId(user.getId());
 				AsyncChainer.notifyNext(obj);

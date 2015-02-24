@@ -23,6 +23,7 @@ import de.greenrobot.event.EventBus;
 public class UserHelper {
 	
 	private final String SIGNIN = "signin";
+	private final String BE_PRO = "be_pro";
 	
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
@@ -42,7 +43,7 @@ public class UserHelper {
 	}
 
 
-	public void signin(final ItUser user, ItDevice device, final PairEntityCallback<ItUser, ItDevice> callback) {
+	public void signin(ItUser user, ItDevice device, final PairEntityCallback<ItUser, ItDevice> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("signin", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -61,10 +62,35 @@ public class UserHelper {
 					JsonObject json = _json.getAsJsonObject();
 					ItUser user = new Gson().fromJson(json.get("user"), ItUser.class);
 					ItDevice device = new Gson().fromJson(json.get("device"), ItDevice.class);
-
 					callback.onCompleted(user, device);
 				} else {
 					EventBus.getDefault().post(new ItException("signin", ItException.TYPE.INTERNAL_ERROR, response));
+				}
+			}
+		});
+	}
+	
+	
+	public void bePro(ItUser user, String key, ItUser.TYPE type, final EntityCallback<ItUser> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("bePro", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		JsonObject jo = new JsonObject();
+		jo.addProperty("user", user.toString());
+		jo.addProperty("key", key);
+		jo.addProperty("validType", type.toString());
+		
+		mClient.invokeApi(BE_PRO, jo, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(new Gson().fromJson(_json, ItUser.class));
+				} else {
+					EventBus.getDefault().post(new ItException("bePro", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});

@@ -156,15 +156,15 @@ public class ItUser implements Parcelable {
 		this.setNotiReplyItem(itUser.isNotiReplyItem());
 	}
 
-	public boolean isLoggedIn() {
+	public boolean checkLoggedIn() {
 		return (this.itUserId != null && !this.itUserId.equals(PrefHelper.DEFAULT_STRING)); 
 	}
 
-	public boolean isMe(){
+	public boolean checkMe(){
 		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getItUserId().equals(this.itUserId);
 	}
 
-	public boolean isPro(){
+	public boolean checkPro(){
 		return TYPE.PRO.toString().equals(this.type);
 	}
 

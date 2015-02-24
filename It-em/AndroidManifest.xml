@@ -100,8 +100,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.BeProActivity"
-            android:label="@string/be_pro"
+            android:name=".activity.ProActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity

@@ -13,11 +13,9 @@ import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.ItIntentService;
 import com.pinthecloud.item.R;
@@ -70,8 +68,6 @@ public class SplashActivity extends ItActivity {
 
 
 	private void runItem() {
-		if (mApp.isAdmin()) Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_SHORT).show();
-
 		// Remove noti
 		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
@@ -165,7 +161,7 @@ public class SplashActivity extends ItActivity {
 	private void goToNextActivity() {
 		ItUser user = mObjectPrefHelper.get(ItUser.class);
 		Intent intent = new Intent();
-		if (!user.isLoggedIn()){
+		if (!user.checkLoggedIn()){
 			// New User
 			intent.setClass(mThisActivity, LoginActivity.class);
 		} else {
@@ -175,30 +171,29 @@ public class SplashActivity extends ItActivity {
 		startActivity(intent);
 	}
 
-
 	private void checkDeviceInfo(){
 		// If mobile id doesn't exist, get it
-		ItDevice deviceInfo = mObjectPrefHelper.get(ItDevice.class);
-		if(deviceInfo.getMobileId().equals(PrefHelper.DEFAULT_STRING)) {
-			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
-			deviceInfo.setMobileId(mobileId);
-			mObjectPrefHelper.put(deviceInfo);
-
-			// For under ver 107
+		ItDevice device = mObjectPrefHelper.get(ItDevice.class);
+		if(device.getMobileId().equals(PrefHelper.DEFAULT_STRING)) {
+			/*** For under ver 107 ***/
 			ItUser user = mObjectPrefHelper.get(ItUser.class);
-			if(user.isLoggedIn()){
-				user.setItUserId(PrefHelper.DEFAULT_STRING);
-				mObjectPrefHelper.put(user);
+			if(user.checkLoggedIn()){
+				mPrefHelper.clear();
 			}
+			/*************************/
+
+			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
+			device.setMobileId(mobileId);
+			mObjectPrefHelper.put(device);
 		}
 
 		// If registration id doesn't exist, get it
-		deviceInfo = mObjectPrefHelper.get(ItDevice.class);
-		if(deviceInfo.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
+		device = mObjectPrefHelper.get(ItDevice.class);
+		if(device.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
 			setRegistrationId();
 			return;
 		}
-		
+
 		goToNextActivity();
 	}
 

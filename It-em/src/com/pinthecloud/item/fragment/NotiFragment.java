@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.NotiListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
-import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.ItNotification;
+import com.pinthecloud.item.model.ItUser;
 
 public class NotiFragment extends ItFragment {
 
@@ -86,7 +86,7 @@ public class NotiFragment extends ItFragment {
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mNotiList = new ArrayList<ItNotification>();
-		mListAdapter = new NotiListAdapter(mNotiList);
+		mListAdapter = new NotiListAdapter(mActivity, mNotiList);
 		mListView.setAdapter(mListAdapter);
 	}
 

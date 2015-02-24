@@ -12,7 +12,6 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.google.gson.Gson;
 import com.pinthecloud.item.model.ItNotification;
-import com.pinthecloud.item.util.ItLog;
 
 public class ItIntentService extends IntentService {
 
@@ -56,10 +55,11 @@ public class ItIntentService extends IntentService {
 		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
 		// Set Notification
+		ItNotification noti = new Gson().fromJson(message, ItNotification.class);
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mThis)
 		.setSmallIcon(R.drawable.launcher)
 		.setContentTitle(mThis.getResources().getString(R.string.app_name))
-		.setContentText(getNotiContent(message))
+		.setContentText(noti.notiContent())
 		.setAutoCancel(true);
 		mBuilder.setContentIntent(resultPendingIntent);
 
@@ -72,23 +72,6 @@ public class ItIntentService extends IntentService {
 		if(AudioManager.RINGER_MODE_SILENT != audioManager.getRingerMode()){
 			((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(500);
 		}
-	}
-
-
-	private String getNotiContent(String message){
-		ItLog.log(message);
-		
-		String content = "";
-		ItNotification noti = new Gson().fromJson(message, ItNotification.class);
-		
-		ItLog.logObject(noti);		
-		
-		content = content + noti.getWhoMade() + noti.getRefWhoMade() + " " + noti.getType();
-		if(noti.getContent() != null && !noti.getContent().equals("")){
-			content = content + " " + noti.getContent();
-		}
-		
-		return content;
 	}
 
 

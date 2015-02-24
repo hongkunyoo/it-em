@@ -139,7 +139,7 @@
                         android:id="@+id/item_frag_product_tag_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/green"
+                        android:background="@drawable/item_product_tag"
                         android:paddingBottom="@dimen/item_layout_margin"
                         android:paddingTop="@dimen/item_layout_margin" >
 

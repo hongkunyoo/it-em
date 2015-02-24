@@ -135,7 +135,7 @@ public class ItUserPageFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(mItUser.isMe()){
+		if(mItUser.checkMe()){
 			mItUser = mObjectPrefHelper.get(ItUser.class);
 			setProfile();
 			setButtonByProfile();
@@ -256,7 +256,7 @@ public class ItUserPageFragment extends ItFragment {
 			mWebsite.setVisibility(View.VISIBLE);
 		}
 
-		if(mItUser.isPro()){
+		if(mItUser.checkPro()){
 			mPro.setVisibility(View.VISIBLE);
 		} else {
 			mPro.setVisibility(View.GONE);
@@ -274,7 +274,7 @@ public class ItUserPageFragment extends ItFragment {
 			}
 		});
 
-		if(mItUser.isMe()){
+		if(mItUser.checkMe()){
 			mSettings.setOnClickListener(new OnClickListener() {
 
 				@Override

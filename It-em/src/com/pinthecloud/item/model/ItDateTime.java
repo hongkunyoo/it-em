@@ -2,6 +2,7 @@ package com.pinthecloud.item.model;
 
 import java.util.TimeZone;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.text.format.Time;
 
@@ -76,7 +77,7 @@ public class ItDateTime {
 		}
 	}
 	
-	public String getElapsedDateTime(Resources resources) {
+	public String getElapsedDateTime(Context context) {
 		Time nowTime = new Time();
 		nowTime.setToNow();
 
@@ -85,7 +86,7 @@ public class ItDateTime {
 			// In a day
 			int nowTimeSecond = nowTime.second + nowTime.minute*MINUTE_SECOND + nowTime.hour*HOUR_SECOND;
 			int dateTimeSecond = dateTime.second + dateTime.minute*MINUTE_SECOND + dateTime.hour*HOUR_SECOND;
-			return getElapsedTime(resources, nowTimeSecond - dateTimeSecond);
+			return getElapsedTime(context.getResources(), nowTimeSecond - dateTimeSecond);
 		} else if(elapsedDate == 1) {
 			int nowTimeSecond = nowTime.second + nowTime.minute*MINUTE_SECOND + nowTime.hour*HOUR_SECOND + DAY_SECOND;
 			int dateTimeSecond = dateTime.second + dateTime.minute*MINUTE_SECOND + dateTime.hour*HOUR_SECOND;
@@ -93,14 +94,14 @@ public class ItDateTime {
 			
 			if(elapsedSeoncd < DAY_SECOND){
 				// In a day
-				return getElapsedTime(resources, elapsedSeoncd);
+				return getElapsedTime(context.getResources(), elapsedSeoncd);
 			} else {
 				// 1 day
-				return resources.getString(R.string.yesterday) + " " + toPrettyTime();
+				return context.getResources().getString(R.string.yesterday) + " " + toPrettyTime();
 			}
 		} else if(elapsedDate < 3) {
 			// 2 day
-			return elapsedDate + resources.getString(R.string.day_ago) + " " + toPrettyTime();
+			return elapsedDate + context.getResources().getString(R.string.day_ago) + " " + toPrettyTime();
 		} else {
 			// More than 3 day
 			return toPrettyDateTime();

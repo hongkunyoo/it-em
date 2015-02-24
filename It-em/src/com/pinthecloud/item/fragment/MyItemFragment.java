@@ -79,7 +79,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		mHeaderHeight = getArguments().getInt(HEADER_HEIGHT_KEY);
 		mTabHeight = getArguments().getInt(TAB_HEIGHT_KEY);
 
-		if(mItUser.isPro()){
+		if(mItUser.checkPro()){
 			MY_ITEM = 0;
 			IT_ITEM = 1;
 		} else {

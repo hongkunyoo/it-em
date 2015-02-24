@@ -19,6 +19,7 @@
             android:id="@+id/noti_frag_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/white"
             android:scrollbars="none" />
     </android.support.v4.widget.SwipeRefreshLayout>
 

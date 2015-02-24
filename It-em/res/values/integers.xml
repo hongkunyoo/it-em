@@ -6,23 +6,18 @@
     
     <!-- Home -->
     <integer name="home_item_grid_column_num">2</integer>
-    <integer name="home_item_content_max_line">3</integer>
 
     <!-- My Item -->
     <integer name="my_item_grid_column_num">3</integer>
 
+    <!-- Category -->
+    <integer name="category_grid_column_num">3</integer>
+    
     <!-- Item -->
     <integer name="item_display_reply_num">2</integer>
 
-    <!-- Reply -->
-    <integer name="reply_inputbar_max_line">3</integer>
-    
     <!-- Upload -->
-    <integer name="upload_content_max_line">5</integer>
     <integer name="brand_info_max_length">15</integer>
-    
-    <!-- Category -->
-    <integer name="category_grid_column_num">3</integer>
     
     <!-- Profile Settings -->
     <integer name="nick_name_min_length">2</integer>

@@ -29,26 +29,25 @@
     <string name="image">Image</string>
 
     <!-- Home -->
-    <string name="plus">+ </string>
-    <string name="comments">Comments</string>
     <string name="more">More</string>
     <string name="unfold">Unfold</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
-    <string name="it_number">numbers of IT</string>
     <string name="upload_by">Uploaded by</string>
     <string name="of">\'s</string>
+    <string name="plus">+ </string>
     <string name="delete">Delete</string>
 
     <!-- Reply -->
+    <string name="comments">Comments</string>
     <string name="submit">SUBMIT</string>
     <string name="write_reply">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
     <string name="first_reply">Be first of comments</string>
 
     <!-- It -->
-    <string name="it_title">People who gives IT</string>
+    <string name="it_title">People who say IT on this item</string>
 
     <!-- It User Page -->
     <string name="not_exist_user">This user doesn\'t exist.</string>
@@ -64,16 +63,17 @@
 
     <!-- Be Pro -->
     <string name="be_pro">Be Editor</string>
+    <string name="pro_settings">Editor Settings</string>
     <string name="be_pro_description">IT:EM allows Editor to upload item.\nBe Editor and Share your premium style &amp; Receive reward.\nIf you want to be Editor, send a request mail to us.</string>
     <string name="homepage">it-em.me</string>
     <string name="item_email">item@pinthecloud.com</string>
     <string name="code">CODE</string>
-    <string name="valid_pro">You become PRO.</string>
-    <string name="invalid_pro">It is invalid PRO key.</string>
+    <string name="valid_pro">Congratulation! You become Editor. Please set editor information.</string>
+    <string name="invalid_pro">Invalid Editor key. Please check it.</string>
 
     <!-- Upload -->
     <string name="upload">Upload</string>
-    <string name="uploaded">The item is uploaded.</string>
+    <string name="uploaded">The item is uploaded</string>
     <string name="description">Description</string>
     <string name="select_picture">Select Picture</string>
     <string name="brand_info">Brand Information</string>
@@ -82,7 +82,7 @@
     <string name="bad_brand_message">Only normal letter and number is allowed as brand.</string>
 
     <!-- Profile Settings -->
-    <string name="profile_settings">Profile Edit</string>
+    <string name="profile_settings">Profile Settings</string>
     <string name="nick_name">Nick Name</string>
     <string name="information">Information</string>
     <string name="website">Website</string>
@@ -92,6 +92,13 @@
     <string name="profile_edited">Profile is edited.</string>
     <string name="profile_image_edited">Profile image is changed.</string>
 
+    <!-- Notification -->
+    <string name="noti_content">%1$s %3$s %2$s item.</string>
+    <string name="noti_name_title_my">my</string>
+    <string name="noti_like_it">says IT on</string>
+    <string name="noti_reply">comments on</string>
+    <string name="noti_product_tag">puts product label on</string>
+    
     <!-- Settings -->
     <string name="logout">Logout</string>
     <string name="logout_message">Do you want to logout?</string>

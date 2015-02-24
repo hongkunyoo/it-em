@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
+import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.R;
 
 public class ItNotification extends AbstractItemModel<ItNotification> implements Parcelable {
 
@@ -16,11 +18,15 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 	private String refWhoMade;
 	private String refWhoMadeId;
 	private String type;
+	private String typeRefId;
+	private int imageWidth;
+	private int imageHeight;
 
 	public ItNotification() {
 		super();
 	}
-	public ItNotification(String whoMade, String whoMadeId, String refId, String refWhoMade, String refWhoMadeId, String content, TYPE type) {
+	public ItNotification(String whoMade, String whoMadeId, String refId, String refWhoMade, String refWhoMadeId,
+			String content, TYPE type, int imageWidth, int imageHeight) {
 		super();
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
@@ -29,6 +35,8 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		this.setRefWhoMadeId(refWhoMadeId);
 		this.setContent(content);
 		this.setType(type.toString());
+		this.setImageWidth(imageWidth);
+		this.setImageHeight(imageHeight);
 	}
 
 	public String getRefWhoMade() {
@@ -52,6 +60,24 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 	public void fixType(TYPE type) {
 		this.type = type.toString();
 	}
+	public String getTypeRefId() {
+		return typeRefId;
+	}
+	public void setTypeRefId(String typeRefId) {
+		this.typeRefId = typeRefId;
+	}
+	public int getImageWidth() {
+		return imageWidth;
+	}
+	public void setImageWidth(int imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+	public int getImageHeight() {
+		return imageHeight;
+	}
+	public void setImageHeight(int imageHeight) {
+		this.imageHeight = imageHeight;
+	}
 	public void readNotiRecord(ItNotification noti) {
 		this.setId(noti.getId());
 		this.setRawCreateDateTime(noti.getRawCreateDateTime());
@@ -62,9 +88,47 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		this.setRefWhoMadeId(noti.getRefWhoMadeId());
 		this.setContent(noti.getContent());
 		this.setType(noti.getType());
+		this.setTypeRefId(noti.getTypeRefId());
+		this.setImageWidth(noti.getImageWidth());
+		this.setImageHeight(noti.getImageHeight());
 	}
 
+	public String notiContent(){
+		ItApplication app = ItApplication.getInstance();
+		ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
+		
+		String refWhoMade = "";
+		if(getRefWhoMadeId().equals(myItUser.getId())){
+			refWhoMade = app.getResources().getString(R.string.noti_name_title_my);
+		} else {
+			refWhoMade = getRefWhoMade() + app.getResources().getString(R.string.of);
+		}
+		
+		String type = "";
+		if(getType().equals(ItNotification.TYPE.LikeIt.toString())){
+			type = app.getResources().getString(R.string.noti_like_it);
+		} else if(getType().equals(ItNotification.TYPE.Reply.toString())){
+			type = app.getResources().getString(R.string.noti_reply);
+		} else if(getType().equals(ItNotification.TYPE.ProductTag.toString())){
+			type = app.getResources().getString(R.string.noti_product_tag);
+		}
+		
+		String content = String.format(app.getResources().getString(R.string.noti_content),
+				getWhoMade(), refWhoMade, type);
+		return content;
+	}
 
+	public Item makeItem(){
+		Item item = new Item();
+		item.setId(refId);
+		item.setWhoMade(refWhoMade);
+		item.setWhoMadeId(refWhoMadeId);
+		item.setImageWidth(imageWidth);
+		item.setImageHeight(imageHeight);
+		return item;
+	}
+	
+	
 	/*
 	 * Parcelable
 	 */

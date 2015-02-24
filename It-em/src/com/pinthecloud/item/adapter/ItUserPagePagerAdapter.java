@@ -30,7 +30,7 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 		this.mHeaderHeight = headerHeight;
 		this.mTabHeight = tabHeight;
 
-		if(mItUser.isPro()){
+		if(mItUser.checkPro()){
 			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_pro_tab_title_array);	
 		} else {
 			this.mTitles = context.getResources().getStringArray(R.array.it_user_page_tab_title_array);

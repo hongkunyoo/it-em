@@ -213,8 +213,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 						// Do like it
 						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
-						ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(),
-								item.getId(), item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt);
+						ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), item.getId(),
+								item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
+								item.getImageWidth(), item.getImageHeight());
 						mApp.getAimHelper().addUnique(likeIt, noti, new EntityCallback<LikeIt>() {
 
 							@Override

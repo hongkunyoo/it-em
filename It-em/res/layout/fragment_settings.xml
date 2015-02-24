@@ -150,7 +150,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/settings_frag_be_pro"
+        android:id="@+id/settings_frag_pro_settings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
         android:background="@drawable/list_white_selector"
@@ -166,12 +166,12 @@
             android:src="@drawable/mypage_edit_ic" />
 
         <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/settings_frag_pro_settings_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/key_line_second"
             android:layout_marginStart="@dimen/key_line_second"
-            android:text="@string/be_pro"
             android:textColor="@color/brand_text_color"
             android:textStyle="bold"
             app:textType="body" />

@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="@integer/home_item_content_max_line"
+            android:maxLines="3"
             android:textColor="@color/brand_text_color"
             app:textType="caption" />
 

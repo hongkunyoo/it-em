@@ -18,9 +18,8 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.AbstractItemModel;
 import com.pinthecloud.item.model.HashTag;
-import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.ItNotification;
+import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
@@ -41,8 +40,6 @@ public class AimHelper {
 	private final String AIM_LIST_MY_ITEM = "aim_list_my_item";
 	private final String AIM_LIST_MY_NOTI = "aim_list_my_noti";
 	private final String AIM_UPDATE = "aim_update";
-	private final String IS_VALID = "is_valid";
-	private final String INVALIDATE_INVITE_KEY = "invalidate_invitekey";
 
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
@@ -69,7 +66,7 @@ public class AimHelper {
 
 		JsonObject jo = new JsonObject();
 		jo.add("item", obj.toJson());
-		jo.add("noti", noti.toJson());
+		jo.addProperty("noti", noti.toString());
 
 		mClient.invokeApi(AIM_ADD, jo, new ApiJsonOperationCallback() {
 
@@ -95,7 +92,7 @@ public class AimHelper {
 
 		JsonObject jo = new JsonObject();
 		jo.add("item", obj.toJson());
-		jo.add("noti", noti.toJson());
+		jo.addProperty("noti", noti.toString());
 
 		mClient.invokeApi(AIM_ADD_UNIQUE, jo, new ApiJsonOperationCallback() {
 
@@ -125,7 +122,7 @@ public class AimHelper {
 		JsonArray tagJson = gson.fromJson(gson.toJson(tags), JsonArray.class);
 		JsonObject jo = new JsonObject();
 		jo.add("tags", tagJson);
-		jo.add("item", item.toJson());
+		jo.addProperty("item", item.toString());
 
 		mClient.invokeApi(AIM_ADD_ITEM, jo, new ApiJsonOperationCallback() {
 
@@ -409,54 +406,6 @@ public class AimHelper {
 					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
 				} else {
 					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, response));
-				}
-			}
-		});
-	}
-
-
-	public void isValid(String key, ItUser.TYPE type, final EntityCallback<Boolean> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("key", key);
-		json.addProperty("validType", type.toString());
-
-		mClient.invokeApi(IS_VALID, json, new ApiJsonOperationCallback() {
-
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted(_json.getAsBoolean());	
-				} else {
-					EventBus.getDefault().post(new ItException("isValid", ItException.TYPE.INTERNAL_ERROR, response));
-				}
-			}
-		});
-	}
-
-	public void invalidateInviteKey(String inviteKey, final EntityCallback<Boolean> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("invalidateInviteKey", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("inviteKey", inviteKey);
-
-		mClient.invokeApi(INVALIDATE_INVITE_KEY, json, new ApiJsonOperationCallback() {
-
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted(_json.getAsBoolean());	
-				} else {
-					EventBus.getDefault().post(new ItException("invalidateInviteKey", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});

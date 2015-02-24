@@ -23,9 +23,9 @@ import com.kakao.exception.KakaoException;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.BeProActivity;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.activity.ProActivity;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -42,7 +42,8 @@ public class SettingsFragment extends ItFragment {
 	private final int PROFILE_SETTINGS = 0;
 
 	private View mProfileSettings;
-	private View mBePro;
+	private View mProSettings;
+	private TextView mProSettingsText;
 
 	private ToggleButton mNotiMyItem;
 	private ToggleButton mNotiItItem;
@@ -103,7 +104,8 @@ public class SettingsFragment extends ItFragment {
 
 	private void findComponent(View view){
 		mProfileSettings = view.findViewById(R.id.settings_frag_profile_settings);
-		mBePro = view.findViewById(R.id.settings_frag_be_pro);
+		mProSettings = view.findViewById(R.id.settings_frag_pro_settings);
+		mProSettingsText = (TextView)view.findViewById(R.id.settings_frag_pro_settings_text);
 		mNotiMyItem = (ToggleButton)view.findViewById(R.id.settings_frag_noti_my_item);
 		mNotiItItem = (ToggleButton)view.findViewById(R.id.settings_frag_noti_it_item);
 		mNotiReplyItem = (ToggleButton)view.findViewById(R.id.settings_frag_noti_reply_item);
@@ -113,10 +115,10 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
-		if(mMyItUser.isPro()){
-			mBePro.setVisibility(View.GONE);
+		if(mMyItUser.checkPro()){
+			mProSettingsText.setText(getResources().getString(R.string.pro_settings));
 		} else {
-			mBePro.setVisibility(View.VISIBLE);
+			mProSettingsText.setText(getResources().getString(R.string.be_pro));
 		}
 	}
 
@@ -131,11 +133,11 @@ public class SettingsFragment extends ItFragment {
 			}
 		});
 
-		mBePro.setOnClickListener(new OnClickListener() {
+		mProSettings.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, BeProActivity.class);
+				Intent intent = new Intent(mActivity, ProActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -163,7 +165,7 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mMyItUser.setNotiMyItem(mNotiItItem.isChecked());
+				mMyItUser.setNotiItItem(mNotiItItem.isChecked());
 				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
 					@Override
@@ -181,7 +183,7 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mMyItUser.setNotiMyItem(mNotiReplyItem.isChecked());
+				mMyItUser.setNotiReplyItem(mNotiReplyItem.isChecked());
 				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
 
 					@Override
