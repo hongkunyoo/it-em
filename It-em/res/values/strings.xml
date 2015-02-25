@@ -98,6 +98,7 @@
     <string name="noti_like_it">says IT on</string>
     <string name="noti_reply">comments on</string>
     <string name="noti_product_tag">puts product label on</string>
+    <string name="noti_new">New noti came. Refresh noti screen.</string>
     
     <!-- Settings -->
     <string name="logout">Logout</string>

@@ -103,7 +103,7 @@ public class ItApplication extends Application {
 			}
 
 			// Default is REAL (int 0)
-			if (getPrefHelper().getInt(ItConstant.CURRENT_MODE) == TEST) {
+			if (getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY) == TEST) {
 				mClient = testClient;
 			} else {
 				mClient = realClient;
@@ -153,7 +153,7 @@ public class ItApplication extends Application {
 	}
 
 	public static boolean isDebugging() {
-		return app.getPrefHelper().getInt(ItConstant.CURRENT_MODE) == ItApplication.TEST;
+		return app.getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY) == ItApplication.TEST;
 	}
 
 	public boolean isOnline(){
@@ -195,7 +195,7 @@ public class ItApplication extends Application {
 	}
 
 	public void switchClient(final EntityCallback<Boolean> callback) {
-		int type = prefHelper.getInt(ItConstant.CURRENT_MODE);
+		int type = prefHelper.getInt(ItConstant.DEVELOP_MODE_KEY);
 		if (type == REAL) {
 			mClient = realClient;
 		} else if(type == TEST) {

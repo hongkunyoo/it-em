@@ -157,7 +157,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		MenuItem deleteMenuItem = menu.findItem(R.id.item_delete);
-		deleteMenuItem.setVisible(mItem.checkIsMine());
+		deleteMenuItem.setVisible(mItem.checkMine() || mApp.isAdmin());
 	}
 
 
@@ -187,7 +187,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 					setReplyTitle(mItem.getReplyCount());
 					ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-					showReplyEmptyView(mItem.getReplyCount());
+					mReplyListEmptyView.setVisibility(mItem.getReplyCount() > 0 ? View.GONE : View.VISIBLE);
 				}
 			}
 		});
@@ -483,28 +483,15 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setItNumber(int itNumber){
-		if(itNumber <= 0){
-			mItNumberLayout.setVisibility(View.GONE);
-		} else {
-			mItNumberLayout.setVisibility(View.VISIBLE);
-		}
+		mItNumberLayout.setVisibility(itNumber > 0 ? View.VISIBLE : View.GONE);
 		mItNumber.setText(""+itNumber);
-	}
-
-
-	private void showReplyEmptyView(int replyCount){
-		if(replyCount > 0){
-			mReplyListEmptyView.setVisibility(View.GONE);
-		} else {
-			mReplyListEmptyView.setVisibility(View.VISIBLE);
-		}
 	}
 
 
 	private void submitReply(final Reply reply){
 		mReplyListAdapter.add(mReplyList.size(), reply);
 		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-		showReplyEmptyView(mItem.getReplyCount()+1);
+		mReplyListEmptyView.setVisibility(mItem.getReplyCount()+1 > 0 ? View.GONE : View.VISIBLE);
 
 		ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
 				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
@@ -592,7 +579,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		});
 
 		// Set reply list fragment
-		showReplyEmptyView(mItem.getReplyCount());
+		mReplyListEmptyView.setVisibility(mItem.getReplyCount() > 0 ? View.GONE : View.VISIBLE);
 		setReplyTitle(mItem.getReplyCount());
 	}
 

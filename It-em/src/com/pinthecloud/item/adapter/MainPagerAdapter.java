@@ -13,9 +13,16 @@ import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.ItUserPageFragment;
 import com.pinthecloud.item.fragment.NotiFragment;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.view.PagerSlidingTabStrip.IconTabProvider;
+import com.pinthecloud.item.view.PagerSlidingTabStrip.CustomTabProvider;
 
-public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconTabProvider {
+public class MainPagerAdapter extends FragmentStatePagerAdapter implements CustomTabProvider {
+
+	public static enum TAB{
+		HOME,
+		NOTI,
+		IT_USER_PAGE
+	}
+
 
 	private ItApplication mApp;
 	private int[] mTitleIcons = {R.drawable.launcher, R.drawable.launcher, R.drawable.launcher};
@@ -28,25 +35,21 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 
 
 	@Override
-	public int getPageIconResId(int position) {
-		return mTitleIcons[position];
+	public int getPageLayoutResId(int position) {
+		return R.layout.tab_main;
 	}
 
-	
+
 	@Override
 	public Fragment getItem(int position) {
 		ItFragment fragment = null;
-		switch(position){
-		case 0:
+		if(position == TAB.HOME.ordinal()){
 			fragment = new HomeFragment();
-			break;
-		case 1:
+		} else if(position == TAB.NOTI.ordinal()){
 			fragment = new NotiFragment();
-			break;
-		case 2:
+		} else if(position == TAB.IT_USER_PAGE.ordinal()){
 			ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 			fragment = ItUserPageFragment.newInstance(myItUser.getId());
-			break;
 		}
 		return fragment;
 	}
@@ -56,10 +59,15 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements IconT
 	public int getCount() {
 		return mTitleIcons.length;
 	}
-	
-	
+
+
 	@Override
 	public Parcelable saveState() {
 		return null;
+	}
+
+
+	public int getPageIconResId(int position) {
+		return mTitleIcons[position];
 	}
 }

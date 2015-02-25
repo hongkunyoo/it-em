@@ -14,11 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.NotiListAdapter;
+import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
+
+import de.greenrobot.event.EventBus;
 
 public class NotiFragment extends ItFragment {
 
@@ -46,6 +50,7 @@ public class NotiFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_noti, container, false);
+		
 		findComponent(view);
 		setRefreshLayout();
 		setList();
@@ -53,7 +58,7 @@ public class NotiFragment extends ItFragment {
 
 		mProgressBar.setVisibility(View.VISIBLE);
 		mRefresh.setVisibility(View.GONE);
-		updateList();
+		updateList(false);
 
 		return view;
 	}
@@ -72,7 +77,7 @@ public class NotiFragment extends ItFragment {
 
 			@Override
 			public void onRefresh() {
-				updateList();
+				updateList(true);
 			}
 		});
 	}
@@ -109,15 +114,20 @@ public class NotiFragment extends ItFragment {
 	}
 
 
-	private void updateList(){
+	private void updateList(final boolean refresh){
 		page = 0;
 		mAimHelper.listMyNoti(page, mMyItUser.getId(), new ListCallback<ItNotification>() {
 
 			@Override
 			public void onCompleted(List<ItNotification> list, int count) {
-				mProgressBar.setVisibility(View.GONE);
 				mRefresh.setVisibility(View.VISIBLE);
-				mRefresh.setRefreshing(false);
+				if(refresh){
+					mPrefHelper.remove(ItConstant.NOTIFICATION_NUMBER_KEY);
+					EventBus.getDefault().post(new NotificationEvent());
+					mRefresh.setRefreshing(false);
+				} else {
+					mProgressBar.setVisibility(View.GONE);
+				}
 
 				mNotiList.clear();
 				mListAdapter.addAll(list);

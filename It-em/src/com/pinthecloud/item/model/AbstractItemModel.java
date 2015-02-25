@@ -58,7 +58,7 @@ public class AbstractItemModel<T> {
 		this.rawCreateDateTime = dateTime.toString();
 	}
 
-	public boolean checkIsMine(){
+	public boolean checkMine(){
 		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.whoMadeId);
 	}
 

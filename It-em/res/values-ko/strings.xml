@@ -75,6 +75,7 @@
     <string name="noti_like_it">아이템을 좋아합니다</string>
     <string name="noti_reply">아이템에 댓글을 달았습니다</string>
     <string name="noti_product_tag">아이템에 상품라벨을 달았습니다</string>
+    <string name="noti_new">새로운 알람이 있습니다. 알람 화면을 새로고침 해보세요.</string>
     
     <!-- Settings -->
     <string name="logout">로그아웃</string>

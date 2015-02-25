@@ -10,7 +10,10 @@
     <dimen name="profile_preview_image_width">40dp</dimen>
     <dimen name="row_height">48dp</dimen>
     <dimen name="tab_indicator_height">4dp</dimen>
-
+    
+    <!-- Main -->
+    <dimen name="main_tab_margin">-8dp</dimen>
+    
     <!-- Login -->
     <dimen name="login_button_bottom_margin">32dp</dimen>
 

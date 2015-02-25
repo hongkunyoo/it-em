@@ -245,13 +245,8 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 
 	private void showGrid(int count){
-		if(count <= 0){
-			mGridEmptyLayout.setVisibility(View.VISIBLE);
-			mGridView.setVisibility(View.GONE);
-		} else {
-			mGridEmptyLayout.setVisibility(View.GONE);
-			mGridView.setVisibility(View.VISIBLE);
-		}
+		mGridEmptyLayout.setVisibility(count > 0 ? View.GONE : View.VISIBLE);
+		mGridView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
 	}
 
 

@@ -16,13 +16,13 @@
 
         <RelativeLayout
             android:layout_width="@dimen/upload_image_width"
-            android:layout_height="@dimen/upload_image_width" >
+            android:layout_height="@dimen/upload_image_width"
+            android:layout_marginBottom="@dimen/key_line_first" >
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/upload_frag_item_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
                 android:layout_margin="@dimen/upload_content_margin"
                 app:riv_corner_radius="@dimen/corner_radius" />
 

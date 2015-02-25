@@ -11,12 +11,16 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.google.gson.Gson;
+import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.model.ItNotification;
+
+import de.greenrobot.event.EventBus;
 
 public class ItIntentService extends IntentService {
 
 	public static final int NOTIFICATION_ID = 1;
 
+	private ItApplication mApp;
 	private Context mThis;
 
 	public ItIntentService() {
@@ -24,7 +28,8 @@ public class ItIntentService extends IntentService {
 	}
 	public ItIntentService(String name) {
 		super(name);
-		mThis = this;
+		this.mApp = ItApplication.getInstance();
+		this.mThis = this;
 	}
 
 
@@ -52,7 +57,8 @@ public class ItIntentService extends IntentService {
 		stackBuilder.addNextIntent(resultIntent);
 
 		// Set intent and bitmap
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+				PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
 		// Set Notification
 		ItNotification noti = new Gson().fromJson(message, ItNotification.class);
@@ -67,6 +73,11 @@ public class ItIntentService extends IntentService {
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
+		// Add Noti Number preference
+		int notiNumber = mApp.getPrefHelper().getInt(ItConstant.NOTIFICATION_NUMBER_KEY);
+		mApp.getPrefHelper().put(ItConstant.NOTIFICATION_NUMBER_KEY, ++notiNumber);
+		EventBus.getDefault().post(new NotificationEvent(noti));
+		
 		// For Vibration
 		AudioManager audioManager = (AudioManager) mThis.getSystemService(Context.AUDIO_SERVICE);
 		if(AudioManager.RINGER_MODE_SILENT != audioManager.getRingerMode()){

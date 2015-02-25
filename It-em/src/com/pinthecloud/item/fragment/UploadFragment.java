@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
@@ -105,7 +107,7 @@ public class UploadFragment extends ItFragment {
 		.fit().centerCrop()
 		.into(mItemImage);
 
-		mItemImageDelete.setVisibility(mItemImageUri == null ? View.GONE : View.VISIBLE);
+		mItemImageDelete.setVisibility(mItemImageUri != null ? View.VISIBLE : View.GONE);
 	}
 
 
@@ -157,7 +159,10 @@ public class UploadFragment extends ItFragment {
 			if(message.equals("")){
 				uploadItem();
 			} else {
-				Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+				Toast toast = Toast.makeText(mActivity, message, Toast.LENGTH_LONG);
+				TextView textView = (TextView)toast.getView().findViewById(android.R.id.message);
+				textView.setGravity(Gravity.CENTER_HORIZONTAL);
+				toast.show();
 			}
 			break;
 		}

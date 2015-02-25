@@ -26,10 +26,10 @@ import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
-import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
@@ -150,24 +150,19 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 			}
 		});
 
-		if(item.checkIsMine()){
-			holder.more.setVisibility(View.VISIBLE);
-			holder.more.setOnClickListener(new OnClickListener() {
+		holder.more.setVisibility(item.checkMine() || mApp.isAdmin() ? View.VISIBLE : View.GONE);
+		holder.more.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					String[] itemList = mActivity.getResources().getStringArray(R.array.home_more_array);
-					DialogCallback[] callbacks = getDialogCallbacks(itemList, item);
+			@Override
+			public void onClick(View v) {
+				String[] itemList = mActivity.getResources().getStringArray(R.array.home_more_array);
+				DialogCallback[] callbacks = getDialogCallbacks(itemList, item);
 
-					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
-					listDialog.setCallbacks(callbacks);
-					listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
-				}
-			});
-		} else {
-			holder.more.setVisibility(View.GONE);
-			holder.more.setOnClickListener(null);
-		}
+				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+				listDialog.setCallbacks(callbacks);
+				listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
 
 		holder.itemImage.setOnClickListener(new OnClickListener() {
 
@@ -194,7 +189,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 				mActivity.startActivity(intent);
 			}
 		});
-		
+
 		holder.itButton.setActivated(item.getPrevLikeId() != null);
 		holder.itButton.setOnClickListener(new OnClickListener() {
 

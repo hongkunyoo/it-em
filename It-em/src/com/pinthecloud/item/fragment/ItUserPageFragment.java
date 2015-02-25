@@ -140,7 +140,7 @@ public class ItUserPageFragment extends ItFragment {
 			setProfile();
 			setButtonByProfile();
 		}
-		
+
 		if(mItUserId.equals(mItUser.getId())){
 			setProfileImage();
 		}
@@ -184,7 +184,7 @@ public class ItUserPageFragment extends ItFragment {
 		mActionBar = mActivity.getSupportActionBar();
 		if(mActionBar != null) mActionBar.setDisplayHomeAsUpEnabled(true);
 	}
-	
+
 
 	private void setComponent(){
 		mWebsite.setOnClickListener(new OnClickListener() {
@@ -201,8 +201,8 @@ public class ItUserPageFragment extends ItFragment {
 			}
 		});
 	}
-	
-	
+
+
 	private void setItUser(final Object obj){
 		mItUser = mObjectPrefHelper.get(ItUser.class);
 		if(mItUserId.equals(mItUser.getId())){
@@ -244,23 +244,9 @@ public class ItUserPageFragment extends ItFragment {
 		mDescription.setText(mItUser.getSelfIntro());
 		mWebsite.setText(mItUser.getWebPage());
 
-		if(mItUser.getSelfIntro().equals("")){
-			mDescription.setVisibility(View.GONE);
-		} else {
-			mDescription.setVisibility(View.VISIBLE);
-		}
-
-		if(mItUser.getWebPage().equals("")){
-			mWebsite.setVisibility(View.GONE);
-		} else {
-			mWebsite.setVisibility(View.VISIBLE);
-		}
-
-		if(mItUser.checkPro()){
-			mPro.setVisibility(View.VISIBLE);
-		} else {
-			mPro.setVisibility(View.GONE);
-		}
+		mDescription.setVisibility(!mItUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
+		mWebsite.setVisibility(!mItUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
+		mPro.setVisibility(mItUser.checkPro() ? View.VISIBLE : View.GONE);
 	}
 
 

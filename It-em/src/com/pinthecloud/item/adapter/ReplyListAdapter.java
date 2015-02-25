@@ -192,23 +192,21 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			}
 		});
 
-		if(reply.checkIsMine()){
-			holder.view.setOnLongClickListener(new OnLongClickListener() {
+		holder.view.setOnLongClickListener(new OnLongClickListener() {
 
-				@Override
-				public boolean onLongClick(View v) {
+			@Override
+			public boolean onLongClick(View v) {
+				if(reply.checkMine() || mApp.isAdmin()){
 					String[] itemList = mActivity.getResources().getStringArray(R.array.reply_long_click_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
 
 					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
 					listDialog.setCallbacks(callbacks);
 					listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
-					return false;
 				}
-			});
-		} else {
-			holder.view.setOnLongClickListener(null);
-		}
+				return false;
+			}
+		});
 	}
 
 

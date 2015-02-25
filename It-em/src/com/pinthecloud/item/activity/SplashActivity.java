@@ -13,9 +13,11 @@ import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.ItIntentService;
 import com.pinthecloud.item.R;
@@ -68,6 +70,10 @@ public class SplashActivity extends ItActivity {
 
 
 	private void runItem() {
+		if(mApp.isAdmin()){
+			Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_LONG).show();;
+		}
+		
 		// Remove noti
 		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);

@@ -256,7 +256,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mActivity);
-				mPrefHelper.put(ItConstant.CURRENT_MODE, ItApplication.REAL);
+				mPrefHelper.put(ItConstant.DEVELOP_MODE_KEY, ItApplication.REAL);
 				mApp.switchClient(new EntityCallback<Boolean>() {
 
 					@Override
@@ -272,7 +272,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mActivity);
-				mPrefHelper.put(ItConstant.CURRENT_MODE, ItApplication.TEST);
+				mPrefHelper.put(ItConstant.DEVELOP_MODE_KEY, ItApplication.TEST);
 				mApp.switchClient(new EntityCallback<Boolean>() {
 
 					@Override

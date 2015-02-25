@@ -128,4 +128,10 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 		mNotiList.addAll(notiList);
 		notifyDataSetChanged();
 	}
+	
+	
+	public void add(int position, ItNotification noti) {
+		mNotiList.add(position, noti);
+		notifyItemInserted(position);
+	}
 }

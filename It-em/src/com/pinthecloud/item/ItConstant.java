@@ -8,6 +8,7 @@ public class ItConstant {
 	
 	
 	// Preference
+	public static final String DEVELOP_MODE_KEY = "DEVELOP_MODE_KEY";
 	public static final String MAX_TEXTURE_SIZE_KEY = "MAX_TEXTURE_SIZE_KEY";
-	public static final String CURRENT_MODE = "CURRENT_MODE";
+	public static final String NOTIFICATION_NUMBER_KEY = "NOTIFICATION_NUMBER_KEY";
 }
