@@ -250,9 +250,7 @@ public class LoginActivity extends ItActivity {
 			protected Bitmap doInBackground(Void... params) {
 				Bitmap bitmap = null;
 				try {
-					bitmap = mApp.getPicasso()
-							.load(url)
-							.get();
+					bitmap = mApp.getPicasso().load(url).get();
 				} catch (IOException e) {
 					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.INTERNAL_ERROR));
 				}

@@ -17,14 +17,14 @@ public class ProActivity extends ItActivity {
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
 	private ItUser mMyItUser;
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
 		setContentView(R.layout.activity_toolbar_frame);
-		
+
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		setToolbar();
 		setFragment();
@@ -37,13 +37,13 @@ public class ProActivity extends ItActivity {
 		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
 	}
 
-	
+
 	@Override
 	public View getToolbarLayout() {
 		return mToolbarLayout;
 	}
-	
-	
+
+
 	private void setToolbar(){
 		mToolbarLayout = findViewById(R.id.toolbar_layout);
 		mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -51,19 +51,15 @@ public class ProActivity extends ItActivity {
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		mToolbarLayout.bringToFront();
 	}
-	
-	
+
+
 	private void setFragment(){
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		ItFragment fragment = null;
-		if(mMyItUser.checkPro()){
-			fragment = new ProSettingsFragment();
-		} else {
-			fragment = new BeProFragment();
-		}
+		mMyItUser.fixType(ItUser.TYPE.VIEWER);
+		ItFragment fragment = mMyItUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}

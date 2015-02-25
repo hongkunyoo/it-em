@@ -115,11 +115,9 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
-		if(mMyItUser.checkPro()){
-			mProSettingsText.setText(getResources().getString(R.string.pro_settings));
-		} else {
-			mProSettingsText.setText(getResources().getString(R.string.be_pro));
-		}
+		String proSettings = getResources().getString(R.string.pro_settings);
+		String bePro = getResources().getString(R.string.be_pro);
+		mProSettingsText.setText(mMyItUser.checkPro() ? proSettings : bePro);
 	}
 
 

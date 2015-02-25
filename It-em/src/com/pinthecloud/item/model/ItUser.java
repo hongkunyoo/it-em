@@ -26,8 +26,6 @@ public class ItUser implements Parcelable {
 	private String id;
 	@com.google.gson.annotations.SerializedName("itUserId")
 	private String itUserId;
-	@com.google.gson.annotations.SerializedName("password")
-	private String password;
 	@com.google.gson.annotations.SerializedName("platform")
 	private String platform;
 	@com.google.gson.annotations.SerializedName("nickName")
@@ -56,7 +54,6 @@ public class ItUser implements Parcelable {
 		this.platform = platform.toString();
 		this.nickName = nickName;
 		this.type = type.toString();
-		this.password = "";
 		this.selfIntro = "";
 		this.webPage = "";
 		this.email = "";
@@ -77,12 +74,6 @@ public class ItUser implements Parcelable {
 	}
 	public void setItUserId(String itUserId) {
 		this.itUserId = itUserId;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getPlatform() {
 		return platform;
@@ -144,7 +135,6 @@ public class ItUser implements Parcelable {
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
-		this.setPassword(itUser.getPassword());
 		this.setPlatform(itUser.getPlatform());
 		this.setEmail(itUser.getEmail());
 		this.setNickName(itUser.getNickName());

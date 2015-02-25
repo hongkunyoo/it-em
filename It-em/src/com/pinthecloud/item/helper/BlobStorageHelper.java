@@ -52,19 +52,19 @@ public class BlobStorageHelper {
 		return "https://athere.blob.core.windows.net/";
 	}
 	public static String getHostUrl(String uri) {
-		return "https://athere.blob.core.windows.net/" + uri + "/";
+		return getHostUrl() + uri + "/";
 	}
 	public static String getUserProfileHostUrl() {
 		return getHostUrl(CONTAINER_USER_PROFILE);
 	}
 	public static String getUserProfileImgUrl(String id) {
-		return getHostUrl(CONTAINER_USER_PROFILE) + id;
+		return getUserProfileHostUrl() + id;
 	}
 	public static String getItemImgHostUrl() {
 		return getHostUrl(CONTAINER_ITEM_IMAGE);
 	}
 	public static String getItemImgUrl(String id) {
-		return getHostUrl(CONTAINER_ITEM_IMAGE)+id;
+		return getItemImgHostUrl() + id;
 	}
 
 
