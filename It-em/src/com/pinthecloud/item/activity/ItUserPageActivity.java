@@ -2,6 +2,7 @@ package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -33,7 +34,7 @@ public class ItUserPageActivity extends ItActivity {
 		super.finish();
 		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
 	}
-	
+
 	
 	@Override
 	public View getToolbarLayout() {
@@ -45,6 +46,16 @@ public class ItUserPageActivity extends ItActivity {
 		mToolbarLayout = findViewById(R.id.toolbar_layout);
 		mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
+		
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        onBackPressed();
+		    }
+		});
 		
 		mToolbarLayout.bringToFront();
 	}

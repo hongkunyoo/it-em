@@ -18,6 +18,9 @@
     <string name="facebook_login">페이스북으로 로그인하기</string>
     <string name="kakao_login">카카오로 로그인하기</string>
 
+    <!-- Home -->
+    <string name="this_is_it">잇해요</string>
+    
     <!-- Item -->
     <string name="of">님의</string>
     <string name="delete">삭제</string>

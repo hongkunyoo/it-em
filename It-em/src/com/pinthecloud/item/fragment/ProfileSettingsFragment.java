@@ -116,9 +116,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			mActivity.onBackPressed();
-			break;
 		case R.id.profile_settings_submit:
 			trimProfileSettings();
 			if(isProfileSettingsChanged()){

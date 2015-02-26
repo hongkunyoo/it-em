@@ -49,13 +49,39 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <com.pinthecloud.item.view.ItTextView
-                        android:id="@+id/it_user_page_frag_nick_name"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/brand_text_color"
-                        android:textStyle="bold"
-                        app:textType="subhead" />
+                        android:orientation="horizontal" >
+
+                        <com.pinthecloud.item.view.ItTextView
+                            android:id="@+id/it_user_page_frag_nick_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/brand_text_color"
+                            android:textStyle="bold"
+                            app:textType="subhead" />
+
+                        <Button
+                            android:id="@+id/it_user_page_frag_settings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/it_user_page_profile_settings_button"
+                            android:drawableEnd="@drawable/mypage_edit_ic"
+                            android:drawableRight="@drawable/mypage_edit_ic"
+                            android:minHeight="@dimen/none"
+                            android:minWidth="@dimen/none"
+                            android:paddingEnd="@dimen/none"
+                            android:paddingLeft="@dimen/button_horizontal_margin"
+                            android:paddingRight="@dimen/none"
+                            android:paddingStart="@dimen/button_horizontal_margin"
+                            android:text="@string/profile_settings"
+                            android:textColor="@color/brand_text_color"
+                            android:textSize="@dimen/font_micro"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/it_user_page_frag_pro"
@@ -81,25 +107,6 @@
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:textColor="@color/blue"
                         app:textType="caption" />
-
-                    <Button
-                        android:id="@+id/it_user_page_frag_settings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/it_user_page_content_margin"
-                        android:background="@drawable/it_user_page_profile_settings_button"
-                        android:drawableEnd="@drawable/mypage_edit_ic"
-                        android:drawableRight="@drawable/mypage_edit_ic"
-                        android:minHeight="@dimen/none"
-                        android:minWidth="@dimen/none"
-                        android:paddingEnd="@dimen/none"
-                        android:paddingLeft="@dimen/it_user_page_content_margin"
-                        android:paddingRight="@dimen/none"
-                        android:paddingStart="@dimen/it_user_page_content_margin"
-                        android:text="@string/profile_settings"
-                        android:textColor="@color/brand_text_color"
-                        android:textSize="@dimen/font_micro"
-                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 

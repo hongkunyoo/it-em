@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/feed_label_btn_ic_enabled" android:state_enabled="false"/>
+    <item android:drawable="@drawable/feed_label_btn_ic"/>
+
+</selector>

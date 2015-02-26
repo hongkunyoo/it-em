@@ -1,6 +1,7 @@
 package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
@@ -11,7 +12,11 @@ import android.widget.Toast;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainPagerAdapter;
+import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.NotificationEvent;
+import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.interfaces.MainTabHolder;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MainActivity extends ItActivity {
@@ -21,6 +26,7 @@ public class MainActivity extends ItActivity {
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
 	private MainPagerAdapter mViewPagerAdapter;
+	private boolean[] mTabUpdatedList;
 
 
 	@Override
@@ -32,6 +38,10 @@ public class MainActivity extends ItActivity {
 		setTab();
 		setTabImage();
 		setNotiTab();
+
+		if(!mPrefHelper.getBoolean(ItConstant.GUIDE_READ_KEY)){
+			showGuide();
+		}
 	}
 
 
@@ -56,17 +66,35 @@ public class MainActivity extends ItActivity {
 
 	private void setViewPager(){
 		mViewPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), mThisActivity);
+		mViewPagerAdapter.setTabHolder(new MainTabHolder() {
+
+			@Override
+			public void updateNotiTab() {
+				setNotiTab();
+			}
+			@Override
+			public void updateFragment() {
+			}
+		});
+
 		mViewPager.setOffscreenPageLimit(mViewPagerAdapter.getCount());
 		mViewPager.setAdapter(mViewPagerAdapter);
 	}
 
 
 	private void setTab(){
+		mTabUpdatedList = new boolean[mViewPagerAdapter.getCount()];
 		mTab.setViewPager(mViewPager);
 		mTab.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+				SparseArrayCompat<MainTabHolder> tabHolderList = mViewPagerAdapter.getTabHolderList();
+				MainTabHolder fragmentContent = tabHolderList.valueAt(position);
+				if(!mTabUpdatedList[position]){
+					mTabUpdatedList[position] = true;
+					fragmentContent.updateFragment();
+				}
 			}
 			@Override
 			public void onPageSelected(int position) {
@@ -102,6 +130,23 @@ public class MainActivity extends ItActivity {
 				number.setVisibility(notiNumber > 0 ? View.VISIBLE : View.GONE);
 			}
 		});
+	}
+
+
+	private void showGuide(){
+		String message = getResources().getString(R.string.be_pro_description);
+		ItAlertDialog guideDialog = ItAlertDialog.newInstance(message, null, null, false);
+		guideDialog.setCallback(new DialogCallback() {
+
+			@Override
+			public void doPositiveThing(Bundle bundle) {
+				mPrefHelper.put(ItConstant.GUIDE_READ_KEY, true);
+			}
+			@Override
+			public void doNegativeThing(Bundle bundle) {
+			}
+		});
+		guideDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 	}
 
 

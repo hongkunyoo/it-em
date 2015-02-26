@@ -7,7 +7,7 @@
     </string-array>
     
     <!-- It User Page -->
-    <string-array name="it_user_page_pro_tab_title_array">
+    <string-array name="it_user_page_tab_pro_title_array">
         <item>My Item</item>
         <item>IT Item</item>
     </string-array>

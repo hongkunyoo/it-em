@@ -150,9 +150,6 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
-		case android.R.id.home:
-			mActivity.onBackPressed();
-			break;
 		case R.id.upload_submit:
 			trimContent();
 			String message = checkBrand();

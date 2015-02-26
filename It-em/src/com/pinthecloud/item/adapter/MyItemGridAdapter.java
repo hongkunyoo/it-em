@@ -84,6 +84,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		if(viewType == VIEW_TYPE.HEADER.ordinal()){
 			HeaderViewHolder headerViewHolder = (HeaderViewHolder)holder;
 			headerViewHolder.itemView.getLayoutParams().height = mHeaderHeight;
+			headerViewHolder.itemView.requestLayout();
 		} else if(viewType == VIEW_TYPE.NORMAL.ordinal()){
 			Item item = mItemList.get(position-mGridColumnNum);
 			NormalViewHolder normalViewHolder = (NormalViewHolder)holder;

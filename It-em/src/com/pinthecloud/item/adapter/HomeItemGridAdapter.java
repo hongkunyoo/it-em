@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,8 +69,8 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 		public TextView content;
 		public TextView itNumber;
 		public TextView replyNumber;
-		public ImageButton itButton;
-		public ImageButton productTag;
+		public Button itButton;
+		public Button productTag;
 
 		public ViewHolder(View view) {
 			super(view);
@@ -84,8 +85,8 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 			this.content = (TextView)view.findViewById(R.id.row_home_item_content);
 			this.itNumber = (TextView)view.findViewById(R.id.row_home_item_it_number);
 			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_reply_number);
-			this.productTag = (ImageButton)view.findViewById(R.id.row_home_item_product_tag);
-			this.itButton = (ImageButton)view.findViewById(R.id.row_home_item_it_button);
+			this.productTag = (Button)view.findViewById(R.id.row_home_item_product_tag);
+			this.itButton = (Button)view.findViewById(R.id.row_home_item_it_button);
 		}
 	}
 

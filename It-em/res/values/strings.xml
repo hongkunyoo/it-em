@@ -3,9 +3,9 @@
 
     <!-- Id -->
     <string name="facebook_app_id">734298746647918</string>
-	<string name="kakao_app_key">b666460c48c47d1b30537611471b64ea</string>
-	<string name="gcm_sender_id">51874025490</string>
-	
+    <string name="kakao_app_key">b666460c48c47d1b30537611471b64ea</string>
+    <string name="gcm_sender_id">51874025490</string>
+
     <!-- Common Word -->
     <string name="app_name">IT:EM</string>
     <string name="space">&#160;</string>
@@ -20,7 +20,7 @@
 
     <!-- Splash -->
     <string name="progress_setting">setting</string>
-    
+
     <!-- Login -->
     <string name="facebook_login">SIGN IN with facebook</string>
     <string name="kakao_login">SIGN IN with kakao</string>
@@ -31,6 +31,7 @@
     <!-- Home -->
     <string name="more">More</string>
     <string name="unfold">Unfold</string>
+    <string name="this_is_it">it</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
@@ -54,7 +55,7 @@
 
     <!-- Item -->
     <string name="item">Item</string>
-    
+
     <!-- My Item -->
     <string name="it">it</string>
     <string name="empty_my_item">Item is empty.\nShare your own style!</string>
@@ -98,7 +99,7 @@
     <string name="noti_reply">comments on</string>
     <string name="noti_product_tag">puts product label on</string>
     <string name="noti_new">New noti came. Refresh noti screen.</string>
-    
+
     <!-- Settings -->
     <string name="logout">Logout</string>
     <string name="logout_message">Do you want to logout?</string>
@@ -113,7 +114,7 @@
     <string name="price_unit">won</string>
     <string name="empty_product_tag">Product Label is empty yet</string>
     <string name="get_product_label">GET!</string>
-    
+
     <!-- ItDateTime -->
     <string name="second_ago">sec ago</string>
     <string name="minute_ago">min ago</string>

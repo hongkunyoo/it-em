@@ -1,6 +1,7 @@
 package com.pinthecloud.item.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -12,7 +13,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -39,7 +39,9 @@ import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
-public class ItUserPageFragment extends ItFragment {
+public class ItUserPageFragment extends MainTabFragment {
+
+	private final int SETTINGS = 0;
 
 	private ActionBar mActionBar;
 	private ProgressBar mProgressBar;
@@ -61,8 +63,8 @@ public class ItUserPageFragment extends ItFragment {
 	private ItUser mItUser;
 
 
-	public static ItFragment newInstance(String itUserId) {
-		ItFragment fragment = new ItUserPageFragment();
+	public static MainTabFragment newInstance(String itUserId) {
+		MainTabFragment fragment = new ItUserPageFragment();
 		Bundle args = new Bundle();
 		args.putString(ItUser.INTENT_KEY, itUserId);
 		fragment.setArguments(args);
@@ -83,8 +85,6 @@ public class ItUserPageFragment extends ItFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		final View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 
-		setHasOptionsMenu(true);
-		setActionBar();
 		findComponent(view);
 		setComponent();
 
@@ -94,7 +94,6 @@ public class ItUserPageFragment extends ItFragment {
 			public void doNext(Object obj, Object... params) {
 				mProgressBar.setVisibility(View.VISIBLE);
 				mContainer.setVisibility(View.GONE);
-
 				setItUser(obj);
 			}
 		}, new Chainable(){
@@ -103,10 +102,9 @@ public class ItUserPageFragment extends ItFragment {
 			public void doNext(Object obj, Object... params) {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
-
+				setButton();
 				setProfile();
 				setProfileImage();
-				setButtonByProfile();
 
 				mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -133,14 +131,41 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode){
+		case SETTINGS:
+			if (resultCode == Activity.RESULT_OK){
+				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
+				setProfile();
+				
+				mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+					@SuppressLint("NewApi")
+					@SuppressWarnings("deprecation")
+					@Override
+					public void onGlobalLayout() {
+						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+							mHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+						} else {
+							mHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+						}
+
+						SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
+						for(int i=0 ; i<scrollTabHolderList.size() ; i++){
+							scrollTabHolderList.valueAt(i).updateHeader(mHeader.getHeight());	
+						}
+					}
+				});
+			}
+			break;
+		}
+	}
+
+
+	@Override
 	public void onStart() {
 		super.onStart();
-		if(mItUser.checkMe()){
-			mItUser = mObjectPrefHelper.get(ItUser.class);
-			setProfile();
-			setButtonByProfile();
-		}
-
 		if(mItUserId.equals(mItUser.getId())){
 			setProfileImage();
 		}
@@ -155,17 +180,13 @@ public class ItUserPageFragment extends ItFragment {
 
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			mActivity.onBackPressed();
-			break;
-		}
-		return super.onOptionsItemSelected(item);
+	public void updateFragment() {
+
 	}
 
 
 	private void findComponent(View view){
+		mActionBar = mActivity.getSupportActionBar();
 		mContainer = (RelativeLayout)view.findViewById(R.id.it_user_page_frag_container_layout);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
@@ -180,12 +201,6 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setActionBar(){
-		mActionBar = mActivity.getSupportActionBar();
-		if(mActionBar != null) mActionBar.setDisplayHomeAsUpEnabled(true);
-	}
-
-
 	private void setComponent(){
 		mWebsite.setOnClickListener(new OnClickListener() {
 
@@ -197,7 +212,7 @@ public class ItUserPageFragment extends ItFragment {
 					webSite = "http://" + webSite;
 				}
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
-				mActivity.startActivity(intent);
+				startActivity(intent);
 			}
 		});
 	}
@@ -238,19 +253,7 @@ public class ItUserPageFragment extends ItFragment {
 	}
 
 
-	private void setProfile(){
-		if(mActionBar != null) mActionBar.setTitle(mItUser.getNickName());
-		mNickName.setText(mItUser.getNickName());
-		mDescription.setText(mItUser.getSelfIntro());
-		mWebsite.setText(mItUser.getWebPage());
-
-		mDescription.setVisibility(!mItUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
-		mWebsite.setVisibility(!mItUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
-		mPro.setVisibility(mItUser.checkPro() ? View.VISIBLE : View.GONE);
-	}
-
-
-	private void setButtonByProfile(){
+	private void setButton(){
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -260,18 +263,27 @@ public class ItUserPageFragment extends ItFragment {
 			}
 		});
 
-		if(mItUser.checkMe()){
-			mSettings.setOnClickListener(new OnClickListener() {
+		mSettings.setVisibility(mItUser.checkMe() ? View.VISIBLE : View.GONE);
+		mSettings.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(mActivity, SettingsActivity.class);
-					startActivity(intent);
-				}
-			});
-		} else {
-			mSettings.setVisibility(View.GONE);
-		}
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, SettingsActivity.class);
+				startActivityForResult(intent, SETTINGS);
+			}
+		});
+	}
+
+
+	private void setProfile(){
+		if(mActionBar != null) mActionBar.setTitle(mItUser.getNickName());
+		mNickName.setText(mItUser.getNickName());
+		mDescription.setText(mItUser.getSelfIntro());
+		mWebsite.setText(mItUser.getWebPage());
+
+		mDescription.setVisibility(!mItUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
+		mWebsite.setVisibility(!mItUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
+		mPro.setVisibility(mItUser.checkPro() ? View.VISIBLE : View.GONE);
 	}
 
 
@@ -287,7 +299,7 @@ public class ItUserPageFragment extends ItFragment {
 	private void setViewPager(){
 		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), mActivity, mItUser, 
 				mHeader.getHeight(), mTab.getHeight());
-		mViewPagerAdapter.setItUserPageScrollTabHolder(new ItUserPageScrollTabHolder() {
+		mViewPagerAdapter.setScrollTabHolder(new ItUserPageScrollTabHolder() {
 
 			@Override
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
@@ -323,7 +335,7 @@ public class ItUserPageFragment extends ItFragment {
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 				// Get scroll tab holder interface
-				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
+				SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
 				ItUserPageScrollTabHolder fragmentContent = null;
 
 				// Scroll grid view items of tab fragment
@@ -331,10 +343,10 @@ public class ItUserPageFragment extends ItFragment {
 				if (positionOffsetPixels > 0) {
 					if (position < currentItem) {
 						// Revealed the previous page
-						fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
+						fragmentContent = scrollTabHolderList.valueAt(position);
 					} else {
 						// Revealed the next page
-						fragmentContent = itUserPageScrollTabHolderList.valueAt(position + 1);
+						fragmentContent = scrollTabHolderList.valueAt(position + 1);
 					}
 
 					fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
@@ -343,8 +355,8 @@ public class ItUserPageFragment extends ItFragment {
 			@Override
 			public void onPageSelected(int position) {
 				// Scroll header by grid view items scroll y
-				SparseArrayCompat<ItUserPageScrollTabHolder> itUserPageScrollTabHolderList = mViewPagerAdapter.getItUserPageScrollTabHolderList();
-				ItUserPageScrollTabHolder fragmentContent = itUserPageScrollTabHolderList.valueAt(position);
+				SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
+				ItUserPageScrollTabHolder fragmentContent = scrollTabHolderList.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 			}
 			@Override

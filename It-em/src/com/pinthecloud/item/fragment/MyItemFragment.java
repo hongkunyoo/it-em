@@ -51,11 +51,10 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	private int mHeaderHeight;
 	private int mTabHeight;
 
+	private ItUserPageScrollTabHolder mScrollTabHolder;
 
-	private  ItUserPageScrollTabHolder mItUserPageScrollTabHolder;
-
-	public void setItUserPageScrollTabHolder(ItUserPageScrollTabHolder itUserPageScrollTabHolder) {
-		mItUserPageScrollTabHolder = itUserPageScrollTabHolder;
+	public void setScrollTabHolder(ItUserPageScrollTabHolder scrollTabHolder) {
+		mScrollTabHolder = scrollTabHolder;
 	}
 
 
@@ -240,7 +239,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		mItemList.clear();
 		mGridAdapter.addAll(list);
 		mGridView.scrollToPosition(0);
-		mItUserPageScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
+		mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
 	}
 
 
@@ -251,8 +250,8 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 
 	private void onScrollTabHolder(){
-		if (mItUserPageScrollTabHolder != null){
-			mItUserPageScrollTabHolder.onScroll(mGridView, mGridLayoutManager, mPosition);
+		if (mScrollTabHolder != null){
+			mScrollTabHolder.onScroll(mGridView, mGridLayoutManager, mPosition);
 		}
 	}
 }

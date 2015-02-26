@@ -25,6 +25,7 @@
         android:gravity="center"
         android:textColor="@color/accent_color"
         android:textStyle="bold"
-        app:textType="body" />
+        android:visibility="gone"
+        app:textType="caption" />
 
 </RelativeLayout>

@@ -97,13 +97,28 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal" >
 
-                            <ImageButton
+                            <Button
                                 android:id="@+id/item_frag_it_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
+                                android:background="@drawable/home_item_it_button"
                                 android:contentDescription="@string/it"
-                                android:src="@drawable/home_item_it_button" />
+                                android:drawableLeft="@drawable/home_item_it"
+                                android:drawablePadding="@dimen/button_vertical_margin"
+                                android:drawableStart="@drawable/home_item_it"
+                                android:gravity="center"
+                                android:minHeight="@dimen/none"
+                                android:minWidth="@dimen/none"
+                                android:paddingBottom="@dimen/button_vertical_margin"
+                                android:paddingEnd="@dimen/button_horizontal_margin"
+                                android:paddingLeft="@dimen/button_horizontal_margin"
+                                android:paddingRight="@dimen/button_horizontal_margin"
+                                android:paddingStart="@dimen/button_horizontal_margin"
+                                android:paddingTop="@dimen/button_vertical_margin"
+                                android:text="@string/this_is_it"
+                                android:textColor="@color/home_item_it_text"
+                                android:textSize="@dimen/font_micro"
+                                android:textStyle="bold" />
 
                             <LinearLayout
                                 android:id="@+id/item_frag_it_number_layout"

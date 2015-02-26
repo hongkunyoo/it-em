@@ -53,6 +53,13 @@ public class ItemActivity extends ItActivity {
 		actionBar.setTitle(mItem.getWhoMade() + getResources().getString(R.string.of) 
 				+ " " + getResources().getString(R.string.app_name));
 
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        onBackPressed();
+		    }
+		});
+		
 		mToolbarLayout.bringToFront();
 	}
 

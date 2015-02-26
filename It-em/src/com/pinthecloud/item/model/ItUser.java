@@ -38,6 +38,8 @@ public class ItUser implements Parcelable {
 	private String webPage;
 	@com.google.gson.annotations.SerializedName("email")
 	private String email;
+	@com.google.gson.annotations.SerializedName("bankAccount")
+	private String bankAccount;
 	@com.google.gson.annotations.SerializedName("notiMyItem")
 	private boolean notiMyItem;
 	@com.google.gson.annotations.SerializedName("notiItItem")
@@ -57,10 +59,10 @@ public class ItUser implements Parcelable {
 		this.selfIntro = "";
 		this.webPage = "";
 		this.email = "";
+		this.bankAccount = "";
 		this.notiMyItem = true;
 		this.notiItItem = true;
 		this.notiReplyItem = true;
-		
 	}
 
 	public String getId() {
@@ -86,6 +88,12 @@ public class ItUser implements Parcelable {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getBankAccount() {
+		return bankAccount;
+	}
+	public void setBankAccount(String bankAccount) {
+		this.bankAccount = bankAccount;
 	}
 	public String getNickName() {
 		return nickName;
@@ -136,11 +144,12 @@ public class ItUser implements Parcelable {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
 		this.setPlatform(itUser.getPlatform());
-		this.setEmail(itUser.getEmail());
 		this.setNickName(itUser.getNickName());
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());
 		this.setType(itUser.getType());
+		this.setEmail(itUser.getEmail());
+		this.setBankAccount(itUser.getBankAccount());
 		this.setNotiMyItem(itUser.isNotiMyItem());
 		this.setNotiItItem(itUser.isNotiItItem());
 		this.setNotiReplyItem(itUser.isNotiReplyItem());

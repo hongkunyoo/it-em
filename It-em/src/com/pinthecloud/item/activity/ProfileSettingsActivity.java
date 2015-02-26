@@ -45,9 +45,15 @@ public class ProfileSettingsActivity extends ItActivity {
 		setSupportActionBar(mToolbar);
 
 		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayShowHomeEnabled(true);
-		mToolbar.setNavigationIcon(R.drawable.appbar_close_ic);
-
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        onBackPressed();
+		    }
+		});
+		
 		mToolbarLayout.bringToFront();
 	}
 

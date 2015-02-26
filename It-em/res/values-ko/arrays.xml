@@ -7,7 +7,7 @@
     </string-array>
     
     <!-- It User Page -->
-    <string-array name="it_user_page_pro_tab_title_array">
+    <string-array name="it_user_page_tab_pro_title_array">
         <item>내 아이템</item>
         <item>잇 아이템</item>
     </string-array>

@@ -1,33 +1,25 @@
 package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.BeProFragment;
-import com.pinthecloud.item.fragment.ItFragment;
-import com.pinthecloud.item.fragment.ProSettingsFragment;
-import com.pinthecloud.item.model.ItUser;
 
-public class ProActivity extends ItActivity {
+public class ProSettingsActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
-	private ItUser mMyItUser;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
-		setContentView(R.layout.activity_toolbar_frame);
+		setContentView(R.layout.activity_pro_settings);
 
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		setToolbar();
-		setFragment();
 	}
 
 
@@ -52,15 +44,11 @@ public class ProActivity extends ItActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		mToolbarLayout.bringToFront();
-	}
-
-
-	private void setFragment(){
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		mMyItUser.fixType(ItUser.TYPE.VIEWER);
-		ItFragment fragment = mMyItUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
-		transaction.replace(R.id.activity_container, fragment);
-		transaction.commit();
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        onBackPressed();
+		    }
+		});
 	}
 }

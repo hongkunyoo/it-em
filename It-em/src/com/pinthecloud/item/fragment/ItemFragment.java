@@ -25,7 +25,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -42,10 +41,10 @@ import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
+import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
-import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ImageUtil;
@@ -65,7 +64,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private View mItemLayout;
 	private TextView mContent;
 	private TextView mDate;
-	private ImageButton mItButton;
+	private Button mItButton;
 	private View mItNumberLayout;
 	private TextView mItNumber;
 
@@ -164,9 +163,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menu) {
 		switch (menu.getItemId()) {
-		case android.R.id.home:
-			mActivity.onBackPressed();
-			break;
 		case R.id.item_delete:
 			deleteItem(mItem);
 			break;
@@ -203,7 +199,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
-		mItButton = (ImageButton)view.findViewById(R.id.item_frag_it_button);
+		mItButton = (Button)view.findViewById(R.id.item_frag_it_button);
 		mItNumberLayout = view.findViewById(R.id.item_frag_it_number_layout);
 		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
 

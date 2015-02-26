@@ -28,7 +28,7 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.FileUtil;
 
-public class HomeFragment extends ItFragment {
+public class HomeFragment extends MainTabFragment {
 
 	private final int UPLOAD = 0;
 
@@ -68,10 +68,6 @@ public class HomeFragment extends ItFragment {
 		setGrid();
 		setScroll();
 
-		mProgressBar.setVisibility(View.VISIBLE);
-		mLayout.setVisibility(View.GONE);
-		updateGrid();
-
 		return view;
 	}
 
@@ -94,6 +90,14 @@ public class HomeFragment extends ItFragment {
 				break;
 			}
 		}
+	}
+
+
+	@Override
+	public void updateFragment() {
+		mProgressBar.setVisibility(View.VISIBLE);
+		mLayout.setVisibility(View.GONE);
+		updateGrid();
 	}
 
 

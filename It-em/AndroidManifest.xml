@@ -78,6 +78,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ItUserPageActivity"
+            android:label="@string/none"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ItemActivity"
@@ -104,7 +105,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ProActivity"
+            android:name=".activity.BeProActivity"
+            android:label="@string/none"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ProSettingsActivity"
+            android:label="@string/pro_settings"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity

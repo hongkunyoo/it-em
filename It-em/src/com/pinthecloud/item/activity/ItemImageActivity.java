@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -63,17 +62,6 @@ public class ItemImageActivity extends ItActivity {
 
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			onBackPressed();
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-
-	@Override
 	public View getToolbarLayout() {
 		return mToolbarLayout;
 	}
@@ -86,7 +74,14 @@ public class ItemImageActivity extends ItActivity {
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowHomeEnabled(true);
+		
 		mToolbar.setNavigationIcon(R.drawable.appbar_close_ic);
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        onBackPressed();
+		    }
+		});
 		
 		mToolbarLayout.bringToFront();
 	}

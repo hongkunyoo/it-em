@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
-    android:id="@+id/settings_frag_layout"
+    android:id="@+id/settings_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="?attr/actionBarSize" >
+    android:orientation="vertical" >
+
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
-        android:id="@+id/settings_frag_profile_settings"
+        android:id="@+id/settings_profile_settings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
         android:layout_marginBottom="@dimen/settings_layout_margin"
@@ -81,7 +82,7 @@
                 app:textType="body" />
 
             <ToggleButton
-                android:id="@+id/settings_frag_noti_my_item"
+                android:id="@+id/settings_noti_my_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -108,7 +109,7 @@
                 app:textType="body" />
 
             <ToggleButton
-                android:id="@+id/settings_frag_noti_it_item"
+                android:id="@+id/settings_noti_it_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -135,7 +136,7 @@
                 app:textType="body" />
 
             <ToggleButton
-                android:id="@+id/settings_frag_noti_reply_item"
+                android:id="@+id/settings_noti_reply_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -150,7 +151,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/settings_frag_pro_settings"
+        android:id="@+id/settings_pro_settings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
         android:background="@drawable/list_white_selector"
@@ -166,7 +167,7 @@
             android:src="@drawable/mypage_edit_ic" />
 
         <com.pinthecloud.item.view.ItTextView
-            android:id="@+id/settings_frag_pro_settings_text"
+            android:id="@+id/settings_pro_settings_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -189,7 +190,7 @@
     </RelativeLayout>
 
     <com.pinthecloud.item.view.ItTextView
-        android:id="@+id/settings_frag_nick_name"
+        android:id="@+id/settings_nick_name"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/settings_row_height"
         android:layout_marginLeft="@dimen/key_line_first"
@@ -199,7 +200,7 @@
         app:textType="body" />
 
     <RelativeLayout
-        android:id="@+id/settings_frag_logout"
+        android:id="@+id/settings_logout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
         android:background="@color/red" >

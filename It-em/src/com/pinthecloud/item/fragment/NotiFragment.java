@@ -17,14 +17,11 @@ import android.widget.ProgressBar;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.NotiListAdapter;
-import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 
-import de.greenrobot.event.EventBus;
-
-public class NotiFragment extends ItFragment {
+public class NotiFragment extends MainTabFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mRefresh;
@@ -36,8 +33,8 @@ public class NotiFragment extends ItFragment {
 	private ItUser mMyItUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
-
-
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,20 +47,22 @@ public class NotiFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_noti, container, false);
-		
 		findComponent(view);
 		setRefreshLayout();
 		setList();
 		setScroll();
-
-		mProgressBar.setVisibility(View.VISIBLE);
-		mRefresh.setVisibility(View.GONE);
-		updateList(false);
-
 		return view;
 	}
 
 
+	@Override
+	public void updateFragment() {
+		mProgressBar.setVisibility(View.VISIBLE);
+		mRefresh.setVisibility(View.GONE);
+		updateList(false);
+	}
+	
+	
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.noti_frag_refresh);
@@ -122,9 +121,11 @@ public class NotiFragment extends ItFragment {
 			public void onCompleted(List<ItNotification> list, int count) {
 				mRefresh.setVisibility(View.VISIBLE);
 				if(refresh){
-					mPrefHelper.remove(ItConstant.NOTIFICATION_NUMBER_KEY);
-					EventBus.getDefault().post(new NotificationEvent());
 					mRefresh.setRefreshing(false);
+					mPrefHelper.remove(ItConstant.NOTIFICATION_NUMBER_KEY);
+					if(mTabHolder != null){
+						mTabHolder.updateNotiTab();	
+					}
 				} else {
 					mProgressBar.setVisibility(View.GONE);
 				}

@@ -51,7 +51,14 @@ public class UploadActivity extends ItActivity {
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowHomeEnabled(true);
+		
 		mToolbar.setNavigationIcon(R.drawable.appbar_close_ic);
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        onBackPressed();
+		    }
+		});
 		
 		mToolbarLayout.bringToFront();
 	}
