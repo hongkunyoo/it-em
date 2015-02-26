@@ -45,6 +45,8 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 	private List<Item> mItemList;
 	private ItUser mMyItUser;
 
+	private String mIt;
+	private String mThisIsIt;
 	private boolean isDoingLikeIt = false;
 
 
@@ -114,6 +116,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 
 	private void setComponent(ViewHolder holder, Item item){
+		mIt = mActivity.getResources().getString(R.string.it);
+		mThisIsIt = mActivity.getResources().getString(R.string.this_is_it);
+		
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
@@ -192,6 +197,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 		});
 
 		holder.itButton.setActivated(item.getPrevLikeId() != null);
+		holder.itButton.setText(item.getPrevLikeId() != null ? mThisIsIt : mIt);
 		holder.itButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -293,10 +299,12 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 			// Do like it
 			setItNumber(holder, currentLikeItNum+1);
 			holder.itButton.setActivated(true);
+			holder.itButton.setText(mThisIsIt);
 		} else {
 			// Cancel like it
 			setItNumber(holder, currentLikeItNum-1);
 			holder.itButton.setActivated(false);
+			holder.itButton.setText(mIt);
 		}
 	}
 

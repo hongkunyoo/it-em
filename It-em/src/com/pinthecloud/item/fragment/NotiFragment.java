@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
@@ -25,6 +26,7 @@ public class NotiFragment extends MainTabFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mRefresh;
+	private TextView mListEmptyView;
 	private RecyclerView mListView;
 	private NotiListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
@@ -66,6 +68,7 @@ public class NotiFragment extends MainTabFragment {
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.noti_frag_refresh);
+		mListEmptyView = (TextView)view.findViewById(R.id.noti_frag_list_empty_view);
 		mListView = (RecyclerView)view.findViewById(R.id.noti_frag_list);
 	}
 
@@ -132,6 +135,8 @@ public class NotiFragment extends MainTabFragment {
 
 				mNotiList.clear();
 				mListAdapter.addAll(list);
+				
+				showNotiList(count);
 			}
 		});
 	}
@@ -147,5 +152,16 @@ public class NotiFragment extends MainTabFragment {
 				mListAdapter.addAll(list);
 			}
 		});
+	}
+	
+	
+	private void showNotiList(int notiCount){
+		if(notiCount > 0){
+			mListEmptyView.setVisibility(View.GONE);
+			mListView.setVisibility(View.VISIBLE);
+		} else {
+			mListEmptyView.setVisibility(View.VISIBLE);
+			mListView.setVisibility(View.GONE);
+		}
 	}
 }

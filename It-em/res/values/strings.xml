@@ -10,6 +10,7 @@
     <string name="app_name">IT:EM</string>
     <string name="space">&#160;</string>
     <string name="none"></string>
+    <string name="image">Image</string>
 
     <!-- Common Sentence -->
     <string name="network_unavailable_message">Internet is unavailable. Please check network status.</string>
@@ -25,13 +26,12 @@
     <string name="facebook_login">SIGN IN with facebook</string>
     <string name="kakao_login">SIGN IN with kakao</string>
 
-    <!-- Main Drawer -->
-    <string name="image">Image</string>
-
     <!-- Home -->
     <string name="more">More</string>
     <string name="unfold">Unfold</string>
-    <string name="this_is_it">it</string>
+    <string name="it">it</string>
+    <string name="this_is_it">This is it</string>
+    <string name="do_not_see_again">Don\'t see again</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
@@ -57,9 +57,8 @@
     <string name="item">Item</string>
 
     <!-- My Item -->
-    <string name="it">it</string>
     <string name="empty_my_item">Item is empty.\nShare your own style!</string>
-    <string name="empty_it_item">IT item is empty.\nGive IT to lovely item!</string>
+    <string name="empty_it_item">It item is empty.\nGive it to lovely item!</string>
     <string name="empty">Empty</string>
 
     <!-- Be Pro -->
@@ -98,7 +97,8 @@
     <string name="noti_like_it">says IT on</string>
     <string name="noti_reply">comments on</string>
     <string name="noti_product_tag">puts product label on</string>
-    <string name="noti_new">New noti came. Refresh noti screen.</string>
+    <string name="new_noti">New noti came. Refresh noti screen.</string>
+    <string name="empty_noti">Notification is empty yet</string>
 
     <!-- Settings -->
     <string name="logout">Logout</string>

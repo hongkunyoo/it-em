@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.SettingsActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.dialog.ItAlertDialog;
@@ -83,11 +84,69 @@ public class ItUserPageFragment extends MainTabFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		final View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
-
+		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 		findComponent(view);
 		setComponent();
+		
+		if(mActivity instanceof ItUserPageActivity){
+			updateFragment();
+		}
+		
+		return view;
+	}
 
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode){
+		case SETTINGS:
+			if (resultCode == Activity.RESULT_OK){
+				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
+				setProfile();
+
+				mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+					@SuppressLint("NewApi")
+					@SuppressWarnings("deprecation")
+					@Override
+					public void onGlobalLayout() {
+						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+							mHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+						} else {
+							mHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+						}
+
+						SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
+						for(int i=0 ; i<scrollTabHolderList.size() ; i++){
+							scrollTabHolderList.valueAt(i).updateHeader(mHeader.getHeight());	
+						}
+					}
+				});
+			}
+			break;
+		}
+	}
+
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if(mItUser != null){
+			setProfileImage();
+		}
+	}
+
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mProfileImage.setImageBitmap(null);
+	}
+
+
+	@Override
+	public void updateFragment() {
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -125,63 +184,6 @@ public class ItUserPageFragment extends MainTabFragment {
 				});
 			}
 		});
-
-		return view;
-	}
-
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch(requestCode){
-		case SETTINGS:
-			if (resultCode == Activity.RESULT_OK){
-				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
-				setProfile();
-				
-				mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-					@SuppressLint("NewApi")
-					@SuppressWarnings("deprecation")
-					@Override
-					public void onGlobalLayout() {
-						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-							mHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-						} else {
-							mHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-						}
-
-						SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
-						for(int i=0 ; i<scrollTabHolderList.size() ; i++){
-							scrollTabHolderList.valueAt(i).updateHeader(mHeader.getHeight());	
-						}
-					}
-				});
-			}
-			break;
-		}
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		if(mItUserId.equals(mItUser.getId())){
-			setProfileImage();
-		}
-	}
-
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		mProfileImage.setImageBitmap(null);
-	}
-
-
-	@Override
-	public void updateFragment() {
-
 	}
 
 

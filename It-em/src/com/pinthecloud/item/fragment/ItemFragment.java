@@ -90,6 +90,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private ItUser mMyItUser;
 	private Item mItem;
 
+	private String mIt;
+	private String mThisIsIt;
 	private boolean isDoingLikeIt = false;
 
 
@@ -221,6 +223,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
+		mIt = mActivity.getResources().getString(R.string.it);
+		mThisIsIt = mActivity.getResources().getString(R.string.this_is_it);
+		
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 		
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
@@ -431,6 +436,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mDate.setText(item.getCreateDateTime().getElapsedDateTime(mActivity));
 		setItNumber(item.getLikeItCount());
 		mItButton.setActivated(item.getPrevLikeId() != null);
+		mItButton.setText(item.getPrevLikeId() != null ? mThisIsIt : mIt);
 	}
 
 
@@ -470,10 +476,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			// Do like it
 			setItNumber(currentLikeItNum+1);
 			mItButton.setActivated(true);
+			mItButton.setText(mThisIsIt);
 		} else {
 			// Cancel like it
 			setItNumber(currentLikeItNum-1);
 			mItButton.setActivated(false);
+			mItButton.setText(mIt);
 		}
 	}
 

@@ -135,15 +135,16 @@ public class MainActivity extends ItActivity {
 
 	private void showGuide(){
 		String message = getResources().getString(R.string.be_pro_description);
-		ItAlertDialog guideDialog = ItAlertDialog.newInstance(message, null, null, false);
+		String cancelMessage = getResources().getString(R.string.do_not_see_again);
+		ItAlertDialog guideDialog = ItAlertDialog.newInstance(message, null, cancelMessage, true);
 		guideDialog.setCallback(new DialogCallback() {
 
 			@Override
 			public void doPositiveThing(Bundle bundle) {
-				mPrefHelper.put(ItConstant.GUIDE_READ_KEY, true);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
+				mPrefHelper.put(ItConstant.GUIDE_READ_KEY, true);
 			}
 		});
 		guideDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
@@ -155,7 +156,7 @@ public class MainActivity extends ItActivity {
 
 			@Override
 			public void run() {
-				Toast.makeText(mThisActivity, getResources().getString(R.string.noti_new), Toast.LENGTH_LONG).show();
+				Toast.makeText(mThisActivity, getResources().getString(R.string.new_noti), Toast.LENGTH_LONG).show();
 			}
 		});
 		setNotiTab();

@@ -25,17 +25,17 @@ public class TextUtil {
 	}
 	
 	
-	public static List<String> getSpanBodys(String body){
-		List<String> spanBodys = new ArrayList<String>();
+	public static List<String> getSpanBodyList(String body){
+		List<String> spanBodyList = new ArrayList<String>();
 		ArrayList<int[]> hashTagSpans = getSpans(body, '#');
         SpannableString content = new SpannableString(body);
         for(int i=0 ; i<hashTagSpans.size() ; i++) {
             int[] span = hashTagSpans.get(i);
             int hashTagStart = span[0]+1;
             int hashTagEnd = span[1];
-            spanBodys.add(content.subSequence(hashTagStart, hashTagEnd).toString());
+            spanBodyList.add(content.subSequence(hashTagStart, hashTagEnd).toString());
         }
-        return spanBodys;
+        return spanBodyList;
 	}
 	
 	
@@ -43,14 +43,12 @@ public class TextUtil {
         ArrayList<int[]> spans = new ArrayList<int[]>();
         Pattern pattern = Pattern.compile(prefix + "\\w+");
         Matcher matcher = pattern.matcher(body);
-
         while (matcher.find()) {
             int[] currentSpan = new int[2];
             currentSpan[0] = matcher.start();
             currentSpan[1] = matcher.end();
             spans.add(currentSpan);
         }
-
         return  spans;
     }
 }

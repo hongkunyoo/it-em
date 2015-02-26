@@ -135,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@drawable/home_item_it_button"
-                android:contentDescription="@string/it"
                 android:drawableLeft="@drawable/home_item_it"
                 android:drawablePadding="@dimen/button_vertical_margin"
                 android:drawableStart="@drawable/home_item_it"
@@ -148,7 +147,7 @@
                 android:paddingRight="@dimen/button_horizontal_margin"
                 android:paddingStart="@dimen/button_horizontal_margin"
                 android:paddingTop="@dimen/button_vertical_margin"
-                android:text="@string/this_is_it"
+                android:text="@string/it"
                 android:textColor="@color/home_item_it_text"
                 android:textSize="@dimen/font_micro"
                 android:textStyle="bold" />

@@ -300,7 +300,7 @@ public class UploadFragment extends ItFragment {
 
 		final List<HashTag> hashTagList = new ArrayList<HashTag>();
 		for(BrandInfo brandInfo : mBrandInfoList){
-			List<String> hashTags = TextUtil.getSpanBodys(brandInfo.getBrand());
+			List<String> hashTags = TextUtil.getSpanBodyList(brandInfo.getBrand());
 			for(String hashTag : hashTags){
 				hashTagList.add(new HashTag(hashTag));
 			}
