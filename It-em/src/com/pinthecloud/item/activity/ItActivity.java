@@ -37,7 +37,7 @@ public abstract class ItActivity extends ActionBarActivity {
 
 	protected UserHabitHelper mUserHabitHelper;
 	protected GAHelper mGaHelper;
-
+	
 	public abstract View getToolbarLayout();
 
 

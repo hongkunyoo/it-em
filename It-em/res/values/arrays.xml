@@ -9,10 +9,10 @@
     <!-- It User Page -->
     <string-array name="it_user_page_tab_pro_title_array">
         <item>My Item</item>
-        <item>IT Item</item>
+        <item>It Item</item>
     </string-array>
     <string-array name="it_user_page_tab_title_array">
-        <item>IT Item</item>
+        <item>It Item</item>
     </string-array>
 
     <!-- Upload -->

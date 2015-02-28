@@ -80,7 +80,7 @@ public class FileUtil {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, Media.EXTERNAL_CONTENT_URI);
 		intent.setType("image/*");
 		
-		Intent chooser = Intent.createChooser(intent, frag.getResources().getString(R.string.select_picture));
+		Intent chooser = Intent.createChooser(intent, frag.getResources().getString(R.string.select_source));
 		frag.startActivityForResult(chooser, GALLERY);
 	}
 

@@ -17,7 +17,7 @@
             android:layout_marginLeft="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_first"
             android:contentDescription="@string/product_tag"
-            android:src="@drawable/detail_tag_ic" />
+            android:src="@drawable/detail_label_ic" />
 
         <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/dialog_tab_pressed_btn" android:state_enabled="true" android:state_pressed="true"/>
-    <item android:drawable="@drawable/dialog_tag_btn" android:state_enabled="true" android:state_pressed="false"/>
-    <item android:drawable="@color/gray" android:state_enabled="false"/>
+    <item android:drawable="@drawable/detail_label_ic_enabled" android:state_activated="false"/>
+    <item android:drawable="@drawable/detail_label_ic" />
 
 </selector>

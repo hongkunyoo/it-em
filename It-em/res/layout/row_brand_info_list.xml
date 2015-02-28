@@ -46,6 +46,6 @@
         android:layout_marginStart="@dimen/key_line_first"
         android:background="@android:color/transparent"
         android:contentDescription="@string/delete"
-        android:src="@drawable/appbar_close_ic" />
+        android:src="@drawable/upload_info_list_delete_ic" />
 
 </LinearLayout>

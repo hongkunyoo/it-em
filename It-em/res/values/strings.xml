@@ -74,7 +74,7 @@
     <string name="upload">Upload</string>
     <string name="uploaded">The item is uploaded</string>
     <string name="description">Description</string>
-    <string name="select_picture">Select Picture</string>
+    <string name="select_source">Select Source</string>
     <string name="brand_info">Brand Information</string>
     <string name="brand">Brand</string>
     <string name="add">Add</string>
@@ -111,7 +111,7 @@
 
     <!-- Product Tag -->
     <string name="product_tag">Product Label</string>
-    <string name="price_unit">won</string>
+    <string name="price">$%1$s</string>
     <string name="empty_product_tag">Product Label is empty yet</string>
     <string name="get_product_label">GET!</string>
 

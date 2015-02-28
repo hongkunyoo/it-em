@@ -1,5 +1,7 @@
 package com.pinthecloud.item.model;
 
+import java.util.Locale;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -113,7 +115,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 			type = app.getResources().getString(R.string.noti_product_tag);
 		}
 		
-		String content = String.format(app.getResources().getString(R.string.noti_content),
+		String content = String.format(Locale.US, app.getResources().getString(R.string.noti_content),
 				getWhoMade(), refWhoMade, type);
 		return content;
 	}

@@ -3,7 +3,7 @@
 
     <!-- Common Word -->
     <string name="app_name">잇템</string>
-    
+
     <!-- Common Sentence -->
     <string name="network_unavailable_message">인터넷이 불안정합니다. 네트워크 상태를 확인해 주세요.</string>
     <string name="error_message">이런! 에러가 났어요. 다시 시도해 주세요.</string>
@@ -13,7 +13,7 @@
 
     <!-- Splash -->
     <string name="progress_setting">설정중</string>
-    
+
     <!-- Login -->
     <string name="facebook_login">페이스북으로 로그인하기</string>
     <string name="kakao_login">카카오로 로그인하기</string>
@@ -22,7 +22,7 @@
     <string name="it">잇해요</string>
     <string name="this_is_it">잇해요 클릭됨</string>
     <string name="do_not_see_again">다시보지 않기</string>
-    
+
     <!-- Item -->
     <string name="of">님의</string>
     <string name="delete">삭제</string>
@@ -42,12 +42,12 @@
     <!-- My Item -->
     <string name="empty_my_item">올린 아이템이 없어요.\n자신만의 스타일을 공유해보세요!</string>
     <string name="empty_it_item">잇 아이템이 없어요.\n좋은 아이템을 잇 해보세요!</string>
-    
+
     <!-- Product Tag -->
     <string name="product_tag">상품라벨</string>
-    <string name="price_unit">원</string>
     <string name="empty_product_tag">아직 달려있는 상품라벨이 없어요</string>
-    
+    <string name="price">%1$s원</string>
+
     <!-- Be Pro -->
     <string name="be_pro">에디터 되기</string>
     <string name="pro_settings">에디터 설정</string>
@@ -59,8 +59,10 @@
     <string name="upload">업로드</string>
     <string name="uploaded">아이템이 업로드 되었어요</string>
     <string name="description">설명</string>
+    <string name="select_source">소스 선택</string>
     <string name="brand_info">브랜드 정보</string>
     <string name="brand">브랜드</string>
+    <string name="add">추가</string>
     <string name="bad_brand_message">브랜드는 보통 글자와 숫자만 허용되요.</string>
 
     <!-- Profile Settings -->
@@ -82,7 +84,7 @@
     <string name="noti_product_tag">아이템에 상품라벨을 달았습니다</string>
     <string name="new_noti">새로운 알람이 왔어요. 알람 화면을 새로고침 해보세요.</string>
     <string name="empty_noti">알람이 아직 없어요</string>
-    
+
     <!-- Settings -->
     <string name="logout">로그아웃</string>
     <string name="logout_message">로그아웃 하시겠습니까?</string>

@@ -11,32 +11,27 @@
         layout="@layout/custom_progress_bar"
         android:visibility="gone" />
 
+    <com.pinthecloud.item.view.ItTextView
+        android:id="@+id/noti_frag_list_empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/empty_noti"
+        android:textColor="@color/gray_light"
+        android:visibility="gone"
+        app:textType="body" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/noti_frag_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/noti_frag_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/noti_frag_list_empty_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/empty_noti"
-                android:textColor="@color/gray_light"
-                android:visibility="gone"
-                app:textType="body" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/noti_frag_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:scrollbars="none" />
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:scrollbars="none" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

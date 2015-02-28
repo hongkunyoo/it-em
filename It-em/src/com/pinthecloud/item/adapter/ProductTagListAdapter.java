@@ -1,6 +1,7 @@
 package com.pinthecloud.item.adapter;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -118,12 +119,17 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 	private void setNormalComponent(NormalViewHolder holder, final ProductTag tag){
 		holder.name.setText(tag.getShopName());
+		
 		double price = tag.getPrice();
+		String priceString = null;
 		if((price*100)%100 > 0){
-			holder.price.setText(price + mActivity.getResources().getString(R.string.price_unit));
+			price = Math.floor(price*100)/100;
+			tag.setPrice(price);
+			priceString = String.format(Locale.US, "%,d", price);
 		} else {
-			holder.price.setText((int)price + mActivity.getResources().getString(R.string.price_unit));	
+			priceString = String.format(Locale.US, "%,d", (int)price);
 		}
+		holder.price.setText(String.format(mActivity.getResources().getString(R.string.price), priceString));
 
 		holder.price.setOnClickListener(new OnClickListener() {
 

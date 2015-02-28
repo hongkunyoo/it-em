@@ -55,8 +55,8 @@
                 android:id="@+id/row_reply_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/feed_comment_time_ic"
-                android:drawableStart="@drawable/feed_comment_time_ic"
+                android:drawableLeft="@drawable/general_time_ic"
+                android:drawableStart="@drawable/general_time_ic"
                 android:gravity="center_vertical"
                 android:textColor="@color/gray_light"
                 app:textType="caption" />

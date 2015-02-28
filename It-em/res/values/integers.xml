@@ -11,7 +11,7 @@
     <integer name="my_item_grid_column_num">3</integer>
 
     <!-- Category -->
-    <integer name="category_grid_column_num">3</integer>
+    <integer name="category_grid_column_num">2</integer>
     
     <!-- Item -->
     <integer name="item_display_reply_num">2</integer>

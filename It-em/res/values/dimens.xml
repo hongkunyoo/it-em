@@ -35,7 +35,7 @@
     <dimen name="product_tag_content_margin">8dp</dimen>
     
     <!-- Noti -->
-    <dimen name="noti_margin">6dp</dimen>
+    <dimen name="noti_content_margin">4dp</dimen>
     <dimen name="noti_item_image_width">52dp</dimen>
     
     <!-- Upload -->

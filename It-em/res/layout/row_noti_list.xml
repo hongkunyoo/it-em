@@ -32,14 +32,12 @@
                 android:id="@+id/row_noti_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/noti_margin"
                 android:textColor="@color/brand_text_color"
                 app:textType="body" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/noti_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
@@ -47,12 +45,9 @@
                     android:id="@+id/row_noti_receive_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/noti_content_margin"
+                    android:layout_marginRight="@dimen/noti_content_margin"
                     android:contentDescription="@string/image" />
-
-                <com.pinthecloud.item.view.ItTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/space" />
 
                 <com.pinthecloud.item.view.ItTextView
                     android:id="@+id/row_noti_content"
@@ -70,8 +65,8 @@
                 android:id="@+id/row_noti_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/feed_comment_time_ic"
-                android:drawableStart="@drawable/feed_comment_time_ic"
+                android:drawableLeft="@drawable/general_time_ic"
+                android:drawableStart="@drawable/general_time_ic"
                 android:gravity="center_vertical"
                 android:textColor="@color/gray_light"
                 app:textType="caption" />

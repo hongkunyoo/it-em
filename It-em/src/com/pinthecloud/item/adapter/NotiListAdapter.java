@@ -104,23 +104,32 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 	
 	private void setImage(ViewHolder holder, final ItNotification noti){
 		if(noti.getType().equals(ItNotification.TYPE.LikeIt.toString())){
-			holder.receiveImage.setImageResource(R.drawable.launcher);
+			holder.receiveImage.setVisibility(View.VISIBLE);
+			holder.receiveImage.setImageResource(R.drawable.noti_it_ic);
+			
+			mApp.getPicasso()
+			.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+			.placeholder(R.drawable.profile_l_default_img)
+			.fit()
+			.into(holder.profileImage);
 		} else if(noti.getType().equals(ItNotification.TYPE.Reply.toString())){
-			holder.receiveImage.setImageResource(R.drawable.launcher);
+			holder.receiveImage.setVisibility(View.VISIBLE);
+			holder.receiveImage.setImageResource(R.drawable.noti_comment_ic);
+			
+			mApp.getPicasso()
+			.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+			.placeholder(R.drawable.profile_l_default_img)
+			.fit()
+			.into(holder.profileImage);
 		} else if(noti.getType().equals(ItNotification.TYPE.ProductTag.toString())){
-			holder.receiveImage.setImageResource(R.drawable.launcher);
+			holder.receiveImage.setVisibility(View.GONE);
+			holder.profileImage.setImageResource(R.drawable.noti_label_img);
 		}
 
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(noti.getRefId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.feed_loading_default_img)
 		.into(holder.itemImage);
-
-		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.placeholder(R.drawable.profile_l_default_img)
-		.fit()
-		.into(holder.profileImage);
 	}
 
 

@@ -541,12 +541,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			mProductTagTextLayout.setVisibility(View.VISIBLE);
 
 			mProductTagLayout.setEnabled(true);
+			mProductTagLayout.setActivated(true);
 			mProductTagText.setText(getProductTagCategoryText(mItem.getProductTagList()));
 		} else {
 			mProductTagEmptyView.setVisibility(View.VISIBLE);
 			mProductTagTextLayout.setVisibility(View.GONE);
 
 			mProductTagLayout.setEnabled(false);
+			mProductTagLayout.setActivated(false);
 			mProductTagText.setText("");
 		}
 	}
