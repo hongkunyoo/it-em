@@ -94,7 +94,7 @@
     <!-- Notification -->
     <string name="noti_content">%1$s %3$s %2$s item.</string>
     <string name="noti_name_title_my">my</string>
-    <string name="noti_like_it">says IT on</string>
+    <string name="noti_it">says it on</string>
     <string name="noti_reply">comments on</string>
     <string name="noti_product_tag">puts product label on</string>
     <string name="new_noti">New noti came. Refresh noti screen.</string>
@@ -106,7 +106,7 @@
     <string name="settings">Settings</string>
     <string name="notification">Notification</string>
     <string name="notification_my_item">about my item</string>
-    <string name="notification_like_it_item">about item I it</string>
+    <string name="notification_it_item">about my it item</string>
     <string name="notification_reply_item">about item I commented</string>
 
     <!-- Product Tag -->

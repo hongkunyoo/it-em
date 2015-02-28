@@ -20,8 +20,8 @@ public class GAHelper {
 	
 	// Action
 	public static final String VIEW_ITEM = "view ITEM";
-	public static final String THIS_IS_IT = "This is it";
-	public static final String THIS_IS_IT_CANCEL = "This is it cancel";
+	public static final String IT = "it";
+	public static final String IT_CANCEL = "it cancel";
 	public static final String ITEM_TAG_INFORMATION = "Item Tag Information";
 	public static final String PRICE = "Price";
 	public static final String VIEW_UPLOADER = "view Uploader";

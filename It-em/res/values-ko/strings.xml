@@ -79,7 +79,7 @@
     <!-- Notification -->
     <string name="noti_content">%1$s님이 %2$s %3$s.</string>
     <string name="noti_name_title_my">내</string>
-    <string name="noti_like_it">아이템을 좋아합니다</string>
+    <string name="noti_it">아이템을 좋아합니다</string>
     <string name="noti_reply">아이템에 댓글을 달았습니다</string>
     <string name="noti_product_tag">아이템에 상품라벨을 달았습니다</string>
     <string name="new_noti">새로운 알람이 왔어요. 알람 화면을 새로고침 해보세요.</string>
@@ -91,7 +91,7 @@
     <string name="settings">설정</string>
     <string name="notification">알람</string>
     <string name="notification_my_item">내 아이템</string>
-    <string name="notification_like_it_item">잇한 아이템</string>
+    <string name="notification_it_item">내 잇 아이템</string>
     <string name="notification_reply_item">댓글 단 아이템</string>
 
     <!-- ItDateTime -->

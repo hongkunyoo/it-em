@@ -47,7 +47,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 	private String mIt;
 	private String mThisIsIt;
-	private boolean isDoingLikeIt = false;
+	private boolean isDoingIt = false;
 
 
 	public HomeItemGridAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
@@ -202,40 +202,38 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 			@Override
 			public void onClick(View v) {
-				final boolean isDoLike = !holder.itButton.isActivated();
-				final int currentLikeItNum = Integer.parseInt(holder.itNumber.getText().toString());
-				setItButton(holder, currentLikeItNum, isDoLike);
+				final boolean isDoIt = !holder.itButton.isActivated();
+				final int currentItNum = Integer.parseInt(holder.itNumber.getText().toString());
+				setItButton(holder, currentItNum, isDoIt);
 
-				if(!isDoingLikeIt){
-					isDoingLikeIt = true;
+				if(!isDoingIt){
+					isDoingIt = true;
 
-					if(isDoLike) {
-						mApp.getGaHelper().sendEventGA(
-								mFrag.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.HOME);
+					if(isDoIt) {
+						mApp.getGaHelper().sendEventGA(mFrag.getClass().getSimpleName(), GAHelper.IT, GAHelper.HOME);
 
 						// Do like it
-						LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
+						LikeIt it = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
 						ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), item.getId(),
 								item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
 								item.getImageWidth(), item.getImageHeight());
-						mApp.getAimHelper().addUnique(likeIt, noti, new EntityCallback<LikeIt>() {
+						mApp.getAimHelper().addUnique(it, noti, new EntityCallback<LikeIt>() {
 
 							@Override
 							public void onCompleted(LikeIt entity) {
-								doLikeIt(holder, item, entity.getId(), currentLikeItNum, isDoLike);
+								doIt(holder, item, entity.getId(), currentItNum, isDoIt);
 							}
 						});
 					} else {
-						mApp.getGaHelper().sendEventGA(
-								mFrag.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.HOME);
+						mApp.getGaHelper().sendEventGA(mFrag.getClass().getSimpleName(), GAHelper.IT_CANCEL, GAHelper.HOME);
 
 						// Cancel like it
-						LikeIt likeIt = new LikeIt(item.getPrevLikeId());
-						mApp.getAimHelper().del(likeIt, new EntityCallback<Boolean>() {
+						LikeIt it = new LikeIt(item.getPrevLikeId());
+						mApp.getAimHelper().del(it, new EntityCallback<Boolean>() {
 
 							@Override
 							public void onCompleted(Boolean entity) {
-								doLikeIt(holder, item, null, currentLikeItNum, isDoLike);
+								doIt(holder, item, null, currentItNum, isDoIt);
 							}
 						});
 					}
@@ -279,30 +277,30 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 	}
 
 
-	private void doLikeIt(ViewHolder holder, Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
-		isDoingLikeIt = false;
-		item.setPrevLikeId(likeItId);
-		setItButton(holder, currentLikeItNum, isDoLikeIt);
+	private void doIt(ViewHolder holder, Item item, String likeId, int currentItNum, boolean isDoIt){
+		isDoingIt = false;
+		item.setPrevLikeId(likeId);
+		setItButton(holder, currentItNum, isDoIt);
 
-		if(isDoLikeIt){
-			// Do like it
-			item.setLikeItCount(currentLikeItNum+1);
+		if(isDoIt){
+			// Do it
+			item.setLikeItCount(currentItNum+1);
 		} else {
-			// Cancel like it
-			item.setLikeItCount(currentLikeItNum-1);
+			// Cancel it
+			item.setLikeItCount(currentItNum-1);
 		}
 	}
 
 
-	private void setItButton(ViewHolder holder, int currentLikeItNum, boolean isDoLikeIt){
-		if(isDoLikeIt) {
-			// Do like it
-			setItNumber(holder, currentLikeItNum+1);
+	private void setItButton(ViewHolder holder, int currentItNum, boolean isDoIt){
+		if(isDoIt) {
+			// Do it
+			setItNumber(holder, currentItNum+1);
 			holder.itButton.setActivated(true);
 			holder.itButton.setText(mThisIsIt);
 		} else {
-			// Cancel like it
-			setItNumber(holder, currentLikeItNum-1);
+			// Cancel it
+			setItNumber(holder, currentItNum-1);
 			holder.itButton.setActivated(false);
 			holder.itButton.setText(mIt);
 		}

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
-        android:id="@+id/upload_submit"
+        android:id="@+id/upload_menu_submit"
         android:enabled="false"
         android:icon="@drawable/toolbar_submit_button"
         android:title="@string/submit"

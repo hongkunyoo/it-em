@@ -142,7 +142,7 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		MenuItem menuItem = menu.findItem(R.id.upload_submit);
+		MenuItem menuItem = menu.findItem(R.id.upload_menu_submit);
 		menuItem.setEnabled(isSubmitEnable());
 	}
 
@@ -150,7 +150,7 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
-		case R.id.upload_submit:
+		case R.id.upload_menu_submit:
 			trimContent();
 			String message = checkBrand();
 			if(message.equals("")){

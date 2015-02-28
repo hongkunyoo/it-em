@@ -65,6 +65,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mContent;
 	private TextView mDate;
 	private Button mItButton;
+	private MenuItem mItMenuButton;
 	private View mItNumberLayout;
 	private TextView mItNumber;
 
@@ -92,7 +93,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private String mIt;
 	private String mThisIsIt;
-	private boolean isDoingLikeIt = false;
+	private boolean isDoingIt = false;
 
 
 	public static ItFragment newInstance(Item item) {
@@ -151,13 +152,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.item, menu);
+		mItMenuButton = menu.findItem(R.id.item_menu_it);
 	}
 
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		MenuItem deleteMenuItem = menu.findItem(R.id.item_delete);
+		MenuItem deleteMenuItem = menu.findItem(R.id.item_menu_delete);
 		deleteMenuItem.setVisible(mItem.checkMine() || mApp.isAdmin());
 	}
 
@@ -165,8 +167,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menu) {
 		switch (menu.getItemId()) {
-		case R.id.item_delete:
+		case R.id.item_menu_delete:
 			deleteItem(mItem);
+			break;
+		case R.id.item_menu_it:
+			onClickItButton();
 			break;
 		}
 		return super.onOptionsItemSelected(menu);
@@ -225,9 +230,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setComponent(){
 		mIt = mActivity.getResources().getString(R.string.it);
 		mThisIsIt = mActivity.getResources().getString(R.string.this_is_it);
-		
+
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
-		
+
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -251,45 +256,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				final boolean isDoLike = !mItButton.isActivated();
-				final int currentLikeItNum = Integer.parseInt(mItNumber.getText().toString());
-				setItButton(currentLikeItNum, isDoLike);
-
-				if(isDoingLikeIt){
-					return;
-				}
-				
-				isDoingLikeIt = true;
-				if(isDoLike) {
-					mGaHelper.sendEventGA(
-							mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT, GAHelper.ITEM);
-
-					// Do like it
-					LikeIt likeIt = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-					ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
-							mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
-							mItem.getImageWidth(), mItem.getImageHeight());
-					mAimHelper.addUnique(likeIt, noti, new EntityCallback<LikeIt>() {
-
-						@Override
-						public void onCompleted(LikeIt entity) {
-							doLikeIt(mItem, entity.getId(), currentLikeItNum, isDoLike);
-						}
-					});
-				} else {
-					mGaHelper.sendEventGA(
-							mThisFragment.getClass().getSimpleName(), GAHelper.THIS_IS_IT_CANCEL, GAHelper.ITEM);
-
-					// Cancel like it
-					LikeIt likeIt = new LikeIt(mItem.getPrevLikeId());
-					mAimHelper.del(likeIt, new EntityCallback<Boolean>() {
-
-						@Override
-						public void onCompleted(Boolean entity) {
-							doLikeIt(mItem, null, currentLikeItNum, isDoLike);
-						}
-					});
-				}
+				onClickItButton();
 			}
 		});
 
@@ -436,6 +403,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mDate.setText(item.getCreateDateTime().getElapsedDateTime(mActivity));
 		setItNumber(item.getLikeItCount());
 		mItButton.setActivated(item.getPrevLikeId() != null);
+		mItMenuButton.setIcon(mItem.getPrevLikeId() == null ? R.drawable.appbar_it_ic : R.drawable.appbar_it_ic_highlight);
 		mItButton.setText(item.getPrevLikeId() != null ? mThisIsIt : mIt);
 	}
 
@@ -456,32 +424,76 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void doLikeIt(Item item, String likeItId, int currentLikeItNum, boolean isDoLikeIt){
-		isDoingLikeIt = false;
-		item.setPrevLikeId(likeItId);
-		setItButton(currentLikeItNum, isDoLikeIt);
+	private void onClickItButton(){
+		final boolean isDoIt = !mItButton.isActivated();
+		final int currentItNum = Integer.parseInt(mItNumber.getText().toString());
+		setItButton(currentItNum, isDoIt);
 
-		if(isDoLikeIt){
-			// Do like it
-			item.setLikeItCount(currentLikeItNum+1);
+		if(isDoingIt){
+			return;
+		}
+
+		isDoingIt = true;
+		if(isDoIt) {
+			mGaHelper.sendEventGA(
+					mThisFragment.getClass().getSimpleName(), GAHelper.IT, GAHelper.ITEM);
+
+			// Do it
+			LikeIt it = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+			ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
+					mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
+					mItem.getImageWidth(), mItem.getImageHeight());
+			mAimHelper.addUnique(it, noti, new EntityCallback<LikeIt>() {
+
+				@Override
+				public void onCompleted(LikeIt entity) {
+					doIt(mItem, entity.getId(), currentItNum, isDoIt);
+				}
+			});
 		} else {
-			// Cancel like it
-			item.setLikeItCount(currentLikeItNum-1);
+			mGaHelper.sendEventGA(mThisFragment.getClass().getSimpleName(), GAHelper.IT_CANCEL, GAHelper.ITEM);
+
+			// Cancel it
+			LikeIt it = new LikeIt(mItem.getPrevLikeId());
+			mAimHelper.del(it, new EntityCallback<Boolean>() {
+
+				@Override
+				public void onCompleted(Boolean entity) {
+					doIt(mItem, null, currentItNum, isDoIt);
+				}
+			});
 		}
 	}
 
 
-	private void setItButton(int currentLikeItNum, boolean isDoLikeIt){
-		if(isDoLikeIt) {
-			// Do like it
-			setItNumber(currentLikeItNum+1);
+	private void doIt(Item item, String likeId, int currentItNum, boolean isDoIt){
+		isDoingIt = false;
+		item.setPrevLikeId(likeId);
+		setItButton(currentItNum, isDoIt);
+
+		if(isDoIt){
+			// Do it
+			item.setLikeItCount(currentItNum+1);
+		} else {
+			// Cancel it
+			item.setLikeItCount(currentItNum-1);
+		}
+	}
+
+
+	private void setItButton(int currentItNum, boolean isDoIt){
+		if(isDoIt) {
+			// Do it
+			setItNumber(currentItNum+1);
 			mItButton.setActivated(true);
 			mItButton.setText(mThisIsIt);
+			mItMenuButton.setIcon(R.drawable.appbar_it_ic_highlight);
 		} else {
-			// Cancel like it
-			setItNumber(currentLikeItNum-1);
+			// Cancel it
+			setItNumber(currentItNum-1);
 			mItButton.setActivated(false);
 			mItButton.setText(mIt);
+			mItMenuButton.setIcon(R.drawable.appbar_it_ic);
 		}
 	}
 
@@ -558,7 +570,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		// Add replys
 		mReplyList.clear();
 		mReplyListAdapter.addAll(mItem.getReplyList());
-		
+
 		// Set see previous row
 		final int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
 		if(mItem.getReplyCount() > displayReplyNum){

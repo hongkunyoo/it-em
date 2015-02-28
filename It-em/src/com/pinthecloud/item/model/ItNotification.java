@@ -108,7 +108,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		
 		String type = "";
 		if(getType().equals(ItNotification.TYPE.LikeIt.toString())){
-			type = app.getResources().getString(R.string.noti_like_it);
+			type = app.getResources().getString(R.string.noti_it);
 		} else if(getType().equals(ItNotification.TYPE.Reply.toString())){
 			type = app.getResources().getString(R.string.noti_reply);
 		} else if(getType().equals(ItNotification.TYPE.ProductTag.toString())){

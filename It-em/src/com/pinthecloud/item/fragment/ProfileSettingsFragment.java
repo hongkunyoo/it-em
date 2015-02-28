@@ -108,7 +108,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		MenuItem menuItem = menu.findItem(R.id.profile_settings_submit);
+		MenuItem menuItem = menu.findItem(R.id.profile_settings_menu_submit);
 		menuItem.setEnabled(mNickName.getText().toString().length() > 0);
 	}
 
@@ -116,7 +116,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.profile_settings_submit:
+		case R.id.profile_settings_menu_submit:
 			trimProfileSettings();
 			if(isProfileSettingsChanged()){
 				mApp.showProgressDialog(mActivity);
