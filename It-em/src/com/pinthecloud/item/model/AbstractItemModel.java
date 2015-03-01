@@ -9,10 +9,10 @@ import com.pinthecloud.item.util.RandomUtil;
 public class AbstractItemModel<T> {
 
 	protected String id;
+	protected String rawCreateDateTime;
 	protected String content;
 	protected String whoMade;
 	protected String whoMadeId;
-	protected String rawCreateDateTime;
 	protected String refId;
 
 	public String getId() {
