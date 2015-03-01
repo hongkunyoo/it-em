@@ -30,6 +30,7 @@
 
     <!-- Item -->
     <dimen name="item_layout_margin">12dp</dimen>
+    <dimen name="item_content_margin">4dp</dimen>
 
     <!-- Product Tag -->
     <dimen name="product_tag_content_margin">8dp</dimen>

@@ -64,10 +64,10 @@ public class ItUserPageFragment extends MainTabFragment {
 	private ItUser mItUser;
 
 
-	public static MainTabFragment newInstance(String itUserId) {
+	public static MainTabFragment newInstance(String userId) {
 		MainTabFragment fragment = new ItUserPageFragment();
 		Bundle args = new Bundle();
-		args.putString(ItUser.INTENT_KEY, itUserId);
+		args.putString(ItUser.INTENT_KEY, userId);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -86,7 +86,7 @@ public class ItUserPageFragment extends MainTabFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 		findComponent(view);
-		setComponent();
+		setButton();
 		
 		if(mActivity instanceof ItUserPageActivity){
 			updateFragment();
@@ -161,7 +161,6 @@ public class ItUserPageFragment extends MainTabFragment {
 			public void doNext(Object obj, Object... params) {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
-				setButton();
 				setProfile();
 				setProfileImage();
 
@@ -203,7 +202,7 @@ public class ItUserPageFragment extends MainTabFragment {
 	}
 
 
-	private void setComponent(){
+	private void setButton(){
 		mWebsite.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -215,6 +214,24 @@ public class ItUserPageFragment extends MainTabFragment {
 				}
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
 				startActivity(intent);
+			}
+		});
+		
+		mProfileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment replyDialog = ProfileImageDialog.newInstance(mItUser);
+				replyDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+		
+		mSettings.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, SettingsActivity.class);
+				startActivityForResult(intent, SETTINGS);
 			}
 		});
 	}
@@ -229,51 +246,31 @@ public class ItUserPageFragment extends MainTabFragment {
 
 				@Override
 				public void onCompleted(ItUser entity) {
-					if(entity != null){
-						mItUser = entity;
-						AsyncChainer.notifyNext(obj);	
-					} else {
-						String message = getResources().getString(R.string.not_exist_user);
-						ItAlertDialog notExistUserDialog = ItAlertDialog.newInstance(message, null, null, false);
-						notExistUserDialog.setCallback(new DialogCallback() {
+					if(isAdded()){
+						if(entity != null){
+							mItUser = entity;
+							AsyncChainer.notifyNext(obj);
+						} else {
+							String message = getResources().getString(R.string.not_exist_user);
+							ItAlertDialog notExistUserDialog = ItAlertDialog.newInstance(message, null, null, false);
+							notExistUserDialog.setCallback(new DialogCallback() {
 
-							@Override
-							public void doPositiveThing(Bundle bundle) {
-								mActivity.finish();
-							}
-							@Override
-							public void doNegativeThing(Bundle bundle) {
-								// Do nothing
-							}
-						});
-						notExistUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-						AsyncChainer.clearChain(obj);
+								@Override
+								public void doPositiveThing(Bundle bundle) {
+									mActivity.finish();
+								}
+								@Override
+								public void doNegativeThing(Bundle bundle) {
+									// Do nothing
+								}
+							});
+							notExistUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+							AsyncChainer.clearChain(obj);
+						}
 					}
 				}
 			});
 		}
-	}
-
-
-	private void setButton(){
-		mProfileImage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment replyDialog = ProfileImageDialog.newInstance(mItUser);
-				replyDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-			}
-		});
-
-		mSettings.setVisibility(mItUser.checkMe() ? View.VISIBLE : View.GONE);
-		mSettings.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, SettingsActivity.class);
-				startActivityForResult(intent, SETTINGS);
-			}
-		});
 	}
 
 
@@ -286,6 +283,8 @@ public class ItUserPageFragment extends MainTabFragment {
 		mDescription.setVisibility(!mItUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mWebsite.setVisibility(!mItUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
 		mPro.setVisibility(mItUser.checkPro() ? View.VISIBLE : View.GONE);
+		
+		mSettings.setVisibility(mItUser.checkMe() ? View.VISIBLE : View.GONE);
 	}
 
 

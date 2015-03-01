@@ -74,8 +74,8 @@ public class ItAlertDialog extends ItDialogFragment{
 
 			@Override
 			public void onClick(DialogInterface dialog,int which) {
-				mCallback.doPositiveThing(null);	
 				dismiss();
+				mCallback.doPositiveThing(null);	
 			}
 		});
 
@@ -84,8 +84,8 @@ public class ItAlertDialog extends ItDialogFragment{
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					mCallback.doNegativeThing(null);
 					dismiss();
+					mCallback.doNegativeThing(null);
 				}
 			});
 		}

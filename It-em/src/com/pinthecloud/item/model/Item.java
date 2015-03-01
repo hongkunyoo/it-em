@@ -14,11 +14,12 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	private int replyCount;
 	private List<Reply> replyList;
 	private int likeItCount;
+	private String prevLikeId;
 	private boolean hasProductTag;
 	private List<ProductTag> productTagList;
 	private int imageWidth;
 	private int imageHeight;
-	private String prevLikeId;
+	private ItUser whoMadeUser;
 
 	public Item() {
 		super();
@@ -87,6 +88,12 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setPrevLikeId(String prevLikeId) {
 		this.prevLikeId = prevLikeId;
 	}
+	public ItUser getWhoMadeUser() {
+		return whoMadeUser;
+	}
+	public void setWhoMadeUser(ItUser whoMadeUser) {
+		this.whoMadeUser = whoMadeUser;
+	}
 	public void readItem(Item item) {
 		this.setId(item.getId());
 		this.setContent(item.getContent());
@@ -102,6 +109,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setImageWidth(item.getImageWidth());
 		this.setImageHeight(item.getImageHeight());
 		this.setPrevLikeId(item.getPrevLikeId());
+		this.setWhoMadeUser(item.getWhoMadeUser());
 	}
 	
 

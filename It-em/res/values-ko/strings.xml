@@ -26,6 +26,7 @@
     <!-- Item -->
     <string name="of">님의</string>
     <string name="delete">삭제</string>
+    <string name="not_exist_item">삭제된 아이템 이에요.</string>
 
     <!-- Reply -->
     <string name="comments">댓글</string>
@@ -39,6 +40,7 @@
     <!-- It User Page -->
     <string name="not_exist_user">이 사용자가 존재하지 않습니다.</string>
 
+    
     <!-- My Item -->
     <string name="empty_my_item">올린 아이템이 없어요.\n자신만의 스타일을 공유해보세요!</string>
     <string name="empty_it_item">잇 아이템이 없어요.\n좋은 아이템을 잇 해보세요!</string>

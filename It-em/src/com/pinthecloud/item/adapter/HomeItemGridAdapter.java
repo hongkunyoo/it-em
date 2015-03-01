@@ -118,7 +118,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 	private void setComponent(ViewHolder holder, Item item){
 		mIt = mActivity.getResources().getString(R.string.it);
 		mThisIsIt = mActivity.getResources().getString(R.string.this_is_it);
-		
+
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
@@ -140,9 +140,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
-				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
-				mActivity.startActivity(intent);
+				gotoItUserPage(item);
 			}
 		});
 
@@ -150,9 +148,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
-				intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
-				mActivity.startActivity(intent);
+				gotoItUserPage(item);
 			}
 		});
 
@@ -174,12 +170,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 			@Override
 			public void onClick(View v) {
-				mApp.getGaHelper().sendEventGA(
-						mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
-
-				Intent intent = new Intent(mActivity, ItemActivity.class);
-				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.startActivity(intent);
+				gotoItem(item);
 			}
 		});
 
@@ -187,12 +178,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 			@Override
 			public void onClick(View v) {
-				mApp.getGaHelper().sendEventGA(
-						mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
-
-				Intent intent = new Intent(mActivity, ItemActivity.class);
-				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.startActivity(intent);
+				gotoItem(item);
 			}
 		});
 
@@ -252,6 +238,26 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
+	}
+
+
+	private void gotoItUserPage(Item item){
+		mApp.getGaHelper().sendEventGA(
+				mFrag.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.HOME);
+		
+		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+		intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
+		mActivity.startActivity(intent);
+	}
+
+
+	private void gotoItem(Item item){
+		mApp.getGaHelper().sendEventGA(
+				mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
+
+		Intent intent = new Intent(mActivity, ItemActivity.class);
+		intent.putExtra(Item.INTENT_KEY, item);
+		mActivity.startActivity(intent);
 	}
 
 

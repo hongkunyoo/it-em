@@ -23,6 +23,7 @@ import de.greenrobot.event.EventBus;
 public class UserHelper {
 	
 	private final String SIGNIN = "signin";
+	private final String UPDATE_USER = "update_user";
 	private final String BE_PRO = "be_pro";
 	
 	private ItApplication mApp;
@@ -205,6 +206,30 @@ public class UserHelper {
 					ServiceFilterResponse response) {
 				if (exception == null) {
 					callback.onCompleted(entity);
+				} else {
+					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, exception));
+				}
+			}
+		});
+	}
+	
+	
+	public void updateUser(ItUser user, final EntityCallback<ItUser> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("updateUser", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		JsonObject jo = new JsonObject();
+		jo.addProperty("user", user.toString());
+		
+		mClient.invokeApi(UPDATE_USER, jo, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					callback.onCompleted(new Gson().fromJson(_json, ItUser.class));
 				} else {
 					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, exception));
 				}

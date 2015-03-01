@@ -130,7 +130,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(new Gson().fromJson(_json, Item.class));	
+					callback.onCompleted(new Gson().fromJson(_json, Item.class));
 				} else {
 					EventBus.getDefault().post(new ItException("addItem", ItException.TYPE.INTERNAL_ERROR, response));
 				}
@@ -146,7 +146,7 @@ public class AimHelper {
 		}
 
 		JsonObject jo = new JsonObject();
-		jo.addProperty("itemId", item.getId());
+		jo.addProperty("item", item.toString());
 		jo.addProperty("userId", userId);
 
 		mClient.invokeApi(AIM_GET_ITEM, jo, new ApiJsonOperationCallback() {
@@ -341,7 +341,10 @@ public class AimHelper {
 			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(4);
 
-				mClient.invokeApi(AIM_DELETE_ITEM, item.toJson(), new ApiJsonOperationCallback() {
+				JsonObject jo = new JsonObject();
+				jo.addProperty("item", item.toString());
+				
+				mClient.invokeApi(AIM_DELETE_ITEM, jo, new ApiJsonOperationCallback() {
 
 					@Override
 					public void onCompleted(JsonElement _json, Exception exception,

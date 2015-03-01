@@ -39,6 +39,8 @@
     <string name="of">\'s</string>
     <string name="plus">+ </string>
     <string name="delete">Delete</string>
+    <string name="item">Item</string>
+    <string name="not_exist_item">It is deleted item.</string>
 
     <!-- Reply -->
     <string name="comments">Comments</string>
@@ -52,9 +54,6 @@
 
     <!-- It User Page -->
     <string name="not_exist_user">This user doesn\'t exist.</string>
-
-    <!-- Item -->
-    <string name="item">Item</string>
 
     <!-- My Item -->
     <string name="empty_my_item">Item is empty.\nShare your own style!</string>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,10 +36,12 @@ import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.analysis.GAHelper;
+import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.LikeItDialog;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItNotification;
@@ -84,9 +87,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private EditText mReplyInputText;
 	private Button mReplyInputSubmit;
 
-	private View mProfileLayout;
 	private CircleImageView mProfileImage;
-	private TextView mNickName;
+	private TextView mUserNickName;
+	private TextView mUserDescription;
+	private TextView mUserWebsite;
 
 	private ItUser mMyItUser;
 	private Item mItem;
@@ -221,9 +225,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mReplyInputText = (EditText)view.findViewById(R.id.reply_frag_inputbar_text);
 		mReplyInputSubmit = (Button)view.findViewById(R.id.reply_frag_inputbar_submit);
 
-		mProfileLayout = view.findViewById(R.id.item_frag_profile_layout);
 		mProfileImage = (CircleImageView)view.findViewById(R.id.item_frag_profile_image);
-		mNickName = (TextView)view.findViewById(R.id.item_frag_nick_name);
+		mUserNickName = (TextView)view.findViewById(R.id.item_frag_user_nick_name);
+		mUserDescription = (TextView)view.findViewById(R.id.item_frag_user_description);
+		mUserWebsite = (TextView)view.findViewById(R.id.item_frag_user_website);
 	}
 
 
@@ -231,6 +236,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mIt = mActivity.getResources().getString(R.string.it);
 		mThisIsIt = mActivity.getResources().getString(R.string.this_is_it);
 
+		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
+		mUserNickName.setText(mItem.getWhoMade());
+		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(mActivity));
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
@@ -292,18 +300,45 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		});
 
-		mProfileLayout.setOnClickListener(new OnClickListener() {
+		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mGaHelper.sendEventGA(
-						mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
+				gotoItUserPage();
+			}
+		});
 
-				Intent intent = new Intent(mActivity, ItUserPageActivity.class);
-				intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
+		mUserNickName.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				gotoItUserPage();
+			}
+		});
+		
+		mUserWebsite.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String webSite = mUserWebsite.getText().toString();
+				String webSiteRegx = "(http|https)://.*";
+				if(!webSite.matches(webSiteRegx)){
+					webSite = "http://" + webSite;
+				}
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
 				startActivity(intent);
 			}
 		});
+	}
+
+
+	private void gotoItUserPage(){
+		mGaHelper.sendEventGA(
+				mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
+
+		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+		intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
+		startActivity(intent);
 	}
 
 
@@ -383,28 +418,47 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			@Override
 			public void onCompleted(Item entity) {
 				if(isAdded()){
-					mProgressBar.setVisibility(View.GONE);
-					mItemLayout.setVisibility(View.VISIBLE);
-					mRefresh.setRefreshing(false);
+					if(entity != null){
+						mProgressBar.setVisibility(View.GONE);
+						mItemLayout.setVisibility(View.VISIBLE);
+						mRefresh.setRefreshing(false);
 
-					mItem = entity;
-					setItemComponent(mItem);
-					setProductTagFrag();
-					setReplyFrag();
+						mItem = entity;
+						setItemComponent();
+						setProductTagFrag();
+						setReplyFrag();
+					} else {
+						String message = getResources().getString(R.string.not_exist_item);
+						ItAlertDialog notExistItemDialog = ItAlertDialog.newInstance(message, null, null, false);
+						notExistItemDialog.setCallback(new DialogCallback() {
+
+							@Override
+							public void doPositiveThing(Bundle bundle) {
+								mActivity.finish();
+							}
+							@Override
+							public void doNegativeThing(Bundle bundle) {
+								// Do nothing
+							}
+						});
+						notExistItemDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+					}
 				}
 			}
 		});
 	}
 
 
-	private void setItemComponent(Item item){
-		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
-		mNickName.setText(item.getWhoMade());
-		mDate.setText(item.getCreateDateTime().getElapsedDateTime(mActivity));
-		setItNumber(item.getLikeItCount());
-		mItButton.setActivated(item.getPrevLikeId() != null);
+	private void setItemComponent(){
+		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
+		mUserDescription.setVisibility(!mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
+		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
+		mUserWebsite.setVisibility(!mItem.getWhoMadeUser().getWebPage().equals("") ? View.VISIBLE : View.GONE);
+
+		setItNumber(mItem.getLikeItCount());
+		mItButton.setActivated(mItem.getPrevLikeId() != null);
+		mItButton.setText(mItem.getPrevLikeId() != null ? mThisIsIt : mIt);
 		mItMenuButton.setIcon(mItem.getPrevLikeId() == null ? R.drawable.appbar_it_ic : R.drawable.appbar_it_ic_highlight);
-		mItButton.setText(item.getPrevLikeId() != null ? mThisIsIt : mIt);
 	}
 
 

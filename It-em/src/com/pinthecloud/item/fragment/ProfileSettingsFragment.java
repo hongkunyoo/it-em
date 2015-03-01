@@ -290,7 +290,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		mMyItUser.setNickName(mNickName.getText().toString());
 		mMyItUser.setSelfIntro(mDescription.getText().toString());
 		mMyItUser.setWebPage(mWebsite.getText().toString());
-		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+		mUserHelper.updateUser(mMyItUser, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {

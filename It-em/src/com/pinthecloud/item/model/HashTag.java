@@ -3,7 +3,7 @@ package com.pinthecloud.item.model;
 
 public class HashTag extends AbstractItemModel<HashTag>{
 	
-	public static String INTENT_KEY = "ITEM_HASH_TAG_INTENT_KEY";
+	public static String INTENT_KEY = "HASH_TAG_INTENT_KEY";
 	
 	public HashTag() {
 		super();
