@@ -51,6 +51,7 @@ public class ItUserPageActivity extends ItActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				onBackPressed();

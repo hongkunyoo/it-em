@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:background="@color/accent_color" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
+            android:contentDescription="@string/mileage"
+            android:src="@drawable/setting_profile_edit_ic" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_second"
+            android:layout_marginStart="@dimen/key_line_second"
+            android:text="@string/mileage"
+            android:textColor="@color/brand_text_color"
+            app:textType="body" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/pro_settings_mileage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_second"
+            android:layout_marginStart="@dimen/key_line_second"
+            android:textColor="@color/brand_text_color"
+            android:textStyle="bold"
+            app:textType="body" />
+    </RelativeLayout>
 
 </LinearLayout>

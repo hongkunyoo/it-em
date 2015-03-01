@@ -20,7 +20,6 @@ import com.kakao.SessionCallback;
 import com.kakao.UserManagement;
 import com.kakao.exception.KakaoException;
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -109,6 +108,7 @@ public class SettingsActivity extends ItActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			
 		    @Override
 		    public void onClick(View v) {
 		        onBackPressed();
@@ -270,8 +270,7 @@ public class SettingsActivity extends ItActivity {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mThisActivity);
-				mPrefHelper.put(ItConstant.DEVELOP_MODE_KEY, ItApplication.REAL);
-				mApp.switchClient(new EntityCallback<Boolean>() {
+				mApp.switchClient(ItApplication.REAL, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -286,8 +285,7 @@ public class SettingsActivity extends ItActivity {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mThisActivity);
-				mPrefHelper.put(ItConstant.DEVELOP_MODE_KEY, ItApplication.TEST);
-				mApp.switchClient(new EntityCallback<Boolean>() {
+				mApp.switchClient(ItApplication.TEST, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

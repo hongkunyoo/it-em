@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 
@@ -11,6 +12,8 @@ public class ProSettingsActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
+	
+	private TextView mMileage;
 
 
 	@Override
@@ -20,6 +23,9 @@ public class ProSettingsActivity extends ItActivity {
 		setContentView(R.layout.activity_pro_settings);
 
 		setToolbar();
+		findComponent();
+		setComponent();
+		setButton();
 	}
 
 
@@ -45,10 +51,26 @@ public class ProSettingsActivity extends ItActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			
 		    @Override
 		    public void onClick(View v) {
 		        onBackPressed();
 		    }
 		});
+	}
+	
+	
+	private void findComponent(){
+		mMileage = (TextView)findViewById(R.id.pro_settings_mileage);
+	}
+	
+	
+	private void setComponent(){
+		
+	}
+	
+	
+	private void setButton(){
+		
 	}
 }

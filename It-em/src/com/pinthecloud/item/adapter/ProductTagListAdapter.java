@@ -119,7 +119,7 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 	private void setNormalComponent(NormalViewHolder holder, final ProductTag tag){
 		holder.name.setText(tag.getShopName());
-		
+
 		double price = tag.getPrice();
 		String priceString = null;
 		if((price*100)%100 > 0){
@@ -129,7 +129,7 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 		} else {
 			priceString = String.format(Locale.US, "%,d", (int)price);
 		}
-		holder.price.setText(String.format(mActivity.getResources().getString(R.string.price), priceString));
+		holder.price.setText(String.format(mActivity.getResources().getString(R.string.price_kor), priceString));
 
 		holder.price.setOnClickListener(new OnClickListener() {
 

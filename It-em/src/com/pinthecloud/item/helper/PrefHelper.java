@@ -1,5 +1,7 @@
 package com.pinthecloud.item.helper;
 
+import com.pinthecloud.item.ItConstant;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -67,15 +69,17 @@ public class PrefHelper {
 		return mPref.getFloat(key, DEFAULT_FLOAT);
 	}
 
-	public boolean remove(String key){
+	public void remove(String key){
 		Editor editor = mPref.edit();
 		editor.remove(key);
-		return editor.commit();
+		editor.commit();
 	}
 	
-	public boolean clear(){
+	public void clear(){
+		int developMode = getInt(ItConstant.DEVELOP_MODE_KEY);
 		Editor editor = mPref.edit();
 		editor.clear();
-		return editor.commit();
+		editor.commit();
+		put(ItConstant.DEVELOP_MODE_KEY, developMode);
 	}
 }

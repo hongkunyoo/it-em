@@ -54,6 +54,7 @@ public class UploadActivity extends ItActivity {
 		
 		mToolbar.setNavigationIcon(R.drawable.appbar_close_ic);
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			
 		    @Override
 		    public void onClick(View v) {
 		        onBackPressed();

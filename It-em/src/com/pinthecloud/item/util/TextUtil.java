@@ -42,6 +42,7 @@ public class TextUtil {
 	public static ArrayList<int[]> getSpans(String body, char prefix) {
         ArrayList<int[]> spans = new ArrayList<int[]>();
         Pattern pattern = Pattern.compile(prefix + "\\w+");
+        ItLog.log(body);
         Matcher matcher = pattern.matcher(body);
         while (matcher.find()) {
             int[] currentSpan = new int[2];

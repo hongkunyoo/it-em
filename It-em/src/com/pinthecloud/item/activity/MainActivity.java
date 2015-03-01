@@ -12,10 +12,9 @@ import android.widget.Toast;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainPagerAdapter;
-import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.GuideDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.NotificationEvent;
-import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.MainTabHolder;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
@@ -134,19 +133,7 @@ public class MainActivity extends ItActivity {
 
 
 	private void showGuide(){
-		String message = getResources().getString(R.string.be_pro_description);
-		String cancelMessage = getResources().getString(R.string.do_not_see_again);
-		ItAlertDialog guideDialog = ItAlertDialog.newInstance(message, null, cancelMessage, true);
-		guideDialog.setCallback(new DialogCallback() {
-
-			@Override
-			public void doPositiveThing(Bundle bundle) {
-			}
-			@Override
-			public void doNegativeThing(Bundle bundle) {
-				mPrefHelper.put(ItConstant.GUIDE_READ_KEY, true);
-			}
-		});
+		GuideDialog guideDialog = new GuideDialog();
 		guideDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 	}
 

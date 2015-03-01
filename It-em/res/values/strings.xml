@@ -31,7 +31,6 @@
     <string name="unfold">Unfold</string>
     <string name="it">it</string>
     <string name="this_is_it">This is it</string>
-    <string name="do_not_see_again">Don\'t see again</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
@@ -55,6 +54,10 @@
     <!-- It User Page -->
     <string name="not_exist_user">This user doesn\'t exist.</string>
 
+    <!-- Guide -->
+    <string name="guide_description">IT:EM allows only editor to upload item.</string>
+    <string name="guide_be_pro"><u>I also want to be editor</u></string>
+    
     <!-- My Item -->
     <string name="empty_my_item">Item is empty.\nShare your own style!</string>
     <string name="empty_it_item">It item is empty.\nGive it to lovely item!</string>
@@ -90,6 +93,9 @@
     <string name="profile_edited">Profile is edited.</string>
     <string name="profile_image_edited">Profile image is changed.</string>
 
+    <!-- Pro Settings -->
+    <string name="mileage">Mileage</string>
+    
     <!-- Notification -->
     <string name="noti_content">%1$s %3$s %2$s item.</string>
     <string name="noti_name_title_my">my</string>
@@ -110,7 +116,7 @@
 
     <!-- Product Tag -->
     <string name="product_tag">Product Label</string>
-    <string name="price">$%1$s</string>
+    <string name="price_kor">%1$swon</string>
     <string name="empty_product_tag">Product Label is empty yet</string>
     <string name="get_product_label">GET!</string>
 

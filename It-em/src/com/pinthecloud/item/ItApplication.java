@@ -194,11 +194,11 @@ public class ItApplication extends Application {
 		return adminList.contains(user.getItUserId());
 	}
 
-	public void switchClient(final EntityCallback<Boolean> callback) {
-		int type = prefHelper.getInt(ItConstant.DEVELOP_MODE_KEY);
-		if (type == REAL) {
+	public void switchClient(int developMode, final EntityCallback<Boolean> callback) {
+		getPrefHelper().put(ItConstant.DEVELOP_MODE_KEY, developMode);
+		if (developMode == REAL) {
 			mClient = realClient;
-		} else if(type == TEST) {
+		} else if(developMode == TEST) {
 			mClient = testClient;
 		}
 

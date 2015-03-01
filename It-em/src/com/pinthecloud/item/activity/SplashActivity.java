@@ -42,7 +42,15 @@ public class SplashActivity extends ItActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+
 		findComponent();
+		
+		/*** For under ver 108 ***/
+		if(mVersionHelper.getClientAppVersion() < 0.108){
+			mPrefHelper.clear();
+		}
+		/*************************/
+		
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mThisActivity));
@@ -73,7 +81,7 @@ public class SplashActivity extends ItActivity {
 		if(mApp.isAdmin()){
 			Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_LONG).show();;
 		}
-		
+
 		// Remove noti
 		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
@@ -181,13 +189,6 @@ public class SplashActivity extends ItActivity {
 		// If mobile id doesn't exist, get it
 		ItDevice device = mObjectPrefHelper.get(ItDevice.class);
 		if(device.getMobileId().equals(PrefHelper.DEFAULT_STRING)) {
-			/*** For under ver 107 ***/
-			ItUser user = mObjectPrefHelper.get(ItUser.class);
-			if(user.checkLoggedIn()){
-				mPrefHelper.clear();
-			}
-			/*************************/
-
 			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
 			device.setMobileId(mobileId);
 			mObjectPrefHelper.put(device);

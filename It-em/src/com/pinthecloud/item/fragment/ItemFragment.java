@@ -236,9 +236,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mIt = mActivity.getResources().getString(R.string.it);
 		mThisIsIt = mActivity.getResources().getString(R.string.this_is_it);
 
-		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
 		mUserNickName.setText(mItem.getWhoMade());
-		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(mActivity));
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
@@ -450,6 +448,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setItemComponent(){
+		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
+		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(mActivity));
+		
 		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
 		mUserDescription.setVisibility(!mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
