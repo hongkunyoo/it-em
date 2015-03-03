@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Common -->
-    <integer name="edit_text_max_line">2</integer>
-    
     <!-- Home -->
     <integer name="home_item_grid_column_num">2</integer>
 

@@ -34,7 +34,6 @@ public class ProductTag extends AbstractItemModel<ProductTag> implements Parcela
 	public void setCategory(int category) {
 		this.category = category;
 	}
-	
 	public String getShopName() {
 		return shopName;
 	}

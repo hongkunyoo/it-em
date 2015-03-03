@@ -51,4 +51,22 @@
         <item>etc</item>
     </string-array>
 
+    <!-- Bank Name -->
+    <string-array name="bank_name_array">
+        <item>Woori</item>
+        <item>Shirts</item>
+        <item>knit</item>
+        <item>ManToMan</item>
+        <item>Hood</item>
+        <item>T_Shirts</item>
+        <item>Pants</item>
+        <item>OnePiece</item>
+        <item>Skirt</item>
+        <item>Shoes</item>
+        <item>Socks</item>
+        <item>Bag</item>
+        <item>Accessory</item>
+        <item>Cap</item>
+        <item>etc</item>
+    </string-array>
 </resources>

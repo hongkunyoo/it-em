@@ -109,7 +109,7 @@ public class ProfileSettingsFragment extends ItFragment {
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		MenuItem menuItem = menu.findItem(R.id.profile_settings_menu_submit);
-		menuItem.setEnabled(mNickName.getText().toString().length() > 0);
+		menuItem.setEnabled(mNickName.getText().toString().trim().length() > 0);
 	}
 
 
@@ -125,7 +125,12 @@ public class ProfileSettingsFragment extends ItFragment {
 
 					@Override
 					public void doNext(Object obj, Object... params) {
-						checkNickName(obj, mNickName.getText().toString());
+						String message = checkWebsite(obj, mWebsite.getText().toString());
+						if(message.equals("")){
+							checkNickName(obj, mNickName.getText().toString());
+						} else {
+							AsyncChainer.notifyNext(obj, message);
+						}
 					}
 				}, new Chainable(){
 
@@ -282,6 +287,16 @@ public class ProfileSettingsFragment extends ItFragment {
 					}
 				}
 			});
+		}
+	}
+
+
+	private String checkWebsite(final Object obj, String website){
+		String websiteRegx = "^(https?\\://)?[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,5}(/\\S*)?$";
+		if(!website.matches(websiteRegx)){
+			return getResources().getString(R.string.bad_website_message);
+		} else {
+			return "";
 		}
 	}
 

@@ -1,10 +1,12 @@
 package com.pinthecloud.item.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
 import com.pinthecloud.item.ItApplication;
+import com.pinthecloud.item.R;
 import com.pinthecloud.item.helper.PrefHelper;
 
 public class ItUser implements Parcelable {
@@ -15,7 +17,7 @@ public class ItUser implements Parcelable {
 		FACEBOOK,
 		KAKAO
 	}
-	
+
 	public static enum TYPE {
 		VIEWER,
 		SELLER,
@@ -38,8 +40,12 @@ public class ItUser implements Parcelable {
 	private String webPage;
 	@com.google.gson.annotations.SerializedName("email")
 	private String email;
-	@com.google.gson.annotations.SerializedName("bankAccount")
-	private String bankAccount;
+	@com.google.gson.annotations.SerializedName("bankName")
+	private int bankName;
+	@com.google.gson.annotations.SerializedName("bankAccountNumber")
+	private int bankAccountNumber;
+	@com.google.gson.annotations.SerializedName("bankAccountName")
+	private String bankAccountName;
 	@com.google.gson.annotations.SerializedName("notiMyItem")
 	private boolean notiMyItem;
 	@com.google.gson.annotations.SerializedName("notiItItem")
@@ -59,7 +65,9 @@ public class ItUser implements Parcelable {
 		this.selfIntro = "";
 		this.webPage = "";
 		this.email = "";
-		this.bankAccount = "";
+		this.bankName = 0;
+		this.bankAccountNumber = 0;
+		this.bankAccountName = "";
 		this.notiMyItem = true;
 		this.notiItItem = true;
 		this.notiReplyItem = true;
@@ -89,11 +97,27 @@ public class ItUser implements Parcelable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getBankAccount() {
-		return bankAccount;
+	public int getBankName() {
+		return bankName;
 	}
-	public void setBankAccount(String bankAccount) {
-		this.bankAccount = bankAccount;
+	public String bankNameString(Context context){
+		String[] bankNameArray = context.getResources().getStringArray(R.array.bank_name_array);
+		return bankNameArray[bankName];
+	}
+	public void setBankName(int bankName) {
+		this.bankName = bankName;
+	}
+	public int getBankAccountNumber() {
+		return bankAccountNumber;
+	}
+	public void setBankAccountNumber(int bankAccountNumber) {
+		this.bankAccountNumber = bankAccountNumber;
+	}
+	public String getBankAccountName() {
+		return bankAccountName;
+	}
+	public void setBankAccountName(String bankAccountName) {
+		this.bankAccountName = bankAccountName;
 	}
 	public String getNickName() {
 		return nickName;
@@ -149,7 +173,9 @@ public class ItUser implements Parcelable {
 		this.setWebPage(itUser.getWebPage());
 		this.setType(itUser.getType());
 		this.setEmail(itUser.getEmail());
-		this.setBankAccount(itUser.getBankAccount());
+		this.setBankName(itUser.getBankName());
+		this.setBankAccountNumber(itUser.getBankAccountNumber());
+		this.setBankAccountName(itUser.getBankAccountName());
 		this.setNotiMyItem(itUser.isNotiMyItem());
 		this.setNotiItItem(itUser.isNotiItItem());
 		this.setNotiReplyItem(itUser.isNotiReplyItem());
@@ -172,7 +198,7 @@ public class ItUser implements Parcelable {
 		return new Gson().toJson(this);
 	}
 
-	
+
 	/*
 	 * Parcelable
 	 */

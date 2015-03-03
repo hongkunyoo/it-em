@@ -2,7 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@color/gray" android:state_enabled="false"/>
-    <item android:drawable="@drawable/dialog_tab_pressed_btn" android:state_pressed="true"/>
-    <item android:drawable="@drawable/dialog_tag_btn" />
+    <item android:drawable="@color/green"/>
 
 </selector>

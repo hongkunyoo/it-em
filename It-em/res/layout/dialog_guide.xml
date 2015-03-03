@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@color/gray"
     android:orientation="vertical"
-    android:padding="@dimen/key_line_first" >
+    android:padding="@dimen/dialog_margin" >
 
     <ImageButton
         android:id="@+id/guide_frag_close"
@@ -20,27 +21,36 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/key_line_first"
             android:contentDescription="@string/image"
             android:src="@drawable/bepro_badge_img" />
 
-        <TextView
+        <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/guide_description" />
+            android:layout_marginBottom="@dimen/key_line_first"
+            android:gravity="center_horizontal"
+            android:text="@string/guide_description"
+            android:textColor="@color/brand_text_color"
+            android:textStyle="bold"
+            app:textType="subhead" />
 
-        <TextView
+        <com.pinthecloud.item.view.ItTextView
             android:id="@+id/guide_frag_be_pro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:text="@string/guide_be_pro"
-            android:textColor="@color/accent_color" />
+            android:textColor="@color/accent_color"
+            android:textStyle="bold"
+            app:textType="body" />
     </LinearLayout>
 
 </RelativeLayout>

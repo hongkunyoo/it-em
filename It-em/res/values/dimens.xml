@@ -4,6 +4,7 @@
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
     <dimen name="key_line_first">16dp</dimen>
+    <dimen name="dialog_margin">24dp</dimen>
     <dimen name="key_line_second">72dp</dimen>
     <dimen name="corner_radius">2dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
@@ -22,7 +23,7 @@
     <!-- Home -->
     <dimen name="home_item_margin">10dp</dimen>
     <dimen name="home_item_content_margin">4dp</dimen>
-
+    
     <!-- Be Pro -->
     <dimen name="be_pro_content_margin">12dp</dimen>
     <dimen name="be_pro_code_margin">8dp</dimen>
@@ -64,6 +65,13 @@
     <dimen name="profile_settings_content_margin">8dp</dimen>
     <dimen name="profile_settings_image_width">128dp</dimen>
 
+    <!-- Pro Settings -->
+    <dimen name="pro_settings_margin">12dp</dimen>
+    <dimen name="pro_settings_pay_guide_height">18dp</dimen>
+    
+    <!-- Bank Account Edit -->
+    <dimen name="bank_account_edit_margin">8dp</dimen>
+    
     <!-- Settings -->
     <dimen name="settings_layout_margin">12dp</dimen>
     <dimen name="settings_row_height">36dp</dimen>

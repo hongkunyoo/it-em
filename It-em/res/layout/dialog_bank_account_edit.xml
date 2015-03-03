@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingBottom="@dimen/bank_account_edit_margin"
+    android:paddingEnd="@dimen/dialog_margin"
+    android:paddingLeft="@dimen/dialog_margin"
+    android:paddingRight="@dimen/dialog_margin"
+    android:paddingStart="@dimen/dialog_margin" >
+
+    <com.pinthecloud.item.view.ItTextView
+        android:id="@+id/bank_account_edit_frag_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/row_height"
+        android:gravity="center_vertical"
+        android:text="@string/bank_account"
+        android:textColor="@color/brand_text_color"
+        android:textStyle="bold"
+        app:textType="body" />
+
+    <Spinner
+        android:id="@+id/bank_account_edit_frag_bank_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bank_account_edit_frag_title" />
+
+    <EditText
+        android:id="@+id/bank_account_edit_frag_account_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bank_account_edit_frag_bank_name"
+        android:background="@drawable/edit_text_line"
+        android:ems="10"
+        android:hint="@string/bank_account_number"
+        android:inputType="numberSigned"
+        android:maxLines="1"
+        android:paddingEnd="@dimen/key_line_first"
+        android:paddingLeft="@dimen/key_line_first"
+        android:paddingRight="@dimen/key_line_first"
+        android:paddingStart="@dimen/key_line_first"
+        android:textColor="@color/brand_text_color"
+        android:textColorHint="@color/brand_text_color_light"
+        android:textSize="@dimen/font_small" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/bank_account_edit_frag_account_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bank_account_edit_frag_account_number"
+        android:layout_marginBottom="@dimen/key_line_first"
+        android:background="@drawable/edit_text_line"
+        android:ems="10"
+        android:hint="@string/bank_account_name"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingEnd="@dimen/key_line_first"
+        android:paddingLeft="@dimen/key_line_first"
+        android:paddingRight="@dimen/key_line_first"
+        android:paddingStart="@dimen/key_line_first"
+        android:textColor="@color/brand_text_color"
+        android:textColorHint="@color/brand_text_color_light"
+        android:textSize="@dimen/font_small" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/row_height"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/bank_account_edit_frag_account_name"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bank_account_edit_frag_cancel"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/bank_account_edit_margin"
+            android:layout_marginRight="@dimen/bank_account_edit_margin"
+            android:background="@android:color/transparent"
+            android:minHeight="@dimen/none"
+            android:minWidth="@dimen/none"
+            android:textColor="@color/accent_color"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bank_account_edit_frag_submit"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:minHeight="@dimen/none"
+            android:minWidth="@dimen/none"
+            android:text="@string/submit"
+            android:textColor="@color/brand_text_color"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>
