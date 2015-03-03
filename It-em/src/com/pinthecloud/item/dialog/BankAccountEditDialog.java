@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.interfaces.DialogCallback;
+import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 
 public class BankAccountEditDialog extends ItDialogFragment {
@@ -24,7 +26,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 	private EditText mBankAccountName;
 	private Button mCancel;
 	private Button mSubmit;
-	
+
 	private ItUser mMyItUser;
 	private DialogCallback mCallback;
 
@@ -38,6 +40,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_bank_account_edit, container, false);
+		
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		findComponent(view);
 		setComponent();
@@ -61,6 +64,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				mSubmit.setEnabled(isSubmitEnable());
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -76,6 +80,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				mSubmit.setEnabled(isSubmitEnable());
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -98,11 +103,72 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			}
 		});
 
+		mSubmit.setEnabled(isSubmitEnable());
 		mSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mCallback.doPositiveThing(null);
+				trimContent();
+				if(isBankAccountChanged()){
+					int bankAccountNumber = Integer.parseInt(mBankAccountNumber.getText().toString());
+					String bankAccountName = mBankAccountName.getText().toString();
+					String message = checkBankAccountName(mBankAccountName.getText().toString());
+					if(message.equals("")){
+						updateBankAccount(bankAccountNumber, bankAccountName);
+					} else {
+						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
+					}
+				} else {
+					dismiss();	
+				}
+			}
+		});
+	}
+
+
+	private boolean isSubmitEnable(){
+		return mBankAccountNumber.getText().toString().trim().length() > 0 
+				&& mBankAccountName.getText().toString().trim().length() > 0;
+	}
+	
+	
+	private void trimContent(){
+		mBankAccountNumber.setText(mBankAccountNumber.getText().toString().trim().replace(" ", "").replace("\n", ""));
+		mBankAccountName.setText(mBankAccountName.getText().toString().trim().replace("\n", ""));
+	}
+	
+	
+	private boolean isBankAccountChanged(){
+		return mMyItUser.getBankAccountNumber() != Integer.parseInt(mBankAccountNumber.getText().toString())
+				&& !mMyItUser.getBankAccountName().equals(mBankAccountName.getText().toString());
+	}
+	
+	
+	private String checkBankAccountName(String name){
+		String nameRegx = "^[a-zA-Z0-9가-힣\\s]+";
+		if(!name.matches(nameRegx)){
+			return getResources().getString(R.string.bad_bank_account_name_message);
+		} else {
+			return "";
+		}
+	}
+	
+	
+	private void updateBankAccount(final int bankAccountNumber, final String bankAccountName){
+		mApp.showProgressDialog(mActivity);
+		
+		mMyItUser.setBankAccountNumber(bankAccountNumber);
+		mMyItUser.setBankAccountName(bankAccountName);
+		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+			
+			@Override
+			public void onCompleted(ItUser entity) {
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.bank_account_edited), Toast.LENGTH_LONG).show();
+				
+				Bundle bundle = new Bundle();
+				bundle.putParcelable(ItUser.INTENT_KEY, entity);
+				mCallback.doPositiveThing(bundle);
 				dismiss();
 			}
 		});

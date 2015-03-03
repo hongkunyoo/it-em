@@ -299,11 +299,9 @@ public class UploadFragment extends ItFragment {
 				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
 
 		final List<HashTag> hashTagList = new ArrayList<HashTag>();
-		for(BrandInfo brandInfo : mBrandInfoList){
-			List<String> hashTags = TextUtil.getSpanBodyList(brandInfo.getBrand());
-			for(String hashTag : hashTags){
-				hashTagList.add(new HashTag(hashTag));
-			}
+		List<String> hashTags = TextUtil.getSpanBodyList(content);
+		for(String hashTag : hashTags){
+			hashTagList.add(new HashTag(hashTag));
 		}
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){

@@ -15,7 +15,7 @@
     <dimen name="button_vertical_margin">4dp</dimen>
     
     <!-- Main -->
-    <dimen name="main_tab_margin">-12dp</dimen>
+    <dimen name="main_tab_noti_number_margin">-6dp</dimen>
     
     <!-- Login -->
     <dimen name="login_button_bottom_margin">32dp</dimen>
@@ -70,7 +70,7 @@
     <dimen name="pro_settings_pay_guide_height">18dp</dimen>
     
     <!-- Bank Account Edit -->
-    <dimen name="bank_account_edit_margin">8dp</dimen>
+    <dimen name="bank_account_edit_margin">12dp</dimen>
     
     <!-- Settings -->
     <dimen name="settings_layout_margin">12dp</dimen>

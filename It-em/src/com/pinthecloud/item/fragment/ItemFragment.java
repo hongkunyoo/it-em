@@ -94,9 +94,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private ItUser mMyItUser;
 	private Item mItem;
-
-	private String mIt;
-	private String mThisIsIt;
+	
 	private boolean isDoingIt = false;
 
 
@@ -233,9 +231,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
-		mIt = mActivity.getResources().getString(R.string.it);
-		mThisIsIt = mActivity.getResources().getString(R.string.this_is_it);
-
 		mUserNickName.setText(mItem.getWhoMade());
 		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 
@@ -458,7 +453,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		setItNumber(mItem.getLikeItCount());
 		mItButton.setActivated(mItem.getPrevLikeId() != null);
-		mItButton.setText(mItem.getPrevLikeId() != null ? mThisIsIt : mIt);
 		mItMenuButton.setIcon(mItem.getPrevLikeId() == null ? R.drawable.appbar_it_ic : R.drawable.appbar_it_ic_highlight);
 	}
 
@@ -541,13 +535,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			// Do it
 			setItNumber(currentItNum+1);
 			mItButton.setActivated(true);
-			mItButton.setText(mThisIsIt);
 			mItMenuButton.setIcon(R.drawable.appbar_it_ic_highlight);
 		} else {
 			// Cancel it
 			setItNumber(currentItNum-1);
 			mItButton.setActivated(false);
-			mItButton.setText(mIt);
 			mItMenuButton.setIcon(R.drawable.appbar_it_ic);
 		}
 	}

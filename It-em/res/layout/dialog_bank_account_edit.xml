@@ -94,11 +94,15 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:background="@drawable/bank_account_edit_submit_button"
             android:minHeight="@dimen/none"
             android:minWidth="@dimen/none"
+            android:paddingEnd="@dimen/button_horizontal_margin"
+            android:paddingLeft="@dimen/button_horizontal_margin"
+            android:paddingRight="@dimen/button_horizontal_margin"
+            android:paddingStart="@dimen/button_horizontal_margin"
             android:text="@string/submit"
-            android:textColor="@color/brand_text_color"
+            android:textColor="@color/bank_account_edit_submit_button"
             android:textSize="@dimen/font_medium"
             android:textStyle="bold" />
     </LinearLayout>

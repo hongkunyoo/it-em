@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Vibrator;
@@ -58,12 +59,17 @@ public class ItIntentService extends IntentService {
 	private void alertNotification(String message){
 		final ItNotification noti = new Gson().fromJson(message, ItNotification.class);
 		final PendingIntent pendingIntent = getPendingIntent(noti);
-		
+
 		AsyncChainer.asyncChain(mThis, new Chainable(){
 
 			@Override
 			public void doNext(Object obj, Object... params) {
-				getLargeIcon(obj, BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()));
+				if(!noti.getType().equals(ItNotification.TYPE.ProductTag.toString())){
+					getLargeIcon(obj, BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()));
+				} else {
+					Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.noti_label_img);
+					AsyncChainer.notifyNext(obj, largeIcon);
+				}
 			}
 		}, new Chainable(){
 
@@ -71,7 +77,7 @@ public class ItIntentService extends IntentService {
 			public void doNext(Object obj, Object... params) {
 				Bitmap largeIcon = (Bitmap)params[0];
 				Notification notification = getNotification(noti, pendingIntent, largeIcon);
-				
+
 				// Notify
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.notify(NOTIFICATION_ID, notification);
@@ -131,7 +137,7 @@ public class ItIntentService extends IntentService {
 	private Notification getNotification(ItNotification noti, PendingIntent resultPendingIntent, Bitmap largeIcon){
 		// Set Notification
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mThis)
-		.setSmallIcon(R.drawable.launcher)
+		.setSmallIcon(R.drawable.ic_stat_notify)
 		.setLargeIcon(largeIcon)
 		.setContentTitle(noti.getWhoMade())
 		.setContentText(noti.notiContent())

@@ -30,7 +30,6 @@
     <string name="more">More</string>
     <string name="unfold">Unfold</string>
     <string name="it">it</string>
-    <string name="this_is_it">This is it</string>
 
     <!-- Item -->
     <string name="upload_date">Uploaded on</string>
@@ -106,6 +105,10 @@
     <string name="not_exist_bank_account">Bank account isn\'t registered</string>
     <string name="bad_email_message">It is unproper email address.</string>
     <string name="email_edited">Email is edited.</string>
+    
+    <!-- Bank Account Edit -->
+    <string name="bad_bank_account_name_message">It is unproper account name.</string>
+    <string name="bank_account_edited">Bank Account is edited.</string>
     
     <!-- Notification -->
     <string name="noti_content">%1$s %3$s %2$s item.</string>

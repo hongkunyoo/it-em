@@ -20,7 +20,6 @@
 
     <!-- Home -->
     <string name="it">잇해요</string>
-    <string name="this_is_it">잇해요 클릭됨</string>
 
     <!-- Item -->
     <string name="of">님의</string>
@@ -92,6 +91,11 @@
     <string name="not_exist_bank_account">등록된 은행 계좌가 없어요</string>
     <string name="bad_email_message">적절하지 않은 이메일 주소에요.</string>
     <string name="email_edited">이메일이 수정되었어요.</string>
+    
+    <!-- Bank Account Edit -->
+    <string name="bad_bank_account_name_message">적절하지 않은 계좌 주인 이름이에요.</string>
+    <string name="bank_account_edited">은행 계좌가 수정되었어요.</string>
+    
     
     <!-- Notification -->
     <string name="noti_content">%1$s님이 %2$s %3$s.</string>

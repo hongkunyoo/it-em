@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:background="@android:color/transparent"
         android:contentDescription="@string/delete"
-        android:src="@drawable/appbar_close_ic" />
+        android:src="@drawable/general_dialog_close_ic" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/key_line_first"
             android:contentDescription="@string/image"
-            android:src="@drawable/bepro_badge_img" />
+            android:src="@drawable/basic_guide_img" />
 
         <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"

@@ -20,7 +20,7 @@
             android:layout_marginLeft="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_first"
             android:contentDescription="@string/mileage"
-            android:src="@drawable/setting_profile_edit_ic" />
+            android:src="@drawable/setting_editor_mileage_ic" />
 
         <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
@@ -74,6 +74,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/pro_settings_margin"
+                android:layout_marginEnd="@dimen/pro_settings_margin"
+                android:layout_marginRight="@dimen/pro_settings_margin"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_line"
                 android:ems="10"
@@ -93,7 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/email" />
+                android:contentDescription="@string/email"
+                android:src="@drawable/pro_settings_email_submit_button" />
         </LinearLayout>
 
         <com.pinthecloud.item.view.ItTextView

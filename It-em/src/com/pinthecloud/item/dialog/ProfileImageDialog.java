@@ -3,7 +3,9 @@ package com.pinthecloud.item.dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileImageDialog extends ItDialogFragment {
 
+	private ImageButton mClose;
 	private TextView mNickName;
 	private ImageView mProfileImage;
 
@@ -62,6 +65,7 @@ public class ProfileImageDialog extends ItDialogFragment {
 
 
 	private void findComponent(View view){
+		mClose = (ImageButton)view.findViewById(R.id.profile_image_frag_close);
 		mNickName = (TextView)view.findViewById(R.id.profile_image_frag_nick_name);
 		mProfileImage = (ImageView)view.findViewById(R.id.profile_image_frag_profile_image);
 	}
@@ -69,6 +73,14 @@ public class ProfileImageDialog extends ItDialogFragment {
 
 	private void setComponent(){
 		mNickName.setText(mItUser.getNickName());
+
+		mClose.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
 	}
 
 

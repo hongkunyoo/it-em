@@ -3,6 +3,8 @@ package com.pinthecloud.item.activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,14 +24,14 @@ public class ProSettingsActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
-	
+
 	private TextView mMileage;
 	private EditText mEmail;
 	private ImageButton mEmailSubmit;
 	private TextView mEmptyBankAccount;
 	private TextView mBankAccount;
 	private Button mEditBankAccount;
-	
+
 	private ItUser mMyItUser;
 
 
@@ -44,6 +46,7 @@ public class ProSettingsActivity extends ItActivity {
 		findComponent();
 		setComponent();
 		setButton();
+		setBankAccount();
 	}
 
 
@@ -69,15 +72,15 @@ public class ProSettingsActivity extends ItActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-			
-		    @Override
-		    public void onClick(View v) {
-		        onBackPressed();
-		    }
+
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
 		});
 	}
-	
-	
+
+
 	private void findComponent() {
 		mMileage = (TextView)findViewById(R.id.pro_settings_mileage);
 		mEmail = (EditText)findViewById(R.id.pro_settings_email);
@@ -86,21 +89,31 @@ public class ProSettingsActivity extends ItActivity {
 		mBankAccount = (TextView)findViewById(R.id.pro_settings_bank_account);
 		mEditBankAccount = (Button)findViewById(R.id.pro_settings_bank_account_edit);
 	}
-	
-	
+
+
 	private void setComponent(){
-		String bankName = mMyItUser.bankNameString(mThisActivity);
-		int bankAccountNumber = mMyItUser.getBankAccountNumber();
-		String bankAccountName = mMyItUser.getBankAccountName();
-		mBankAccount.setText(bankName + " " + bankAccountNumber + " " + bankAccountName);
-		mEmptyBankAccount.setVisibility(bankAccountNumber == 0 ? View.VISIBLE : View.GONE);
-		mBankAccount.setVisibility(bankAccountNumber == 0 ? View.GONE : View.VISIBLE);
+		mEmail.setText(mMyItUser.getEmail());
+		mEmail.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				mEmailSubmit.setEnabled(s.toString().trim().length() > 0);
+			}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
 	}
-	
-	
+
+
 	private void setButton(){
+		mEmailSubmit.setEnabled(mEmail.getText().toString().trim().length() > 0);
 		mEmailSubmit.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				trimEmail();
@@ -114,16 +127,19 @@ public class ProSettingsActivity extends ItActivity {
 				}
 			}
 		});
-		
+
 		mEditBankAccount.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				BankAccountEditDialog bankAccountEditDialog = new BankAccountEditDialog();
 				bankAccountEditDialog.setCallback(new DialogCallback() {
-					
+
 					@Override
 					public void doPositiveThing(Bundle bundle) {
+						mMyItUser = bundle.getParcelable(ItUser.INTENT_KEY);
+						mObjectPrefHelper.put(mMyItUser);
+						setBankAccount();
 					}
 					@Override
 					public void doNegativeThing(Bundle bundle) {
@@ -133,18 +149,28 @@ public class ProSettingsActivity extends ItActivity {
 			}
 		});
 	}
-	
-	
+
+
+	private void setBankAccount(){
+		String bankName = mMyItUser.bankNameString(mThisActivity);
+		int bankAccountNumber = mMyItUser.getBankAccountNumber();
+		String bankAccountName = mMyItUser.getBankAccountName();
+		mBankAccount.setText(bankName + " " + bankAccountNumber + " " + bankAccountName);
+		mEmptyBankAccount.setVisibility(bankAccountNumber == 0 ? View.VISIBLE : View.GONE);
+		mBankAccount.setVisibility(bankAccountNumber == 0 ? View.GONE : View.VISIBLE);
+	}
+
+
 	private void trimEmail(){
 		mEmail.setText(mEmail.getText().toString().trim().replace(" ", "").replace("\n", ""));
 	}
-	
-	
+
+
 	private boolean isEmailChanged(){
 		return !mMyItUser.getEmail().equals(mEmail.getText().toString());
 	}
-	
-	
+
+
 	private String checkEmail(String email){
 		String emailRegx = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$";
 		if(!email.matches(emailRegx)){
@@ -153,19 +179,19 @@ public class ProSettingsActivity extends ItActivity {
 			return "";
 		}
 	}
-	
-	
+
+
 	private void updateEmail(){
 		mApp.showProgressDialog(mThisActivity);
-		
+
 		mMyItUser.setEmail(mEmail.getText().toString());
 		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
-			
+
 			@Override
 			public void onCompleted(ItUser entity) {
 				mApp.dismissProgressDialog();
 				Toast.makeText(mThisActivity, getResources().getString(R.string.email_edited), Toast.LENGTH_LONG).show();
-				
+
 				mMyItUser = entity;
 				mObjectPrefHelper.put(mMyItUser);
 			}
