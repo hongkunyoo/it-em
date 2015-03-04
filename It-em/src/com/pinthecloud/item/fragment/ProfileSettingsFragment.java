@@ -266,7 +266,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void checkNickName(final Object obj, String nickName){
 		int nickNameMinLength = getResources().getInteger(R.integer.nick_name_min_length);
-		String nickNameRegx = "\\w+";
+		String nickNameRegx = "^[a-zA-Z0-9가-힣_]+";
 		if(nickName.length() < nickNameMinLength){
 			AsyncChainer.notifyNext(obj, getResources().getString(R.string.min_nick_name_message));
 		} else if(!nickName.matches(nickNameRegx)){
@@ -293,10 +293,10 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private String checkWebsite(final Object obj, String website){
 		String websiteRegx = "^(https?\\://)?[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,5}(/\\S*)?$";
-		if(!website.matches(websiteRegx)){
-			return getResources().getString(R.string.bad_website_message);
-		} else {
+		if(website.equals("") || website.matches(websiteRegx)){
 			return "";
+		} else {
+			return getResources().getString(R.string.bad_website_message);
 		}
 	}
 

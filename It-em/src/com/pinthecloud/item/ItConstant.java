@@ -5,7 +5,8 @@ public class ItConstant {
 	// Constant
 	public static final String GOOGLE_PLAY_APP_ID = "com.pinthecloud.item";
 	public static final String GOOGLE_PLAY_SERVICE_APP_ID = "com.google.android.gms";
-	
+	public static final String ITEM_ID_FACEBOOK = "1536364146612739";
+	public static final int MILEAGE_UNIT = 500;
 	
 	// Preference
 	public static final String DEVELOP_MODE_KEY = "DEVELOP_MODE_KEY";

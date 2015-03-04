@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
@@ -26,7 +25,7 @@ public class NotiFragment extends MainTabFragment {
 
 	private ProgressBar mProgressBar;
 	private SwipeRefreshLayout mRefresh;
-	private TextView mListEmptyView;
+	private View mListEmptyView;
 	private RecyclerView mListView;
 	private NotiListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
@@ -68,7 +67,7 @@ public class NotiFragment extends MainTabFragment {
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.noti_frag_refresh);
-		mListEmptyView = (TextView)view.findViewById(R.id.noti_frag_list_empty_view);
+		mListEmptyView = view.findViewById(R.id.noti_frag_list_empty_layout);
 		mListView = (RecyclerView)view.findViewById(R.id.noti_frag_list);
 	}
 

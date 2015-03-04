@@ -11,15 +11,27 @@
         layout="@layout/custom_progress_bar"
         android:visibility="gone" />
 
-    <com.pinthecloud.item.view.ItTextView
-        android:id="@+id/noti_frag_list_empty_view"
+    <LinearLayout
+        android:id="@+id/noti_frag_list_empty_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/empty_noti"
-        android:textColor="@color/gray_light"
-        android:visibility="gone"
-        app:textType="body" />
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/key_line_first"
+            android:contentDescription="@string/empty_noti" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_noti"
+            android:textColor="@color/gray_light"
+            app:textType="body" />
+    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/noti_frag_refresh"

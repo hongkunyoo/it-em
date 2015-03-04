@@ -464,7 +464,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			@Override
 			public void onCompleted(Boolean entity) {
 				mApp.dismissProgressDialog();
-
+				
 				Intent intent = new Intent(mActivity, MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);

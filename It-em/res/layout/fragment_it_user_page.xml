@@ -74,12 +74,11 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/it_user_page_frag_pro"
+                        android:id="@+id/it_user_page_frag_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/it_user_page_content_margin"
                         android:contentDescription="@string/be_pro"
-                        android:src="@drawable/general_editor_ic"
                         android:visibility="gone" />
 
                     <com.pinthecloud.item.view.ItTextView
@@ -103,17 +102,16 @@
             <include layout="@layout/custom_line" />
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip
-                xmlns:psts="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/it_user_page_frag_tab"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
                 android:background="@android:color/white"
-                psts:pstsDividerColor="@android:color/transparent"
-                psts:pstsIndicatorColor="@android:color/transparent"
-                psts:pstsShouldExpand="true"
-                psts:pstsTabSwitch="true"
-                psts:pstsUnderlineColor="@color/line_color"
-                psts:pstsUnderlineHeight="@dimen/line_width" />
+                app:pstsDividerColor="@android:color/transparent"
+                app:pstsIndicatorColor="@android:color/transparent"
+                app:pstsShouldExpand="true"
+                app:pstsTabBackground="@drawable/it_user_page_tab"
+                app:pstsTabSwitch="true"
+                app:pstsUnderlineColor="@android:color/transparent" />
         </LinearLayout>
     </RelativeLayout>
 

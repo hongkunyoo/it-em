@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.SettingsActivity;
@@ -50,7 +51,7 @@ public class ItUserPageFragment extends MainTabFragment {
 
 	private View mHeader;
 	private ImageView mProfileImage;
-	private ImageView mPro;
+	private ImageView mType;
 	private TextView mNickName;
 	private TextView mDescription;
 	private TextView mWebsite;
@@ -87,11 +88,11 @@ public class ItUserPageFragment extends MainTabFragment {
 		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
 		findComponent(view);
 		setButton();
-		
+
 		if(mActivity instanceof ItUserPageActivity){
 			updateFragment();
 		}
-		
+
 		return view;
 	}
 
@@ -192,7 +193,7 @@ public class ItUserPageFragment extends MainTabFragment {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
 		mProfileImage = (ImageView)view.findViewById(R.id.it_user_page_frag_profile_image);
-		mPro = (ImageView)view.findViewById(R.id.it_user_page_frag_pro);
+		mType = (ImageView)view.findViewById(R.id.it_user_page_frag_type);
 		mNickName = (TextView)view.findViewById(R.id.it_user_page_frag_nick_name);
 		mDescription = (TextView)view.findViewById(R.id.it_user_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.it_user_page_frag_website);
@@ -216,7 +217,7 @@ public class ItUserPageFragment extends MainTabFragment {
 				startActivity(intent);
 			}
 		});
-		
+
 		mProfileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -225,7 +226,7 @@ public class ItUserPageFragment extends MainTabFragment {
 				replyDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
-		
+
 		mSettings.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -282,9 +283,11 @@ public class ItUserPageFragment extends MainTabFragment {
 
 		mDescription.setVisibility(!mItUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mWebsite.setVisibility(!mItUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
-		mPro.setVisibility(mItUser.checkPro() ? View.VISIBLE : View.GONE);
-		
 		mSettings.setVisibility(mItUser.checkMe() ? View.VISIBLE : View.GONE);
+		
+		boolean isItem = mItUser.getItUserId().equals(ItConstant.ITEM_ID_FACEBOOK);
+		mType.setImageResource(isItem ? R.drawable.general_guide_ic : R.drawable.general_editor_ic);
+		mType.setVisibility(isItem || mItUser.checkPro() ? View.VISIBLE : View.GONE);
 	}
 
 

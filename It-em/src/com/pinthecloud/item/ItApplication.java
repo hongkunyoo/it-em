@@ -187,7 +187,7 @@ public class ItApplication extends Application {
 					add("677830442331776"); // HongKun - Facebook
 					add("13108175"); // HongKun - Kakao
 					add("756536111102631"); // HwaJeong - Facebook
-					add("1536364146612739"); // Item@pinthecloud.com - Facebook
+					add(ItConstant.ITEM_ID_FACEBOOK); // Item@pinthecloud.com - Facebook
 				}
 			};
 		}

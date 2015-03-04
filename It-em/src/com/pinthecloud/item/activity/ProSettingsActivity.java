@@ -1,5 +1,7 @@
 package com.pinthecloud.item.activity;
 
+import java.util.Locale;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +48,7 @@ public class ProSettingsActivity extends ItActivity {
 		findComponent();
 		setComponent();
 		setButton();
+		setMileage();
 		setBankAccount();
 	}
 
@@ -151,13 +154,36 @@ public class ProSettingsActivity extends ItActivity {
 	}
 
 
+	private void setMileage(){
+		mUserHelper.get(mMyItUser.getId(), new EntityCallback<ItUser>() {
+
+			@Override
+			public void onCompleted(ItUser entity) {
+				mMyItUser = entity;
+				mObjectPrefHelper.put(mMyItUser);
+				
+				String mileage = String.format(Locale.US, "%,d", mMyItUser.getMileage());
+				mMileage.setText(mileage);
+			}
+		});
+	}
+	
+	
 	private void setBankAccount(){
 		String bankName = mMyItUser.bankNameString(mThisActivity);
-		int bankAccountNumber = mMyItUser.getBankAccountNumber();
+		String bankAccountNumber = ""+mMyItUser.getBankAccountNumber();
 		String bankAccountName = mMyItUser.getBankAccountName();
-		mBankAccount.setText(bankName + " " + bankAccountNumber + " " + bankAccountName);
-		mEmptyBankAccount.setVisibility(bankAccountNumber == 0 ? View.VISIBLE : View.GONE);
-		mBankAccount.setVisibility(bankAccountNumber == 0 ? View.GONE : View.VISIBLE);
+
+		if(bankAccountName.equals("")){
+			mEmptyBankAccount.setVisibility(View.VISIBLE);
+			mBankAccount.setVisibility(View.GONE);
+		} else {
+			mEmptyBankAccount.setVisibility(View.GONE);
+			mBankAccount.setVisibility(View.VISIBLE);
+
+			bankAccountNumber = bankAccountNumber.substring(0, bankAccountNumber.length()-4) + "****";
+			mBankAccount.setText(bankName + " " + bankAccountNumber + " " + bankAccountName);
+		}
 	}
 
 
