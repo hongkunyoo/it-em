@@ -3,6 +3,7 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
@@ -69,7 +70,7 @@ public class ItApplication extends Application {
 		super.onCreate();
 		app = this;
 
-//		ACRA.init(app);
+		ACRA.init(app);
 		mClient = getMobileClient();
 
 		userHabitHelper = getUserHabitHelper();
