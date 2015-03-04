@@ -45,8 +45,8 @@ public class SplashActivity extends ItActivity {
 
 		findComponent();
 		
-		/*** For under ver 108 ***/
-		if(mVersionHelper.getClientAppVersion() < 0.108){
+		/*** For under ver 0.2 ***/
+		if(mVersionHelper.getClientAppVersion() < 0.2){
 			mPrefHelper.clear();
 		}
 		/*************************/
