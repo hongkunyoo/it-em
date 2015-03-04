@@ -43,7 +43,6 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
-	private ItUser mMyItUser;
 
 	private boolean isDoingIt = false;
 
@@ -53,7 +52,6 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mItemList = itemList;
-		this.mMyItUser = mApp.getObjectPrefHelper().get(ItUser.class);
 	}
 
 
@@ -193,8 +191,9 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 						mApp.getGaHelper().sendEventGA(mFrag.getClass().getSimpleName(), GAHelper.IT, GAHelper.HOME);
 
 						// Do like it
-						LikeIt it = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), item.getId());
-						ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), item.getId(),
+						ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
+						LikeIt it = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
+						ItNotification noti = new ItNotification(myItUser.getNickName(), myItUser.getId(), item.getId(),
 								item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
 								item.getImageWidth(), item.getImageHeight());
 						mApp.getAimHelper().addUnique(it, noti, new EntityCallback<LikeIt>() {

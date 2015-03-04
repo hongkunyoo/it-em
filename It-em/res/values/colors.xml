@@ -14,11 +14,15 @@
     <color name="red">#ef5350</color>
     <color name="blue">#01579b</color>
     <color name="green">#00897b</color>
+    <color name="green_pressed">#0f6f63</color>
 
     <!-- Reply -->
     <color name="reply_submit_disable">#64ffab00</color>
 
     <!-- Be Pro -->
     <color name="be_pro_code_hint">#87ffffff</color>
+    
+    <!-- It User Page -->
+    <color name="it_user_page_tab">#f9f9f9</color>
 
 </resources>

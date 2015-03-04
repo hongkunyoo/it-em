@@ -38,6 +38,12 @@ public class ItUser implements Parcelable {
 	private String selfIntro;
 	@com.google.gson.annotations.SerializedName("webPage")
 	private String webPage;
+	@com.google.gson.annotations.SerializedName("notiMyItem")
+	private boolean notiMyItem;
+	@com.google.gson.annotations.SerializedName("notiItItem")
+	private boolean notiItItem;
+	@com.google.gson.annotations.SerializedName("notiReplyItem")
+	private boolean notiReplyItem;
 	@com.google.gson.annotations.SerializedName("email")
 	private String email;
 	@com.google.gson.annotations.SerializedName("bankName")
@@ -46,12 +52,8 @@ public class ItUser implements Parcelable {
 	private int bankAccountNumber;
 	@com.google.gson.annotations.SerializedName("bankAccountName")
 	private String bankAccountName;
-	@com.google.gson.annotations.SerializedName("notiMyItem")
-	private boolean notiMyItem;
-	@com.google.gson.annotations.SerializedName("notiItItem")
-	private boolean notiItItem;
-	@com.google.gson.annotations.SerializedName("notiReplyItem")
-	private boolean notiReplyItem;
+	@com.google.gson.annotations.SerializedName("mileage")
+	private int mileage;
 
 	public ItUser() {
 		super();
@@ -64,13 +66,14 @@ public class ItUser implements Parcelable {
 		this.type = type.toString();
 		this.selfIntro = "";
 		this.webPage = "";
-		this.email = "";
-		this.bankName = -1;
-		this.bankAccountNumber = 0;
-		this.bankAccountName = "";
 		this.notiMyItem = true;
 		this.notiItItem = true;
 		this.notiReplyItem = true;
+		this.email = "";
+		this.bankName = -1;
+		this.bankAccountNumber = -1;
+		this.bankAccountName = "";
+		this.mileage = 0;
 	}
 
 	public String getId() {
@@ -90,34 +93,6 @@ public class ItUser implements Parcelable {
 	}
 	public void setPlatform(String platform) {
 		this.platform = platform;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public int getBankName() {
-		return bankName;
-	}
-	public String bankNameString(Context context){
-		String[] bankNameArray = context.getResources().getStringArray(R.array.bank_name_array);
-		return bankNameArray[bankName+1];
-	}
-	public void setBankName(int bankName) {
-		this.bankName = bankName;
-	}
-	public int getBankAccountNumber() {
-		return bankAccountNumber;
-	}
-	public void setBankAccountNumber(int bankAccountNumber) {
-		this.bankAccountNumber = bankAccountNumber;
-	}
-	public String getBankAccountName() {
-		return bankAccountName;
-	}
-	public void setBankAccountName(String bankAccountName) {
-		this.bankAccountName = bankAccountName;
 	}
 	public String getNickName() {
 		return nickName;
@@ -164,6 +139,40 @@ public class ItUser implements Parcelable {
 	public void setNotiReplyItem(boolean notiReplyItem) {
 		this.notiReplyItem = notiReplyItem;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public int getBankName() {
+		return bankName;
+	}
+	public String bankNameString(Context context){
+		String[] bankNameArray = context.getResources().getStringArray(R.array.bank_name_array);
+		return bankNameArray[bankName+1];
+	}
+	public void setBankName(int bankName) {
+		this.bankName = bankName;
+	}
+	public int getBankAccountNumber() {
+		return bankAccountNumber;
+	}
+	public void setBankAccountNumber(int bankAccountNumber) {
+		this.bankAccountNumber = bankAccountNumber;
+	}
+	public String getBankAccountName() {
+		return bankAccountName;
+	}
+	public void setBankAccountName(String bankAccountName) {
+		this.bankAccountName = bankAccountName;
+	}
+	public int getMileage() {
+		return mileage;
+	}
+	public void setMileage(int mileage) {
+		this.mileage = mileage;
+	}
 	public void readItUser(ItUser itUser) {
 		this.setId(itUser.getId());
 		this.setItUserId(itUser.getItUserId());
@@ -172,13 +181,14 @@ public class ItUser implements Parcelable {
 		this.setSelfIntro(itUser.getSelfIntro());
 		this.setWebPage(itUser.getWebPage());
 		this.setType(itUser.getType());
+		this.setNotiMyItem(itUser.isNotiMyItem());
+		this.setNotiItItem(itUser.isNotiItItem());
+		this.setNotiReplyItem(itUser.isNotiReplyItem());
 		this.setEmail(itUser.getEmail());
 		this.setBankName(itUser.getBankName());
 		this.setBankAccountNumber(itUser.getBankAccountNumber());
 		this.setBankAccountName(itUser.getBankAccountName());
-		this.setNotiMyItem(itUser.isNotiMyItem());
-		this.setNotiItItem(itUser.isNotiItItem());
-		this.setNotiReplyItem(itUser.isNotiReplyItem());
+		this.setMileage(itUser.getMileage());
 	}
 
 	public boolean checkLoggedIn() {

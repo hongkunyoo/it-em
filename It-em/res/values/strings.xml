@@ -68,7 +68,7 @@
     <string name="be_pro_description">IT:EM only allows Editor to upload item.\nEditor receives reward by sharing style.\nIf you want to be Editor, refer to homepage below.</string>
     <string name="homepage">it-em.me</string>
     <string name="code">CODE</string>
-    <string name="valid_pro">Congratulation! You become Editor. Please set editor information.</string>
+    <string name="valid_pro">Congratulation for coming editor!\nNow set editor information in editor settings.</string>
     <string name="invalid_pro">Invalid Editor key. Please check it.</string>
 
     <!-- Upload -->
@@ -79,7 +79,7 @@
     <string name="brand_info">Brand Information</string>
     <string name="brand">Brand</string>
     <string name="add">Add</string>
-    <string name="bad_brand_message">Only normal letter, number, underbar(-) is allowed in brand.</string>
+    <string name="bad_brand_message">Only letter,number,underbar is allowed in brand.</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">Profile Settings</string>
@@ -87,7 +87,7 @@
     <string name="information">Information</string>
     <string name="website">Website</string>
     <string name="min_nick_name_message">Please type in more than 1 letter in nick name.</string>
-    <string name="bad_nick_name_message">Only normal letter, number, underbar(-) is allowed in nick name.</string>
+    <string name="bad_nick_name_message">Only letter,number,underbar is allowed in nick name.</string>
     <string name="bad_website_message">It is unproper website address.</string>
     <string name="duplicated_nick_name_message">The nick name already exists.</string>
     <string name="profile_edited">Profile is edited.</string>
@@ -100,9 +100,10 @@
     <string name="bank_account">Bank Account</string>
     <string name="bank_account_number">Account Number(don\'t include -)</string>
     <string name="bank_account_name">Account Holder</string>
-    <string name="pay_guide">Mileage will be given at 1th, 15th every month</string>
-    <string name="not_exist_email">Email isn\'t registered</string>
-    <string name="not_exist_bank_account">Bank account isn\'t registered</string>
+    <string name="pay_guide">Mileage will be given to below account at 1th, 15th every month</string>
+    <string name="not_exist_email">Register contactable email address</string>
+    <string name="not_exist_bank_account">Register bank account for mileage</string>
+
     <string name="bad_email_message">It is unproper email address.</string>
     <string name="email_edited">Email is edited.</string>
     
@@ -117,7 +118,7 @@
     <string name="noti_reply">comments on</string>
     <string name="noti_product_tag">puts product label on</string>
     <string name="new_noti">New noti came. Refresh noti screen.</string>
-    <string name="empty_noti">Notification is empty yet</string>
+    <string name="empty_noti">Notification has not come</string>
 
     <!-- Settings -->
     <string name="logout">Logout</string>

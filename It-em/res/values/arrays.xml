@@ -54,20 +54,20 @@
     <!-- Bank Name -->
     <string-array name="bank_name_array">
         <item>Bank</item>
-        <item>Woori</item>
-        <item>Shirts</item>
-        <item>knit</item>
-        <item>ManToMan</item>
-        <item>Hood</item>
-        <item>T_Shirts</item>
-        <item>Pants</item>
-        <item>OnePiece</item>
-        <item>Skirt</item>
-        <item>Shoes</item>
-        <item>Socks</item>
-        <item>Bag</item>
-        <item>Accessory</item>
-        <item>Cap</item>
-        <item>etc</item>
+        <item>Kookmin Bank</item>
+        <item>Shinhan Bank</item>
+        <item>Woori Bank</item>
+        <item>Hana Bank</item>
+        <item>Korea Exchange Bank</item>
+        <item>Korea Industrial Bank</item>
+        <item>Nonghyub Bank</item>
+        <item>Saemaeul Kumgo</item>
+        <item>Soohyub Bank</item>
+        <item>Daegoo Bank</item>
+        <item>Busan Bank</item>
+        <item>Kwangjoo Bank</item>
+        <item>Jeju Bank</item>
+        <item>Jeonbuk Bank</item>
+        <item>Gyeongnam Bank</item>
     </string-array>
 </resources>

@@ -63,7 +63,6 @@ public class BankAccountEditDialog extends ItDialogFragment {
 
 
 	private void setComponent(){
-		mBankAccountNumber.setText(mMyItUser.getBankAccountNumber() == 0 ? "" : ""+mMyItUser.getBankAccountNumber());
 		mBankAccountNumber.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -79,7 +78,6 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			}
 		});
 
-		mBankAccountNumber.setText(mMyItUser.getBankAccountName());
 		mBankAccountName.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -102,7 +100,6 @@ public class BankAccountEditDialog extends ItDialogFragment {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(mActivity, android.R.layout.simple_spinner_item, bankNames);
 		mBankName.setAdapter(adapter);
 
-		mBankName.setSelection(mMyItUser.getBankName()+1);
 		mBankName.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -154,7 +151,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 
 	private boolean isSubmitEnable(){
 		return mBankName.getSelectedItemPosition() != 0
-				&& mBankAccountNumber.getText().toString().trim().length() > 0 
+				&& mBankAccountNumber.getText().toString().trim().length() > 4 
 				&& mBankAccountName.getText().toString().trim().length() > 0;
 	}
 

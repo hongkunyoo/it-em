@@ -9,6 +9,7 @@
         android:id="@+id/my_item_frag_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:paddingBottom="@dimen/my_item_spacing"
         android:paddingEnd="@dimen/my_item_spacing"
         android:paddingLeft="@dimen/my_item_spacing"
