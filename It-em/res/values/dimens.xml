@@ -23,6 +23,7 @@
     <!-- Home -->
     <dimen name="home_item_margin">10dp</dimen>
     <dimen name="home_item_content_margin">4dp</dimen>
+    <dimen name="home_item_spacing">8dp</dimen>
     
     <!-- Be Pro -->
     <dimen name="be_pro_content_margin">12dp</dimen>
@@ -34,7 +35,7 @@
     <dimen name="item_content_margin">4dp</dimen>
 
     <!-- Product Tag -->
-    <dimen name="product_tag_content_margin">8dp</dimen>
+    <dimen name="product_tag_content_margin">4dp</dimen>
     
     <!-- Noti -->
     <dimen name="noti_content_margin">4dp</dimen>
@@ -51,7 +52,8 @@
     <dimen name="profile_image_width">212dp</dimen>
 
     <!-- My Item -->
-    <dimen name="my_item_spacing">1dp</dimen>
+    <dimen name="my_item_margin">1dp</dimen>
+    <dimen name="my_item_spacing">2dp</dimen>
 
     <!-- Reply -->
     <dimen name="reply_height">300dp</dimen>

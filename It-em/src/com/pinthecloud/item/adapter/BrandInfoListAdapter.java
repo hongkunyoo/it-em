@@ -64,6 +64,7 @@ public class BrandInfoListAdapter extends RecyclerView.Adapter<BrandInfoListAdap
 	private void setComponent(ViewHolder holder, final BrandInfo brandInfo){
 		holder.category.setText(brandInfo.getCategory());
 		
+		holder.brand.setText(brandInfo.getBrand());
 		holder.brand.addTextChangedListener(new TextWatcher() {
 			
 			@Override

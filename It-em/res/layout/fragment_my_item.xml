@@ -11,10 +11,10 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:paddingBottom="@dimen/my_item_spacing"
-        android:paddingEnd="@dimen/my_item_spacing"
-        android:paddingLeft="@dimen/my_item_spacing"
-        android:paddingRight="@dimen/my_item_spacing"
-        android:paddingStart="@dimen/my_item_spacing"
+        android:paddingEnd="@dimen/my_item_margin"
+        android:paddingLeft="@dimen/my_item_margin"
+        android:paddingRight="@dimen/my_item_margin"
+        android:paddingStart="@dimen/my_item_margin"
         android:scrollbars="none" />
 
     <RelativeLayout

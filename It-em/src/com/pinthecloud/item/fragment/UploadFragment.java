@@ -238,6 +238,7 @@ public class UploadFragment extends ItFragment {
 					public void doPositiveThing(Bundle bundle) {
 						String category = bundle.getString(CATEGORY_INTENT_KEY);
 						mListAdapter.add(mBrandInfoList.size(), new BrandInfo(category));
+						mListView.smoothScrollToPosition(mBrandInfoList.size()-1);
 						categoryDialog.dismiss();
 					}
 					@Override

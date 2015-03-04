@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ProductTagListAdapter;
@@ -27,6 +28,7 @@ import com.pinthecloud.item.util.ViewUtil;
 public class ProductTagDialog extends ItDialogFragment {
 
 	private ProgressBar mProgressBar;
+	private TextView mListEmptyView;
 	private RecyclerView mListView;
 	private ProductTagListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
@@ -71,6 +73,7 @@ public class ProductTagDialog extends ItDialogFragment {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mListEmptyView = (TextView)view.findViewById(R.id.product_tag_frag_empty_view);
 		mListView = (RecyclerView)view.findViewById(R.id.product_tag_frag_list);
 	}
 
@@ -119,12 +122,17 @@ public class ProductTagDialog extends ItDialogFragment {
 			public void onCompleted(List<ProductTag> list, int count) {
 				if(isAdded()){
 					mProgressBar.setVisibility(View.GONE);
-					mListView.setVisibility(View.VISIBLE);
 
-					mTagList.clear();
-					mListAdapter.addAll(getProductTagList(list));
+					if(count > 0){
+						mListView.setVisibility(View.VISIBLE);
+						
+						mTagList.clear();
+						mListAdapter.addAll(getProductTagList(list));
 
-					ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
+						ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
+					} else {
+						mListEmptyView.setVisibility(View.VISIBLE);
+					}
 				}
 			}
 		});

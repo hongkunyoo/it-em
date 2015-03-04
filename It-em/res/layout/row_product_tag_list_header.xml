@@ -5,6 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/product_tag_content_margin"
+    android:paddingEnd="@dimen/key_line_first"
+    android:paddingLeft="@dimen/key_line_first"
+    android:paddingRight="@dimen/key_line_first"
+    android:paddingStart="@dimen/key_line_first"
     android:paddingTop="@dimen/product_tag_content_margin" >
 
     <com.pinthecloud.item.view.ItTextView

@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/row_height"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/key_line_first"
+    android:paddingLeft="@dimen/key_line_first"
+    android:paddingRight="@dimen/key_line_first"
+    android:paddingStart="@dimen/key_line_first" >
 
     <com.pinthecloud.item.view.ItTextView
         android:id="@+id/row_brand_info_category"
@@ -27,10 +31,6 @@
         android:inputType="text"
         android:maxLength="@integer/brand_info_max_length"
         android:maxLines="1"
-        android:paddingEnd="@dimen/key_line_first"
-        android:paddingLeft="@dimen/key_line_first"
-        android:paddingRight="@dimen/key_line_first"
-        android:paddingStart="@dimen/key_line_first"
         android:textColor="@color/brand_text_color"
         android:textColorHint="@color/brand_text_color_light"
         android:textSize="@dimen/font_small" >

@@ -131,7 +131,7 @@ public class NotiFragment extends MainTabFragment {
 				} else {
 					mProgressBar.setVisibility(View.GONE);
 				}
-
+				
 				mNotiList.clear();
 				mListAdapter.addAll(list);
 				

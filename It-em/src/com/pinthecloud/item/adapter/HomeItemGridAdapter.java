@@ -116,15 +116,10 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 		holder.content.setText(item.getContent());
 
 		setItNumber(holder, item.getLikeItCount());
-
-		if(item.getReplyCount() <= 0){
-			holder.replyNumber.setVisibility(View.GONE);
-		} else {
-			holder.replyNumber.setVisibility(View.VISIBLE);
-		}
+		holder.replyNumber.setVisibility(item.getReplyCount() > 0 ? View.VISIBLE : View.GONE);
 		holder.replyNumber.setText(""+item.getReplyCount());
 
-		holder.productTag.setEnabled(item.isHasProductTag());
+		holder.productTag.setActivated(item.isHasProductTag());
 	}
 
 
