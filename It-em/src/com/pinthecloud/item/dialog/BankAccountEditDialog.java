@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -40,10 +43,11 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_bank_account_edit, container, false);
-		
+
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		findComponent(view);
 		setComponent();
+		setSpinner();
 		setButton();
 		return view;
 	}
@@ -93,6 +97,26 @@ public class BankAccountEditDialog extends ItDialogFragment {
 	}
 
 
+	private void setSpinner(){
+		String[] bankNames = getResources().getStringArray(R.array.bank_name_array);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(mActivity, android.R.layout.simple_spinner_item, bankNames);
+		mBankName.setAdapter(adapter);
+
+		mBankName.setSelection(mMyItUser.getBankName()+1);
+		mBankName.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				mSubmit.setEnabled(isSubmitEnable());
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
+	}
+
+
 	private void setButton(){
 		mCancel.setText(getResources().getString(android.R.string.cancel).toUpperCase(Locale.US));
 		mCancel.setOnClickListener(new OnClickListener() {
@@ -110,11 +134,13 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			public void onClick(View v) {
 				trimContent();
 				if(isBankAccountChanged()){
+					int bankName = mBankName.getSelectedItemPosition()-1;
 					int bankAccountNumber = Integer.parseInt(mBankAccountNumber.getText().toString());
 					String bankAccountName = mBankAccountName.getText().toString();
-					String message = checkBankAccountName(mBankAccountName.getText().toString());
+
+					String message = checkBankAccountName(bankAccountName);
 					if(message.equals("")){
-						updateBankAccount(bankAccountNumber, bankAccountName);
+						updateBankAccount(bankName, bankAccountNumber, bankAccountName);
 					} else {
 						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
 					}
@@ -127,23 +153,24 @@ public class BankAccountEditDialog extends ItDialogFragment {
 
 
 	private boolean isSubmitEnable(){
-		return mBankAccountNumber.getText().toString().trim().length() > 0 
+		return mBankName.getSelectedItemPosition() != 0
+				&& mBankAccountNumber.getText().toString().trim().length() > 0 
 				&& mBankAccountName.getText().toString().trim().length() > 0;
 	}
-	
-	
+
+
 	private void trimContent(){
 		mBankAccountNumber.setText(mBankAccountNumber.getText().toString().trim().replace(" ", "").replace("\n", ""));
 		mBankAccountName.setText(mBankAccountName.getText().toString().trim().replace("\n", ""));
 	}
-	
-	
+
+
 	private boolean isBankAccountChanged(){
 		return mMyItUser.getBankAccountNumber() != Integer.parseInt(mBankAccountNumber.getText().toString())
 				&& !mMyItUser.getBankAccountName().equals(mBankAccountName.getText().toString());
 	}
-	
-	
+
+
 	private String checkBankAccountName(String name){
 		String nameRegx = "^[a-zA-Z0-9가-힣\\s]+";
 		if(!name.matches(nameRegx)){
@@ -152,20 +179,21 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			return "";
 		}
 	}
-	
-	
-	private void updateBankAccount(final int bankAccountNumber, final String bankAccountName){
+
+
+	private void updateBankAccount(int bankName, final int bankAccountNumber, final String bankAccountName){
 		mApp.showProgressDialog(mActivity);
-		
+
+		mMyItUser.setBankName(bankName);
 		mMyItUser.setBankAccountNumber(bankAccountNumber);
 		mMyItUser.setBankAccountName(bankAccountName);
 		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
-			
+
 			@Override
 			public void onCompleted(ItUser entity) {
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.bank_account_edited), Toast.LENGTH_LONG).show();
-				
+
 				Bundle bundle = new Bundle();
 				bundle.putParcelable(ItUser.INTENT_KEY, entity);
 				mCallback.doPositiveThing(bundle);

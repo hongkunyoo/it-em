@@ -65,7 +65,7 @@ public class ItUser implements Parcelable {
 		this.selfIntro = "";
 		this.webPage = "";
 		this.email = "";
-		this.bankName = 0;
+		this.bankName = -1;
 		this.bankAccountNumber = 0;
 		this.bankAccountName = "";
 		this.notiMyItem = true;
@@ -102,7 +102,7 @@ public class ItUser implements Parcelable {
 	}
 	public String bankNameString(Context context){
 		String[] bankNameArray = context.getResources().getStringArray(R.array.bank_name_array);
-		return bankNameArray[bankName];
+		return bankNameArray[bankName+1];
 	}
 	public void setBankName(int bankName) {
 		this.bankName = bankName;

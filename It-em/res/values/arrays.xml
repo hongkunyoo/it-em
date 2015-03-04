@@ -53,6 +53,7 @@
 
     <!-- Bank Name -->
     <string-array name="bank_name_array">
+        <item>Bank</item>
         <item>Woori</item>
         <item>Shirts</item>
         <item>knit</item>

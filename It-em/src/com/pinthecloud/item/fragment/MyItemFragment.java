@@ -239,7 +239,9 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		mItemList.clear();
 		mGridAdapter.addAll(list);
 		mGridView.scrollToPosition(0);
-		mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());
+		if(mScrollTabHolder != null){
+			mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());	
+		}
 	}
 
 
