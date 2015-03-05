@@ -130,19 +130,15 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			@Override
 			public void onClick(View v) {
 				trimContent();
-				if(isBankAccountChanged()){
-					int bankName = mBankName.getSelectedItemPosition()-1;
-					int bankAccountNumber = Integer.parseInt(mBankAccountNumber.getText().toString());
-					String bankAccountName = mBankAccountName.getText().toString();
+				int bankName = mBankName.getSelectedItemPosition()-1;
+				int bankAccountNumber = Integer.parseInt(mBankAccountNumber.getText().toString());
+				String bankAccountName = mBankAccountName.getText().toString();
 
-					String message = checkBankAccountName(bankAccountName);
-					if(message.equals("")){
-						updateBankAccount(bankName, bankAccountNumber, bankAccountName);
-					} else {
-						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
-					}
+				String message = checkBankAccountName(bankAccountName);
+				if(message.equals("")){
+					updateBankAccount(bankName, bankAccountNumber, bankAccountName);
 				} else {
-					dismiss();	
+					Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
 				}
 			}
 		});
@@ -159,12 +155,6 @@ public class BankAccountEditDialog extends ItDialogFragment {
 	private void trimContent(){
 		mBankAccountNumber.setText(mBankAccountNumber.getText().toString().trim().replace(" ", "").replace("\n", ""));
 		mBankAccountName.setText(mBankAccountName.getText().toString().trim().replace("\n", ""));
-	}
-
-
-	private boolean isBankAccountChanged(){
-		return mMyItUser.getBankAccountNumber() != Integer.parseInt(mBankAccountNumber.getText().toString())
-				&& !mMyItUser.getBankAccountName().equals(mBankAccountName.getText().toString());
 	}
 
 
