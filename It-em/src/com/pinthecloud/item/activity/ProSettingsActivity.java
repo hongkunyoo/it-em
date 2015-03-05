@@ -171,7 +171,7 @@ public class ProSettingsActivity extends ItActivity {
 	
 	private void setBankAccount(){
 		String bankName = mMyItUser.bankNameString(mThisActivity);
-		String bankAccountNumber = ""+mMyItUser.getBankAccountNumber();
+		String bankAccountNumber = mMyItUser.getBankAccountNumber();
 		String bankAccountName = mMyItUser.getBankAccountName();
 
 		if(bankAccountName.equals("")){

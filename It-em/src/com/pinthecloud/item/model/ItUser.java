@@ -49,7 +49,7 @@ public class ItUser implements Parcelable {
 	@com.google.gson.annotations.SerializedName("bankName")
 	private int bankName;
 	@com.google.gson.annotations.SerializedName("bankAccountNumber")
-	private int bankAccountNumber;
+	private String bankAccountNumber;
 	@com.google.gson.annotations.SerializedName("bankAccountName")
 	private String bankAccountName;
 	@com.google.gson.annotations.SerializedName("mileage")
@@ -71,7 +71,7 @@ public class ItUser implements Parcelable {
 		this.notiReplyItem = true;
 		this.email = "";
 		this.bankName = -1;
-		this.bankAccountNumber = -1;
+		this.bankAccountNumber = "";
 		this.bankAccountName = "";
 		this.mileage = 0;
 	}
@@ -155,10 +155,10 @@ public class ItUser implements Parcelable {
 	public void setBankName(int bankName) {
 		this.bankName = bankName;
 	}
-	public int getBankAccountNumber() {
+	public String getBankAccountNumber() {
 		return bankAccountNumber;
 	}
-	public void setBankAccountNumber(int bankAccountNumber) {
+	public void setBankAccountNumber(String bankAccountNumber) {
 		this.bankAccountNumber = bankAccountNumber;
 	}
 	public String getBankAccountName() {

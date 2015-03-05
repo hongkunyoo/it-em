@@ -131,7 +131,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 			public void onClick(View v) {
 				trimContent();
 				int bankName = mBankName.getSelectedItemPosition()-1;
-				int bankAccountNumber = Integer.parseInt(mBankAccountNumber.getText().toString());
+				String bankAccountNumber = mBankAccountNumber.getText().toString();
 				String bankAccountName = mBankAccountName.getText().toString();
 
 				String message = checkBankAccountName(bankAccountName);
@@ -168,7 +168,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 	}
 
 
-	private void updateBankAccount(int bankName, final int bankAccountNumber, final String bankAccountName){
+	private void updateBankAccount(int bankName, String bankAccountNumber, final String bankAccountName){
 		mApp.showProgressDialog(mActivity);
 
 		mMyItUser.setBankName(bankName);
