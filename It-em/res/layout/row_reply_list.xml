@@ -58,7 +58,7 @@
                 android:drawableLeft="@drawable/general_time_ic"
                 android:drawableStart="@drawable/general_time_ic"
                 android:gravity="center_vertical"
-                android:textColor="@color/gray_light"
+                android:textColor="@color/gray_dark"
                 app:textType="caption" />
         </LinearLayout>
     </LinearLayout>

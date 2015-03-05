@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/brand_info"
-                android:textColor="@color/gray_light"
+                android:textColor="@color/gray_dark"
                 app:textType="caption" />
 
             <Button

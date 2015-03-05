@@ -35,7 +35,6 @@ public class VersionHelper {
 		this.mClient = mClient;
 	}
 
-
 	public void getServerAppVersionAsync(final EntityCallback<AppVersion> callback) {
 		if (!mApp.isOnline()) {
 			EventBus.getDefault().post(new ItException("getServerAppVersionAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
@@ -57,7 +56,6 @@ public class VersionHelper {
 		
 	}
 
-
 	public double getClientAppVersion() {
 		String versionName = "0.1";
 		try {
@@ -67,32 +65,3 @@ public class VersionHelper {
 		return Double.parseDouble(versionName);
 	}
 }
-
-
-// get Version from server;
-// get Version from client;
-// compare
-// if (isOld)
-//		show Dialog;
-// else
-//		keep do afterward thing;
-
-//
-//new AlertDialog.Builder(Test.this)
-//.setIcon(R.drawable.icon)
-//.setTitle("Update Available")
-//.setMessage("An update for is available!\\n\\nOpen Android Market and see the details?")
-//.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//        public void onClick(DialogInterface dialog, int whichButton) {
-//                /* User clicked OK so do some stuff */
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pname:your.app.id"));
-//                startActivity(intent);
-//        }
-//})
-//.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//        public void onClick(DialogInterface dialog, int whichButton) {
-//                /* User clicked Cancel */
-//        }
-//})
-//.show();
-//}

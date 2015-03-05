@@ -54,9 +54,10 @@
     <!-- Be Pro -->
     <string name="be_pro">에디터 되기</string>
     <string name="pro_settings">에디터 설정</string>
-    <string name="be_pro_description">잇템은 에디터로 초대받은 사람만 업로드를 할 수 있어요.\n그리고 좋은 패션과 스타일을 공유해주는 댓가로 리워드를 받아요.\n에디터가 되고 싶으시다면 아래 홈페이지를 참고해 주세요.</string>
+    <string name="be_pro_description">잇템은 에디터로 초대받은 사람만 업로드를 할 수 있어요.\n그리고 좋은 패션과 스타일을 공유해주는 댓가로 리워드를 받아요.\n에디터가 되고 싶으시다면 아래 링크로 지원해주세요.</string>
     <string name="valid_pro">에디터가 되신 것을 축하드려요!\n이제 에디터 설정에서 정보를 입력해주세요.</string>
     <string name="invalid_pro">맞지 않은 키에요. 다시 확인해 주세요.</string>
+    <string name="apply_link">지원링크</string>
 
     <!-- Upload -->
     <string name="upload">업로드</string>

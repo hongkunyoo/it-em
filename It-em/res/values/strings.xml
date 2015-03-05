@@ -65,8 +65,9 @@
     <!-- Be Pro -->
     <string name="be_pro">Be Editor</string>
     <string name="pro_settings">Editor Settings</string>
-    <string name="be_pro_description">IT:EM only allows Editor to upload item.\nEditor receives reward by sharing style.\nIf you want to be Editor, refer to homepage below.</string>
-    <string name="homepage">it-em.me</string>
+    <string name="be_pro_description">IT:EM only allows Editor to upload item.\nEditor receives reward by sharing style.\nIf you want to be Editor, send apply through below link.</string>
+    <string name="apply_link">Apply Link</string>
+    <string name="apply_editor">http://goo.gl/forms/d1rfeKJVcQ</string>
     <string name="code">CODE</string>
     <string name="valid_pro">Congratulation for coming editor!\nNow set editor information in editor settings.</string>
     <string name="invalid_pro">Invalid Editor key. Please check it.</string>

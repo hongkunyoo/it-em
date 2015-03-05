@@ -1,15 +1,9 @@
 package com.pinthecloud.item.model;
 
 public class AppVersion {
-	
-	public enum TYPE {
-		MANDATORY,
-		OPTIONAL
-	}
-	
+
 	private String id;
 	private double version;
-	private String type;
 	
 	public String getId() {
 		return id;
@@ -22,11 +16,5 @@ public class AppVersion {
 	}
 	public void setVersion(double version) {
 		this.version = version;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
 	}
 }

@@ -61,7 +61,7 @@
             android:layout_height="@dimen/row_height"
             android:gravity="center_vertical"
             android:text="@string/email"
-            android:textColor="@color/gray_light"
+            android:textColor="@color/gray_dark"
             app:textType="caption" />
 
         <LinearLayout
@@ -101,7 +101,7 @@
             android:layout_height="@dimen/row_height"
             android:gravity="center_vertical"
             android:text="@string/bank_account"
-            android:textColor="@color/gray_light"
+            android:textColor="@color/gray_dark"
             app:textType="caption" />
 
         <com.pinthecloud.item.view.ItTextView
@@ -109,7 +109,7 @@
             android:layout_height="@dimen/pro_settings_pay_guide_height"
             android:gravity="center_vertical"
             android:text="@string/pay_guide"
-            android:textColor="@color/gray_light"
+            android:textColor="@color/gray_dark"
             app:textType="caption" />
 
         <RelativeLayout

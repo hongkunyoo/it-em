@@ -23,7 +23,7 @@ public class BeProActivity extends ItActivity {
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
 	
-	private TextView mHomepage;
+	private TextView mApplyEditor;
 	private EditText mCode;
 	private Button mSubmit;
 
@@ -73,7 +73,7 @@ public class BeProActivity extends ItActivity {
 	
 	
 	private void findComponent(){
-		mHomepage = (TextView)findViewById(R.id.be_pro_homepage);
+		mApplyEditor = (TextView)findViewById(R.id.be_pro_apply_editor);
 		mCode = (EditText)findViewById(R.id.be_pro_code);
 		mSubmit = (Button)findViewById(R.id.be_pro_submit);
 	}
@@ -99,12 +99,12 @@ public class BeProActivity extends ItActivity {
 
 
 	private void setButton(){
-		mHomepage.setOnClickListener(new OnClickListener() {
+		mApplyEditor.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				String homepage = "http://" + mHomepage.getText().toString();
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(homepage));
+				String applyEditor = getResources().getString(R.string.apply_editor);
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(applyEditor));
 				startActivity(intent);
 			}
 		});

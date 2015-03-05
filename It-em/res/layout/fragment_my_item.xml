@@ -5,17 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_item_frag_grid"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/my_item_frag_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:paddingBottom="@dimen/my_item_spacing"
-        android:paddingEnd="@dimen/my_item_margin"
-        android:paddingLeft="@dimen/my_item_margin"
-        android:paddingRight="@dimen/my_item_margin"
-        android:paddingStart="@dimen/my_item_margin"
-        android:scrollbars="none" />
+        android:layout_height="match_parent" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_item_frag_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:paddingBottom="@dimen/my_item_spacing"
+            android:paddingEnd="@dimen/my_item_margin"
+            android:paddingLeft="@dimen/my_item_margin"
+            android:paddingRight="@dimen/my_item_margin"
+            android:paddingStart="@dimen/my_item_margin"
+            android:scrollbars="none" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <RelativeLayout
         android:id="@+id/my_item_frag_component_layout"
@@ -51,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/key_line_first"
                 android:gravity="center_horizontal"
-                android:textColor="@color/gray_light"
+                android:textColor="@color/gray_dark"
                 app:textType="body" />
         </LinearLayout>
     </RelativeLayout>

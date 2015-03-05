@@ -7,8 +7,6 @@ import com.google.gson.Gson;
 
 public class ItDevice implements Parcelable {
 
-	private final String ANDROID = "ANDROID";
-	
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
 	@com.google.gson.annotations.SerializedName("whoMadeId")
@@ -27,7 +25,7 @@ public class ItDevice implements Parcelable {
 		super();
 		this.mobileId = mobileId;
 		this.registrationId = registrationId;
-		this.mobileOs = ANDROID;
+		this.mobileOs = "ANDROID";
 	}
 
 	public String getId() {

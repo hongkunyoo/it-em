@@ -50,8 +50,8 @@ public class GuideDialog extends ItDialogFragment {
 
 			@Override
 			public void onClick(View v) {
-				String homepage = "http://" + getResources().getString(R.string.homepage);
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(homepage));
+				String applyEditor = getResources().getString(R.string.apply_editor);
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(applyEditor));
 				startActivity(intent);
 			}
 		});

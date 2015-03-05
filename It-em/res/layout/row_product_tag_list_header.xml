@@ -15,7 +15,7 @@
         android:id="@+id/row_product_tag_header_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray_light"
+        android:textColor="@color/gray_dark"
         app:textType="caption" />
 
 </LinearLayout>

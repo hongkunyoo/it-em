@@ -337,7 +337,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setRefreshLayout(){
 		mRefresh.setColorSchemeResources(R.color.accent_color);
-		mRefresh.setProgressViewOffset(true, ViewUtil.getActionBarHeight(mActivity)/2, ViewUtil.getActionBarHeight(mActivity));
+		int height = ViewUtil.getActionBarHeight(mActivity)/2;
+		mRefresh.setProgressViewOffset(true, height, ViewUtil.getActionBarHeight(mActivity)+height);
 		mRefresh.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override

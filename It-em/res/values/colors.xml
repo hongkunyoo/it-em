@@ -8,9 +8,10 @@
     <color name="brand_text_color_light">#96263238</color>
     <color name="accent_color">#ffAB00</color>
     <color name="line_color">#16000000</color>
-    <color name="gray_light">#78909c</color>
+    <color name="gray_dark">#78909c</color>
     <color name="gray_pressed">#4cECEFF1</color>
     <color name="gray">#ECEFF1</color>
+    <color name="gray_light">#d2d4d6</color>
     <color name="red">#ef5350</color>
     <color name="blue">#01579b</color>
     <color name="green">#00897b</color>
@@ -21,8 +22,5 @@
 
     <!-- Be Pro -->
     <color name="be_pro_code_hint">#87ffffff</color>
-    
-    <!-- It User Page -->
-    <color name="it_user_page_tab">#f9f9f9</color>
 
 </resources>

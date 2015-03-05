@@ -53,7 +53,7 @@
             android:layout_marginStart="@dimen/key_line_second"
             android:gravity="center_vertical"
             android:text="@string/empty_product_tag"
-            android:textColor="@color/gray_light"
+            android:textColor="@color/gray_dark"
             android:visibility="gone"
             app:textType="body" />
 

@@ -103,7 +103,7 @@
             android:layout_marginBottom="@dimen/settings_content_margin"
             android:gravity="center_vertical"
             android:text="@string/notification"
-            android:textColor="@color/gray_light"
+            android:textColor="@color/gray_dark"
             app:textType="caption" />
 
         <RelativeLayout
@@ -195,7 +195,7 @@
         android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginStart="@dimen/key_line_first"
         android:gravity="center_vertical"
-        android:textColor="@color/gray_light"
+        android:textColor="@color/gray_dark"
         app:textType="body" />
 
     <RelativeLayout

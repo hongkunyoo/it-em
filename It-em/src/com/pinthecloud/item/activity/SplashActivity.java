@@ -44,13 +44,13 @@ public class SplashActivity extends ItActivity {
 		setContentView(R.layout.activity_splash);
 
 		findComponent();
-		
-		/*** For under ver 0.2 ***/
-		if(mVersionHelper.getClientAppVersion() < 0.2){
+
+		/*** For under version ***/
+		if(mVersionHelper.getClientAppVersion() < 0.201){
 			mPrefHelper.clear();
 		}
 		/*************************/
-		
+
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mThisActivity));
@@ -160,12 +160,8 @@ public class SplashActivity extends ItActivity {
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
-				if (serverVer.getType().equals(AppVersion.TYPE.MANDATORY.toString())){
-					AsyncChainer.clearChain(obj);
-					finish();
-				} else {
-					AsyncChainer.notifyNext(obj);
-				}
+				AsyncChainer.clearChain(obj);
+				finish();
 			}
 		});
 		updateDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);

@@ -16,7 +16,8 @@
         android:paddingEnd="@dimen/key_line_second"
         android:paddingLeft="@dimen/key_line_second"
         android:paddingRight="@dimen/key_line_second"
-        android:paddingStart="@dimen/key_line_second" >
+        android:paddingStart="@dimen/key_line_second"
+        android:paddingTop="@dimen/be_pro_content_margin" >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -35,14 +36,14 @@
             app:textType="subhead" />
 
         <com.pinthecloud.item.view.ItTextView
-            android:id="@+id/be_pro_homepage"
+            android:id="@+id/be_pro_apply_editor"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/be_pro_homepage_height"
             android:layout_marginBottom="@dimen/be_pro_code_margin"
             android:background="@drawable/bepro_mail_bg"
             android:gravity="center"
-            android:text="@string/homepage"
-            android:textColor="@color/gray_light"
+            android:text="@string/apply_link"
+            android:textColor="@color/gray_dark"
             app:textType="caption" />
 
         <EditText

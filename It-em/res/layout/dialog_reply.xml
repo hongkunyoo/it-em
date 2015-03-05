@@ -62,7 +62,7 @@
                     android:layout_marginStart="@dimen/key_line_second"
                     android:gravity="center_vertical"
                     android:text="@string/first_reply"
-                    android:textColor="@color/gray_light"
+                    android:textColor="@color/gray_dark"
                     android:textStyle="italic"
                     android:visibility="gone"
                     app:textType="caption" />

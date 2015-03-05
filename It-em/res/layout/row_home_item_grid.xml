@@ -114,7 +114,7 @@
                 android:drawableLeft="@drawable/feed_it_ic"
                 android:drawableStart="@drawable/feed_it_ic"
                 android:gravity="center_vertical"
-                android:textColor="@color/gray_light"
+                android:textColor="@color/gray_dark"
                 app:textType="caption" />
 
             <com.pinthecloud.item.view.ItTextView
@@ -124,7 +124,7 @@
                 android:drawableLeft="@drawable/feed_comment_ic"
                 android:drawableStart="@drawable/feed_comment_ic"
                 android:gravity="center_vertical"
-                android:textColor="@color/gray_light"
+                android:textColor="@color/gray_dark"
                 app:textType="caption" />
         </LinearLayout>
 
@@ -178,7 +178,7 @@
                 android:paddingStart="@dimen/button_horizontal_margin"
                 android:paddingTop="@dimen/button_vertical_margin"
                 android:text="@string/get_product_label"
-                android:textColor="@android:color/white"
+                android:textColor="@color/home_item_tag_text"
                 android:textSize="@dimen/font_micro"
                 android:textStyle="bold" />
         </RelativeLayout>
