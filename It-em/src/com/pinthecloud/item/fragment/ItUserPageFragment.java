@@ -148,6 +148,9 @@ public class ItUserPageFragment extends MainTabFragment {
 
 	@Override
 	public void updateFragment() {
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+		
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override

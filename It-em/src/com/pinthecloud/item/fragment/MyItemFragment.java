@@ -113,6 +113,14 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+	}
+	
+	
+	@Override
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
@@ -189,7 +197,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = new ArrayList<Item>();
-		mGridAdapter = new MyItemGridAdapter(mActivity, gridColumnNum, mItemList);
+		mGridAdapter = new MyItemGridAdapter(mActivity, mThisFragment, gridColumnNum, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 	}
 

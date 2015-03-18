@@ -60,6 +60,14 @@ public class LikeItDialog extends ItDialogFragment {
 	}
 
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+	}
+	
+	
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListView = (RecyclerView)view.findViewById(R.id.like_it_frag_list);

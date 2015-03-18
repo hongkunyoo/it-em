@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -16,16 +17,16 @@ public class GAHelper {
 	// Label
 	public static final String HOME = "HOME";
 	public static final String ITEM = "ITEM";
-	public static final String DRAWER = "Drawer";
+	public static final String PRODUCT_TAG = "PRODUCT TAG";
+	public static final String MY_PAGE = "MY_PAGE";
 	
 	// Action
-	public static final String VIEW_ITEM = "view ITEM";
+	public static final String VIEW_ITEM = "view item";
 	public static final String IT = "it";
 	public static final String IT_CANCEL = "it cancel";
-	public static final String ITEM_TAG_INFORMATION = "Item Tag Information";
+	public static final String VIEW_PRODUCT_TAG = "view product tag";
+	public static final String VIEW_UPLOADER = "view uploader";
 	public static final String PRICE = "Price";
-	public static final String VIEW_UPLOADER = "view Uploader";
-	public static final String MY_BOX = "MyBox";
 	
 	
 	/**
@@ -63,7 +64,7 @@ public class GAHelper {
 	}
 
 
-	public void sendEventGA(String category, String action, String label){
+	public void sendEvent(String category, String action, String label){
 		if(!ItApplication.isDebugging()){
 			getTracker(TrackerName.APP_TRACKER).send(new HitBuilders.EventBuilder()
 			.setCategory(category)
@@ -74,22 +75,13 @@ public class GAHelper {
 	}
 
 
-	public void sendTimeingGA(String category, String variable, String label){
+	public void sendTimeing(String category, String variable, String label){
 		if(!ItApplication.isDebugging()){
 			getTracker(TrackerName.APP_TRACKER).send(new HitBuilders.TimingBuilder()
 			.setCategory(category)
 			.setVariable(variable)
 			.setLabel(label)
 			.build());
-		}
-	}
-
-
-	public void sendScreenGA(String name){
-		if(!ItApplication.isDebugging()){
-			Tracker tracker = getTracker(TrackerName.APP_TRACKER);
-			tracker.setScreenName(name);
-			tracker.send(new HitBuilders.AppViewBuilder().build());
 		}
 	}
 
@@ -104,6 +96,14 @@ public class GAHelper {
 	public void reportActivityStop(Activity activity){
 		if(!ItApplication.isDebugging()){
 			GoogleAnalytics.getInstance(mContext).reportActivityStop(activity);
+		}
+	}
+	
+	public void sendScreen(Fragment frag){
+		if(!ItApplication.isDebugging()){
+			Tracker tracker = getTracker(TrackerName.APP_TRACKER);
+			tracker.setScreenName(frag.getClass().getSimpleName());
+			tracker.send(new HitBuilders.AppViewBuilder().build());
 		}
 	}
 }

@@ -106,34 +106,27 @@
 
         <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/pro_settings_pay_guide_height"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="@string/pay_guide"
             android:textColor="@color/gray_dark"
             app:textType="caption" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/row_height" >
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/pro_settings_empty_bank_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_exist_bank_account"
+            android:textColor="@color/brand_text_color_light"
+            android:visibility="gone"
+            app:textType="body" />
 
-            <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/pro_settings_empty_bank_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/not_exist_bank_account"
-                android:textColor="@color/brand_text_color_light"
-                android:visibility="gone"
-                app:textType="body" />
-
-            <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/pro_settings_bank_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:textColor="@color/brand_text_color"
-                app:textType="body" />
-        </RelativeLayout>
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/pro_settings_bank_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/brand_text_color"
+            app:textType="body" />
 
         <Button
             android:id="@+id/pro_settings_bank_account_edit"

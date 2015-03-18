@@ -78,6 +78,14 @@ public class LoginActivity extends ItActivity {
 
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+		mUserHabitHelper.activityStart(mThisActivity);
+		mGaHelper.reportActivityStart(mThisActivity);
+	}
+	
+	
+	@Override
 	public void onResume() {
 		super.onResume();
 
@@ -95,7 +103,7 @@ public class LoginActivity extends ItActivity {
 		}
 	}
 
-
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -111,6 +119,14 @@ public class LoginActivity extends ItActivity {
 	}
 
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		mUserHabitHelper.activityStop(mThisActivity);
+		mGaHelper.reportActivityStop(mThisActivity);
+	}
+	
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

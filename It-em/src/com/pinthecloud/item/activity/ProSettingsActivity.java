@@ -54,6 +54,22 @@ public class ProSettingsActivity extends ItActivity {
 
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.activityStart(mThisActivity);
+		mGaHelper.reportActivityStart(mThisActivity);
+	}
+
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mUserHabitHelper.activityStop(mThisActivity);
+		mGaHelper.reportActivityStop(mThisActivity);
+	}
+	
+	
+	@Override
 	public void finish() {
 		super.finish();
 		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
@@ -174,7 +190,7 @@ public class ProSettingsActivity extends ItActivity {
 		String bankAccountNumber = mMyItUser.getBankAccountNumber();
 		String bankAccountName = mMyItUser.getBankAccountName();
 
-		if(bankAccountName.equals("")){
+		if(bankAccountNumber.equals("") || bankAccountName.equals("")){
 			mEmptyBankAccount.setVisibility(View.VISIBLE);
 			mBankAccount.setVisibility(View.GONE);
 		} else {

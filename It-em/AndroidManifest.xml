@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pinthecloud.item"
-    android:versionCode="12"
-    android:versionName="0.202" >
+    android:versionCode="13"
+    android:versionName="0.203" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -119,7 +119,6 @@
             android:label="@string/profile_settings"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.HongkunTestActivity" />
     </application>
 
 </manifest>

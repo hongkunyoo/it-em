@@ -65,6 +65,8 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
 		setProfileImage();
 	}
 

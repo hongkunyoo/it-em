@@ -15,6 +15,8 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.analysis.GAHelper;
+import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.ImageUtil;
@@ -28,14 +30,17 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
+	private ItFragment mFrag;
+	
 	private List<Item> mItemList;
 	private int mGridColumnNum;
 	private int mHeaderHeight;
 
 
-	public MyItemGridAdapter(ItActivity activity, int gridColumnNum, List<Item> itemList) {
+	public MyItemGridAdapter(ItActivity activity, ItFragment frag, int gridColumnNum, List<Item> itemList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
+		this.mFrag = frag;
 		this.mItemList = itemList;
 		this.mGridColumnNum = gridColumnNum;
 	}
@@ -115,6 +120,8 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			@Override
 			public void onClick(View v) {
+				mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.MY_PAGE);
+				
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
 				mActivity.startActivity(intent);

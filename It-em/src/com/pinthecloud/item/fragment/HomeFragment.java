@@ -95,6 +95,9 @@ public class HomeFragment extends MainTabFragment {
 
 	@Override
 	public void updateFragment() {
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+		
 		mProgressBar.setVisibility(View.VISIBLE);
 		mLayout.setVisibility(View.GONE);
 		updateGrid();

@@ -71,6 +71,14 @@ public class ProductTagDialog extends ItDialogFragment {
 	}
 
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+	}
+	
+	
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListEmptyView = (TextView)view.findViewById(R.id.product_tag_frag_empty_view);

@@ -135,8 +135,7 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 			@Override
 			public void onClick(View v) {
-				mApp.getGaHelper().sendEventGA(
-						mFrag.getClass().getSimpleName(), GAHelper.PRICE, GAHelper.ITEM);
+				mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.PRICE, GAHelper.PRODUCT_TAG);
 
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tag.getWebPage()));
 				mActivity.startActivity(intent);

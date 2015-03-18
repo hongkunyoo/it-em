@@ -67,22 +67,6 @@ public abstract class ItActivity extends ActionBarActivity {
 
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		mUserHabitHelper.activityStart(mThisActivity);
-		mGaHelper.reportActivityStart(mThisActivity);
-	}
-
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		mUserHabitHelper.activityStop(mThisActivity);
-		mGaHelper.reportActivityStop(mThisActivity);
-	}
-
-
-	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		EventBus.getDefault().unregister(mThisActivity);

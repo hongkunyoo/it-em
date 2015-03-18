@@ -53,6 +53,8 @@ public class ProfileImageDialog extends ItDialogFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
 		setImageView();
 	}
 

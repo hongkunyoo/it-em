@@ -53,6 +53,14 @@ public class BankAccountEditDialog extends ItDialogFragment {
 	}
 
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+	}
+	
+	
 	private void findComponent(View view){
 		mBankName = (Spinner)view.findViewById(R.id.bank_account_edit_frag_bank_name);
 		mBankAccountNumber = (EditText)view.findViewById(R.id.bank_account_edit_frag_account_number);

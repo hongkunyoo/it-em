@@ -61,12 +61,6 @@ public class SplashActivity extends ItActivity {
 
 
 	@Override
-	public void onBackPressed() {
-		// Do nothing
-	}
-
-
-	@Override
 	public View getToolbarLayout() {
 		return null;
 	}

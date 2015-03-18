@@ -183,7 +183,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 					isDoingIt = true;
 
 					if(isDoIt) {
-						mApp.getGaHelper().sendEventGA(mFrag.getClass().getSimpleName(), GAHelper.IT, GAHelper.HOME);
+						mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.IT, GAHelper.HOME);
 
 						// Do like it
 						ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
@@ -199,7 +199,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 							}
 						});
 					} else {
-						mApp.getGaHelper().sendEventGA(mFrag.getClass().getSimpleName(), GAHelper.IT_CANCEL, GAHelper.HOME);
+						mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.IT_CANCEL, GAHelper.HOME);
 
 						// Cancel like it
 						LikeIt it = new LikeIt(item.getPrevLikeId());
@@ -219,8 +219,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 			@Override
 			public void onClick(View v) {
-				mApp.getGaHelper().sendEventGA(
-						mFrag.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
+				mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_PRODUCT_TAG, GAHelper.HOME);
 
 				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(item, null);
 				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
@@ -230,8 +229,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 
 	private void gotoItUserPage(Item item){
-		mApp.getGaHelper().sendEventGA(
-				mFrag.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.HOME);
+		mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.HOME);
 		
 		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
@@ -240,8 +238,7 @@ public class HomeItemGridAdapter extends RecyclerView.Adapter<HomeItemGridAdapte
 
 
 	private void gotoItem(Item item){
-		mApp.getGaHelper().sendEventGA(
-				mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
+		mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
 
 		Intent intent = new Intent(mActivity, ItemActivity.class);
 		intent.putExtra(Item.INTENT_KEY, item);

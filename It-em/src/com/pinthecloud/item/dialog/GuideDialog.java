@@ -30,6 +30,14 @@ public class GuideDialog extends ItDialogFragment {
 	}
 
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+	}
+	
+	
 	private void findComponent(View view){
 		mClose = (ImageButton)view.findViewById(R.id.guide_frag_close);
 		mBePro = (TextView)view.findViewById(R.id.guide_frag_be_pro);

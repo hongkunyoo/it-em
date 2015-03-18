@@ -80,6 +80,14 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+	}
+	
+	
+	@Override
 	public void deleteReply(final Reply reply){
 		mApp.getAimHelper().del(reply, new EntityCallback<Boolean>() {
 

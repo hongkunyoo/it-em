@@ -40,7 +40,23 @@ public class BeProActivity extends ItActivity {
 		setButton();
 	}
 
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		mUserHabitHelper.activityStart(mThisActivity);
+		mGaHelper.reportActivityStart(mThisActivity);
+	}
 
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		mUserHabitHelper.activityStop(mThisActivity);
+		mGaHelper.reportActivityStop(mThisActivity);
+	}
+	
+	
 	@Override
 	public void finish() {
 		super.finish();

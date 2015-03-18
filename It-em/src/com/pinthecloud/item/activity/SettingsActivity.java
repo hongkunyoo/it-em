@@ -83,6 +83,22 @@ public class SettingsActivity extends ItActivity {
 
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.activityStart(mThisActivity);
+		mGaHelper.reportActivityStart(mThisActivity);
+	}
+
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mUserHabitHelper.activityStop(mThisActivity);
+		mGaHelper.reportActivityStop(mThisActivity);
+	}
+	
+	
+	@Override
 	public void finish() {
 		Intent intent = new Intent();
 		intent.putExtra(ItUser.INTENT_KEY, mObjectPrefHelper.get(ItUser.class));

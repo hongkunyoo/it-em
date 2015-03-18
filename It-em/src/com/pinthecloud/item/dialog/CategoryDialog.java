@@ -39,6 +39,14 @@ public class CategoryDialog extends ItDialogFragment {
 	}
 
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+	}
+	
+	
 	private void findComponent(View view){
 		mGridView = (RecyclerView)view.findViewById(R.id.category_frag_list);
 	}

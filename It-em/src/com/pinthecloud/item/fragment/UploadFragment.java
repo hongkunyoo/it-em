@@ -101,6 +101,9 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
+		
 		mApp.getPicasso()
 		.load(mItemImageUri)
 		.placeholder(R.drawable.upload_thumbnail_default_img)
@@ -294,7 +297,7 @@ public class UploadFragment extends ItFragment {
 		final String itemImagePath = FileUtil.getMediaPathFromGalleryUri(mActivity, mItemImageUri);
 		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
 
-		String content = mContent.getText().toString() + (mBrandInfoList.size()>0 ? "\n" : "")
+		String content = mContent.getText().toString() + (mBrandInfoList.size()>0 ? "\n\n" : "")
 				+ getBrandInfoContent(mBrandInfoList);
 		final Item item = new Item(content, mMyItUser.getNickName(), mMyItUser.getId(),
 				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());

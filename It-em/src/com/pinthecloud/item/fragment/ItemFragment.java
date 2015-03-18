@@ -138,6 +138,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onStart() {
 		super.onStart();
+		mUserHabitHelper.setScreen(mThisFragment);
+		mGaHelper.sendScreen(mThisFragment);
 		setImage();
 	}
 
@@ -274,8 +276,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				mGaHelper.sendEventGA(
-						mThisFragment.getClass().getSimpleName(), GAHelper.ITEM_TAG_INFORMATION, GAHelper.ITEM);
+				mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_PRODUCT_TAG, GAHelper.ITEM);
 
 				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem, (ArrayList<ProductTag>)mItem.getProductTagList());
 				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
@@ -326,8 +327,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void gotoItUserPage(){
-		mGaHelper.sendEventGA(
-				mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
+		mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
 
 		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
@@ -336,8 +336,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setRefreshLayout(){
-		mRefresh.setColorSchemeResources(R.color.accent_color);
 		int height = ViewUtil.getActionBarHeight(mActivity)/2;
+		mRefresh.setColorSchemeResources(R.color.accent_color);
 		mRefresh.setProgressViewOffset(true, height, ViewUtil.getActionBarHeight(mActivity)+height);
 		mRefresh.setOnRefreshListener(new OnRefreshListener() {
 
@@ -485,8 +485,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		isDoingIt = true;
 		if(isDoIt) {
-			mGaHelper.sendEventGA(
-					mThisFragment.getClass().getSimpleName(), GAHelper.IT, GAHelper.ITEM);
+			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.IT, GAHelper.ITEM);
 
 			// Do it
 			LikeIt it = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
@@ -501,7 +500,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				}
 			});
 		} else {
-			mGaHelper.sendEventGA(mThisFragment.getClass().getSimpleName(), GAHelper.IT_CANCEL, GAHelper.ITEM);
+			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.IT_CANCEL, GAHelper.ITEM);
 
 			// Cancel it
 			LikeIt it = new LikeIt(mItem.getPrevLikeId());
