@@ -101,11 +101,8 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-//				Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
-//				startActivityForResult(intent, PROFILE_SETTINGS);
-				
 				ItFragment fragment = new ProfileSettingsFragment();
-				mActivity.replaceFragment(fragment);
+				mActivity.replaceFragment(fragment, true);
 			}
 		});
 
@@ -114,7 +111,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				ItFragment fragment = mMyItUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
-				mActivity.replaceFragment(fragment);
+				mActivity.replaceFragment(fragment, true);
 			}
 		});
 

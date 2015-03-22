@@ -3,9 +3,8 @@ package com.pinthecloud.item.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,13 +25,13 @@ import com.pinthecloud.item.model.GalleryFolder;
 public class GalleryFragment extends ItFragment implements GalleryCallback{
 
 	public static final String GALLERY_PATHS_KEY = "GALLERY_PATHS_KEY";
-	
+
 	private RecyclerView mGridView;
 	private GalleryAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
 	private List<Gallery> mGalleryList;
 
-	
+
 	public static ItFragment newInstance(ArrayList<Gallery> galleryList) {
 		ItFragment fragment = new GalleryFragment();
 		Bundle bundle = new Bundle();
@@ -40,15 +39,15 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 		fragment.setArguments(bundle);
 		return fragment;
 	}
-	
-	
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mGalleryList = getArguments().getParcelableArrayList(Gallery.INTENT_KEY);
 	}
-	
-	
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -57,14 +56,14 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-		
+
 		findComponent(view);
 		setGrid();
 
 		return view;
 	}
-	
-	
+
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -79,7 +78,7 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 		menuItem.setEnabled(mGridAdapter.getSelected().size() > 0);
 	}
 
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
@@ -91,27 +90,27 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 				paths[i] = selected.get(i).getPath();
 			}
 
-			Intent data = new Intent().putExtra(GALLERY_PATHS_KEY, paths);
-			mActivity.setResult(Activity.RESULT_OK, data);
-			mActivity.finish();
+			getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			ItFragment fragment = UploadFragment.newInstance(paths);
+			mActivity.replaceFragment(fragment, false);
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
 	}
-	
-	
+
+
 	@Override
 	public void clickGallery(Gallery gallery) {
 		mActivity.invalidateOptionsMenu();
 		setTitle();
 	}
-	
-	
+
+
 	@Override
 	public void clickFolder(GalleryFolder folder) {
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		mGridView = (RecyclerView)view.findViewById(R.id.gallery_frag_grid);
 	}

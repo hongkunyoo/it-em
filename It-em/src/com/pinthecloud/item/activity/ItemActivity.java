@@ -52,13 +52,13 @@ public class ItemActivity extends ItActivity {
 				+ " " + getResources().getString(R.string.app_name));
 
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-			
-		    @Override
-		    public void onClick(View v) {
-		        onBackPressed();
-		    }
+
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
 		});
-		
+
 		mToolbarLayout.bringToFront();
 	}
 }

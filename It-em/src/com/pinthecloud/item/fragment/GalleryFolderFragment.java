@@ -59,7 +59,7 @@ public class GalleryFolderFragment extends ItFragment implements GalleryCallback
 	@Override
 	public void clickFolder(GalleryFolder folder) {
 		ItFragment fragment = GalleryFragment.newInstance((ArrayList<Gallery>)folder.getGalleryList());
-		mActivity.replaceFragment(fragment);
+		mActivity.replaceFragment(fragment, true);
 	}
 
 

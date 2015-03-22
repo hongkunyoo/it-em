@@ -1,8 +1,10 @@
 package com.pinthecloud.item.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.pinthecloud.item.ItApplication;
@@ -37,10 +39,10 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected BlobStorageHelper mBlobStorageHelper;
 
 	protected GAHelper mGaHelper;
-	
+
 	public abstract View getToolbarLayout();
-	
-	
+
+
 	public ItActivity(){
 		super();
 		mApp = ItApplication.getInstance();
@@ -72,6 +74,31 @@ public abstract class ItActivity extends ActionBarActivity {
 	}
 
 
+	/*** FIX LG DEVICE ON ANDROID 4.1 BUG ***/
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_MENU) &&
+				(Build.VERSION.SDK_INT == 16) &&
+				(Build.MANUFACTURER.compareTo("LGE") == 0)) {
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_MENU) &&
+				(Build.VERSION.SDK_INT == 16) &&
+				(Build.MANUFACTURER.compareTo("LGE") == 0)) {
+			openOptionsMenu();
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
+	}
+	/*** FIX LG DEVICE ON ANDROID 4.1 BUG ***/
+
+
 	public void setFragment(ItFragment fragment) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.activity_container, fragment);
@@ -79,15 +106,17 @@ public abstract class ItActivity extends ActionBarActivity {
 	}
 
 
-	public void replaceFragment(ItFragment fragment) {
+	public void replaceFragment(ItFragment fragment, boolean addToBackStack) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.setCustomAnimations(R.anim.slide_in_up, 0, R.anim.pop_in, R.anim.slide_out_down);
 		transaction.replace(R.id.activity_container, fragment);
-		transaction.addToBackStack(null);	
+		if(addToBackStack){
+			transaction.addToBackStack(null);
+		}
 		transaction.commit();
 	}
-	
-	
+
+
 	public void onEvent(ItException exception) {
 		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)
 				|| exception.getType().equals(ItException.TYPE.INTERNAL_ERROR)){

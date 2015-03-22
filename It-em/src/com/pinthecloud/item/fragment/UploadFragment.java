@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,7 +94,7 @@ public class UploadFragment extends ItFragment {
 		
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-		
+		setActionBar();
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -173,6 +174,12 @@ public class UploadFragment extends ItFragment {
 	}
 
 
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setTitle(getResources().getString(R.string.upload));
+	}
+	
+	
 	private void findComponent(View view){
 		mItemImage = (ImageView)view.findViewById(R.id.upload_frag_item_image);
 		mItemImageDelete = (ImageButton)view.findViewById(R.id.upload_frag_item_image_delete);

@@ -31,7 +31,7 @@ public class ItemImageActivity extends ItActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
+		overridePendingTransition(0, 0);
 		setContentView(R.layout.activity_item_image);
 
 		setToolbar();
@@ -59,7 +59,7 @@ public class ItemImageActivity extends ItActivity {
 	@Override
 	public void finish() {
 		super.finish();
-		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
+		overridePendingTransition(0, 0);
 	}
 
 

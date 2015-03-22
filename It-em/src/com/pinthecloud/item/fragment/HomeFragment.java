@@ -20,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.GalleryActivity;
 import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.HomeItemGridAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
@@ -30,7 +29,6 @@ import com.pinthecloud.item.model.Item;
 public class HomeFragment extends MainTabFragment {
 
 	private final int UPLOAD = 0;
-	private final int GALLERY = 10;
 
 	private ProgressBar mProgressBar;
 	private View mLayout;
@@ -82,12 +80,6 @@ public class HomeFragment extends MainTabFragment {
 				mGridAdapter.add(0, item);
 				mGridView.smoothScrollToPosition(0);
 				break;
-			case GALLERY:
-				String[] paths = data.getStringArrayExtra(GalleryFragment.GALLERY_PATHS_KEY);
-				Intent intent = new Intent(mActivity, UploadActivity.class);
-				intent.putExtra(GalleryFragment.GALLERY_PATHS_KEY, paths);
-				startActivityForResult(intent, UPLOAD);
-				break;
 			}
 		}
 	}
@@ -96,7 +88,7 @@ public class HomeFragment extends MainTabFragment {
 	@Override
 	public void updateFragment() {
 		mGaHelper.sendScreen(mThisFragment);
-		
+
 		mProgressBar.setVisibility(View.VISIBLE);
 		mLayout.setVisibility(View.GONE);
 		updateGrid();
@@ -126,8 +118,8 @@ public class HomeFragment extends MainTabFragment {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, GalleryActivity.class);
-				startActivityForResult(intent, GALLERY);
+				Intent intent = new Intent(mActivity, UploadActivity.class);
+				startActivityForResult(intent, UPLOAD);
 			}
 		});
 	}
