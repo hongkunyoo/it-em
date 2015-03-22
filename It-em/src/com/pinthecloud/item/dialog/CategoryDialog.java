@@ -33,17 +33,10 @@ public class CategoryDialog extends ItDialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_category, container, false);
+		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setGrid();
 		return view;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 	}
 	
 	

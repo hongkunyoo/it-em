@@ -52,6 +52,7 @@ public class UploadFragment extends ItFragment {
 
 	public static final String CATEGORY_INTENT_KEY = "CATEGORY_INTENT_KEY";
 
+	private String[] mPaths;
 	private Uri mItemImageUri;
 
 	private ImageView mItemImage;
@@ -67,10 +68,10 @@ public class UploadFragment extends ItFragment {
 	private ItUser mMyItUser;
 
 
-	public static ItFragment newInstance(Uri itemImageUri) {
+	public static ItFragment newInstance(String[] paths) {
 		ItFragment fragment = new UploadFragment();
 		Bundle bundle = new Bundle();
-		bundle.putParcelable(Item.INTENT_KEY, itemImageUri);
+		bundle.putStringArray(GalleryFragment.GALLERY_PATHS_KEY, paths);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -80,7 +81,7 @@ public class UploadFragment extends ItFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-		mItemImageUri = getArguments().getParcelable(Item.INTENT_KEY);
+		mPaths = getArguments().getStringArray(GalleryFragment.GALLERY_PATHS_KEY);
 	}
 
 
@@ -89,11 +90,15 @@ public class UploadFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_upload, container, false);
+		
+		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
+		
 		findComponent(view);
 		setComponent();
 		setButton();
 		setList();
+		
 		return view;
 	}
 
@@ -101,9 +106,7 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
-		
+
 		mApp.getPicasso()
 		.load(mItemImageUri)
 		.placeholder(R.drawable.upload_thumbnail_default_img)
@@ -302,17 +305,17 @@ public class UploadFragment extends ItFragment {
 		final Item item = new Item(content, mMyItUser.getNickName(), mMyItUser.getId(),
 				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
 
-		final List<HashTag> hashTagList = new ArrayList<HashTag>();
+		final List<HashTag> tagList = new ArrayList<HashTag>();
 		List<String> hashTags = TextUtil.getSpanBodyList(content);
 		for(String hashTag : hashTags){
-			hashTagList.add(new HashTag(hashTag));
+			tagList.add(new HashTag(hashTag));
 		}
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
-				mAimHelper.addItem(item, hashTagList, new EntityCallback<Item>() {
+				mAimHelper.addItem(item, tagList, new EntityCallback<Item>() {
 
 					@Override
 					public void onCompleted(Item entity) {

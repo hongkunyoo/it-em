@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.analysis.GAHelper;
-import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.DeviceHelper;
@@ -29,7 +28,6 @@ public class ItFragment extends Fragment {
 	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 
-	protected UserHabitHelper mUserHabitHelper;
 	protected GAHelper mGaHelper;
 
 	
@@ -46,7 +44,6 @@ public class ItFragment extends Fragment {
 		mDeviceHelper = mApp.getDeviceHelper();
 		mBlobStorageHelper = mApp.getBlobStorageHelper();
 		
-		mUserHabitHelper = mApp.getUserHabitHelper();
 		mGaHelper = mApp.getGaHelper();
 	}
 

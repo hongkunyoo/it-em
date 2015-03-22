@@ -70,20 +70,15 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_reply, container, false);
+		
+		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setComponent();
 		setButton();
 		setList();
 		updateList();
+		
 		return view;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 	}
 	
 	

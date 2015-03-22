@@ -83,7 +83,7 @@ public class AbstractItemModel<T> {
 	public String toString() {
 		return new Gson().toJson(this);
 	}
-
+	
 	public JsonElement toJson() {
 		Gson gson = new Gson();
 		JsonObject json = gson.fromJson(gson.toJson(this), JsonObject.class);

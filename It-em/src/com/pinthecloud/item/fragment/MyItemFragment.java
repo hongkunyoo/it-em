@@ -97,6 +97,9 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
+		
+		mGaHelper.sendScreen(mThisFragment);
+		
 		findComponent(view);
 		setComponent();
 		setGrid();
@@ -109,14 +112,6 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 		updateGrid();
 		
 		return view;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 	}
 	
 	

@@ -19,6 +19,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	private List<ProductTag> productTagList;
 	private int imageWidth;
 	private int imageHeight;
+	private int imageNumber;
 	private ItUser whoMadeUser;
 
 	public Item() {

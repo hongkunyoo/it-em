@@ -32,6 +32,7 @@ public class MainActivity extends ItActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		findComponent();
 		setViewPager();
 		setTab();
@@ -41,13 +42,6 @@ public class MainActivity extends ItActivity {
 		if(!mPrefHelper.getBoolean(ItConstant.GUIDE_READ_KEY)){
 			showGuide();
 		}
-	}
-
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
 	}
 
 

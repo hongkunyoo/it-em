@@ -43,7 +43,6 @@ public class ItemImageActivity extends ItActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		mUserHabitHelper.activityStart(mThisActivity);
 		mGaHelper.reportActivityStart(mThisActivity);
 		setImageView();
 	}
@@ -52,7 +51,6 @@ public class ItemImageActivity extends ItActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
-		mUserHabitHelper.activityStop(mThisActivity);
 		mGaHelper.reportActivityStop(mThisActivity);
 		mItemImage.setImageBitmap(null);
 	}

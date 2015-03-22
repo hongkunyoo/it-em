@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -21,16 +20,17 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.GalleryActivity;
 import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.HomeItemGridAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.FileUtil;
 
 public class HomeFragment extends MainTabFragment {
 
 	private final int UPLOAD = 0;
+	private final int GALLERY_MULTIPLE_PICK = 10;
 
 	private ProgressBar mProgressBar;
 	private View mLayout;
@@ -82,10 +82,10 @@ public class HomeFragment extends MainTabFragment {
 				mGridAdapter.add(0, item);
 				mGridView.smoothScrollToPosition(0);
 				break;
-			case FileUtil.GALLERY:
-				Uri itemImageUri = data.getData();
+			case GALLERY_MULTIPLE_PICK:
+				String[] paths = data.getStringArrayExtra(GalleryFragment.GALLERY_PATHS_KEY);
 				Intent intent = new Intent(mActivity, UploadActivity.class);
-				intent.putExtra(Item.INTENT_KEY, itemImageUri);
+				intent.putExtra(GalleryFragment.GALLERY_PATHS_KEY, paths);
 				startActivityForResult(intent, UPLOAD);
 				break;
 			}
@@ -95,7 +95,6 @@ public class HomeFragment extends MainTabFragment {
 
 	@Override
 	public void updateFragment() {
-		mUserHabitHelper.setScreen(mThisFragment);
 		mGaHelper.sendScreen(mThisFragment);
 		
 		mProgressBar.setVisibility(View.VISIBLE);
@@ -127,7 +126,8 @@ public class HomeFragment extends MainTabFragment {
 
 			@Override
 			public void onClick(View v) {
-				FileUtil.getMediaFromGallery(mThisFragment);
+				Intent intent = new Intent(mActivity, GalleryActivity.class);
+				startActivityForResult(intent, GALLERY_MULTIPLE_PICK);
 			}
 		});
 	}

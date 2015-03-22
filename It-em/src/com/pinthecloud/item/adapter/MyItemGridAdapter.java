@@ -134,6 +134,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.feed_loading_default_img)
+		.fit().centerCrop()
 		.into(holder.itemImage);
 	}
 

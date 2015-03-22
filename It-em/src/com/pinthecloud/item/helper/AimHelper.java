@@ -66,7 +66,7 @@ public class AimHelper {
 
 		JsonObject jo = new JsonObject();
 		jo.add("item", obj.toJson());
-		jo.addProperty("noti", noti.toString());
+		jo.add("noti", noti.toJson());
 
 		mClient.invokeApi(AIM_ADD, jo, new ApiJsonOperationCallback() {
 
@@ -92,7 +92,7 @@ public class AimHelper {
 
 		JsonObject jo = new JsonObject();
 		jo.add("item", obj.toJson());
-		jo.addProperty("noti", noti.toString());
+		jo.add("noti", noti.toJson());
 
 		mClient.invokeApi(AIM_ADD_UNIQUE, jo, new ApiJsonOperationCallback() {
 
@@ -112,17 +112,17 @@ public class AimHelper {
 	}
 
 
-	public void addItem(final Item item, List<HashTag> tags, final EntityCallback<Item> callback) {
+	public void addItem(final Item item, List<HashTag> tagList, final EntityCallback<Item> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("addItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
 		Gson gson = new Gson();
-		JsonArray tagJson = gson.fromJson(gson.toJson(tags), JsonArray.class);
+		JsonArray tagListJson = gson.fromJson(gson.toJson(tagList), JsonArray.class);
 		JsonObject jo = new JsonObject();
-		jo.add("tags", tagJson);
-		jo.addProperty("item", item.toString());
+		jo.add("item", item.toJson());
+		jo.add("tagList", tagListJson);
 
 		mClient.invokeApi(AIM_ADD_ITEM, jo, new ApiJsonOperationCallback() {
 
@@ -146,7 +146,7 @@ public class AimHelper {
 		}
 
 		JsonObject jo = new JsonObject();
-		jo.addProperty("item", item.toString());
+		jo.add("item", item.toJson());
 		jo.addProperty("userId", userId);
 
 		mClient.invokeApi(AIM_GET_ITEM, jo, new ApiJsonOperationCallback() {
@@ -342,7 +342,7 @@ public class AimHelper {
 				AsyncChainer.waitChain(4);
 
 				JsonObject jo = new JsonObject();
-				jo.addProperty("item", item.toString());
+				jo.add("item", item.toJson());
 				
 				mClient.invokeApi(AIM_DELETE_ITEM, jo, new ApiJsonOperationCallback() {
 

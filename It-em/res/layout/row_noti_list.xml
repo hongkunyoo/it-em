@@ -79,8 +79,6 @@
         android:layout_height="@dimen/noti_item_image_width"
         android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginStart="@dimen/key_line_first"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
         app:riv_corner_radius="@dimen/corner_radius" />
 
 </LinearLayout>

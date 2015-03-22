@@ -44,6 +44,7 @@ public class ProfileImageDialog extends ItDialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_profile_image, container, false);
+		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setComponent();
 		return view;
@@ -53,8 +54,6 @@ public class ProfileImageDialog extends ItDialogFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 		setImageView();
 	}
 

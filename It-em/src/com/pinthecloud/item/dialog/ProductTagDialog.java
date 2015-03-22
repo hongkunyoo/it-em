@@ -60,6 +60,8 @@ public class ProductTagDialog extends ItDialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_product_tag, container, false);
+		
+		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setList();
 
@@ -68,14 +70,6 @@ public class ProductTagDialog extends ItDialogFragment {
 		}
 
 		return view;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 	}
 	
 	

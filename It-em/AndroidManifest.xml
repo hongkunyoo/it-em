@@ -101,7 +101,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsActivity"
-            android:label="@string/settings"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -117,6 +116,10 @@
         <activity
             android:name=".activity.ProfileSettingsActivity"
             android:label="@string/profile_settings"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GalleryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

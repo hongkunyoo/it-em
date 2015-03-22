@@ -1,16 +1,17 @@
 package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.analysis.GAHelper;
-import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.ItException;
+import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.DeviceHelper;
@@ -35,12 +36,11 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 
-	protected UserHabitHelper mUserHabitHelper;
 	protected GAHelper mGaHelper;
 	
 	public abstract View getToolbarLayout();
-
-
+	
+	
 	public ItActivity(){
 		super();
 		mApp = ItApplication.getInstance();
@@ -54,7 +54,6 @@ public abstract class ItActivity extends ActionBarActivity {
 		mDeviceHelper = mApp.getDeviceHelper();
 		mBlobStorageHelper = mApp.getBlobStorageHelper();
 
-		mUserHabitHelper = mApp.getUserHabitHelper();
 		mGaHelper = mApp.getGaHelper();
 	}
 
@@ -73,6 +72,22 @@ public abstract class ItActivity extends ActionBarActivity {
 	}
 
 
+	public void setFragment(ItFragment fragment) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.activity_container, fragment);
+		transaction.commit();
+	}
+
+
+	public void replaceFragment(ItFragment fragment) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.setCustomAnimations(R.anim.slide_in_up, 0, R.anim.pop_in, R.anim.slide_out_down);
+		transaction.replace(R.id.activity_container, fragment);
+		transaction.addToBackStack(null);	
+		transaction.commit();
+	}
+	
+	
 	public void onEvent(ItException exception) {
 		if(exception.getType().equals(ItException.TYPE.NETWORK_UNAVAILABLE)
 				|| exception.getType().equals(ItException.TYPE.INTERNAL_ERROR)){

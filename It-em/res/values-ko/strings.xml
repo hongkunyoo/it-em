@@ -69,6 +69,10 @@
     <string name="add">추가</string>
     <string name="bad_brand_message">브랜드는 문자,숫자,밑줄만 허용돼요.</string>
 
+    <!-- Gallery -->
+    <string name="select_picture">사진 선택</string>
+    <string name="empty_gallery">갤러리가 비어있어요</string>
+    
     <!-- Profile Settings -->
     <string name="profile_settings">프로필 설정</string>
     <string name="nick_name">닉네임</string>

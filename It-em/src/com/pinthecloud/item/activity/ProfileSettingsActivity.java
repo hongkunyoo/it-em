@@ -1,13 +1,11 @@
 package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.ProfileSettingsFragment;
 
 public class ProfileSettingsActivity extends ItActivity {
@@ -21,8 +19,9 @@ public class ProfileSettingsActivity extends ItActivity {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
 		setContentView(R.layout.activity_toolbar_frame);
+		
 		setToolbar();
-		setFragment();
+		setFragment(new ProfileSettingsFragment());
 	}
 	
 
@@ -56,13 +55,5 @@ public class ProfileSettingsActivity extends ItActivity {
 		});
 		
 		mToolbarLayout.bringToFront();
-	}
-
-
-	private void setFragment(){
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		ItFragment fragment = new ProfileSettingsFragment();
-		transaction.replace(R.id.activity_container, fragment);
-		transaction.commit();
 	}
 }

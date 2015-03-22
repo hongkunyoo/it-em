@@ -3,7 +3,6 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
@@ -15,7 +14,6 @@ import android.net.NetworkInfo;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.pinthecloud.item.analysis.GAHelper;
-import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.DeviceHelper;
@@ -52,7 +50,6 @@ public class ItApplication extends Application {
 	private ProgressDialog progressDialog;
 
 	// Analysis
-	private UserHabitHelper userHabitHelper;
 	private GAHelper gaHelper;
 
 	// Helper
@@ -70,10 +67,9 @@ public class ItApplication extends Application {
 		super.onCreate();
 		app = this;
 
-		ACRA.init(app);
+//		ACRA.init(app);
 		mClient = getMobileClient();
 		
-		userHabitHelper = getUserHabitHelper();
 		gaHelper = getGaHelper();
 
 		picasso = getPicasso();
@@ -111,10 +107,6 @@ public class ItApplication extends Application {
 			}
 		}
 		return mClient;
-	}
-	public UserHabitHelper getUserHabitHelper() {
-		if(userHabitHelper == null) userHabitHelper = new UserHabitHelper();
-		return userHabitHelper;
 	}
 	public GAHelper getGaHelper() {
 		if(gaHelper == null) gaHelper = new GAHelper(app);

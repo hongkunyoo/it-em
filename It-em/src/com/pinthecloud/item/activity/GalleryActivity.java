@@ -6,26 +6,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItUserPageFragment;
-import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.util.ViewUtil;
+import com.pinthecloud.item.fragment.GalleryFolderFragment;
 
-public class ItUserPageActivity extends ItActivity {
+public class GalleryActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
 		setContentView(R.layout.activity_toolbar_frame);
 
-		String userId = getIntent().getStringExtra(ItUser.INTENT_KEY);
 		setToolbar();
-		setContainer();
-		setFragment(ItUserPageFragment.newInstance(userId));
+		setFragment(new GalleryFolderFragment());
 	}
 
 
@@ -51,7 +47,7 @@ public class ItUserPageActivity extends ItActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				onBackPressed();
@@ -59,11 +55,5 @@ public class ItUserPageActivity extends ItActivity {
 		});
 
 		mToolbarLayout.bringToFront();
-	}
-
-
-	private void setContainer(){
-		View container = findViewById(R.id.activity_container);
-		container.setPadding(0, ViewUtil.getActionBarHeight(mThisActivity), 0, 0);
 	}
 }

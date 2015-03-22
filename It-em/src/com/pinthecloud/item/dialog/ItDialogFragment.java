@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.analysis.GAHelper;
-import com.pinthecloud.item.analysis.UserHabitHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.DeviceHelper;
@@ -33,7 +32,6 @@ public class ItDialogFragment extends DialogFragment {
 	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 
-	protected UserHabitHelper mUserHabitHelper;
 	protected GAHelper mGaHelper;
 	
 
@@ -49,7 +47,6 @@ public class ItDialogFragment extends DialogFragment {
 		mDeviceHelper = mApp.getDeviceHelper();
 		mBlobStorageHelper = mApp.getBlobStorageHelper();
 		
-		mUserHabitHelper = mApp.getUserHabitHelper();
 		mGaHelper = mApp.getGaHelper();
 	}
 

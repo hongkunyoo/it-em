@@ -1,14 +1,15 @@
-package com.pinthecloud.item.activity;
+package com.pinthecloud.item.fragment;
 
 import java.util.Locale;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,11 +23,8 @@ import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 
-public class ProSettingsActivity extends ItActivity {
-
-	private View mToolbarLayout;
-	private Toolbar mToolbar;
-
+public class ProSettingsFragment extends ItFragment {
+	
 	private TextView mMileage;
 	private EditText mEmail;
 	private ImageButton mEmailSubmit;
@@ -35,76 +33,46 @@ public class ProSettingsActivity extends ItActivity {
 	private Button mEditBankAccount;
 
 	private ItUser mMyItUser;
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+	}
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.slide_in_right, R.anim.zoom_out);
-		setContentView(R.layout.activity_pro_settings);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		View view = inflater.inflate(R.layout.activity_pro_settings, container, false);
 
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-		setToolbar();
-		findComponent();
+		mGaHelper.sendScreen(mThisFragment);
+		setActionBar();
+		findComponent(view);
 		setComponent();
 		setButton();
 		setMileage();
 		setBankAccount();
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mGaHelper.reportActivityStart(mThisActivity);
-	}
-
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		mGaHelper.reportActivityStop(mThisActivity);
+		
+		return view;
 	}
 	
 	
-	@Override
-	public void finish() {
-		super.finish();
-		overridePendingTransition(R.anim.zoom_in, R.anim.slide_out_right);
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setTitle(getResources().getString(R.string.pro_settings));
 	}
 
 
-	@Override
-	public View getToolbarLayout() {
-		return mToolbarLayout;
-	}
-
-
-	private void setToolbar(){
-		mToolbarLayout = findViewById(R.id.toolbar_layout);
-		mToolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(mToolbar);
-
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-
-		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
-	}
-
-
-	private void findComponent() {
-		mMileage = (TextView)findViewById(R.id.pro_settings_mileage);
-		mEmail = (EditText)findViewById(R.id.pro_settings_email);
-		mEmailSubmit = (ImageButton)findViewById(R.id.pro_settings_email_submit);
-		mEmptyBankAccount = (TextView)findViewById(R.id.pro_settings_empty_bank_account);
-		mBankAccount = (TextView)findViewById(R.id.pro_settings_bank_account);
-		mEditBankAccount = (Button)findViewById(R.id.pro_settings_bank_account_edit);
+	private void findComponent(View view) {
+		mMileage = (TextView)view.findViewById(R.id.pro_settings_mileage);
+		mEmail = (EditText)view.findViewById(R.id.pro_settings_email);
+		mEmailSubmit = (ImageButton)view.findViewById(R.id.pro_settings_email_submit);
+		mEmptyBankAccount = (TextView)view.findViewById(R.id.pro_settings_empty_bank_account);
+		mBankAccount = (TextView)view.findViewById(R.id.pro_settings_bank_account);
+		mEditBankAccount = (Button)view.findViewById(R.id.pro_settings_bank_account_edit);
 	}
 
 
@@ -139,7 +107,7 @@ public class ProSettingsActivity extends ItActivity {
 					if(message.equals("")){
 						updateEmail();
 					} else {
-						Toast.makeText(mThisActivity, message, Toast.LENGTH_LONG).show();	
+						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
 					}
 				}
 			}
@@ -162,7 +130,7 @@ public class ProSettingsActivity extends ItActivity {
 					public void doNegativeThing(Bundle bundle) {
 					}
 				});
-				bankAccountEditDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+				bankAccountEditDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 	}
@@ -184,7 +152,7 @@ public class ProSettingsActivity extends ItActivity {
 	
 	
 	private void setBankAccount(){
-		String bankName = mMyItUser.bankNameString(mThisActivity);
+		String bankName = mMyItUser.bankNameString(mActivity);
 		String bankAccountNumber = mMyItUser.getBankAccountNumber();
 		String bankAccountName = mMyItUser.getBankAccountName();
 
@@ -222,7 +190,7 @@ public class ProSettingsActivity extends ItActivity {
 
 
 	private void updateEmail(){
-		mApp.showProgressDialog(mThisActivity);
+		mApp.showProgressDialog(mActivity);
 
 		mMyItUser.setEmail(mEmail.getText().toString());
 		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
@@ -230,7 +198,7 @@ public class ProSettingsActivity extends ItActivity {
 			@Override
 			public void onCompleted(ItUser entity) {
 				mApp.dismissProgressDialog();
-				Toast.makeText(mThisActivity, getResources().getString(R.string.email_edited), Toast.LENGTH_LONG).show();
+				Toast.makeText(mActivity, getResources().getString(R.string.email_edited), Toast.LENGTH_LONG).show();
 
 				mMyItUser = entity;
 				mObjectPrefHelper.put(mMyItUser);

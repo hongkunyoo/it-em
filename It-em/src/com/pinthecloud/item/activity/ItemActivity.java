@@ -1,13 +1,11 @@
 package com.pinthecloud.item.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.ItemFragment;
 import com.pinthecloud.item.model.Item;
 
@@ -26,7 +24,7 @@ public class ItemActivity extends ItActivity {
 
 		mItem = getIntent().getParcelableExtra(Item.INTENT_KEY);
 		setToolbar();
-		setFragment();
+		setFragment(ItemFragment.newInstance(mItem));
 	}
 
 
@@ -62,13 +60,5 @@ public class ItemActivity extends ItActivity {
 		});
 		
 		mToolbarLayout.bringToFront();
-	}
-
-
-	private void setFragment(){
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		ItFragment fragment = ItemFragment.newInstance(mItem);
-		transaction.replace(R.id.activity_container, fragment);
-		transaction.commit();
 	}
 }

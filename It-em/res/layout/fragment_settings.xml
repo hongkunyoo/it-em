@@ -4,9 +4,8 @@
     android:id="@+id/settings_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <include layout="@layout/toolbar" />
+    android:orientation="vertical"
+    android:paddingTop="?attr/actionBarSize" >
 
     <RelativeLayout
         android:id="@+id/settings_profile_settings"

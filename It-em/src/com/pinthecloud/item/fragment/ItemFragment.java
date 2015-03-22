@@ -121,7 +121,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_item, container, false);
 
+		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
+		
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -138,8 +140,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onStart() {
 		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 		setImage();
 	}
 

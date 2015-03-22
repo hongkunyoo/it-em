@@ -80,7 +80,6 @@ public class LoginActivity extends ItActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		mUserHabitHelper.activityStart(mThisActivity);
 		mGaHelper.reportActivityStart(mThisActivity);
 	}
 	
@@ -122,7 +121,6 @@ public class LoginActivity extends ItActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		mUserHabitHelper.activityStop(mThisActivity);
 		mGaHelper.reportActivityStop(mThisActivity);
 	}
 	

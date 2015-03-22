@@ -54,10 +54,14 @@ public class ProfileSettingsFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile_settings, container, false);
+		
+		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
+		
 		findComponent(view);
 		setComponent();
 		setButton();
+		
 		return view;
 	}
 
@@ -65,8 +69,6 @@ public class ProfileSettingsFragment extends ItFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 		setProfileImage();
 	}
 

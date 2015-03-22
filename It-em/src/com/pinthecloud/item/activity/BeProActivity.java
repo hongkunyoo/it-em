@@ -44,7 +44,6 @@ public class BeProActivity extends ItActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		mUserHabitHelper.activityStart(mThisActivity);
 		mGaHelper.reportActivityStart(mThisActivity);
 	}
 
@@ -52,7 +51,6 @@ public class BeProActivity extends ItActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		mUserHabitHelper.activityStop(mThisActivity);
 		mGaHelper.reportActivityStop(mThisActivity);
 	}
 	
@@ -164,4 +162,5 @@ public class BeProActivity extends ItActivity {
 	private void trimCode(){
 		mCode.setText(mCode.getText().toString().trim().replace("\n", ""));
 	}
+
 }

@@ -104,8 +104,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 	
 	private void setImage(ViewHolder holder, final ItNotification noti){
 		if(noti.getType().equals(ItNotification.TYPE.LikeIt.toString())){
-			holder.receiveImage.setVisibility(View.VISIBLE);
-//			holder.receiveImage.setImageResource(R.drawable.noti_it_ic);
+			holder.receiveImage.setVisibility(View.GONE);
 			
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
@@ -129,6 +128,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(noti.getRefId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.feed_loading_default_img)
+		.fit().centerCrop()
 		.into(holder.itemImage);
 	}
 

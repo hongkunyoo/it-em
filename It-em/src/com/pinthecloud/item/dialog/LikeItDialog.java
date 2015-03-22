@@ -52,19 +52,12 @@ public class LikeItDialog extends ItDialogFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_like_it, container, false);
 
+		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setList();
 		updateList();
 
 		return view;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 	}
 	
 	

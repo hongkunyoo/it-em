@@ -39,25 +39,24 @@ public class BankAccountEditDialog extends ItDialogFragment {
 
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+	}
+
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_bank_account_edit, container, false);
 
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setComponent();
 		setSpinner();
 		setButton();
 		return view;
-	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		mUserHabitHelper.setScreen(mThisFragment);
-		mGaHelper.sendScreen(mThisFragment);
 	}
 	
 	
