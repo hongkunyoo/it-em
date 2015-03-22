@@ -38,11 +38,14 @@ public class GalleryFolderFragment extends ItFragment implements GalleryCallback
 
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-		
+
 		setActionBar();
 		findComponent(view);
 		setList();
-		updateList();
+
+		if(mFolderList.size() < 1){
+			updateList();
+		}
 
 		return view;
 	}
@@ -79,7 +82,9 @@ public class GalleryFolderFragment extends ItFragment implements GalleryCallback
 		mListView.setLayoutManager(mLinearLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mFolderList = new ArrayList<GalleryFolder>();
+		if(mFolderList == null){
+			mFolderList = new ArrayList<GalleryFolder>();
+		}
 		mListAdapter = new GalleryFolderAdapter(mFolderList);
 		mListAdapter.setGalleryCallback(this);
 		mListView.setAdapter(mListAdapter);

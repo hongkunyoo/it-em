@@ -60,7 +60,7 @@ public class ProductTagDialog extends ItDialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_product_tag, container, false);
-		
+
 		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setList();
@@ -71,8 +71,8 @@ public class ProductTagDialog extends ItDialogFragment {
 
 		return view;
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListEmptyView = (TextView)view.findViewById(R.id.product_tag_frag_empty_view);
@@ -87,10 +87,10 @@ public class ProductTagDialog extends ItDialogFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		if(mOriginTagList != null){
-			mTagList = getProductTagList(mOriginTagList);
-		} else {
+		if(mOriginTagList == null){
 			mTagList = new ArrayList<ProductTag>();
+		} else {
+			mTagList = getProductTagList(mOriginTagList);
 		}
 
 		mListAdapter = new ProductTagListAdapter(mActivity, mThisFragment, mTagList);
@@ -127,7 +127,7 @@ public class ProductTagDialog extends ItDialogFragment {
 
 					if(count > 0){
 						mListView.setVisibility(View.VISIBLE);
-						
+
 						mTagList.clear();
 						mListAdapter.addAll(getProductTagList(list));
 

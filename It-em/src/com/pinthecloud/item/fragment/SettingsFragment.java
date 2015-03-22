@@ -22,10 +22,8 @@ import com.kakao.UserManagement;
 import com.kakao.exception.KakaoException;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.BeProActivity;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
-import com.pinthecloud.item.activity.ProSettingsActivity;
 import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -135,9 +133,8 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, 
-						mMyItUser.checkPro() ? ProSettingsActivity.class : BeProActivity.class);
-				startActivity(intent);
+				ItFragment fragment = mMyItUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
+				mActivity.replaceFragment(fragment);
 			}
 		});
 

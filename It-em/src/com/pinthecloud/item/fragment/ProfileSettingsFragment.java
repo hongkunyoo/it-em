@@ -318,8 +318,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 				mObjectPrefHelper.put(entity);
 
-				Intent intent = new Intent();
-				intent.putExtra(ItUser.INTENT_KEY, entity);
+				Intent intent = new Intent().putExtra(ItUser.INTENT_KEY, entity);
 				mActivity.setResult(Activity.RESULT_OK, intent);
 				mActivity.finish();
 			}

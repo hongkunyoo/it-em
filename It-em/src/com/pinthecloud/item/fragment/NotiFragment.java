@@ -34,8 +34,8 @@ public class NotiFragment extends MainTabFragment {
 	private ItUser mMyItUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
-	
-	
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,10 +48,12 @@ public class NotiFragment extends MainTabFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_noti, container, false);
+
 		findComponent(view);
 		setRefreshLayout();
 		setList();
 		setScroll();
+
 		return view;
 	}
 
@@ -59,13 +61,13 @@ public class NotiFragment extends MainTabFragment {
 	@Override
 	public void updateFragment() {
 		mGaHelper.sendScreen(mThisFragment);
-		
+
 		mProgressBar.setVisibility(View.VISIBLE);
 		mRefresh.setVisibility(View.GONE);
 		updateList(false);
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.noti_frag_refresh);
@@ -133,10 +135,10 @@ public class NotiFragment extends MainTabFragment {
 				} else {
 					mProgressBar.setVisibility(View.GONE);
 				}
-				
+
 				mNotiList.clear();
 				mListAdapter.addAll(list);
-				
+
 				showNotiList(count);
 			}
 		});
@@ -154,8 +156,8 @@ public class NotiFragment extends MainTabFragment {
 			}
 		});
 	}
-	
-	
+
+
 	private void showNotiList(int notiCount){
 		if(notiCount > 0){
 			mListEmptyView.setVisibility(View.GONE);

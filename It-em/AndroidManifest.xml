@@ -104,16 +104,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.BeProActivity"
-            android:label="@string/none"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.ProSettingsActivity"
-            android:label="@string/pro_settings"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.ProfileSettingsActivity"
             android:label="@string/profile_settings"
             android:launchMode="singleTop"

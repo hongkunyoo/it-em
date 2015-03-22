@@ -46,7 +46,7 @@ public class ProSettingsFragment extends ItFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.activity_pro_settings, container, false);
+		View view = inflater.inflate(R.layout.fragment_pro_settings, container, false);
 
 		mGaHelper.sendScreen(mThisFragment);
 		setActionBar();
