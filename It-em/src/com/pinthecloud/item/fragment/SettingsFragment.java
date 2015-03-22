@@ -1,6 +1,5 @@
 package com.pinthecloud.item.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -24,7 +23,6 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.LoginActivity;
 import com.pinthecloud.item.activity.MainActivity;
-import com.pinthecloud.item.activity.ProfileSettingsActivity;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.ItException;
@@ -36,8 +34,6 @@ import com.pinthecloud.item.model.ItUser;
 import de.greenrobot.event.EventBus;
 
 public class SettingsFragment extends ItFragment {
-
-	private final int PROFILE_SETTINGS = 0;
 
 	private LinearLayout mLayout;
 	private View mProfileSettings;
@@ -55,41 +51,20 @@ public class SettingsFragment extends ItFragment {
 
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-	}
-
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
 		mGaHelper.sendScreen(mThisFragment);
+		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 		setActionBar();
 		findComponent(view);
 		setComponent();
 		setButton();
-		setProfile();
 		setAdminComponent(view);
 
 		return view;
-	}
-
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch(requestCode){
-		case PROFILE_SETTINGS:
-			if (resultCode == Activity.RESULT_OK){
-				mMyItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
-				setProfile();
-			}
-			break;
-		}
 	}
 
 
@@ -115,7 +90,9 @@ public class SettingsFragment extends ItFragment {
 	private void setComponent(){
 		String proSettings = getResources().getString(R.string.pro_settings);
 		String bePro = getResources().getString(R.string.be_pro);
+		
 		mProSettingsText.setText(mMyItUser.checkPro() ? proSettings : bePro);
+		mNickName.setText(mMyItUser.getNickName());
 	}
 
 
@@ -124,8 +101,11 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
-				startActivityForResult(intent, PROFILE_SETTINGS);
+//				Intent intent = new Intent(mActivity, ProfileSettingsActivity.class);
+//				startActivityForResult(intent, PROFILE_SETTINGS);
+				
+				ItFragment fragment = new ProfileSettingsFragment();
+				mActivity.replaceFragment(fragment);
 			}
 		});
 
@@ -218,11 +198,6 @@ public class SettingsFragment extends ItFragment {
 				logoutDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
-	}
-
-
-	private void setProfile(){
-		mNickName.setText(mMyItUser.getNickName());
 	}
 
 

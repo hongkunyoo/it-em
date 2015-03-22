@@ -30,7 +30,7 @@ import com.pinthecloud.item.model.Item;
 public class HomeFragment extends MainTabFragment {
 
 	private final int UPLOAD = 0;
-	private final int GALLERY_MULTIPLE_PICK = 10;
+	private final int GALLERY = 10;
 
 	private ProgressBar mProgressBar;
 	private View mLayout;
@@ -82,7 +82,7 @@ public class HomeFragment extends MainTabFragment {
 				mGridAdapter.add(0, item);
 				mGridView.smoothScrollToPosition(0);
 				break;
-			case GALLERY_MULTIPLE_PICK:
+			case GALLERY:
 				String[] paths = data.getStringArrayExtra(GalleryFragment.GALLERY_PATHS_KEY);
 				Intent intent = new Intent(mActivity, UploadActivity.class);
 				intent.putExtra(GalleryFragment.GALLERY_PATHS_KEY, paths);
@@ -127,7 +127,7 @@ public class HomeFragment extends MainTabFragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, GalleryActivity.class);
-				startActivityForResult(intent, GALLERY_MULTIPLE_PICK);
+				startActivityForResult(intent, GALLERY);
 			}
 		});
 	}

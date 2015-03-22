@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -57,7 +58,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-		
+		setActionBar();
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -158,6 +159,12 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		actionBar.setTitle(getResources().getString(R.string.profile_settings));
+	}
+	
+	
 	private void findComponent(View view){
 		mProfileImage = (ImageView)view.findViewById(R.id.profile_settings_frag_profile_image);
 		mNickName = (EditText)view.findViewById(R.id.profile_settings_frag_nick_name);
@@ -317,10 +324,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
 
 				mObjectPrefHelper.put(entity);
-
-				Intent intent = new Intent().putExtra(ItUser.INTENT_KEY, entity);
-				mActivity.setResult(Activity.RESULT_OK, intent);
-				mActivity.finish();
+				mActivity.onBackPressed();
 			}
 		});
 	}
