@@ -43,7 +43,6 @@ import com.microsoft.azure.storage.SendingRequestEvent;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageLocation;
-import com.microsoft.azure.storage.table.TableServiceException;
 
 /**
  * RESERVED FOR INTERNAL USE. A class that handles execution of StorageOperations and enforces retry policies.
@@ -235,20 +234,6 @@ public final class ExecutionEngine {
                 task.getResult().setException(translatedException);
                 Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
                 throw translatedException;
-            }
-            catch (final TableServiceException e) {
-                task.getResult().setStatusCode(e.getHttpStatusCode());
-                task.getResult().setStatusMessage(e.getMessage());
-                task.getResult().setException(e);
-
-                if (!e.isRetryable()) {
-                    Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                    throw e;
-                }
-                else {
-                    Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                    translatedException = e;
-                }
             }
             catch (final StorageException e) {
                 // Non Retryable, just throw

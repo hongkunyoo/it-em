@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,9 +30,6 @@ import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.StorageCredentialsHelper;
 import com.microsoft.azure.storage.core.Utility;
 import com.microsoft.azure.storage.file.CloudFileClient;
-import com.microsoft.azure.storage.queue.CloudQueueClient;
-import com.microsoft.azure.storage.table.CloudTable;
-import com.microsoft.azure.storage.table.CloudTableClient;
 
 /**
  * Represents a Microsoft Azure storage account.
@@ -400,7 +398,7 @@ public final class CloudStorageAccount {
 
         String defaultEndpointSetting = settings.get(DEFAULT_ENDPOINTS_PROTOCOL_NAME);
         if (defaultEndpointSetting != null) {
-            defaultEndpointSetting = defaultEndpointSetting.toLowerCase();
+            defaultEndpointSetting = defaultEndpointSetting.toLowerCase(Locale.US);
             if(!defaultEndpointSetting.equals(Constants.HTTP)
                     && !defaultEndpointSetting.equals(Constants.HTTPS)) {
                 return null;
@@ -790,46 +788,6 @@ public final class CloudStorageAccount {
             throw new IllegalArgumentException(SR.CREDENTIALS_CANNOT_SIGN_REQUEST);
         }
         return new CloudFileClient(this.getFileStorageUri(), this.getCredentials());
-    }
-
-    /**
-     * Creates a new Queue service client.
-     * 
-     * @return A client object that uses the Queue service endpoint.
-     */
-    public CloudQueueClient createCloudQueueClient() {
-        if (this.getQueueStorageUri() == null) {
-            throw new IllegalArgumentException(SR.QUEUE_ENDPOINT_NOT_CONFIGURED);
-        }
-
-        if (this.credentials == null) {
-            throw new IllegalArgumentException(SR.MISSING_CREDENTIALS);
-        }
-
-        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.credentials)) {
-            throw new IllegalArgumentException(SR.CREDENTIALS_CANNOT_SIGN_REQUEST);
-        }
-        return new CloudQueueClient(this.getQueueStorageUri(), this.getCredentials());
-    }
-
-    /**
-     * Creates a new Table service client.
-     * 
-     * @return A client object that uses the Table service endpoint.
-     */
-    public CloudTableClient createCloudTableClient() {
-        if (this.getTableStorageUri() == null) {
-            throw new IllegalArgumentException(SR.TABLE_ENDPOINT_NOT_CONFIGURED);
-        }
-
-        if (this.credentials == null) {
-            throw new IllegalArgumentException(SR.MISSING_CREDENTIALS);
-        }
-
-        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.credentials)) {
-            throw new IllegalArgumentException(SR.CREDENTIALS_CANNOT_SIGN_REQUEST);
-        }
-        return new CloudTableClient(this.getTableStorageUri(), this.getCredentials());
     }
 
     /**
