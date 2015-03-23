@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
@@ -17,7 +20,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
-import android.text.format.Time;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
@@ -54,9 +56,9 @@ public class FileUtil {
 		}
 
 		// Create a media file name
-		Time time = new Time();
-		time.setToNow();
-		String timeStamp = time.format("%Y%m%d_%H%M%S");
+		Calendar calendar = new GregorianCalendar();
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
+		String timeStamp = format.format(calendar.getTime());
 		return new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
 	}
 
@@ -75,12 +77,12 @@ public class FileUtil {
 		}
 		return file;
 	}
-	
-	
+
+
 	public static void getMediaFromGallery(ItFragment frag){
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, Media.EXTERNAL_CONTENT_URI);
 		intent.setType("image/*");
-		
+
 		Intent chooser = Intent.createChooser(intent, frag.getResources().getString(R.string.select_source));
 		frag.startActivityForResult(chooser, GALLERY);
 	}
@@ -134,8 +136,8 @@ public class FileUtil {
 
 		return filePath;
 	}
-	
-	
+
+
 	public static Uri getMediaFromCamera(ItFragment frag){
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		Uri mediaUri = getOutputMediaFileUri(frag.getActivity());

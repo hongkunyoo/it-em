@@ -1,10 +1,12 @@
 package com.pinthecloud.item.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.text.format.Time;
 
 import com.pinthecloud.item.R;
 
@@ -15,86 +17,95 @@ public class ItDateTime {
 	private final int HOUR_SECOND = 3600;
 	private final int MINUTE_SECOND = 60;
 
-	private Time dateTime;
+	private Calendar calendar;
 
 	public ItDateTime(String rawDateTime) {
-		dateTime = new Time(Time.TIMEZONE_UTC);
 		int year = Integer.parseInt(rawDateTime.substring(0, 4));
 		int month = Integer.parseInt(rawDateTime.substring(4, 6));
-		int date = Integer.parseInt(rawDateTime.substring(6, 8));
+		int day = Integer.parseInt(rawDateTime.substring(6, 8));
 		int hour = Integer.parseInt(rawDateTime.substring(8, 10));
 		int minute = Integer.parseInt(rawDateTime.substring(10, 12));
 		int second = Integer.parseInt(rawDateTime.substring(12, 14));
-		dateTime.set(second, minute, hour, date, month-1, year);
-		dateTime.switchTimezone(TimeZone.getDefault().getID());
+
+		calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+		calendar.set(year, month, day, hour, minute, second);
+		calendar.setTimeZone(TimeZone.getDefault());
 	}
 
 	public static ItDateTime getToday() {
-		Time time = new Time();
-		time.setToNow();
-		return new ItDateTime(time.format("%Y%m%d000000"));
+		Calendar calendar = new GregorianCalendar();
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd000000", Locale.US);
+		return new ItDateTime(format.format(calendar.getTime()));
 	}
 
 	public ItDateTime getYesterday() {
-		dateTime.set(dateTime.monthDay-1, dateTime.month, dateTime.year);
-		dateTime.normalize(true);
-		return new ItDateTime(dateTime.format("%Y%m%d000000"));
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH)-1);
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd000000", Locale.US);
+		return new ItDateTime(format.format(calendar.getTime()));
 	}
 
 	public String toDate() {
-		return dateTime.format("%Y%m%d");
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.US);
+		return format.format(calendar.getTime());
 	}
 
 	public String toPrettyTime() {
-		return dateTime.format("%H:%M");
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.US);
+		return format.format(calendar.getTime());
 	}
 
 	public String toPrettyDate() {
-		return dateTime.format("%Y-%m-%d");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		return format.format(calendar.getTime());
 	}
 
 	public String toPrettyDateTime() {
-		return dateTime.format("%Y-%m-%d %H:%M");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+		return format.format(calendar.getTime());
 	}
 
 	public int getElapsedDate() {
-		Time nowTime = new Time();
-		nowTime.setToNow();
-
-		int nowJulianDay = Time.getJulianDay(nowTime.normalize(true), nowTime.gmtoff);
-		int itJulianDay = Time.getJulianDay(dateTime.normalize(true), dateTime.gmtoff);
-		return nowJulianDay - itJulianDay;
+		Calendar nowCalendar = new GregorianCalendar();
+		return (int) ((nowCalendar.getTime().getTime() - calendar.getTime().getTime()) / (1000*60*60*24));
 	}
 
-	public String getElapsedTime(Resources resources, int elapsedSecond){
+	public String getElapsedTime(Context context, int elapsedSecond){
 		if(elapsedSecond/HOUR_SECOND > 0){
-			return (elapsedSecond/HOUR_SECOND) + resources.getString(R.string.hour_ago);
+			return (elapsedSecond/HOUR_SECOND) + context.getResources().getString(R.string.hour_ago);
 		} else if(elapsedSecond/MINUTE_SECOND > 0) {
-			return (elapsedSecond/MINUTE_SECOND) + resources.getString(R.string.minute_ago);
+			return (elapsedSecond/MINUTE_SECOND) + context.getResources().getString(R.string.minute_ago);
 		} else {
 			if(elapsedSecond < 0) elapsedSecond = 0;
-			return elapsedSecond + resources.getString(R.string.second_ago);
+			return elapsedSecond + context.getResources().getString(R.string.second_ago);
 		}
 	}
-	
+
 	public String getElapsedDateTime(Context context) {
-		Time nowTime = new Time();
-		nowTime.setToNow();
+		Calendar nowCalendar = new GregorianCalendar();
 
 		int elapsedDate = getElapsedDate();
 		if(elapsedDate < 1){
 			// In a day
-			int nowTimeSecond = nowTime.second + nowTime.minute*MINUTE_SECOND + nowTime.hour*HOUR_SECOND;
-			int dateTimeSecond = dateTime.second + dateTime.minute*MINUTE_SECOND + dateTime.hour*HOUR_SECOND;
-			return getElapsedTime(context.getResources(), nowTimeSecond - dateTimeSecond);
+			int nowSecond = nowCalendar.get(Calendar.SECOND) +
+					nowCalendar.get(Calendar.MINUTE)*MINUTE_SECOND +
+					nowCalendar.get(Calendar.HOUR_OF_DAY)*HOUR_SECOND;
+			int calendarSecond = calendar.get(Calendar.SECOND) +
+					calendar.get(Calendar.MINUTE)*MINUTE_SECOND +
+					calendar.get(Calendar.HOUR_OF_DAY)*HOUR_SECOND;
+			return getElapsedTime(context, nowSecond - calendarSecond);
 		} else if(elapsedDate == 1) {
-			int nowTimeSecond = nowTime.second + nowTime.minute*MINUTE_SECOND + nowTime.hour*HOUR_SECOND + DAY_SECOND;
-			int dateTimeSecond = dateTime.second + dateTime.minute*MINUTE_SECOND + dateTime.hour*HOUR_SECOND;
-			int elapsedSeoncd = nowTimeSecond - dateTimeSecond;
-			
+			int nowSecond = nowCalendar.get(Calendar.SECOND) +
+					nowCalendar.get(Calendar.MINUTE)*MINUTE_SECOND +
+					nowCalendar.get(Calendar.HOUR_OF_DAY)*HOUR_SECOND +
+					DAY_SECOND;
+			int calendarSecond = calendar.get(Calendar.SECOND) +
+					calendar.get(Calendar.MINUTE)*MINUTE_SECOND +
+					calendar.get(Calendar.HOUR_OF_DAY)*HOUR_SECOND;
+			int elapsedSeoncd = nowSecond - calendarSecond;
+
 			if(elapsedSeoncd < DAY_SECOND){
 				// In a day
-				return getElapsedTime(context.getResources(), elapsedSeoncd);
+				return getElapsedTime(context, elapsedSeoncd);
 			} else {
 				// 1 day
 				return context.getResources().getString(R.string.yesterday) + " " + toPrettyTime();
@@ -110,6 +121,7 @@ public class ItDateTime {
 
 	@Override
 	public String toString() {
-		return dateTime.format("%Y%m%d%H%M%S");
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
+		return format.format(calendar.getTime());
 	}
 }

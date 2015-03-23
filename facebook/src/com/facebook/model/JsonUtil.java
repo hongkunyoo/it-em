@@ -84,13 +84,12 @@ class JsonUtil {
 
     static Set<String> jsonObjectKeySet(JSONObject jsonObject) {
         HashSet<String> result = new HashSet<String>();
-
-        @SuppressWarnings("unchecked")
+        
         Iterator<String> keys = (Iterator<String>) jsonObject.keys();
         while (keys.hasNext()) {
             result.add(keys.next());
         }
-
+        
         return result;
     }
 
@@ -107,13 +106,12 @@ class JsonUtil {
 
     static Collection<Object> jsonObjectValues(JSONObject jsonObject) {
         ArrayList<Object> result = new ArrayList<Object>();
-
-        @SuppressWarnings("unchecked")
+        
         Iterator<String> keys = (Iterator<String>) jsonObject.keys();
         while (keys.hasNext()) {
             result.add(jsonObject.opt(keys.next()));
         }
-
+        
         return result;
     }
 }

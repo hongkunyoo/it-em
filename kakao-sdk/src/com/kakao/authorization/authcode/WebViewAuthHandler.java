@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.CookieSyncManager;
+
 import com.kakao.authorization.AuthorizationResult;
 import com.kakao.exception.KakaoException;
 import com.kakao.helper.Logger;
@@ -34,81 +35,82 @@ import com.kakao.helper.Utility;
  *
  * @author MJ
  */
+@SuppressWarnings("deprecation")
 public class WebViewAuthHandler extends AuthorizationCodeHandler {
 
-    private transient KakaoWebViewDialog loginDialog;
+	private transient KakaoWebViewDialog loginDialog;
 
-    public WebViewAuthHandler(final GetterAuthorizationCode authorizer) {
-        super(authorizer);
-    }
+	public WebViewAuthHandler(final GetterAuthorizationCode authorizer) {
+		super(authorizer);
+	}
 
-    @Override
-    public void cancel() {
-        if (loginDialog != null) {
-            loginDialog.dismiss();
-            loginDialog = null;
-        }
-    }
+	@Override
+	public void cancel() {
+		if (loginDialog != null) {
+			loginDialog.dismiss();
+			loginDialog = null;
+		}
+	}
 
-    public boolean onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        return false;
-    }
+	public boolean onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		return false;
+	}
 
-    @Override
-    public boolean tryAuthorize(final AuthorizationCodeRequest request) {
-        OnWebViewCompleteListener listener = new OnWebViewCompleteListener() {
-            @Override
-            public void onComplete(String redirectURL, KakaoException exception) {
-                onWebViewCompleted(redirectURL, exception);
-            }
-        };
-        try {
-            final Bundle parameters = new Bundle();
-            parameters.putString(ServerProtocol.CLIENT_ID_KEY, request.getAppKey());
-            parameters.putString(ServerProtocol.REDIRECT_URI_KEY, request.getRedirectURI());
-            parameters.putString(ServerProtocol.RESPONSE_TYPE_KEY, ServerProtocol.CODE_KEY);
+	@Override
+	public boolean tryAuthorize(final AuthorizationCodeRequest request) {
+		OnWebViewCompleteListener listener = new OnWebViewCompleteListener() {
+			@Override
+			public void onComplete(String redirectURL, KakaoException exception) {
+				onWebViewCompleted(redirectURL, exception);
+			}
+		};
+		try {
+			final Bundle parameters = new Bundle();
+			parameters.putString(ServerProtocol.CLIENT_ID_KEY, request.getAppKey());
+			parameters.putString(ServerProtocol.REDIRECT_URI_KEY, request.getRedirectURI());
+			parameters.putString(ServerProtocol.RESPONSE_TYPE_KEY, ServerProtocol.CODE_KEY);
 
-            final Bundle extraParams = request.getExtras();
-            if(extraParams != null && !extraParams.isEmpty()){
-                for(String key : extraParams.keySet()){
-                    String value = extraParams.getString(key);
-                    if(value != null){
-                        parameters.putString(key, value);
-                    }
-                }
-            }
+			final Bundle extraParams = request.getExtras();
+			if(extraParams != null && !extraParams.isEmpty()){
+				for(String key : extraParams.keySet()){
+					String value = extraParams.getString(key);
+					if(value != null){
+						parameters.putString(key, value);
+					}
+				}
+			}
 
-            final Activity currentContext = authorizer.getCallerActivity();
-            synchronizeCookies(currentContext);
+			final Activity currentContext = authorizer.getCallerActivity();
+			synchronizeCookies(currentContext);
 
-            Uri uri = Utility.buildUri(ServerProtocol.AUTH_AUTHORITY, ServerProtocol.AUTHORIZE_CODE_PATH, parameters);
-            loginDialog = new KakaoWebViewDialog(currentContext, uri.toString(), listener);
-            loginDialog.show();
-        } catch (Throwable t) {
-            Logger.getInstance().i("WebViewAuthHandler is failed", t);
-            return false;
-        }
-        return true;
-    }
+			Uri uri = Utility.buildUri(ServerProtocol.AUTH_AUTHORITY, ServerProtocol.AUTHORIZE_CODE_PATH, parameters);
+			loginDialog = new KakaoWebViewDialog(currentContext, uri.toString(), listener);
+			loginDialog.show();
+		} catch (Throwable t) {
+			Logger.getInstance().i("WebViewAuthHandler is failed", t);
+			return false;
+		}
+		return true;
+	}
 
-    private void synchronizeCookies(Context currentContext) {
-        Context applicationContext = currentContext.getApplicationContext();
-        Context context = (applicationContext != null) ? applicationContext : currentContext;
-        CookieSyncManager syncManager = CookieSyncManager.createInstance(context);
-        syncManager.sync();
-    }
+	private void synchronizeCookies(Context currentContext) {
+		Context applicationContext = currentContext.getApplicationContext();
+		Context context = (applicationContext != null) ? applicationContext : currentContext;
+		CookieSyncManager syncManager = CookieSyncManager.createInstance(context);
+		syncManager.sync();
+	}
 
-    void onWebViewCompleted(final String redirectURL, final KakaoException exception) {
-        AuthorizationResult result;
-        if (redirectURL != null) {
-            result = AuthorizationResult.createSuccessAuthCodeResult(redirectURL);
-        } else {
-            if (exception.isCancledOperation()) {
-                result = AuthorizationResult.createAuthCodeCancelResult(exception.getMessage());
-            } else {
-                result = AuthorizationResult.createAuthCodeOAuthErrorResult(exception.getMessage());
-            }
-        }
-        authorizer.done(result);
-    }
+	void onWebViewCompleted(final String redirectURL, final KakaoException exception) {
+		AuthorizationResult result;
+		if (redirectURL != null) {
+			result = AuthorizationResult.createSuccessAuthCodeResult(redirectURL);
+		} else {
+			if (exception.isCancledOperation()) {
+				result = AuthorizationResult.createAuthCodeCancelResult(exception.getMessage());
+			} else {
+				result = AuthorizationResult.createAuthCodeOAuthErrorResult(exception.getMessage());
+			}
+		}
+		authorizer.done(result);
+	}
 }
