@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" 
+    tools:ignore="TypographyDashes">
+
+    <string name="ga_logLevel">verbose</string>
+    <bool name="ga_autoActivityTracking">true</bool>
+    
+    <screenName name="com.pinthecloud.item.fragment.BeProFragment">BeProFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.HomeFragment">HomeFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.ItemFragment">ItemFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.ItUserPageFragment">ItUserPageFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.MainDrawerFragment">MainDrawerFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.MyItemFragment">MyItemFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.ProfileSettingsFragment">ProfileSettingsFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.SettingsFragment">SettingsFragment</screenName>
+    <screenName name="com.pinthecloud.item.fragment.UploadFragment">UploadFragment</screenName>
+    
+    <string name="ga_trackingId">UA-53944359-2</string>
+
+</resources>

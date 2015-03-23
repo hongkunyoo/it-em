@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/reply_row_previous_height"
+    android:paddingEnd="@dimen/none"
+    android:paddingLeft="@dimen/key_line_second"
+    android:paddingRight="@dimen/none"
+    android:paddingStart="@dimen/key_line_second" >
+
+    <include layout="@layout/custom_line" />
+
+    <com.pinthecloud.item.view.ItTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/previous_reply"
+        android:textColor="@color/gray_dark"
+        android:textStyle="bold"
+        app:textType="caption" />
+
+</RelativeLayout>

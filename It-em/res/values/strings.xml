@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Id -->
+    <string name="facebook_app_id">734298746647918</string>
+    <string name="kakao_app_key">b666460c48c47d1b30537611471b64ea</string>
+    <string name="gcm_sender_id">51874025490</string>
+
+    <!-- Common Word -->
+    <string name="app_name">IT:EM</string>
+    <string name="space">&#160;</string>
+    <string name="none"></string>
+    <string name="image">Image</string>
+
+    <!-- Common Sentence -->
+    <string name="network_unavailable_message">Internet is unavailable. Please check network status.</string>
+    <string name="error_message">Ooooops! Error happened. Please retry it.</string>
+    <string name="error_report_message">Ooooops! Error happened. Please report it to developers.</string>
+    <string name="update_app_message">There is a new version. Please update App.</string>
+    <string name="google_play_services_message">Please check Google Play Service.</string>
+
+    <!-- Splash -->
+    <string name="progress_setting">setting</string>
+
+    <!-- Login -->
+    <string name="facebook_login">Sign in with facebook</string>
+    <string name="kakao_login">Sign in with kakao</string>
+
+    <!-- Home -->
+    <string name="more">More</string>
+    <string name="unfold">Unfold</string>
+    <string name="it">it</string>
+
+    <!-- Item -->
+    <string name="upload_date">Uploaded on</string>
+    <string name="upload_by">Uploaded by</string>
+    <string name="of">\'s</string>
+    <string name="plus">+ </string>
+    <string name="delete">Delete</string>
+    <string name="item">Item</string>
+    <string name="not_exist_item">It is deleted item.</string>
+
+    <!-- Reply -->
+    <string name="comments">Comments</string>
+    <string name="submit">SUBMIT</string>
+    <string name="write_reply">Wirte a comment</string>
+    <string name="previous_reply">View all comments</string>
+    <string name="first_reply">Be first of comments</string>
+
+    <!-- It -->
+    <string name="it_title">People who say it on this item</string>
+
+    <!-- It User Page -->
+    <string name="not_exist_user">This user doesn\'t exist.</string>
+
+    <!-- Guide -->
+    <string name="guide_description">IT:EM allows only editor to upload item.</string>
+    <string name="guide_be_pro"><u>I also want to be editor</u></string>
+    
+    <!-- My Item -->
+    <string name="empty_my_item">Item is empty.\nShare your own style!</string>
+    <string name="empty_it_item">It item is empty.\nGive it to lovely item!</string>
+    <string name="empty">Empty</string>
+
+    <!-- Be Pro -->
+    <string name="be_pro">Be Editor</string>
+    <string name="pro_settings">Editor Settings</string>
+    <string name="be_pro_description">IT:EM only allows Editor to upload item.\nEditor receives reward by sharing style.\nIf you want to be Editor, send apply through below link.</string>
+    <string name="apply_link">Apply Link</string>
+    <string name="apply_editor">http://goo.gl/forms/d1rfeKJVcQ</string>
+    <string name="code">CODE</string>
+    <string name="valid_pro">Congratulation for coming editor!\nNow set editor information in editor settings.</string>
+    <string name="invalid_pro">Invalid Editor key. Please check it.</string>
+
+    <!-- Upload -->
+    <string name="upload">Upload</string>
+    <string name="uploaded">The item is uploaded</string>
+    <string name="description">Description</string>
+    <string name="select_source">Select Source</string>
+    <string name="brand_info">Brand Information</string>
+    <string name="brand">Brand</string>
+    <string name="add">Add</string>
+    <string name="bad_brand_message">Only letter,number,underbar is allowed in brand.</string>
+
+    <!-- Gallery -->
+    <string name="select_picture">Select Picture</string>
+    <string name="empty_gallery">Gallery is empty</string>
+    
+    <!-- Profile Settings -->
+    <string name="profile_settings">Profile Settings</string>
+    <string name="nick_name">Nick Name</string>
+    <string name="information">Information</string>
+    <string name="website">Website</string>
+    <string name="min_nick_name_message">Please type in more than 1 letter in nick name.</string>
+    <string name="bad_nick_name_message">Only letter,number,underbar is allowed in nick name.</string>
+    <string name="bad_website_message">It is unproper website address.</string>
+    <string name="duplicated_nick_name_message">The nick name already exists.</string>
+    <string name="profile_edited">Profile is edited.</string>
+    <string name="profile_image_edited">Profile image is changed.</string>
+
+    <!-- Pro Settings -->
+    <string name="edit">EDIT</string>
+    <string name="mileage">Mileage</string>
+    <string name="email">Email</string>
+    <string name="bank_account">Bank Account</string>
+    <string name="bank_account_number">Account Number(don\'t include -)</string>
+    <string name="bank_account_name">Account Holder</string>
+    <string name="pay_guide">Mileage will be given to below account at 1th, 15th every month</string>
+    <string name="not_exist_email">Register contactable email address</string>
+    <string name="not_exist_bank_account">Register bank account for mileage</string>
+
+    <string name="bad_email_message">It is unproper email address.</string>
+    <string name="email_edited">Email is edited.</string>
+    
+    <!-- Bank Account Edit -->
+    <string name="bad_bank_account_name_message">It is unproper account name.</string>
+    <string name="bank_account_edited">Bank Account is edited.</string>
+    
+    <!-- Notification -->
+    <string name="noti_content">%1$s %3$s %2$s item.</string>
+    <string name="noti_name_title_my">my</string>
+    <string name="noti_it">says it on</string>
+    <string name="noti_reply">comments on</string>
+    <string name="noti_product_tag">puts product label on</string>
+    <string name="new_noti">New noti came. Refresh noti screen.</string>
+    <string name="empty_noti">Notification has not come</string>
+
+    <!-- Settings -->
+    <string name="logout">Logout</string>
+    <string name="logout_message">Do you want to logout?</string>
+    <string name="settings">Settings</string>
+    <string name="notification">Notification</string>
+    <string name="notification_my_item">about my item</string>
+    <string name="notification_it_item">about my it item</string>
+    <string name="notification_reply_item">about item I commented</string>
+
+    <!-- Product Tag -->
+    <string name="product_tag">Product Label</string>
+    <string name="price_kor">%1$swon</string>
+    <string name="empty_product_tag">Product Label is empty yet</string>
+    <string name="get_product_label">GET!</string>
+
+    <!-- ItDateTime -->
+    <string name="second_ago">sec ago</string>
+    <string name="minute_ago">min ago</string>
+    <string name="hour_ago">hour ago</string>
+    <string name="day_ago">day ago</string>
+    <string name="yesterday">Yesterday</string>
+
+</resources>

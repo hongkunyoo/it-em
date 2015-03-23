@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/my_item_margin"
+    android:layout_marginLeft="@dimen/my_item_margin"
+    android:layout_marginRight="@dimen/my_item_margin"
+    android:layout_marginStart="@dimen/my_item_margin"
+    android:layout_marginTop="@dimen/my_item_spacing"
+    android:foreground="@drawable/list_transparent_selector" >
+
+    <com.pinthecloud.item.view.SquareImageView
+        android:id="@+id/row_gallery_grid_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.pinthecloud.item.view.SquareImageView
+        android:id="@+id/row_gallery_grid_image_selected"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

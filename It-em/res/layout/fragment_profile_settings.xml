@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:paddingTop="?attr/actionBarSize" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/key_line_first" >
+
+        <com.pinthecloud.item.view.CircleImageView
+            android:id="@+id/profile_settings_frag_profile_image"
+            android:layout_width="@dimen/profile_settings_image_width"
+            android:layout_height="@dimen/profile_settings_image_width"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/key_line_first"
+            app:border_color="@color/line_color"
+            app:border_width="@dimen/line_width" />
+
+        <EditText
+            android:id="@+id/profile_settings_frag_nick_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_line"
+            android:drawableLeft="@drawable/profile_settings_nick_name"
+            android:drawablePadding="@dimen/profile_settings_content_margin"
+            android:drawableStart="@drawable/profile_settings_nick_name"
+            android:ems="10"
+            android:hint="@string/nick_name"
+            android:inputType="text"
+            android:maxLength="@integer/nick_name_max_length"
+            android:maxLines="1"
+            android:textColor="@color/brand_text_color"
+            android:textColorHint="@color/brand_text_color_light"
+            android:textSize="@dimen/font_small" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/profile_settings_frag_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_line"
+            android:drawableLeft="@drawable/profile_settings_description"
+            android:drawablePadding="@dimen/profile_settings_content_margin"
+            android:drawableStart="@drawable/profile_settings_description"
+            android:ems="10"
+            android:hint="@string/information"
+            android:inputType="textMultiLine"
+            android:maxLength="@integer/long_text_max_length"
+            android:maxLines="3"
+            android:paddingEnd="@dimen/key_line_first"
+            android:paddingLeft="@dimen/key_line_first"
+            android:paddingRight="@dimen/key_line_first"
+            android:paddingStart="@dimen/key_line_first"
+            android:textColor="@color/brand_text_color"
+            android:textColorHint="@color/brand_text_color_light"
+            android:textSize="@dimen/font_small" />
+
+        <EditText
+            android:id="@+id/profile_settings_frag_website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_line"
+            android:drawableLeft="@drawable/profile_settings_website"
+            android:drawablePadding="@dimen/profile_settings_content_margin"
+            android:drawableStart="@drawable/profile_settings_website"
+            android:ems="10"
+            android:hint="@string/website"
+            android:inputType="textUri"
+            android:maxLength="@integer/long_text_max_length"
+            android:maxLines="1"
+            android:paddingEnd="@dimen/key_line_first"
+            android:paddingLeft="@dimen/key_line_first"
+            android:paddingRight="@dimen/key_line_first"
+            android:paddingStart="@dimen/key_line_first"
+            android:textColor="@color/brand_text_color"
+            android:textColorHint="@color/brand_text_color_light"
+            android:textSize="@dimen/font_small" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="?attr/actionBarSize" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:background="@color/accent_color" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
+            android:contentDescription="@string/mileage"
+            android:src="@drawable/setting_editor_mileage_ic" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_second"
+            android:layout_marginStart="@dimen/key_line_second"
+            android:text="@string/mileage"
+            android:textColor="@color/brand_text_color"
+            app:textType="body" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/pro_settings_mileage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginRight="@dimen/key_line_first"
+            android:textColor="@color/brand_text_color"
+            android:textStyle="bold"
+            app:textType="subhead" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/key_line_first"
+        android:paddingLeft="@dimen/key_line_first"
+        android:paddingRight="@dimen/key_line_first"
+        android:paddingStart="@dimen/key_line_first"
+        android:paddingTop="@dimen/pro_settings_margin" >
+
+        <com.pinthecloud.item.view.ItTextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/row_height"
+            android:gravity="center_vertical"
+            android:text="@string/email"
+            android:textColor="@color/gray_dark"
+            app:textType="caption" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/pro_settings_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/pro_settings_margin"
+                android:layout_marginEnd="@dimen/pro_settings_margin"
+                android:layout_marginRight="@dimen/pro_settings_margin"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_line"
+                android:ems="10"
+                android:hint="@string/not_exist_email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColor="@color/brand_text_color"
+                android:textColorHint="@color/brand_text_color_light"
+                android:textSize="@dimen/font_small" />
+
+            <ImageButton
+                android:id="@+id/pro_settings_email_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/email"
+                android:src="@drawable/pro_settings_email_submit_button" />
+        </LinearLayout>
+
+        <com.pinthecloud.item.view.ItTextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/row_height"
+            android:gravity="center_vertical"
+            android:text="@string/bank_account"
+            android:textColor="@color/gray_dark"
+            app:textType="caption" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/pay_guide"
+            android:textColor="@color/gray_dark"
+            app:textType="caption" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/pro_settings_empty_bank_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_exist_bank_account"
+            android:textColor="@color/brand_text_color_light"
+            android:visibility="gone"
+            app:textType="body" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/pro_settings_bank_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/brand_text_color"
+            app:textType="body" />
+
+        <Button
+            android:id="@+id/pro_settings_bank_account_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/general_text_button"
+            android:minHeight="@dimen/none"
+            android:minWidth="@dimen/none"
+            android:text="@string/edit"
+            android:textColor="@color/accent_color"
+            android:textSize="@dimen/font_small"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

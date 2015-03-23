@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <com.pinthecloud.item.view.ItTextView
+        android:id="@+id/tab_it_user_page_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/it_user_page_tab_name"
+        android:textStyle="bold"
+        app:textType="body" />
+
+    <com.pinthecloud.item.view.ItTextView
+        android:id="@+id/tab_it_user_page_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/it_user_page_content_margin"
+        android:layout_marginStart="@dimen/it_user_page_content_margin"
+        android:layout_toEndOf="@+id/tab_it_user_page_name"
+        android:layout_toRightOf="@+id/tab_it_user_page_name"
+        android:textColor="@color/it_user_page_tab_number"
+        app:textType="body" />
+
+</RelativeLayout>

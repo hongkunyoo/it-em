@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:id="@+id/my_item_frag_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/my_item_frag_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_item_frag_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:paddingBottom="@dimen/my_item_spacing"
+            android:paddingEnd="@dimen/my_item_margin"
+            android:paddingLeft="@dimen/my_item_margin"
+            android:paddingRight="@dimen/my_item_margin"
+            android:paddingStart="@dimen/my_item_margin"
+            android:scrollbars="none" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_item_frag_component_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            layout="@layout/custom_progress_bar"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/my_item_frag_grid_empty_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/my_item_frag_grid_empty_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty" />
+
+            <com.pinthecloud.item.view.ItTextView
+                android:id="@+id/my_item_frag_grid_empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/key_line_first"
+                android:gravity="center_horizontal"
+                android:textColor="@color/gray_dark"
+                app:textType="body" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

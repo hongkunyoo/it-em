@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_width"
+        android:layout_marginLeft="@dimen/key_line_second"
+        android:layout_marginStart="@dimen/key_line_second"
+        layout="@layout/custom_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/like_it_margin" >
+
+        <com.pinthecloud.item.view.CircleImageView
+            android:id="@+id/row_like_it_profile_image"
+            android:layout_width="@dimen/profile_preview_image_width"
+            android:layout_height="@dimen/profile_preview_image_width"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
+            android:layout_marginTop="@dimen/like_it_margin"
+            app:border_color="@color/line_color"
+            app:border_width="@dimen/line_width" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/row_like_it_nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginLeft="@dimen/key_line_second"
+            android:layout_marginRight="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_second"
+            android:textColor="@color/brand_text_color"
+            app:textType="subhead" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_transparent_selector"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/reply_margin"
+    android:paddingEnd="@dimen/none"
+    android:paddingLeft="@dimen/key_line_first"
+    android:paddingRight="@dimen/none"
+    android:paddingStart="@dimen/key_line_first" >
+
+    <com.pinthecloud.item.view.CircleImageView
+        android:id="@+id/row_reply_profile_image"
+        android:layout_width="@dimen/profile_preview_image_width"
+        android:layout_height="@dimen/profile_preview_image_width"
+        android:layout_marginTop="@dimen/reply_margin"
+        app:border_color="@color/line_color"
+        app:border_width="@dimen/line_width" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/key_line_first"
+        android:layout_marginStart="@dimen/key_line_first"
+        android:orientation="vertical" >
+
+        <include layout="@layout/custom_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginRight="@dimen/key_line_first"
+            android:layout_marginTop="@dimen/reply_margin"
+            android:orientation="vertical" >
+
+            <com.pinthecloud.item.view.ItTextView
+                android:id="@+id/row_reply_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brand_text_color"
+                android:textStyle="bold"
+                app:textType="subhead" />
+
+            <com.pinthecloud.item.view.ItTextView
+                android:id="@+id/row_reply_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brand_text_color_light"
+                app:textType="body" />
+
+            <com.pinthecloud.item.view.ItTextView
+                android:id="@+id/row_reply_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/general_time_ic"
+                android:drawableStart="@drawable/general_time_ic"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray_dark"
+                app:textType="caption" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

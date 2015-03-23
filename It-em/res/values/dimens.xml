@@ -1,0 +1,89 @@
+<resources>
+
+    <!-- Common -->
+    <dimen name="none">0dp</dimen>
+    <dimen name="line_width">1dp</dimen>
+    <dimen name="key_line_first">16dp</dimen>
+    <dimen name="dialog_margin">24dp</dimen>
+    <dimen name="key_line_second">72dp</dimen>
+    <dimen name="corner_radius">2dp</dimen>
+    <dimen name="profile_thumbnail_image_width">32dp</dimen>
+    <dimen name="profile_preview_image_width">40dp</dimen>
+    <dimen name="row_height">48dp</dimen>
+    <dimen name="tab_indicator_height">4dp</dimen>
+    <dimen name="button_horizontal_margin">6dp</dimen>
+    <dimen name="button_vertical_margin">4dp</dimen>
+    
+    <!-- Main -->
+    <dimen name="main_tab_noti_number_margin">-6dp</dimen>
+    
+    <!-- Login -->
+    <dimen name="login_button_bottom_margin">32dp</dimen>
+
+    <!-- Home -->
+    <dimen name="home_item_margin">10dp</dimen>
+    <dimen name="home_item_content_margin">4dp</dimen>
+    <dimen name="home_item_spacing">8dp</dimen>
+    
+    <!-- Be Pro -->
+    <dimen name="be_pro_content_margin">12dp</dimen>
+    <dimen name="be_pro_code_margin">8dp</dimen>
+    <dimen name="be_pro_homepage_height">24dp</dimen>
+
+    <!-- Item -->
+    <dimen name="item_layout_margin">12dp</dimen>
+    <dimen name="item_content_margin">4dp</dimen>
+
+    <!-- Product Tag -->
+    <dimen name="product_tag_content_margin">4dp</dimen>
+    
+    <!-- Noti -->
+    <dimen name="noti_content_margin">4dp</dimen>
+    <dimen name="noti_item_image_width">52dp</dimen>
+    
+    <!-- Upload -->
+    <dimen name="upload_image_width">100dp</dimen>
+    <dimen name="upload_content_margin">8dp</dimen>
+
+    <!-- It User Page -->
+    <dimen name="it_user_page_content_margin">4dp</dimen>
+
+    <!-- Profile Image -->
+    <dimen name="profile_image_width">212dp</dimen>
+
+    <!-- My Item -->
+    <dimen name="my_item_margin">1dp</dimen>
+    <dimen name="my_item_spacing">2dp</dimen>
+
+    <!-- Reply -->
+    <dimen name="reply_height">300dp</dimen>
+    <dimen name="reply_row_previous_height">36dp</dimen>
+    <dimen name="reply_margin">8dp</dimen>
+
+    <!-- Like It -->
+    <dimen name="like_it_margin">8dp</dimen>
+
+    <!-- Profile Settings -->
+    <dimen name="profile_settings_content_margin">8dp</dimen>
+    <dimen name="profile_settings_image_width">128dp</dimen>
+
+    <!-- Pro Settings -->
+    <dimen name="pro_settings_margin">12dp</dimen>
+    <dimen name="pro_settings_pay_guide_height">18dp</dimen>
+    
+    <!-- Bank Account Edit -->
+    <dimen name="bank_account_edit_margin">12dp</dimen>
+    
+    <!-- Settings -->
+    <dimen name="settings_layout_margin">12dp</dimen>
+    <dimen name="settings_row_height">36dp</dimen>
+    <dimen name="settings_content_margin">8dp</dimen>
+
+    <!-- Font -->
+    <dimen name="font_x_large">24sp</dimen>
+    <dimen name="font_large">20sp</dimen>
+    <dimen name="font_medium">16sp</dimen>
+    <dimen name="font_small">14sp</dimen>
+    <dimen name="font_micro">13sp</dimen>
+
+</resources>
