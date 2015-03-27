@@ -45,8 +45,8 @@
                     android:id="@+id/row_noti_receive_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/noti_content_margin"
-                    android:layout_marginRight="@dimen/noti_content_margin"
+                    android:layout_marginEnd="@dimen/content_margin"
+                    android:layout_marginRight="@dimen/content_margin"
                     android:contentDescription="@string/image" />
 
                 <com.pinthecloud.item.view.ItTextView
@@ -79,6 +79,6 @@
         android:layout_height="@dimen/noti_item_image_width"
         android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginStart="@dimen/key_line_first"
-        app:riv_corner_radius="@dimen/corner_radius" />
+        app:riv_corner_radius="@dimen/content_margin" />
 
 </LinearLayout>

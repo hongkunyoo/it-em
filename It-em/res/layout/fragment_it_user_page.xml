@@ -77,7 +77,7 @@
                         android:id="@+id/it_user_page_frag_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/it_user_page_content_margin"
+                        android:layout_marginTop="@dimen/content_margin"
                         android:contentDescription="@string/be_pro"
                         android:visibility="gone" />
 
@@ -85,7 +85,7 @@
                         android:id="@+id/it_user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/it_user_page_content_margin"
+                        android:layout_marginTop="@dimen/content_margin"
                         android:textColor="@color/gray_dark"
                         app:textType="caption" />
 
@@ -93,7 +93,7 @@
                         android:id="@+id/it_user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/it_user_page_content_margin"
+                        android:layout_marginTop="@dimen/content_margin"
                         android:textColor="@color/blue"
                         app:textType="caption" />
                 </LinearLayout>

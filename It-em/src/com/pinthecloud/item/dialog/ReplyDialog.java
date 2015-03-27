@@ -23,9 +23,9 @@ import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
+import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ViewUtil;
 

@@ -20,17 +20,17 @@ import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 
-public class LikeItListAdapter extends RecyclerView.Adapter<LikeItListAdapter.ViewHolder> {
+public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHolder> {
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
-	private List<LikeIt> mLikeItList;
+	private List<LikeIt> mLikeList;
 
 
-	public LikeItListAdapter(ItActivity activity, List<LikeIt> likeItList) {
+	public LikeListAdapter(ItActivity activity, List<LikeIt> likeList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
-		this.mLikeItList = likeItList;
+		this.mLikeList = likeList;
 	}
 
 
@@ -49,7 +49,7 @@ public class LikeItListAdapter extends RecyclerView.Adapter<LikeItListAdapter.Vi
 
 
 	@Override
-	public LikeItListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public LikeListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_like_it_list, parent, false);
 		return new ViewHolder(view);
 	}
@@ -57,30 +57,30 @@ public class LikeItListAdapter extends RecyclerView.Adapter<LikeItListAdapter.Vi
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		LikeIt likeIt = mLikeItList.get(position);
-		setText(holder, likeIt);
-		setButton(holder, likeIt);
-		setImageView(holder, likeIt);
+		LikeIt like = mLikeList.get(position);
+		setText(holder, like);
+		setButton(holder, like);
+		setImageView(holder, like);
 	}
 
 
 	@Override
 	public int getItemCount() {
-		return mLikeItList.size();
+		return mLikeList.size();
 	}
 
 
-	private void setText(ViewHolder holder, final LikeIt likeIt){
-		holder.nickName.setText(likeIt.getWhoMade());
+	private void setText(ViewHolder holder, final LikeIt like){
+		holder.nickName.setText(like.getWhoMade());
 	}
 
 
-	private void setButton(ViewHolder holder, final LikeIt likeIt){
+	private void setButton(ViewHolder holder, final LikeIt like){
 		holder.profileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				goToItUserPageActivity(likeIt.getWhoMadeId());
+				goToItUserPageActivity(like.getWhoMadeId());
 			}
 		});
 
@@ -88,23 +88,23 @@ public class LikeItListAdapter extends RecyclerView.Adapter<LikeItListAdapter.Vi
 
 			@Override
 			public void onClick(View v) {
-				goToItUserPageActivity(likeIt.getWhoMadeId());
+				goToItUserPageActivity(like.getWhoMadeId());
 			}
 		});
 	}
 
 
-	private void setImageView(ViewHolder holder, final LikeIt likeIt){
+	private void setImageView(ViewHolder holder, final LikeIt like){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(likeIt.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-		.placeholder(R.drawable.profile_s_default_img)
+		.load(BlobStorageHelper.getUserProfileImgUrl(like.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(holder.profileImage);
 	}
 
 
-	public void addAll(List<LikeIt> likeItList) {
-		mLikeItList.addAll(likeItList);
+	public void addAll(List<LikeIt> likeList) {
+		mLikeList.addAll(likeList);
 		notifyDataSetChanged();
 	}
 

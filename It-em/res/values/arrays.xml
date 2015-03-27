@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- Home -->
-    <string-array name="home_more_array">
-        <item>Delete</item>
-    </string-array>
     
     <!-- It User Page -->
     <string-array name="it_user_page_tab_pro_title_array">
         <item>My Item</item>
-        <item>It Item</item>
+        <item>Like</item>
     </string-array>
     <string-array name="it_user_page_tab_title_array">
-        <item>It Item</item>
+        <item>Like</item>
     </string-array>
 
     <!-- Upload -->

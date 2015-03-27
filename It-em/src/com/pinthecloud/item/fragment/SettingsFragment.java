@@ -100,7 +100,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				ItFragment fragment = new ProfileSettingsFragment();
-				mActivity.replaceFragment(fragment, true, R.anim.slide_in_up, 0, R.anim.pop_in, R.anim.slide_out_down);
+				mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 			}
 		});
 
@@ -109,7 +109,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				ItFragment fragment = mMyItUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
-				mActivity.replaceFragment(fragment, true, R.anim.slide_in_up, 0, R.anim.pop_in, R.anim.slide_out_down);
+				mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 			}
 		});
 

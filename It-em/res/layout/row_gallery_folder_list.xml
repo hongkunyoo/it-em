@@ -4,27 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_white_selector"
-    android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/row_gallery_folder_list_image"
-        android:layout_width="@dimen/profile_preview_image_width"
-        android:layout_height="@dimen/profile_preview_image_width"
-        android:contentDescription="@string/image" />
-
-    <com.pinthecloud.item.view.ItTextView
-        android:id="@+id/row_gallery_folder_list_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/key_line_first"
-        android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginRight="@dimen/key_line_first"
-        android:layout_marginStart="@dimen/key_line_first"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/brand_text_color"
-        android:textStyle="bold"
-        app:textType="body" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <com.pinthecloud.item.view.SquareImageView
+            android:id="@+id/row_gallery_folder_list_image"
+            android:layout_width="@dimen/gallery_folder_image_width"
+            android:layout_height="@dimen/gallery_folder_image_width" />
+
+        <include
+            android:layout_width="@dimen/line_width"
+            android:layout_height="match_parent"
+            layout="@layout/custom_line" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/row_gallery_folder_list_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/brand_text_color"
+            app:textType="body" />
+    </LinearLayout>
+
+    <include layout="@layout/custom_line" />
 
 </LinearLayout>

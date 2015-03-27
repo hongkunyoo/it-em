@@ -8,14 +8,18 @@ public class DynamicHeightImageView extends ImageView {
 
 	private double mHeightRatio;
 
-	public DynamicHeightImageView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-
 	public DynamicHeightImageView(Context context) {
 		super(context);
 	}
+	
+	public DynamicHeightImageView(Context context, AttributeSet attrs) {
+		this(context, attrs, 0);
+	}
 
+	public DynamicHeightImageView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+	
 	public void setHeightRatio(double ratio) {
 		if (ratio != mHeightRatio) {
 			mHeightRatio = ratio;

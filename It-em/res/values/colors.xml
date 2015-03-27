@@ -9,7 +9,7 @@
     <color name="accent_color">#ffAB00</color>
     <color name="line_color">#16000000</color>
     <color name="gray_dark">#78909c</color>
-    <color name="gray_pressed">#4cECEFF1</color>
+    <color name="gray_pressed">#80ECEFF1</color>
     <color name="gray">#ECEFF1</color>
     <color name="gray_light">#d2d4d6</color>
     <color name="red">#ef5350</color>

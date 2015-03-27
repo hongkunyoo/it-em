@@ -121,7 +121,7 @@ public class ItIntentService extends IntentService {
 				try {
 					bitmap = mApp.getPicasso().load(url).get();
 				} catch (IOException e) {
-					EventBus.getDefault().post(new ItException("getNotification", ItException.TYPE.INTERNAL_ERROR));
+					EventBus.getDefault().post(new ItException("getLargeIcon", ItException.TYPE.INTERNAL_ERROR));
 				}
 				return bitmap;
 			}

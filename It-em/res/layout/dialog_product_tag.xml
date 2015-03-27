@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/product_tag_content_margin" >
+    android:paddingBottom="@dimen/content_margin" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
         <com.pinthecloud.item.view.ItTextView
             android:id="@+id/product_tag_frag_empty_view"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/reply_row_previous_height"
+            android:layout_height="@dimen/row_small_height"
             android:layout_marginEnd="@dimen/key_line_first"
             android:layout_marginLeft="@dimen/key_line_second"
             android:layout_marginRight="@dimen/key_line_first"

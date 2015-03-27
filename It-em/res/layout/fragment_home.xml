@@ -25,11 +25,6 @@
                 android:id="@+id/home_frag_item_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/home_item_spacing"
-                android:paddingEnd="@dimen/home_item_content_margin"
-                android:paddingLeft="@dimen/home_item_content_margin"
-                android:paddingRight="@dimen/home_item_content_margin"
-                android:paddingStart="@dimen/home_item_content_margin"
                 android:scrollbars="none" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -48,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/upload"
+                android:contentDescription="@string/new_item"
                 android:src="@drawable/home_upload_button" />
         </RelativeLayout>
     </RelativeLayout>

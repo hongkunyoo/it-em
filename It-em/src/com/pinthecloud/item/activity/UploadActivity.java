@@ -6,7 +6,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.fragment.GalleryFolderFragment;
+import com.pinthecloud.item.fragment.UploadFragment;
+import com.pinthecloud.item.interfaces.DialogCallback;
 
 public class UploadActivity extends ItActivity {
 
@@ -17,18 +21,44 @@ public class UploadActivity extends ItActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.slide_in_up, 0);
+		overridePendingTransition(R.anim.slide_in_up, R.anim.pop_out);
 		setContentView(R.layout.activity_toolbar_frame);
 
 		setToolbar();
 		setFragment(new GalleryFolderFragment());
 	}
-	
+
 
 	@Override
 	public void finish() {
 		super.finish();
 		overridePendingTransition(R.anim.pop_in, R.anim.slide_out_down);
+	}
+
+
+	@Override
+	public void onBackPressed() {
+		if(mCurrentFragment instanceof UploadFragment){
+			String message = getResources().getString(R.string.cancel_upload);
+			String cancel = getResources().getString(android.R.string.cancel);
+			String notCancel = getResources().getString(R.string.not_cancel);
+			ItAlertDialog dialog = ItAlertDialog.newInstance(message, cancel, notCancel, true);
+
+			dialog.setCallback(new DialogCallback() {
+
+				@Override
+				public void doPositiveThing(Bundle bundle) {
+					mThisActivity.finish();
+				}
+				@Override
+				public void doNegativeThing(Bundle bundle) {
+					// Do nothing
+				}
+			});
+			dialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+		} else {
+			super.onBackPressed();	
+		}
 	}
 
 

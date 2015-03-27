@@ -70,7 +70,7 @@ public class GalleryFolderAdapter extends RecyclerView.Adapter<GalleryFolderAdap
 	
 	
 	private void setComponent(ViewHolder holder, final GalleryFolder folder){
-		holder.name.setText(folder.getName());
+		holder.name.setText(folder.getName() + " (" + folder.getGalleryList().size() + ")");
 		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override

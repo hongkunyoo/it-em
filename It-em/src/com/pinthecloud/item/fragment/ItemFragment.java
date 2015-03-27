@@ -38,7 +38,7 @@ import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.dialog.LikeItDialog;
+import com.pinthecloud.item.dialog.LikeDialog;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
@@ -67,10 +67,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private View mItemLayout;
 	private TextView mContent;
 	private TextView mDate;
-	private Button mItButton;
-	private MenuItem mItMenuButton;
-	private View mItNumberLayout;
-	private TextView mItNumber;
+	private Button mLikeButton;
+	private View mLikeNumberLayout;
+	private TextView mLikeNumber;
 
 	private View mProductTagLayout;
 	private TextView mProductTagEmptyView;
@@ -94,8 +93,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private ItUser mMyItUser;
 	private Item mItem;
-	
-	private boolean isDoingIt = false;
+
+	private boolean isDoingLike = false;
 
 
 	public static ItFragment newInstance(Item item) {
@@ -123,7 +122,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-		
+
 		findComponent(view);
 		setComponent();
 		setButton();
@@ -156,7 +155,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.item, menu);
-		mItMenuButton = menu.findItem(R.id.item_menu_it);
 	}
 
 
@@ -173,9 +171,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		switch (menu.getItemId()) {
 		case R.id.item_menu_delete:
 			deleteItem(mItem);
-			break;
-		case R.id.item_menu_it:
-			onClickItButton();
 			break;
 		}
 		return super.onOptionsItemSelected(menu);
@@ -210,9 +205,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
-		mItButton = (Button)view.findViewById(R.id.item_frag_it_button);
-		mItNumberLayout = view.findViewById(R.id.item_frag_it_number_layout);
-		mItNumber = (TextView)view.findViewById(R.id.item_frag_it_number);
+		mLikeButton = (Button)view.findViewById(R.id.item_frag_like_button);
+		mLikeNumberLayout = view.findViewById(R.id.item_frag_like_number_layout);
+		mLikeNumber = (TextView)view.findViewById(R.id.item_frag_like_number);
 
 		mProductTagLayout = view.findViewById(R.id.item_frag_product_tag_layout);
 		mProductTagEmptyView = (TextView)view.findViewById(R.id.item_frag_product_tag_empty_view);
@@ -255,7 +250,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setButton(){
-		mItButton.setOnClickListener(new OnClickListener() {
+		mLikeButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -263,11 +258,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		});
 
-		mItNumber.setOnClickListener(new OnClickListener() {
+		mLikeNumber.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				ItDialogFragment likeItDialog = LikeItDialog.newInstance(mItem);
+				ItDialogFragment likeItDialog = LikeDialog.newInstance(mItem);
 				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
@@ -309,7 +304,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				gotoItUserPage();
 			}
 		});
-		
+
 		mUserWebsite.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -446,15 +441,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setItemComponent(){
 		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
 		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(mActivity));
-		
+
 		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
 		mUserDescription.setVisibility(!mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
 		mUserWebsite.setVisibility(!mItem.getWhoMadeUser().getWebPage().equals("") ? View.VISIBLE : View.GONE);
 
-		setItNumber(mItem.getLikeItCount());
-		mItButton.setActivated(mItem.getPrevLikeId() != null);
-		mItMenuButton.setIcon(mItem.getPrevLikeId() == null ? R.drawable.appbar_it_ic : R.drawable.appbar_it_ic_highlight);
+		setLikeNumber(mItem.getLikeItCount());
+		mLikeButton.setActivated(mItem.getPrevLikeId() != null);
 	}
 
 
@@ -465,7 +459,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			@Override
 			public void onCompleted(Boolean entity) {
 				mApp.dismissProgressDialog();
-				
+
 				Intent intent = new Intent(mActivity, MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
@@ -475,79 +469,63 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void onClickItButton(){
-		final boolean isDoIt = !mItButton.isActivated();
-		final int currentItNum = Integer.parseInt(mItNumber.getText().toString());
-		setItButton(currentItNum, isDoIt);
+		final boolean isDoLike = !mLikeButton.isActivated();
+		final int currentLikeNum = Integer.parseInt(mLikeNumber.getText().toString());
+		setLikeButton(currentLikeNum, isDoLike);
 
-		if(isDoingIt){
+		if(isDoingLike){
 			return;
 		}
 
-		isDoingIt = true;
-		if(isDoIt) {
-			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.IT, GAHelper.ITEM);
+		isDoingLike = true;
+		if(isDoLike) {
+			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.LIKE, GAHelper.ITEM);
 
-			// Do it
-			LikeIt it = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+			// Do Like
+			LikeIt like = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
 			ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
 					mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
 					mItem.getImageWidth(), mItem.getImageHeight());
-			mAimHelper.addUnique(it, noti, new EntityCallback<LikeIt>() {
+			mAimHelper.addUnique(like, noti, new EntityCallback<LikeIt>() {
 
 				@Override
 				public void onCompleted(LikeIt entity) {
-					doIt(mItem, entity.getId(), currentItNum, isDoIt);
+					doLike(mItem, entity.getId(), currentLikeNum, isDoLike);
 				}
 			});
 		} else {
-			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.IT_CANCEL, GAHelper.ITEM);
+			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.LIKE_CANCEL, GAHelper.ITEM);
 
-			// Cancel it
-			LikeIt it = new LikeIt(mItem.getPrevLikeId());
-			mAimHelper.del(it, new EntityCallback<Boolean>() {
+			// Cancel Like
+			LikeIt like = new LikeIt(mItem.getPrevLikeId());
+			mAimHelper.del(like, new EntityCallback<Boolean>() {
 
 				@Override
 				public void onCompleted(Boolean entity) {
-					doIt(mItem, null, currentItNum, isDoIt);
+					doLike(mItem, null, currentLikeNum, isDoLike);
 				}
 			});
 		}
 	}
 
 
-	private void doIt(Item item, String likeId, int currentItNum, boolean isDoIt){
-		isDoingIt = false;
+	private void doLike(Item item, String likeId, int currentLikeNum, boolean isDoLike){
+		isDoingLike = false;
+		setLikeButton(currentLikeNum, isDoLike);
 		item.setPrevLikeId(likeId);
-		setItButton(currentItNum, isDoIt);
-
-		if(isDoIt){
-			// Do it
-			item.setLikeItCount(currentItNum+1);
-		} else {
-			// Cancel it
-			item.setLikeItCount(currentItNum-1);
-		}
+		item.setLikeItCount(isDoLike ? currentLikeNum+1 : currentLikeNum-1);
 	}
 
 
-	private void setItButton(int currentItNum, boolean isDoIt){
-		if(isDoIt) {
-			// Do it
-			setItNumber(currentItNum+1);
-			mItButton.setActivated(true);
-			mItMenuButton.setIcon(R.drawable.appbar_it_ic_highlight);
-		} else {
-			// Cancel it
-			setItNumber(currentItNum-1);
-			mItButton.setActivated(false);
-			mItMenuButton.setIcon(R.drawable.appbar_it_ic);
-		}
+	private void setLikeButton(int currentLikeNum, boolean isDoLike){
+		setLikeNumber(isDoLike ? currentLikeNum+1 : currentLikeNum-1);
+		mLikeButton.setActivated(isDoLike);
 	}
 
 
-	private void setItNumber(int itNumber){
-		mItNumberLayout.setVisibility(itNumber > 0 ? View.VISIBLE : View.GONE);
-		mItNumber.setText(""+itNumber);
+	private void setLikeNumber(int likeNumber){
+		mLikeNumberLayout.setVisibility(likeNumber > 0 ? View.VISIBLE : View.GONE);
+		mLikeNumber.setText(""+likeNumber);
 	}
 
 
@@ -654,16 +632,19 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		if(mItem.getImageHeight() > maxSize){
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+			.placeholder(R.drawable.feed_loading_default_img)
 			.resize((int)(mItem.getImageWidth()*((float)maxSize/mItem.getImageHeight())), maxSize)
 			.into(mItemImage);
 		} else {
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+			.placeholder(R.drawable.feed_loading_default_img)
 			.into(mItemImage);
 		}
 
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);
 	}

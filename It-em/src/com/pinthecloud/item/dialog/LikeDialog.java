@@ -13,25 +13,25 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.adapter.LikeItListAdapter;
+import com.pinthecloud.item.adapter.LikeListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.util.ViewUtil;
 
-public class LikeItDialog extends ItDialogFragment {
+public class LikeDialog extends ItDialogFragment {
 
 	private ProgressBar mProgressBar;
 	private RecyclerView mListView;
-	private LikeItListAdapter mListAdapter;
+	private LikeListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
-	private List<LikeIt> mLikeItList;
+	private List<LikeIt> mLikeList;
 
 	private Item mItem;
 
 
-	public static LikeItDialog newInstance(Item item) {
-		LikeItDialog dialog = new LikeItDialog();
+	public static LikeDialog newInstance(Item item) {
+		LikeDialog dialog = new LikeDialog();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(Item.INTENT_KEY, item);
 		dialog.setArguments(bundle);
@@ -50,7 +50,7 @@ public class LikeItDialog extends ItDialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.dialog_like_it, container, false);
+		View view = inflater.inflate(R.layout.dialog_like, container, false);
 
 		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
@@ -63,7 +63,7 @@ public class LikeItDialog extends ItDialogFragment {
 	
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mListView = (RecyclerView)view.findViewById(R.id.like_it_frag_list);
+		mListView = (RecyclerView)view.findViewById(R.id.like_frag_list);
 	}
 
 
@@ -74,8 +74,8 @@ public class LikeItDialog extends ItDialogFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mLikeItList = new ArrayList<LikeIt>();
-		mListAdapter = new LikeItListAdapter(mActivity, mLikeItList);
+		mLikeList = new ArrayList<LikeIt>();
+		mListAdapter = new LikeListAdapter(mActivity, mLikeList);
 		mListView.setAdapter(mListAdapter);
 	}
 
@@ -94,7 +94,7 @@ public class LikeItDialog extends ItDialogFragment {
 
 					mItem.setLikeItCount(count);
 
-					mLikeItList.clear();
+					mLikeList.clear();
 					mListAdapter.addAll(list);
 
 					ViewUtil.setListHeightBasedOnChildren(mListView, count);

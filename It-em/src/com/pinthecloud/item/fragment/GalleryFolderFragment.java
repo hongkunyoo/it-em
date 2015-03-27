@@ -58,14 +58,14 @@ public class GalleryFolderFragment extends ItFragment implements GalleryCallback
 
 	@Override
 	public void clickFolder(GalleryFolder folder) {
-		ItFragment fragment = GalleryFragment.newInstance((ArrayList<Gallery>)folder.getGalleryList());
-		mActivity.replaceFragment(fragment, true, R.anim.slide_in_up, 0, R.anim.pop_in, R.anim.slide_out_down);
+		ItFragment fragment = GalleryFragment.newInstance(folder);
+		mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 	}
 
 
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle(getResources().getString(R.string.select_picture));
+		actionBar.setTitle(getResources().getString(R.string.select_album));
 	}
 
 

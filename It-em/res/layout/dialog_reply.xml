@@ -57,7 +57,7 @@
                 <com.pinthecloud.item.view.ItTextView
                     android:id="@+id/reply_frag_list_empty_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/reply_row_previous_height"
+                    android:layout_height="@dimen/row_small_height"
                     android:layout_marginLeft="@dimen/key_line_second"
                     android:layout_marginStart="@dimen/key_line_second"
                     android:gravity="center_vertical"
@@ -84,15 +84,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/reply_margin" >
+                    android:padding="@dimen/content_big_margin" >
 
                     <EditText
                         android:id="@+id/reply_frag_inputbar_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/reply_margin"
+                        android:layout_marginEnd="@dimen/content_big_margin"
                         android:layout_marginLeft="@dimen/none"
-                        android:layout_marginRight="@dimen/reply_margin"
+                        android:layout_marginRight="@dimen/content_big_margin"
                         android:layout_marginStart="@dimen/none"
                         android:layout_weight="1"
                         android:background="@drawable/general_inputbar_bg"
@@ -101,10 +101,10 @@
                         android:hint="@string/write_reply"
                         android:inputType="textMultiLine"
                         android:maxLines="3"
-                        android:paddingEnd="@dimen/reply_margin"
-                        android:paddingLeft="@dimen/reply_margin"
-                        android:paddingRight="@dimen/reply_margin"
-                        android:paddingStart="@dimen/reply_margin"
+                        android:paddingEnd="@dimen/content_big_margin"
+                        android:paddingLeft="@dimen/content_big_margin"
+                        android:paddingRight="@dimen/content_big_margin"
+                        android:paddingStart="@dimen/content_big_margin"
                         android:textColor="@color/brand_text_color"
                         android:textColorHint="@color/brand_text_color_light"
                         android:textSize="@dimen/font_medium" >
@@ -121,7 +121,7 @@
                         android:enabled="false"
                         android:minHeight="@dimen/none"
                         android:minWidth="@dimen/none"
-                        android:paddingBottom="@dimen/reply_margin"
+                        android:paddingBottom="@dimen/content_big_margin"
                         android:text="@string/submit"
                         android:textColor="@color/reply_inputbar_submit_button"
                         android:textSize="@dimen/font_medium"

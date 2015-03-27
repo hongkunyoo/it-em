@@ -10,7 +10,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 
 public class ViewUtil {
-	
+
 	@SuppressWarnings("unchecked")
 	public static void setListHeightBasedOnChildren(RecyclerView recyclerView, int rowCount) {
 		@SuppressWarnings("rawtypes")

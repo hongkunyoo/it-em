@@ -53,7 +53,7 @@
         android:paddingLeft="@dimen/key_line_first"
         android:paddingRight="@dimen/key_line_first"
         android:paddingStart="@dimen/key_line_first"
-        android:paddingTop="@dimen/pro_settings_margin" >
+        android:paddingTop="@dimen/layout_margin" >
 
         <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
@@ -73,9 +73,9 @@
                 android:id="@+id/pro_settings_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/pro_settings_margin"
-                android:layout_marginEnd="@dimen/pro_settings_margin"
-                android:layout_marginRight="@dimen/pro_settings_margin"
+                android:layout_marginBottom="@dimen/layout_margin"
+                android:layout_marginEnd="@dimen/layout_margin"
+                android:layout_marginRight="@dimen/layout_margin"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_line"
                 android:ems="10"

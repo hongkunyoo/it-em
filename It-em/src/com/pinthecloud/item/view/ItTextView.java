@@ -68,23 +68,23 @@ public class ItTextView extends TextView {
 	}
 
 	private void setTitle(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_large));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_large));
 	}
 
 	private void setSubhead(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
 	}
 
 	private void setBody(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_small));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_small));
 	}
 
 	private void setCaption(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_micro));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_micro));
 	}
 
 	private void setButton(){
-		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
+		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
 		setText(getText().toString().toUpperCase(Locale.US));
 	}
 

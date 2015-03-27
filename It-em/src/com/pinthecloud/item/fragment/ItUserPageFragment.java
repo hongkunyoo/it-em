@@ -296,7 +296,7 @@ public class ItUserPageFragment extends MainTabFragment {
 	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
-		.placeholder(R.drawable.profile_l_default_img)
+		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);
 	}

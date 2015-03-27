@@ -339,11 +339,11 @@ public class AimHelper {
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
-				AsyncChainer.waitChain(4);
+				AsyncChainer.waitChain(3);
 
 				JsonObject jo = new JsonObject();
 				jo.add("item", item.toJson());
-				
+
 				mClient.invokeApi(AIM_DELETE_ITEM, jo, new ApiJsonOperationCallback() {
 
 					@Override
@@ -362,14 +362,6 @@ public class AimHelper {
 					@Override
 					public void onCompleted(Boolean entity) {
 						AsyncChainer.notifyNext(obj, entity);
-					}
-				});
-
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(obj, entity);	
 					}
 				});
 

@@ -37,9 +37,9 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected VersionHelper mVersionHelper;
 	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
-
 	protected GAHelper mGaHelper;
-
+	
+	protected ItFragment mCurrentFragment;
 	public abstract View getToolbarLayout();
 
 
@@ -100,21 +100,22 @@ public abstract class ItActivity extends ActionBarActivity {
 
 
 	public void setFragment(ItFragment fragment) {
+		this.mCurrentFragment = fragment;
+		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}
 	
 	
-//	R.anim.slide_in_up, 0, R.anim.pop_in, R.anim.slide_out_down
 	public void replaceFragment(ItFragment fragment, boolean addToBackStack,
 			int enter, int exit, int popEnter, int popExit) {
+		this.mCurrentFragment = fragment;
+		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.setCustomAnimations(enter, exit, popEnter, popExit);
 		transaction.replace(R.id.activity_container, fragment);
-		if(addToBackStack){
-			transaction.addToBackStack(null);
-		}
+		if(addToBackStack)	transaction.addToBackStack(null);
 		transaction.commit();
 	}
 

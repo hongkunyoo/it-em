@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Home -->
-    <integer name="home_item_grid_column_num">2</integer>
-
     <!-- Custom Gallery -->
     <integer name="gallery_grid_column_num">3</integer>
     <integer name="max_gallery_num">5</integer>

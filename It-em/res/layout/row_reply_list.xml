@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/list_transparent_selector"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/reply_margin"
+    android:paddingBottom="@dimen/content_big_margin"
     android:paddingEnd="@dimen/none"
     android:paddingLeft="@dimen/key_line_first"
     android:paddingRight="@dimen/none"
@@ -15,7 +15,7 @@
         android:id="@+id/row_reply_profile_image"
         android:layout_width="@dimen/profile_preview_image_width"
         android:layout_height="@dimen/profile_preview_image_width"
-        android:layout_marginTop="@dimen/reply_margin"
+        android:layout_marginTop="@dimen/content_big_margin"
         app:border_color="@color/line_color"
         app:border_width="@dimen/line_width" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/key_line_first"
             android:layout_marginRight="@dimen/key_line_first"
-            android:layout_marginTop="@dimen/reply_margin"
+            android:layout_marginTop="@dimen/content_big_margin"
             android:orientation="vertical" >
 
             <com.pinthecloud.item.view.ItTextView

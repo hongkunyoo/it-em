@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.UploadActivity;
-import com.pinthecloud.item.adapter.HomeItemGridAdapter;
+import com.pinthecloud.item.adapter.HomeItemListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
@@ -33,9 +33,9 @@ public class HomeFragment extends MainTabFragment {
 	private ProgressBar mProgressBar;
 	private View mLayout;
 	private SwipeRefreshLayout mRefresh;
-	private RecyclerView mGridView;
-	private HomeItemGridAdapter mGridAdapter;
-	private StaggeredGridLayoutManager mGridLayoutManager;
+	private RecyclerView mListView;
+	private HomeItemListAdapter mListAdapter;
+	private LinearLayoutManager mListLayoutManager;
 	private List<Item> mItemList;
 
 	private View mUploadLayout;
@@ -63,7 +63,7 @@ public class HomeFragment extends MainTabFragment {
 		setComponent();
 		setButton();
 		setRefreshLayout();
-		setGrid();
+		setList();
 		setScroll();
 
 		return view;
@@ -77,8 +77,8 @@ public class HomeFragment extends MainTabFragment {
 			switch(requestCode){
 			case UPLOAD:
 				Item item = data.getParcelableExtra(Item.INTENT_KEY);
-				mGridAdapter.add(0, item);
-				mGridView.smoothScrollToPosition(0);
+				mListAdapter.add(0, item);
+				mListView.smoothScrollToPosition(0);
 				break;
 			}
 		}
@@ -101,7 +101,7 @@ public class HomeFragment extends MainTabFragment {
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.home_frag_refresh);
 		mUploadLayout = view.findViewById(R.id.home_frag_upload_layout);
 		mUploadButton = (ImageButton)view.findViewById(R.id.home_frag_upload_button);
-		mGridView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
+		mListView = (RecyclerView)view.findViewById(R.id.home_frag_item_list);
 	}
 
 
@@ -137,32 +137,31 @@ public class HomeFragment extends MainTabFragment {
 	}
 
 
-	private void setGrid(){
-		mGridView.setHasFixedSize(true);
+	private void setList(){
+		mListView.setHasFixedSize(true);
 
-		int gridColumnNum = getResources().getInteger(R.integer.home_item_grid_column_num);
-		mGridLayoutManager = new StaggeredGridLayoutManager(gridColumnNum, StaggeredGridLayoutManager.VERTICAL);
-		mGridView.setLayoutManager(mGridLayoutManager);
-		mGridView.setItemAnimator(new DefaultItemAnimator());
+		mListLayoutManager = new LinearLayoutManager(mActivity);
+		mListView.setLayoutManager(mListLayoutManager);
+		mListView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = new ArrayList<Item>();
-		mGridAdapter = new HomeItemGridAdapter(mActivity, mThisFragment, mItemList);
-		mGridView.setAdapter(mGridAdapter);
+		mListAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
+		mListView.setAdapter(mListAdapter);
 	}
 
 
 	private void setScroll(){
 		final int maxUploadScrollY = mUploadLayout.getLayoutParams().height;
-		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+		mListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 
-				// Add more items when grid reaches bottom
-				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
-				int totalItemCount = mGridLayoutManager.getItemCount();
-				if (positions[positions.length-1] >= totalItemCount-3 && !mIsAdding) {
+				// Add more items when list reaches bottom
+				int position = mListLayoutManager.findLastVisibleItemPosition();
+				int totalItemCount = mListLayoutManager.getItemCount();
+				if (position >= totalItemCount-3 && !mIsAdding) {
 					addNextItem();
 				}
 
@@ -190,7 +189,7 @@ public class HomeFragment extends MainTabFragment {
 				mRefresh.setRefreshing(false);
 
 				mItemList.clear();
-				mGridAdapter.addAll(list);
+				mListAdapter.addAll(list);
 			}
 		});
 	}
@@ -203,7 +202,7 @@ public class HomeFragment extends MainTabFragment {
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				mIsAdding = false;
-				mGridAdapter.addAll(list);
+				mListAdapter.addAll(list);
 			}
 		});
 	}

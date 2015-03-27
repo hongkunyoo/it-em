@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/like_it_margin" >
+        android:layout_marginBottom="@dimen/content_big_margin" >
 
         <com.pinthecloud.item.view.CircleImageView
             android:id="@+id/row_like_it_profile_image"
@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_first"
-            android:layout_marginTop="@dimen/like_it_margin"
+            android:layout_marginTop="@dimen/content_big_margin"
             app:border_color="@color/line_color"
             app:border_width="@dimen/line_width" />
 

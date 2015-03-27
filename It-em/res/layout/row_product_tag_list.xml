@@ -5,12 +5,12 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/product_tag_content_margin"
+    android:paddingBottom="@dimen/content_margin"
     android:paddingEnd="@dimen/key_line_first"
     android:paddingLeft="@dimen/key_line_first"
     android:paddingRight="@dimen/key_line_first"
     android:paddingStart="@dimen/key_line_first"
-    android:paddingTop="@dimen/product_tag_content_margin" >
+    android:paddingTop="@dimen/content_margin" >
 
     <com.pinthecloud.item.view.ItTextView
         android:id="@+id/row_product_tag_name"

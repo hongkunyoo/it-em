@@ -80,18 +80,13 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 		holder.time.setText(noti.getCreateDateTime().getElapsedDateTime(mApp));
 		holder.receive.setText(noti.notiContent());
 		holder.content.setText(noti.getContent());
-
-		if(noti.getContent() != null && !noti.getContent().equals("")){
-			holder.content.setVisibility(View.VISIBLE);
-		} else {
-			holder.content.setVisibility(View.GONE);
-		}
+		holder.content.setVisibility(noti.getContent() != null && !noti.getContent().equals("") ? View.VISIBLE : View.GONE);
 	}
 
 
 	private void setButton(ViewHolder holder, final ItNotification noti){
 		holder.view.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ItemActivity.class);
@@ -100,24 +95,24 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 			}
 		});
 	}
-	
-	
+
+
 	private void setImage(ViewHolder holder, final ItNotification noti){
 		if(noti.getType().equals(ItNotification.TYPE.LikeIt.toString())){
 			holder.receiveImage.setVisibility(View.GONE);
-			
+
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-			.placeholder(R.drawable.profile_l_default_img)
+			.placeholder(R.drawable.profile_default_img)
 			.fit()
 			.into(holder.profileImage);
 		} else if(noti.getType().equals(ItNotification.TYPE.Reply.toString())){
 			holder.receiveImage.setVisibility(View.VISIBLE);
 			holder.receiveImage.setImageResource(R.drawable.noti_comment_ic);
-			
+
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
-			.placeholder(R.drawable.profile_l_default_img)
+			.placeholder(R.drawable.profile_default_img)
 			.fit()
 			.into(holder.profileImage);
 		} else if(noti.getType().equals(ItNotification.TYPE.ProductTag.toString())){
@@ -128,7 +123,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(noti.getRefId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.feed_loading_default_img)
-		.fit().centerCrop()
+		.fit()
 		.into(holder.itemImage);
 	}
 
@@ -137,8 +132,8 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 		mNotiList.addAll(notiList);
 		notifyDataSetChanged();
 	}
-	
-	
+
+
 	public void add(int position, ItNotification noti) {
 		mNotiList.add(position, noti);
 		notifyItemInserted(position);

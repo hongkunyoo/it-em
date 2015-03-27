@@ -19,12 +19,15 @@
     <string name="kakao_login">카카오로 로그인하기</string>
 
     <!-- Home -->
-    <string name="it">잇해요</string>
+    <string name="unfold">펼쳐보기</string>
 
     <!-- Item -->
+    <string name="like">좋아요</string>
     <string name="of">님의</string>
     <string name="delete">삭제</string>
     <string name="not_exist_item">삭제된 아이템 이에요.</string>
+    <string name="cancel_upload">이 아이템을 취소하실래요?</string>
+    <string name="not_cancel">취소하지 않기</string>
 
     <!-- Reply -->
     <string name="comments">댓글</string>
@@ -32,8 +35,8 @@
     <string name="previous_reply">모든 댓글 보기</string>
     <string name="first_reply">첫번째 댓글을 써보세요</string>
 
-    <!-- It -->
-    <string name="it_title">이 아이템을 잇한 사용자</string>
+    <!-- Like -->
+    <string name="like_user">이 아이템을 좋아하는 사용자</string>
 
     <!-- It User Page -->
     <string name="not_exist_user">이 사용자가 존재하지 않습니다.</string>
@@ -44,7 +47,7 @@
 
     <!-- My Item -->
     <string name="empty_my_item">올린 아이템이 없어요.\n자신만의 스타일을 공유해보세요!</string>
-    <string name="empty_it_item">잇 아이템이 없어요.\n좋은 아이템을 잇 해보세요!</string>
+    <string name="empty_like_item">좋아하는 아이템이 없어요.\n좋은 아이템을 찾아서 좋아요를 눌러보세요!</string>
 
     <!-- Product Tag -->
     <string name="product_tag">상품라벨</string>
@@ -60,7 +63,7 @@
     <string name="apply_link">지원링크</string>
 
     <!-- Upload -->
-    <string name="upload">업로드</string>
+    <string name="new_item">새 아이템</string>
     <string name="uploaded">아이템이 업로드 되었어요</string>
     <string name="description">설명</string>
     <string name="select_source">소스 선택</string>
@@ -70,9 +73,9 @@
     <string name="bad_brand_message">브랜드는 문자,숫자,밑줄만 허용돼요.</string>
 
     <!-- Gallery -->
-    <string name="select_picture">사진 선택</string>
+    <string name="select_album">앨범 선택</string>
     <string name="empty_gallery">갤러리가 비어있어요</string>
-    
+
     <!-- Profile Settings -->
     <string name="profile_settings">프로필 설정</string>
     <string name="nick_name">닉네임</string>
@@ -102,11 +105,12 @@
     <string name="bank_account_edited">은행 계좌가 수정되었어요.</string>
 
     <!-- Notification -->
-    <string name="noti_content">%1$s님이 %2$s %3$s.</string>
+    <string name="noti_general_content">%1$s님이 %2$s %3$s.</string>
+    <string name="noti_product_tag_content">%1$s %2$s.</string>
     <string name="noti_name_title_my">내</string>
-    <string name="noti_it">아이템을 좋아합니다</string>
+    <string name="noti_like">아이템을 좋아합니다</string>
     <string name="noti_reply">아이템에 댓글을 달았습니다</string>
-    <string name="noti_product_tag">아이템에 상품라벨을 달았습니다</string>
+    <string name="noti_product_tag">아이템에 상품라벨이 달렸습니다</string>
     <string name="new_noti">새로운 알람이 왔어요. 알람 화면을 새로고침 해보세요.</string>
     <string name="empty_noti">받은 알람이 없어요</string>
 
@@ -115,9 +119,9 @@
     <string name="logout_message">로그아웃 하시겠습니까?</string>
     <string name="settings">설정</string>
     <string name="notification">알람</string>
-    <string name="notification_my_item">내 아이템</string>
-    <string name="notification_it_item">내 잇 아이템</string>
-    <string name="notification_reply_item">댓글 단 아이템</string>
+    <string name="notification_my_item">내 아이템의 알람</string>
+    <string name="notification_like_item">좋아한 아이템의 알람</string>
+    <string name="notification_reply_item">댓글 단 아이템의 알람</string>
 
     <!-- ItDateTime -->
     <string name="second_ago">초 전</string>

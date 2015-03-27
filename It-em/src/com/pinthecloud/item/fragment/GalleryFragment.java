@@ -1,6 +1,5 @@
 package com.pinthecloud.item.fragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -29,13 +28,13 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 	private RecyclerView mGridView;
 	private GalleryAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
-	private List<Gallery> mGalleryList;
+	private GalleryFolder mFolder;
 
 
-	public static ItFragment newInstance(ArrayList<Gallery> galleryList) {
+	public static ItFragment newInstance(GalleryFolder folder) {
 		ItFragment fragment = new GalleryFragment();
 		Bundle bundle = new Bundle();
-		bundle.putParcelableArrayList(Gallery.INTENT_KEY, galleryList);
+		bundle.putParcelable(GalleryFolder.INTENT_KEY, folder);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -44,7 +43,7 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mGalleryList = getArguments().getParcelableArrayList(Gallery.INTENT_KEY);
+		mFolder = getArguments().getParcelable(GalleryFolder.INTENT_KEY);
 	}
 
 
@@ -102,12 +101,24 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 	@Override
 	public void clickGallery(Gallery gallery) {
 		mActivity.invalidateOptionsMenu();
-		setTitle();
+		setActionBar();
 	}
 
 
 	@Override
 	public void clickFolder(GalleryFolder folder) {
+	}
+
+
+	private void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		int selected = mGridAdapter.getSelected().size();
+		if(selected > 0){
+			int maxGallery = getResources().getInteger(R.integer.max_gallery_num);	
+			actionBar.setTitle(mFolder.getName() + "  (" + selected + "/" + maxGallery + ")");
+		} else {
+			actionBar.setTitle(mFolder.getName());
+		}
 	}
 
 
@@ -124,21 +135,8 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mGridAdapter = new GalleryAdapter(mGalleryList);
+		mGridAdapter = new GalleryAdapter(mFolder.getGalleryList());
 		mGridAdapter.setGalleryCallback(this);
 		mGridView.setAdapter(mGridAdapter);
-	}
-
-
-	private void setTitle(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		String selectPicture = getResources().getString(R.string.select_picture);
-		int selected = mGridAdapter.getSelected().size();
-		if(selected > 0){
-			int maxGallery = getResources().getInteger(R.integer.max_gallery_num);	
-			actionBar.setTitle(selectPicture + "  " + selected + "/" + maxGallery);
-		} else {
-			actionBar.setTitle(selectPicture);
-		}
 	}
 }

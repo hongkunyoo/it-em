@@ -11,13 +11,13 @@
         android:layout_height="@dimen/row_height" >
 
         <com.pinthecloud.item.view.ItTextView
-            android:id="@+id/like_it_frag_title"
+            android:id="@+id/like_frag_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_first"
-            android:text="@string/it_title"
+            android:text="@string/like_user"
             android:textColor="@color/brand_text_color"
             android:textStyle="bold"
             app:textType="subhead" />
@@ -41,7 +41,7 @@
             android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/like_it_frag_list"
+            android:id="@+id/like_frag_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none" />

@@ -15,14 +15,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/be_pro_content_margin"
+        android:layout_marginBottom="@dimen/layout_margin"
         android:contentDescription="@string/be_pro"
         android:src="@drawable/bepro_badge_img" />
 
     <com.pinthecloud.item.view.ItTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/be_pro_content_margin"
+        android:layout_marginBottom="@dimen/layout_margin"
         android:gravity="center"
         android:text="@string/be_pro_description"
         android:textColor="@android:color/white"
@@ -32,7 +32,7 @@
         android:id="@+id/be_pro_apply_editor"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/be_pro_homepage_height"
-        android:layout_marginBottom="@dimen/be_pro_code_margin"
+        android:layout_marginBottom="@dimen/content_big_margin"
         android:background="@drawable/bepro_mail_bg"
         android:gravity="center"
         android:text="@string/apply_link"
@@ -43,7 +43,7 @@
         android:id="@+id/be_pro_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/be_pro_code_margin"
+        android:layout_marginBottom="@dimen/content_big_margin"
         android:background="@drawable/edit_text_line"
         android:ems="10"
         android:gravity="center"

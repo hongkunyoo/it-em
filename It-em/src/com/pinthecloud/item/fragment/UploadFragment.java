@@ -176,7 +176,7 @@ public class UploadFragment extends ItFragment {
 
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle(getResources().getString(R.string.upload));
+		actionBar.setTitle(getResources().getString(R.string.new_item));
 	}
 	
 	
@@ -381,20 +381,10 @@ public class UploadFragment extends ItFragment {
 
 
 	private void uploadItemImage(final Object obj, Item item, String itemImagePath, Bitmap itemImageBitmap){
-		AsyncChainer.waitChain(3);
+		AsyncChainer.waitChain(2);
 
 		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId(),
 				itemImageBitmap, new EntityCallback<String>() {
-
-			@Override
-			public void onCompleted(String entity) {
-				AsyncChainer.notifyNext(obj);
-			}
-		});
-
-		Bitmap itemPreviewImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH);
-		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
-				itemPreviewImageBitmap, new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {

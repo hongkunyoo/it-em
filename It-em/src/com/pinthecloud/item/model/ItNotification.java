@@ -98,25 +98,30 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 	public String notiContent(){
 		ItApplication app = ItApplication.getInstance();
 		ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
-		
+
 		String refWhoMade = "";
 		if(getRefWhoMadeId().equals(myItUser.getId())){
 			refWhoMade = app.getResources().getString(R.string.noti_name_title_my);
 		} else {
 			refWhoMade = getRefWhoMade() + app.getResources().getString(R.string.of);
 		}
-		
+
 		String type = "";
 		if(getType().equals(ItNotification.TYPE.LikeIt.toString())){
-			type = app.getResources().getString(R.string.noti_it);
+			type = app.getResources().getString(R.string.noti_like);
 		} else if(getType().equals(ItNotification.TYPE.Reply.toString())){
 			type = app.getResources().getString(R.string.noti_reply);
 		} else if(getType().equals(ItNotification.TYPE.ProductTag.toString())){
 			type = app.getResources().getString(R.string.noti_product_tag);
 		}
-		
-		String content = String.format(Locale.US, app.getResources().getString(R.string.noti_content),
-				getWhoMade(), refWhoMade, type);
+
+		String content = "";
+		if(getType().equals(ItNotification.TYPE.ProductTag.toString())){
+			content = String.format(Locale.US, app.getResources().getString(R.string.noti_product_tag_content), refWhoMade, type);
+		} else {
+			content = String.format(Locale.US, app.getResources().getString(R.string.noti_general_content), getWhoMade(), refWhoMade, type);
+		}
+
 		return content;
 	}
 
@@ -129,8 +134,8 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		item.setImageHeight(imageHeight);
 		return item;
 	}
-	
-	
+
+
 	/*
 	 * Parcelable
 	 */

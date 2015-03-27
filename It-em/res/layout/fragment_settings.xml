@@ -50,7 +50,7 @@
         android:id="@+id/settings_pro_settings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
-        android:layout_marginBottom="@dimen/settings_layout_margin"
+        android:layout_marginBottom="@dimen/layout_margin"
         android:background="@drawable/list_white_selector"
         android:clickable="true" >
 
@@ -98,8 +98,8 @@
 
         <com.pinthecloud.item.view.ItTextView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/settings_row_height"
-            android:layout_marginBottom="@dimen/settings_content_margin"
+            android:layout_height="@dimen/row_small_height"
+            android:layout_marginBottom="@dimen/content_big_margin"
             android:gravity="center_vertical"
             android:text="@string/notification"
             android:textColor="@color/gray_dark"
@@ -107,7 +107,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_row_height" >
+            android:layout_height="@dimen/row_small_height" >
 
             <com.pinthecloud.item.view.ItTextView
                 android:layout_width="wrap_content"
@@ -134,13 +134,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_row_height" >
+            android:layout_height="@dimen/row_small_height" >
 
             <com.pinthecloud.item.view.ItTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/notification_it_item"
+                android:text="@string/notification_like_item"
                 android:textColor="@color/brand_text_color"
                 android:textStyle="bold"
                 app:textType="body" />
@@ -161,7 +161,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_row_height" >
+            android:layout_height="@dimen/row_small_height" >
 
             <com.pinthecloud.item.view.ItTextView
                 android:layout_width="wrap_content"
@@ -190,7 +190,7 @@
     <com.pinthecloud.item.view.ItTextView
         android:id="@+id/settings_nick_name"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/settings_row_height"
+        android:layout_height="@dimen/row_small_height"
         android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginStart="@dimen/key_line_first"
         android:gravity="center_vertical"
