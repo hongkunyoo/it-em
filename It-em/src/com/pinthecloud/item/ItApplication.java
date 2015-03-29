@@ -3,6 +3,7 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
@@ -26,15 +27,15 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.squareup.picasso.Picasso;
 
-@ReportsCrashes(formKey = "", mailTo="item@pinthecloud.com", 
-mode = ReportingInteractionMode.TOAST, resToastText=R.string.error_report_message)
+@ReportsCrashes(formKey = "", mailTo="item@pinthecloud.com", mode = ReportingInteractionMode.TOAST, resToastText=R.string.error_report_message,
+customReportContent = {ReportField.APP_VERSION_NAME, ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.STACK_TRACE, ReportField.LOGCAT})
 public class ItApplication extends Application {
 
 	// Admin
 	public static int REAL = 0;
 	public static int TEST = 1;
 	private ArrayList<String> adminList;
-	
+
 	// Windows Azure Mobile Service Keys
 	private final String AZURE_REAL_URL = "https://it-em.azure-mobile.net/";
 	private final String AZURE_REAL_KEY = "TnmDvNkgfghvrcXjoQhRjEdcyFCEzd99";
@@ -70,7 +71,7 @@ public class ItApplication extends Application {
 
 		//		ACRA.init(app);
 		com.kakao.Session.initialize(this, AuthType.KAKAO_TALK);
-		
+
 		mClient = getMobileClient();
 		gaHelper = getGaHelper();
 		picasso = getPicasso();

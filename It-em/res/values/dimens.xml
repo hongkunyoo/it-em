@@ -3,6 +3,7 @@
     <!-- Common -->
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">1dp</dimen>
+    <dimen name="line_thick_width">2dp</dimen>
     <dimen name="dialog_margin">24dp</dimen>
     <dimen name="row_small_height">36dp</dimen>
     <dimen name="row_height">48dp</dimen>
@@ -36,10 +37,6 @@
     
     <!-- Profile Image -->
     <dimen name="profile_image_width">212dp</dimen>
-
-    <!-- My Item -->
-    <dimen name="my_item_margin">1dp</dimen>
-    <dimen name="my_item_spacing">2dp</dimen>
 
     <!-- Profile Settings -->
     <dimen name="profile_settings_image_width">128dp</dimen>

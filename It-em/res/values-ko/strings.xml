@@ -6,8 +6,8 @@
 
     <!-- Common Sentence -->
     <string name="network_unavailable_message">인터넷이 불안정합니다. 네트워크 상태를 확인해 주세요.</string>
-    <string name="error_message">이런! 에러가 났어요. 다시 시도해 주세요.</string>
-    <string name="error_report_message">이런! 에러가 났어요. 이것을 개발자들에게 알려주세요.</string>
+    <string name="error_message">서버 에러가 났어요! 다시 시도해 주세요.</string>
+    <string name="error_report_message">내부에서 에러가 났어요! 이것을 개발자들에게 알려주세요.</string>
     <string name="update_app_message">새로운 버전이 나왔어요. 업데이트를 해주세요.</string>
     <string name="google_play_services_message">구글 플레이 서비스가 설치되어 있는지 확인해주세요.</string>
 

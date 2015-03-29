@@ -3,7 +3,6 @@ package com.pinthecloud.item.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
@@ -28,6 +27,7 @@ import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.SettingsActivity;
+import com.pinthecloud.item.activity.WebViewActivity;
 import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -215,8 +215,10 @@ public class ItUserPageFragment extends MainTabFragment {
 				if(!webSite.matches(webSiteRegx)){
 					webSite = "http://" + webSite;
 				}
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
-				startActivity(intent);
+				
+				Intent intent = new Intent(mActivity, WebViewActivity.class);
+				intent.putExtra(WebViewActivity.WEB_VIEW_INTENT_KEY, webSite);
+				mActivity.startActivity(intent);
 			}
 		});
 

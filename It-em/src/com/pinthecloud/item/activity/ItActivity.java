@@ -38,7 +38,7 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 	protected GAHelper mGaHelper;
-	
+
 	protected ItFragment mCurrentFragment;
 	public abstract View getToolbarLayout();
 
@@ -101,17 +101,17 @@ public abstract class ItActivity extends ActionBarActivity {
 
 	public void setFragment(ItFragment fragment) {
 		this.mCurrentFragment = fragment;
-		
+
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
 	}
-	
-	
+
+
 	public void replaceFragment(ItFragment fragment, boolean addToBackStack,
 			int enter, int exit, int popEnter, int popExit) {
 		this.mCurrentFragment = fragment;
-		
+
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.setCustomAnimations(enter, exit, popEnter, popExit);
 		transaction.replace(R.id.activity_container, fragment);
@@ -136,8 +136,7 @@ public abstract class ItActivity extends ActionBarActivity {
 
 				@Override
 				public void doPositiveThing(Bundle bundle) {
-					android.os.Process.killProcess(android.os.Process.myPid());
-					System.exit(1);
+					// Do nothing
 				}
 				@Override
 				public void doNegativeThing(Bundle bundle) {
