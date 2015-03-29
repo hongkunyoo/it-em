@@ -2,11 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="@dimen/my_item_margin"
-    android:layout_marginLeft="@dimen/my_item_margin"
-    android:layout_marginRight="@dimen/my_item_margin"
-    android:layout_marginStart="@dimen/my_item_margin"
-    android:layout_marginTop="@dimen/my_item_spacing"
+    android:layout_marginEnd="@dimen/line_width"
+    android:layout_marginLeft="@dimen/line_width"
+    android:layout_marginRight="@dimen/line_width"
+    android:layout_marginStart="@dimen/line_width"
+    android:layout_marginTop="@dimen/line_thick_width"
     android:foreground="@drawable/list_transparent_selector" >
 
     <com.pinthecloud.item.view.SquareImageView

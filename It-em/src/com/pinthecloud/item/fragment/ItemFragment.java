@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +33,7 @@ import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
+import com.pinthecloud.item.activity.WebViewActivity;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertDialog;
@@ -314,7 +314,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				if(!webSite.matches(webSiteRegx)){
 					webSite = "http://" + webSite;
 				}
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
+
+				Intent intent = new Intent(mActivity, WebViewActivity.class);
+				intent.putExtra(WebViewActivity.WEB_VIEW_INTENT_KEY, webSite);
 				startActivity(intent);
 			}
 		});

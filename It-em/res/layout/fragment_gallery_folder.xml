@@ -20,11 +20,11 @@
         android:id="@+id/gallery_folder_frag_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/my_item_spacing"
-        android:paddingEnd="@dimen/my_item_margin"
-        android:paddingLeft="@dimen/my_item_margin"
-        android:paddingRight="@dimen/my_item_margin"
-        android:paddingStart="@dimen/my_item_margin"
+        android:paddingBottom="@dimen/line_thick_width"
+        android:paddingEnd="@dimen/line_width"
+        android:paddingLeft="@dimen/line_width"
+        android:paddingRight="@dimen/line_width"
+        android:paddingStart="@dimen/line_width"
         android:scrollbars="none" />
 
 </RelativeLayout>
