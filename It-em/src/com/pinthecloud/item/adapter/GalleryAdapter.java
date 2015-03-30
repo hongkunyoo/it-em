@@ -3,6 +3,7 @@ package com.pinthecloud.item.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,24 +14,23 @@ import android.widget.ImageView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.interfaces.GalleryCallback;
+import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.model.Gallery;
+import com.pinthecloud.item.model.GalleryFolder;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
 	private ItApplication mApp;
+	private ItActivity mActivity;
+	private GalleryFolder mFolder;
 	private List<Gallery> mGalleryList;
 
-	private GalleryCallback mGalleryCallback;
 
-	public void setGalleryCallback(GalleryCallback galleryCallback) {
-		this.mGalleryCallback = galleryCallback;
-	}
-
-
-	public GalleryAdapter(List<Gallery> galleryList) {
+	public GalleryAdapter(ItActivity activity, GalleryFolder folder) {
 		this.mApp = ItApplication.getInstance();
-		this.mGalleryList = galleryList;
+		this.mActivity = activity;
+		this.mFolder = folder;
+		this.mGalleryList = folder.getGalleryList();
 	}
 
 
@@ -68,17 +68,25 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 		return mGalleryList.size();
 	}
 
-	
+
 	private void setComponent(final ViewHolder holder, final Gallery gallery){
 		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				int maxGallery = mApp.getResources().getInteger(R.integer.max_gallery_num);
+				int maxGallery = mActivity.getResources().getInteger(R.integer.gallery_max_num);
 				if(getSelected().size() < maxGallery || gallery.isSeleted()){
 					gallery.setSeleted(!gallery.isSeleted());
-					holder.imageSelected.setSelected(gallery.isSeleted());
-					mGalleryCallback.clickGallery(gallery);
+					holder.imageSelected.setVisibility(gallery.isSeleted() ? View.VISIBLE : View.GONE);
+
+					mActivity.invalidateOptionsMenu();
+					ActionBar actionBar = mActivity.getSupportActionBar();
+					int selected = getSelected().size();
+					if(selected > 0){
+						actionBar.setTitle(mFolder.getName() + "  (" + selected + "/" + maxGallery + ")");
+					} else {
+						actionBar.setTitle(mFolder.getName());
+					}
 				}
 			}
 		});
@@ -92,10 +100,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 		.fit().centerCrop()
 		.into(holder.image);
 
-		holder.imageSelected.setSelected(gallery.isSeleted());
+		holder.imageSelected.setVisibility(gallery.isSeleted() ? View.VISIBLE : View.GONE);
 	}
-	
-	
+
+
 	public void addAll(List<Gallery> galleryList) {
 		mGalleryList.addAll(galleryList);
 		notifyDataSetChanged();

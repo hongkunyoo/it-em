@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/row_upload_image"
+        android:layout_width="@dimen/upload_image_width"
+        android:layout_height="@dimen/upload_image_width"
+        android:layout_margin="@dimen/content_big_margin"
+        app:riv_corner_radius="@dimen/content_margin" />
+
+    <ImageButton
+        android:id="@+id/row_upload_image_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/delete"
+        android:src="@drawable/upload_image_delete_button" />
+
+</RelativeLayout>

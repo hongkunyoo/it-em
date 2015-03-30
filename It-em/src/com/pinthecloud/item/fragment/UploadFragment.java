@@ -5,13 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -26,53 +24,48 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItemImageActivity;
-import com.pinthecloud.item.adapter.BrandInfoListAdapter;
+import com.pinthecloud.item.adapter.BrandListAdapter;
+import com.pinthecloud.item.adapter.UploadImageGridAdapter;
 import com.pinthecloud.item.dialog.CategoryDialog;
-import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
-import com.pinthecloud.item.model.HashTag;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
-import com.pinthecloud.item.util.FileUtil;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.TextUtil;
+import com.pinthecloud.item.util.ItLog;
+import com.pinthecloud.item.util.ViewUtil;
 
 public class UploadFragment extends ItFragment {
 
 	public static final String CATEGORY_INTENT_KEY = "CATEGORY_INTENT_KEY";
 
-	private String[] mPaths;
-	private Uri mItemImageUri;
+	private RecyclerView mImageGridView;
+	private UploadImageGridAdapter mImageGridAdapter;
+	private GridLayoutManager mImageGridLayoutManager;
+	private List<String> mImageList;
 
-	private ImageView mItemImage;
-	private ImageButton mItemImageDelete;
 	private EditText mContent;
 
-	private Button mBrandInfoAddButton;
-	private RecyclerView mListView;
-	private BrandInfoListAdapter mListAdapter;
-	private LinearLayoutManager mListLayoutManager;
-	private List<BrandInfo> mBrandInfoList;
+	private Button mBrandAddButton;
+	private RecyclerView mBrandListView;
+	private BrandListAdapter mBrandListAdapter;
+	private LinearLayoutManager mBrandListLayoutManager;
+	private List<Brand> mBrandList;
 
 	private ItUser mMyItUser;
 
 
-	public static ItFragment newInstance(String[] paths) {
+	public static ItFragment newInstance(ArrayList<String> pathList) {
 		ItFragment fragment = new UploadFragment();
 		Bundle bundle = new Bundle();
-		bundle.putStringArray(GalleryFragment.GALLERY_PATHS_KEY, paths);
+		bundle.putStringArrayList(GalleryFragment.GALLERY_PATHS_KEY, pathList);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -81,8 +74,11 @@ public class UploadFragment extends ItFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		ItLog.log("onCreate");
+
 		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-		mPaths = getArguments().getStringArray(GalleryFragment.GALLERY_PATHS_KEY);
+		mImageList = getArguments().getStringArrayList(GalleryFragment.GALLERY_PATHS_KEY);
 	}
 
 
@@ -91,15 +87,18 @@ public class UploadFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_upload, container, false);
-		
+
+		ItLog.log("onCreateView");
+
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
 		setActionBar();
 		findComponent(view);
 		setComponent();
 		setButton();
-		setList();
-		
+		setImageGrid();
+		setBrandList();
+
 		return view;
 	}
 
@@ -108,35 +107,28 @@ public class UploadFragment extends ItFragment {
 	public void onStart() {
 		super.onStart();
 
-		mApp.getPicasso()
-		.load(mItemImageUri)
-		.placeholder(R.drawable.upload_thumbnail_default_img)
-		.fit().centerCrop()
-		.into(mItemImage);
+		ItLog.log("onStart");
 
-		mItemImageDelete.setVisibility(mItemImageUri != null ? View.VISIBLE : View.GONE);
+		//		mApp.getPicasso()
+		//		.load(mItemImageUri)
+		//		.placeholder(R.drawable.upload_thumbnail_default_img)
+		//		.fit().centerCrop()
+		//		.into(mItemImage);
 	}
 
 
-	@Override
-	public void onStop() {
-		super.onStop();
-		mItemImage.setImageBitmap(null);
-	}
-
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch(requestCode){
-		case FileUtil.GALLERY:
-			if (resultCode == Activity.RESULT_OK){
-				mItemImageUri = data.getData();
-				mActivity.invalidateOptionsMenu();
-			}
-			break;
-		}
-	}
+	//	@Override
+	//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	//		super.onActivityResult(requestCode, resultCode, data);
+	//		switch(requestCode){
+	//		case FileUtil.GALLERY:
+	//			if (resultCode == Activity.RESULT_OK){
+	//				mItemImageUri = data.getData();
+	//				mActivity.invalidateOptionsMenu();
+	//			}
+	//			break;
+	//		}
+	//	}
 
 
 	@Override
@@ -178,14 +170,13 @@ public class UploadFragment extends ItFragment {
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setTitle(getResources().getString(R.string.new_item));
 	}
-	
-	
+
+
 	private void findComponent(View view){
-		mItemImage = (ImageView)view.findViewById(R.id.upload_frag_item_image);
-		mItemImageDelete = (ImageButton)view.findViewById(R.id.upload_frag_item_image_delete);
+		mImageGridView = (RecyclerView)view.findViewById(R.id.upload_frag_image_grid);
 		mContent = (EditText)view.findViewById(R.id.upload_frag_content);
-		mBrandInfoAddButton = (Button)view.findViewById(R.id.upload_frag_brand_info_add);
-		mListView = (RecyclerView)view.findViewById(R.id.upload_frag_brand_info_list);
+		mBrandAddButton = (Button)view.findViewById(R.id.upload_frag_brand_add);
+		mBrandListView = (RecyclerView)view.findViewById(R.id.upload_frag_brand_list);
 	}
 
 
@@ -208,39 +199,39 @@ public class UploadFragment extends ItFragment {
 
 
 	private void setButton(){
-		mItemImage.setOnClickListener(new OnClickListener() {
+		//		mItemImage.setOnClickListener(new OnClickListener() {
+		//
+		//			@Override
+		//			public void onClick(View v) {
+		//				if(mItemImageUri == null){
+		//					String[] itemList = getResources().getStringArray(R.array.upload_image_select_array);
+		//					DialogCallback[] callbacks = getDialogCallbacks(itemList);
+		//
+		//					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+		//					listDialog.setCallbacks(callbacks);
+		//					listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+		//				} else {
+		//					Intent intent = new Intent(mActivity, ItemImageActivity.class);
+		//					intent.putExtra(Item.INTENT_KEY, mItemImageUri);
+		//					startActivity(intent);
+		//				}
+		//			}
+		//		});
+		//
+		//		mItemImageDelete.setOnClickListener(new OnClickListener() {
+		//
+		//			@Override
+		//			public void onClick(View v) {
+		//				// Set profile image default
+		//				mItemImageUri = null;
+		//				mItemImage.setImageResource(R.drawable.upload_thumbnail_default_img);
+		//
+		//				mActivity.invalidateOptionsMenu();
+		//				mItemImageDelete.setVisibility(View.GONE);
+		//			}
+		//		});
 
-			@Override
-			public void onClick(View v) {
-				if(mItemImageUri == null){
-					String[] itemList = getResources().getStringArray(R.array.upload_image_select_array);
-					DialogCallback[] callbacks = getDialogCallbacks(itemList);
-
-					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
-					listDialog.setCallbacks(callbacks);
-					listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-				} else {
-					Intent intent = new Intent(mActivity, ItemImageActivity.class);
-					intent.putExtra(Item.INTENT_KEY, mItemImageUri);
-					startActivity(intent);
-				}
-			}
-		});
-
-		mItemImageDelete.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// Set profile image default
-				mItemImageUri = null;
-				mItemImage.setImageResource(R.drawable.upload_thumbnail_default_img);
-
-				mActivity.invalidateOptionsMenu();
-				mItemImageDelete.setVisibility(View.GONE);
-			}
-		});
-
-		mBrandInfoAddButton.setOnClickListener(new OnClickListener() {
+		mBrandAddButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -250,8 +241,8 @@ public class UploadFragment extends ItFragment {
 					@Override
 					public void doPositiveThing(Bundle bundle) {
 						String category = bundle.getString(CATEGORY_INTENT_KEY);
-						mListAdapter.add(mBrandInfoList.size(), new BrandInfo(category));
-						mListView.smoothScrollToPosition(mBrandInfoList.size()-1);
+						mBrandListAdapter.add(mBrandList.size(), new Brand(category));
+						mBrandListView.smoothScrollToPosition(mBrandList.size()-1);
 						categoryDialog.dismiss();
 					}
 					@Override
@@ -264,111 +255,125 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void setList(){
-		mListView.setHasFixedSize(true);
+	private void setImageGrid(){
+		mImageGridView.setHasFixedSize(true);
 
-		mListLayoutManager = new LinearLayoutManager(mActivity);
-		mListView.setLayoutManager(mListLayoutManager);
-		mListView.setItemAnimator(new DefaultItemAnimator());
+		int gridColumnNum = getResources().getInteger(R.integer.gallery_grid_column_num);
+		mImageGridLayoutManager = new GridLayoutManager(mActivity, gridColumnNum);
+		mImageGridView.setLayoutManager(mImageGridLayoutManager);
+		mImageGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mBrandInfoList = new ArrayList<BrandInfo>();
-		mListAdapter = new BrandInfoListAdapter(mBrandInfoList);
-		mListView.setAdapter(mListAdapter);
+		mImageGridAdapter = new UploadImageGridAdapter(mActivity, mImageGridView, mImageList);
+		mImageGridView.setAdapter(mImageGridAdapter);
+
+		ViewUtil.setListHeightBasedOnChildren(mImageGridView, mImageGridAdapter.getItemCount()/gridColumnNum);
 	}
 
 
-	private DialogCallback[] getDialogCallbacks(String[] itemList){
-		DialogCallback[] callbacks = new DialogCallback[itemList.length];
+	private void setBrandList(){
+		mBrandListView.setHasFixedSize(true);
 
-		for(int i=0 ; i<itemList.length ; i++){
-			switch(i){
-			case 0:
-				callbacks[0] = new DialogCallback() {
+		mBrandListLayoutManager = new LinearLayoutManager(mActivity);
+		mBrandListView.setLayoutManager(mBrandListLayoutManager);
+		mBrandListView.setItemAnimator(new DefaultItemAnimator());
 
-					@Override
-					public void doPositiveThing(Bundle bundle) {
-						FileUtil.getMediaFromGallery(mThisFragment);
-					}
-					@Override
-					public void doNegativeThing(Bundle bundle) {
-					}
-				};
-				break;
-			}
-		}
-
-		return callbacks;
+		mBrandList = new ArrayList<Brand>();
+		mBrandListAdapter = new BrandListAdapter(mBrandList);
+		mBrandListView.setAdapter(mBrandListAdapter);
 	}
+
+
+	//	private DialogCallback[] getDialogCallbacks(String[] itemList){
+	//		DialogCallback[] callbacks = new DialogCallback[itemList.length];
+	//
+	//		for(int i=0 ; i<itemList.length ; i++){
+	//			switch(i){
+	//			case 0:
+	//				callbacks[0] = new DialogCallback() {
+	//
+	//					@Override
+	//					public void doPositiveThing(Bundle bundle) {
+	//						FileUtil.getMediaFromGallery(mThisFragment);
+	//					}
+	//					@Override
+	//					public void doNegativeThing(Bundle bundle) {
+	//					}
+	//				};
+	//				break;
+	//			}
+	//		}
+	//
+	//		return callbacks;
+	//	}
 
 
 	private void uploadItem(){
-		mApp.showProgressDialog(mActivity);
-
-		final String itemImagePath = FileUtil.getMediaPathFromGalleryUri(mActivity, mItemImageUri);
-		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
-
-		String content = mContent.getText().toString() + (mBrandInfoList.size()>0 ? "\n\n" : "")
-				+ getBrandInfoContent(mBrandInfoList);
-		final Item item = new Item(content, mMyItUser.getNickName(), mMyItUser.getId(),
-				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
-
-		final List<HashTag> tagList = new ArrayList<HashTag>();
-		List<String> hashTags = TextUtil.getSpanBodyList(content);
-		for(String hashTag : hashTags){
-			tagList.add(new HashTag(hashTag));
-		}
-
-		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-			@Override
-			public void doNext(final Object obj, Object... params) {
-				mAimHelper.addItem(item, tagList, new EntityCallback<Item>() {
-
-					@Override
-					public void onCompleted(Item entity) {
-						item.setId(entity.getId());
-						item.setRawCreateDateTime(entity.getRawCreateDateTime());
-						AsyncChainer.notifyNext(obj);
-					}
-				});
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(final Object obj, Object... params) {
-				uploadItemImage(obj, item, itemImagePath, itemImageBitmap);
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(Object obj, Object... params) {
-				mApp.dismissProgressDialog();
-				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
-
-				Intent intent = new Intent();
-				intent.putExtra(Item.INTENT_KEY, item);
-				mActivity.setResult(Activity.RESULT_OK, intent);
-				mActivity.finish();
-			}
-		});
+		//		mApp.showProgressDialog(mActivity);
+		//
+		//		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
+		//
+		//		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "")
+		//				+ getBrandInfoContent(mBrandList);
+		//		final Item item = new Item(content, mMyItUser.getNickName(), mMyItUser.getId(),
+		//				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
+		//
+		//		final List<HashTag> tagList = new ArrayList<HashTag>();
+		//		List<String> hashTags = TextUtil.getSpanBodyList(content);
+		//		for(String hashTag : hashTags){
+		//			tagList.add(new HashTag(hashTag));
+		//		}
+		//
+		//		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+		//
+		//			@Override
+		//			public void doNext(final Object obj, Object... params) {
+		//				mAimHelper.addItem(item, tagList, new EntityCallback<Item>() {
+		//
+		//					@Override
+		//					public void onCompleted(Item entity) {
+		//						item.setId(entity.getId());
+		//						item.setRawCreateDateTime(entity.getRawCreateDateTime());
+		//						AsyncChainer.notifyNext(obj);
+		//					}
+		//				});
+		//			}
+		//		}, new Chainable(){
+		//
+		//			@Override
+		//			public void doNext(final Object obj, Object... params) {
+		//				uploadItemImage(obj, item, itemImagePath, itemImageBitmap);
+		//			}
+		//		}, new Chainable(){
+		//
+		//			@Override
+		//			public void doNext(Object obj, Object... params) {
+		//				mApp.dismissProgressDialog();
+		//				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
+		//
+		//				Intent intent = new Intent();
+		//				intent.putExtra(Item.INTENT_KEY, item);
+		//				mActivity.setResult(Activity.RESULT_OK, intent);
+		//				mActivity.finish();
+		//			}
+		//		});
 	}
 
 
-	private String getBrandInfoContent(List<BrandInfo> originList){
-		List<BrandInfo> brandInfoList = new ArrayList<BrandInfo>();
+	private String getBrandInfoContent(List<Brand> originList){
+		List<Brand> brandInfoList = new ArrayList<Brand>();
 		brandInfoList.addAll(originList);
 
-		Collections.sort(brandInfoList, new Comparator<BrandInfo>(){
+		Collections.sort(brandInfoList, new Comparator<Brand>(){
 
 			@Override
-			public int compare(BrandInfo lhs, BrandInfo rhs) {
+			public int compare(Brand lhs, Brand rhs) {
 				return lhs.getCategory().compareToIgnoreCase(rhs.getCategory());
 			}
 		});
 
 		String content = "";
 		List<String> categoryList = new ArrayList<String>();
-		for(BrandInfo brandInfo : brandInfoList){
+		for(Brand brandInfo : brandInfoList){
 			if(!categoryList.contains(brandInfo.getCategory())){
 				categoryList.add(brandInfo.getCategory());
 				content = content + brandInfo.getCategory() + " ";
@@ -406,13 +411,13 @@ public class UploadFragment extends ItFragment {
 
 	private void trimContent(){
 		mContent.setText(mContent.getText().toString().trim());
-		for(int i=0 ; i<mBrandInfoList.size() ; i++){
-			if(mBrandInfoList.get(i).getBrand() == null || mBrandInfoList.get(i).getBrand().equals("")){
-				mListAdapter.remove(mBrandInfoList.get(i));
+		for(int i=0 ; i<mBrandList.size() ; i++){
+			if(mBrandList.get(i).getBrand() == null || mBrandList.get(i).getBrand().equals("")){
+				mBrandListAdapter.remove(mBrandList.get(i));
 				i--;
 			} else {
-				mBrandInfoList.get(i).setBrand(
-						mBrandInfoList.get(i).getBrand().trim().replace(" ", "_").replace("\n", ""));
+				mBrandList.get(i).setBrand(
+						mBrandList.get(i).getBrand().trim().replace(" ", "_").replace("\n", ""));
 			}
 		}
 	}
@@ -420,8 +425,8 @@ public class UploadFragment extends ItFragment {
 
 	private String checkBrand(){
 		String brandRegx = "\\w+";
-		for(int i=0 ; i<mBrandInfoList.size() ; i++){
-			String brand = mBrandInfoList.get(i).getBrand(); 
+		for(int i=0 ; i<mBrandList.size() ; i++){
+			String brand = mBrandList.get(i).getBrand(); 
 			if(!brand.matches(brandRegx)){
 				return getResources().getString(R.string.bad_brand_message) + "\n" + brand;
 			}
@@ -431,18 +436,19 @@ public class UploadFragment extends ItFragment {
 
 
 	private boolean isSubmitEnable(){
-		return mContent.getText().toString().trim().length() > 0 && mItemImageUri != null;
+		return mContent.getText().toString().trim().length() > 0 
+				&& mImageList.size() > 0;
 	}
 
 
-	public class BrandInfo {
+	public class Brand {
 		private String category;
 		private String brand;
 
-		public BrandInfo() {
+		public Brand() {
 			super();
 		}
-		public BrandInfo(String category) {
+		public Brand(String category) {
 			super();
 			this.category = category;
 		}

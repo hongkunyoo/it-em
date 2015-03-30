@@ -86,6 +86,7 @@
     <!-- Gallery -->
     <string name="select_album">Select Album</string>
     <string name="empty_gallery">Gallery is empty</string>
+    <string name="gallery">Gallery</string>
     
     <!-- Profile Settings -->
     <string name="profile_settings">Profile Settings</string>

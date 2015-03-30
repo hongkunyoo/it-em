@@ -3,7 +3,7 @@
 
     <!-- Custom Gallery -->
     <integer name="gallery_grid_column_num">3</integer>
-    <integer name="max_gallery_num">5</integer>
+    <integer name="gallery_max_num">6</integer>
 
     <!-- My Item -->
     <integer name="my_item_grid_column_num">3</integer>
@@ -15,7 +15,7 @@
     <integer name="item_display_reply_num">2</integer>
 
     <!-- Upload -->
-    <integer name="brand_info_max_length">15</integer>
+    <integer name="brand_max_length">15</integer>
 
     <!-- Profile Settings -->
     <integer name="nick_name_min_length">2</integer>

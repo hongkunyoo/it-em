@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/feed_label_btn_enabled" android:state_activated="false"/>
-    <item android:drawable="@drawable/feed_label_btn_pressed" android:state_activated="true" android:state_pressed="true"/>
-    <item android:drawable="@drawable/feed_label_btn" android:state_activated="true"/>
+    <item android:drawable="@drawable/general_green_btn_bg_disabled" android:state_activated="false"/>
+    <item android:drawable="@drawable/general_green_btn_bg_pressed" android:state_activated="true" android:state_pressed="true"/>
+    <item android:drawable="@drawable/general_green_btn_bg" android:state_activated="true"/>
 
 </selector>

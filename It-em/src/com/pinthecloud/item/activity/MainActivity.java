@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.ItConstant;
@@ -20,8 +19,6 @@ import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MainActivity extends ItActivity {
 
-	private final int MAX_NOTI_NUMBER = 99;
-
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
 	private MainPagerAdapter mViewPagerAdapter;
@@ -32,7 +29,7 @@ public class MainActivity extends ItActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		findComponent();
 		setViewPager();
 		setTab();
@@ -113,14 +110,13 @@ public class MainActivity extends ItActivity {
 
 	private void setNotiTab(){
 		View tab = mTab.getTab(MainPagerAdapter.TAB.NOTI.ordinal());
-		final TextView number = (TextView)tab.findViewById(R.id.tab_main_number);
+		final ImageView newNoti = (ImageView)tab.findViewById(R.id.tab_main_new_noti);
 		final int notiNumber = mPrefHelper.getInt(ItConstant.NOTIFICATION_NUMBER_KEY);
 		runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
-				number.setText(notiNumber > MAX_NOTI_NUMBER ? "+"+MAX_NOTI_NUMBER : ""+notiNumber);
-				number.setVisibility(notiNumber > 0 ? View.VISIBLE : View.GONE);
+				newNoti.setVisibility(notiNumber > 0 ? View.VISIBLE : View.GONE);
 			}
 		});
 	}
