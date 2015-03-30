@@ -17,11 +17,10 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.GalleryFolderAdapter;
-import com.pinthecloud.item.interfaces.GalleryCallback;
 import com.pinthecloud.item.model.Gallery;
 import com.pinthecloud.item.model.GalleryFolder;
 
-public class GalleryFolderFragment extends ItFragment implements GalleryCallback {
+public class GalleryFolderFragment extends ItFragment {
 
 	private TextView mEmptyView;
 	private RecyclerView mListView;
@@ -51,18 +50,6 @@ public class GalleryFolderFragment extends ItFragment implements GalleryCallback
 	}
 
 
-	@Override
-	public void clickGallery(Gallery gallery) {
-	}
-
-
-	@Override
-	public void clickFolder(GalleryFolder folder) {
-		ItFragment fragment = GalleryFragment.newInstance(folder);
-		mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
-	}
-
-
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setTitle(getResources().getString(R.string.select_album));
@@ -85,8 +72,7 @@ public class GalleryFolderFragment extends ItFragment implements GalleryCallback
 		if(mFolderList == null){
 			mFolderList = new ArrayList<GalleryFolder>();
 		}
-		mListAdapter = new GalleryFolderAdapter(mFolderList);
-		mListAdapter.setGalleryCallback(this);
+		mListAdapter = new GalleryFolderAdapter(mActivity, mFolderList);
 		mListView.setAdapter(mListAdapter);
 	}
 

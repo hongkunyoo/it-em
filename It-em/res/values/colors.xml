@@ -8,6 +8,7 @@
     <color name="brand_text_color_light">#96263238</color>
     <color name="accent_color">#ffAB00</color>
     <color name="line_color">#16000000</color>
+    <color name="black_pressed">#47000000</color>
     <color name="gray_dark">#78909c</color>
     <color name="gray_pressed">#80ECEFF1</color>
     <color name="gray">#ECEFF1</color>

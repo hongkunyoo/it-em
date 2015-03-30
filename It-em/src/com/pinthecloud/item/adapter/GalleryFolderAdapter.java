@@ -13,23 +13,21 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.interfaces.GalleryCallback;
+import com.pinthecloud.item.activity.ItActivity;
+import com.pinthecloud.item.fragment.GalleryFragment;
+import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.GalleryFolder;
 
 public class GalleryFolderAdapter extends RecyclerView.Adapter<GalleryFolderAdapter.ViewHolder> {
 
 	private ItApplication mApp;
+	private ItActivity mActivity;
 	private List<GalleryFolder> mFolderList;
 
-	private GalleryCallback mGalleryCallback;
 
-	public void setGalleryCallback(GalleryCallback galleryCallback) {
-		this.mGalleryCallback = galleryCallback;
-	}
-	
-	
-	public GalleryFolderAdapter(List<GalleryFolder> folderList) {
+	public GalleryFolderAdapter(ItActivity activity, List<GalleryFolder> folderList) {
 		this.mApp = ItApplication.getInstance();
+		this.mActivity = activity;
 		this.mFolderList = folderList;
 	}
 
@@ -67,15 +65,16 @@ public class GalleryFolderAdapter extends RecyclerView.Adapter<GalleryFolderAdap
 	public int getItemCount() {
 		return mFolderList.size();
 	}
-	
-	
+
+
 	private void setComponent(ViewHolder holder, final GalleryFolder folder){
 		holder.name.setText(folder.getName() + " (" + folder.getGalleryList().size() + ")");
 		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mGalleryCallback.clickFolder(folder);
+				ItFragment fragment = GalleryFragment.newInstance(folder);
+				mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 			}
 		});
 	}

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_white_selector"
+    android:background="@drawable/list_transparent_selector_black"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -26,14 +26,21 @@
 
         <com.pinthecloud.item.view.ItTextView
             android:id="@+id/row_gallery_folder_list_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_first"
+            android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/brand_text_color"
             app:textType="body" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/gallery"
+            android:src="@drawable/general_arrow_ic" />
     </LinearLayout>
 
     <include layout="@layout/custom_line" />

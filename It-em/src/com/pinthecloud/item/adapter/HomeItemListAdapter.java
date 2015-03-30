@@ -251,8 +251,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			.load(BlobStorageHelper.getItemImgUrl(item.getId()))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.transform(new RoundedTopCornerTransformation(radius, 0))
-			.resize(item.getImageWidth(), (int) (item.getImageWidth()*heightRatio))
-			.centerCrop()
+			.resize(item.getImageWidth(), (int) (item.getImageWidth()*heightRatio)).centerCrop()
 			.into(holder.itemImage);
 		}
 

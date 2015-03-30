@@ -1,10 +1,10 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +17,10 @@ import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.GalleryAdapter;
-import com.pinthecloud.item.interfaces.GalleryCallback;
 import com.pinthecloud.item.model.Gallery;
 import com.pinthecloud.item.model.GalleryFolder;
 
-public class GalleryFragment extends ItFragment implements GalleryCallback{
+public class GalleryFragment extends ItFragment {
 
 	public static final String GALLERY_PATHS_KEY = "GALLERY_PATHS_KEY";
 
@@ -82,43 +81,18 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 		case R.id.gallery_menu_submit:
-			List<Gallery> selected = mGridAdapter.getSelected();
-
-			String[] paths = new String[selected.size()];
-			for (int i = 0; i < paths.length; i++) {
-				paths[i] = selected.get(i).getPath();
+			List<Gallery> galleryList = mGridAdapter.getSelected();
+			List<String> pathList = new ArrayList<String>();
+			for (Gallery gallery : galleryList) {
+				pathList.add(gallery.getPath());
 			}
 
 			getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			ItFragment fragment = UploadFragment.newInstance(paths);
+			ItFragment fragment = UploadFragment.newInstance((ArrayList<String>)pathList);
 			mActivity.replaceFragment(fragment, false, R.anim.pop_in, 0, 0, 0);
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
-	}
-
-
-	@Override
-	public void clickGallery(Gallery gallery) {
-		mActivity.invalidateOptionsMenu();
-		setActionBar();
-	}
-
-
-	@Override
-	public void clickFolder(GalleryFolder folder) {
-	}
-
-
-	private void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		int selected = mGridAdapter.getSelected().size();
-		if(selected > 0){
-			int maxGallery = getResources().getInteger(R.integer.max_gallery_num);	
-			actionBar.setTitle(mFolder.getName() + "  (" + selected + "/" + maxGallery + ")");
-		} else {
-			actionBar.setTitle(mFolder.getName());
-		}
 	}
 
 
@@ -135,8 +109,7 @@ public class GalleryFragment extends ItFragment implements GalleryCallback{
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mGridAdapter = new GalleryAdapter(mFolder.getGalleryList());
-		mGridAdapter.setGalleryCallback(this);
+		mGridAdapter = new GalleryAdapter(mActivity, mFolder);
 		mGridView.setAdapter(mGridAdapter);
 	}
 }

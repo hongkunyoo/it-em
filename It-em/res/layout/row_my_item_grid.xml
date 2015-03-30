@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/line_width"
     android:layout_marginStart="@dimen/line_width"
     android:layout_marginTop="@dimen/line_thick_width"
-    android:foreground="@drawable/list_transparent_selector" >
+    android:foreground="@drawable/list_transparent_selector_black" >
 
     <com.pinthecloud.item.view.SquareImageView
         android:id="@+id/row_my_item_item_image"

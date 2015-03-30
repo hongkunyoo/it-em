@@ -7,6 +7,14 @@
     android:orientation="vertical"
     android:paddingTop="?attr/actionBarSize" >
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/upload_frag_image_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/content_big_margin"
+        android:scrollbars="none" >
+    </android.support.v7.widget.RecyclerView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,33 +22,7 @@
         android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginRight="@dimen/key_line_first"
         android:layout_marginStart="@dimen/key_line_first"
-        android:layout_marginTop="@dimen/key_line_first"
         android:orientation="vertical" >
-
-        <RelativeLayout
-            android:layout_width="@dimen/upload_image_width"
-            android:layout_height="@dimen/upload_image_width"
-            android:layout_marginBottom="@dimen/key_line_first" >
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/upload_frag_item_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/content_big_margin"
-                app:riv_corner_radius="@dimen/content_margin" />
-
-            <ImageButton
-                android:id="@+id/upload_frag_item_image_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/delete"
-                android:src="@drawable/upload_image_delete_button"
-                android:visibility="gone" />
-        </RelativeLayout>
 
         <EditText
             android:id="@+id/upload_frag_content"
@@ -72,13 +54,13 @@
                 app:textType="caption" />
 
             <Button
-                android:id="@+id/upload_frag_brand_info_add"
+                android:id="@+id/upload_frag_brand_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/brand_info_add_button"
+                android:background="@drawable/brand_add_button"
                 android:minHeight="@dimen/none"
                 android:minWidth="@dimen/none"
                 android:text="@string/add"
@@ -88,7 +70,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/upload_frag_brand_info_list"
+        android:id="@+id/upload_frag_brand_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none" />
