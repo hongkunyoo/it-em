@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -35,11 +37,14 @@ import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.model.HashTag;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.ItLog;
+import com.pinthecloud.item.util.TextUtil;
 import com.pinthecloud.item.util.ViewUtil;
 
 public class UploadFragment extends ItFragment {
@@ -49,7 +54,7 @@ public class UploadFragment extends ItFragment {
 	private RecyclerView mImageGridView;
 	private UploadImageGridAdapter mImageGridAdapter;
 	private GridLayoutManager mImageGridLayoutManager;
-	private List<String> mImageList;
+	private List<String> mImagePathList;
 
 	private EditText mContent;
 
@@ -58,8 +63,6 @@ public class UploadFragment extends ItFragment {
 	private BrandListAdapter mBrandListAdapter;
 	private LinearLayoutManager mBrandListLayoutManager;
 	private List<Brand> mBrandList;
-
-	private ItUser mMyItUser;
 
 
 	public static ItFragment newInstance(ArrayList<String> pathList) {
@@ -77,8 +80,7 @@ public class UploadFragment extends ItFragment {
 
 		ItLog.log("onCreate");
 
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
-		mImageList = getArguments().getStringArrayList(GalleryFragment.GALLERY_PATHS_KEY);
+		mImagePathList = getArguments().getStringArrayList(GalleryFragment.GALLERY_PATHS_KEY);
 	}
 
 
@@ -263,10 +265,10 @@ public class UploadFragment extends ItFragment {
 		mImageGridView.setLayoutManager(mImageGridLayoutManager);
 		mImageGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mImageGridAdapter = new UploadImageGridAdapter(mActivity, mImageGridView, mImageList);
+		mImageGridAdapter = new UploadImageGridAdapter(mActivity, mImageGridView, mImagePathList);
 		mImageGridView.setAdapter(mImageGridAdapter);
 
-		ViewUtil.setListHeightBasedOnChildren(mImageGridView, mImageGridAdapter.getItemCount()/gridColumnNum);
+		ViewUtil.setListHeightBasedOnChildren(mImageGridView, (int)Math.ceil((double)mImageGridAdapter.getItemCount()/gridColumnNum));
 	}
 
 
@@ -283,79 +285,65 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	//	private DialogCallback[] getDialogCallbacks(String[] itemList){
-	//		DialogCallback[] callbacks = new DialogCallback[itemList.length];
-	//
-	//		for(int i=0 ; i<itemList.length ; i++){
-	//			switch(i){
-	//			case 0:
-	//				callbacks[0] = new DialogCallback() {
-	//
-	//					@Override
-	//					public void doPositiveThing(Bundle bundle) {
-	//						FileUtil.getMediaFromGallery(mThisFragment);
-	//					}
-	//					@Override
-	//					public void doNegativeThing(Bundle bundle) {
-	//					}
-	//				};
-	//				break;
-	//			}
-	//		}
-	//
-	//		return callbacks;
-	//	}
-
-
 	private void uploadItem(){
-		//		mApp.showProgressDialog(mActivity);
-		//
-		//		final Bitmap itemImageBitmap = ImageUtil.refineItemImage(itemImagePath, ImageUtil.ITEM_IMAGE_WIDTH);
-		//
-		//		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "")
-		//				+ getBrandInfoContent(mBrandList);
-		//		final Item item = new Item(content, mMyItUser.getNickName(), mMyItUser.getId(),
-		//				itemImageBitmap.getWidth(), itemImageBitmap.getHeight());
-		//
-		//		final List<HashTag> tagList = new ArrayList<HashTag>();
-		//		List<String> hashTags = TextUtil.getSpanBodyList(content);
-		//		for(String hashTag : hashTags){
-		//			tagList.add(new HashTag(hashTag));
-		//		}
-		//
-		//		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-		//
-		//			@Override
-		//			public void doNext(final Object obj, Object... params) {
-		//				mAimHelper.addItem(item, tagList, new EntityCallback<Item>() {
-		//
-		//					@Override
-		//					public void onCompleted(Item entity) {
-		//						item.setId(entity.getId());
-		//						item.setRawCreateDateTime(entity.getRawCreateDateTime());
-		//						AsyncChainer.notifyNext(obj);
-		//					}
-		//				});
-		//			}
-		//		}, new Chainable(){
-		//
-		//			@Override
-		//			public void doNext(final Object obj, Object... params) {
-		//				uploadItemImage(obj, item, itemImagePath, itemImageBitmap);
-		//			}
-		//		}, new Chainable(){
-		//
-		//			@Override
-		//			public void doNext(Object obj, Object... params) {
-		//				mApp.dismissProgressDialog();
-		//				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
-		//
-		//				Intent intent = new Intent();
-		//				intent.putExtra(Item.INTENT_KEY, item);
-		//				mActivity.setResult(Activity.RESULT_OK, intent);
-		//				mActivity.finish();
-		//			}
-		//		});
+		mApp.showProgressDialog(mActivity);
+		
+		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandInfoContent(mBrandList);
+		int width = 0;
+		int height = 0;
+		final Bitmap[] imageBitmaps = new Bitmap[mImagePathList.size()];
+		for(int i=0 ; i<mImagePathList.size() ; i++){
+			imageBitmaps[i] = ImageUtil.refineItemImage(mImagePathList.get(i), ImageUtil.ITEM_IMAGE_WIDTH);
+			width = Math.max(width, imageBitmaps[i].getWidth());
+			height = Math.max(height, imageBitmaps[i].getHeight());
+		}
+		
+		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
+		final Item item = new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(), width, height);
+		
+		final List<HashTag> tagList = new ArrayList<HashTag>();
+		List<String> hashTags = TextUtil.getSpanBodyList(content);
+		for(String hashTag : hashTags){
+			tagList.add(new HashTag(hashTag));
+		}
+
+		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+			@Override
+			public void doNext(final Object obj, Object... params) {
+				mAimHelper.addItem(item, tagList, new EntityCallback<Item>() {
+
+					@Override
+					public void onCompleted(Item entity) {
+						item.setId(entity.getId());
+						item.setRawCreateDateTime(entity.getRawCreateDateTime());
+						AsyncChainer.notifyNext(obj);
+					}
+				});
+			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(final Object obj, Object... params) {
+				AsyncChainer.waitChain(mImagePathList.size()+1);
+
+				for(int i=0 ; i<mImagePathList.size() ; i++){
+					uploadItemImage(obj, item, mImagePathList.get(i), imageBitmaps[i], i);
+				}
+			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(Object obj, Object... params) {
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
+
+				Intent intent = new Intent();
+				intent.putExtra(Item.INTENT_KEY, item);
+				mActivity.setResult(Activity.RESULT_OK, intent);
+				mActivity.finish();
+			}
+		});
 	}
 
 
@@ -385,27 +373,28 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void uploadItemImage(final Object obj, Item item, String itemImagePath, Bitmap itemImageBitmap){
-		AsyncChainer.waitChain(2);
-
-		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId(),
-				itemImageBitmap, new EntityCallback<String>() {
-
-			@Override
-			public void onCompleted(String entity) {
-				AsyncChainer.notifyNext(obj);
-			}
-		});
-
-		Bitmap itemThumbnailImageBitmap = ImageUtil.refineSquareImage(itemImagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE);
-		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
-				itemThumbnailImageBitmap, new EntityCallback<String>() {
+	private void uploadItemImage(final Object obj, Item item, String imagePath, Bitmap imageBitmap, int index){
+		String imageId = index == 0 ? item.getId() : item.getId() + "_" + index;
+		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId, imageBitmap,
+				new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
 				AsyncChainer.notifyNext(obj);
 			}
 		});
+
+		if(index == 0){
+			Bitmap thumbnailImageBitmap = ImageUtil.refineSquareImage(imagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE);
+			mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
+					thumbnailImageBitmap, new EntityCallback<String>() {
+
+				@Override
+				public void onCompleted(String entity) {
+					AsyncChainer.notifyNext(obj);
+				}
+			});
+		}
 	}
 
 
@@ -437,7 +426,7 @@ public class UploadFragment extends ItFragment {
 
 	private boolean isSubmitEnable(){
 		return mContent.getText().toString().trim().length() > 0 
-				&& mImageList.size() > 0;
+				&& mImagePathList.size() > 0;
 	}
 
 

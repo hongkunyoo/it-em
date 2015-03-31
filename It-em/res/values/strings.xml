@@ -32,14 +32,13 @@
 
     <!-- Item -->
     <string name="like">Like</string>
-    <string name="cancel_upload">Do you cancel this item?</string>
-    <string name="not_cancel">Do not cancel</string>
     <string name="upload_date">Uploaded on</string>
     <string name="upload_by">Uploaded by</string>
     <string name="plus">+</string>
     <string name="of">\'s</string>
     <string name="delete">Delete</string>
     <string name="not_exist_item">It is deleted item.</string>
+    <string name="delete_item">Do you delete this item?</string>
 
     <!-- Reply -->
     <string name="comments">Comments</string>
@@ -57,7 +56,7 @@
     <!-- Guide -->
     <string name="guide_description">IT:EM allows only editor to upload item.</string>
     <string name="guide_be_pro"><u>I also want to be editor</u></string>
-    
+
     <!-- My Item -->
     <string name="empty_my_item">Item is empty.\nShare your own style!</string>
     <string name="empty_like_item">You have not like any item.\nGive like to lovely item!</string>
@@ -87,7 +86,7 @@
     <string name="select_album">Select Album</string>
     <string name="empty_gallery">Gallery is empty</string>
     <string name="gallery">Gallery</string>
-    
+
     <!-- Profile Settings -->
     <string name="profile_settings">Profile Settings</string>
     <string name="nick_name">Nick Name</string>
@@ -110,14 +109,13 @@
     <string name="pay_guide">Mileage will be given to below account at 1th, 15th every month</string>
     <string name="not_exist_email">Register contactable email address</string>
     <string name="not_exist_bank_account">Register bank account for mileage</string>
-
     <string name="bad_email_message">It is unproper email address.</string>
     <string name="email_edited">Email is edited.</string>
-    
+
     <!-- Bank Account Edit -->
     <string name="bad_bank_account_name_message">It is unproper account name.</string>
     <string name="bank_account_edited">Bank Account is edited.</string>
-    
+
     <!-- Notification -->
     <string name="noti_general_content">%1$s %3$s %2$s item.</string>
     <string name="noti_product_tag_content">%2$s %1$s item.</string>

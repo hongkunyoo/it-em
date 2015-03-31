@@ -29,11 +29,11 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.activity.WebViewActivity;
+import com.pinthecloud.item.adapter.ItemImagePagerAdapter;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertDialog;
@@ -54,7 +54,7 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.TextUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.pinthecloud.item.view.DynamicHeightImageView;
+import com.pinthecloud.item.view.DynamicHeightViewPager;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
@@ -62,7 +62,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private ScrollView mScrollLayout;
 	private int mBaseScrollY;
 
-	private DynamicHeightImageView mItemImage;
+	private DynamicHeightViewPager mImagePager;
+	private ItemImagePagerAdapter mImagePagerAdapter;
+
 	private ProgressBar mProgressBar;
 	private View mItemLayout;
 	private TextView mContent;
@@ -125,6 +127,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		findComponent(view);
 		setComponent();
+		setImagePager();
 		setButton();
 		setRefreshLayout();
 		setScroll();
@@ -139,14 +142,13 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onStart() {
 		super.onStart();
-		setImage();
+		setProfileImage();
 	}
 
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		mItemImage.setImageBitmap(null);
 		mProfileImage.setImageBitmap(null);
 	}
 
@@ -200,7 +202,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.item_frag_scroll_refresh);
 		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 
-		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_item_image);
+		mImagePager = (DynamicHeightViewPager)view.findViewById(R.id.item_frag_image_pager);
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
@@ -229,7 +231,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setComponent(){
 		mUserNickName.setText(mItem.getWhoMade());
-		mItemImage.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
@@ -246,6 +247,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			public void afterTextChanged(Editable s) {
 			}
 		});
+	}
+
+
+	private void setImagePager(){
+		mImagePagerAdapter = new ItemImagePagerAdapter(mActivity, mItem);
+		mImagePager.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
+		mImagePager.setOffscreenPageLimit(mImagePagerAdapter.getCount());
+		mImagePager.setAdapter(mImagePagerAdapter);
 	}
 
 
@@ -413,7 +422,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 						mProgressBar.setVisibility(View.GONE);
 						mItemLayout.setVisibility(View.VISIBLE);
 						mRefresh.setRefreshing(false);
-
+						
 						mItem = entity;
 						setItemComponent();
 						setProductTagFrag();
@@ -629,21 +638,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setImage(){
-		int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
-		if(mItem.getImageHeight() > maxSize){
-			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-			.placeholder(R.drawable.feed_loading_default_img)
-			.resize((int)(mItem.getImageWidth()*((float)maxSize/mItem.getImageHeight())), maxSize)
-			.into(mItemImage);
-		} else {
-			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
-			.placeholder(R.drawable.feed_loading_default_img)
-			.into(mItemImage);
-		}
-
+	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.profile_default_img)

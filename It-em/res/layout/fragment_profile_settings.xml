@@ -55,10 +55,6 @@
             android:inputType="textMultiLine"
             android:maxLength="@integer/long_text_max_length"
             android:maxLines="3"
-            android:paddingEnd="@dimen/key_line_first"
-            android:paddingLeft="@dimen/key_line_first"
-            android:paddingRight="@dimen/key_line_first"
-            android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
             android:textColorHint="@color/brand_text_color_light"
             android:textSize="@dimen/font_small" />
@@ -76,10 +72,6 @@
             android:inputType="textUri"
             android:maxLength="@integer/long_text_max_length"
             android:maxLines="1"
-            android:paddingEnd="@dimen/key_line_first"
-            android:paddingLeft="@dimen/key_line_first"
-            android:paddingRight="@dimen/key_line_first"
-            android:paddingStart="@dimen/key_line_first"
             android:textColor="@color/brand_text_color"
             android:textColorHint="@color/brand_text_color_light"
             android:textSize="@dimen/font_small" />

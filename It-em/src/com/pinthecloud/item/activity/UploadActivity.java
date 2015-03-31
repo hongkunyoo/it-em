@@ -39,10 +39,9 @@ public class UploadActivity extends ItActivity {
 	@Override
 	public void onBackPressed() {
 		if(mCurrentFragment instanceof UploadFragment){
-			String message = getResources().getString(R.string.cancel_upload);
-			String cancel = getResources().getString(android.R.string.cancel);
-			String notCancel = getResources().getString(R.string.not_cancel);
-			ItAlertDialog dialog = ItAlertDialog.newInstance(message, cancel, notCancel, true);
+			String message = getResources().getString(R.string.delete_item);
+			String delete = getResources().getString(R.string.delete);
+			ItAlertDialog dialog = ItAlertDialog.newInstance(message, delete, null, true);
 
 			dialog.setCallback(new DialogCallback() {
 

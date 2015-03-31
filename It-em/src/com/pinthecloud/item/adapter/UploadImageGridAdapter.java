@@ -118,7 +118,7 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 		int width = mActivity.getResources().getDimensionPixelSize(R.dimen.upload_image_width);
 		mApp.getPicasso()
 		.load(ItConstant.FILE_PREFIX + path)
-		.placeholder(R.drawable.upload_thumbnail_default_img)
+		.placeholder(R.drawable.upload_image_blank)
 		.resize(width, width).centerCrop()
 		.into(holder.image);
 
@@ -136,7 +136,7 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 			}
 		});
 
-		holder.image.setImageResource(R.drawable.upload_thumbnail_default_img);
+		holder.image.setImageResource(R.drawable.upload_image_blank);
 		holder.delete.setVisibility(View.GONE);
 	}
 
@@ -154,6 +154,6 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 		notifyDataSetChanged();
 
 		int gridColumnNum = mActivity.getResources().getInteger(R.integer.gallery_grid_column_num);
-		ViewUtil.setListHeightBasedOnChildren(mGridView, getItemCount()/gridColumnNum);
+		ViewUtil.setListHeightBasedOnChildren(mGridView, (int)Math.ceil((double)getItemCount()/gridColumnNum));
 	}
 }

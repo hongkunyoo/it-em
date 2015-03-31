@@ -22,12 +22,15 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/white" />
 
-            <com.pinthecloud.item.view.DynamicHeightImageView
-                android:id="@+id/item_frag_item_image"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
+                android:layout_height="wrap_content" >
+
+                <com.pinthecloud.item.view.DynamicHeightViewPager
+                    android:id="@+id/item_frag_image_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
             <include layout="@layout/custom_line" />
 
@@ -104,17 +107,11 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/home_item_like_button"
                                 android:drawableLeft="@drawable/home_item_like"
-                                android:drawablePadding="@dimen/button_vertical_margin"
+                                android:drawablePadding="@dimen/content_margin"
                                 android:drawableStart="@drawable/home_item_like"
                                 android:gravity="center"
                                 android:minHeight="@dimen/none"
                                 android:minWidth="@dimen/none"
-                                android:paddingBottom="@dimen/button_vertical_margin"
-                                android:paddingEnd="@dimen/button_horizontal_margin"
-                                android:paddingLeft="@dimen/button_horizontal_margin"
-                                android:paddingRight="@dimen/button_horizontal_margin"
-                                android:paddingStart="@dimen/button_horizontal_margin"
-                                android:paddingTop="@dimen/button_vertical_margin"
                                 android:text="@string/like"
                                 android:textColor="@color/home_item_like_text"
                                 android:textSize="@dimen/font_micro"
