@@ -42,15 +42,15 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 		public ViewHolder(View view) {
 			super(view);
 			this.view = view;
-			this.profileImage = (CircleImageView)view.findViewById(R.id.row_like_it_profile_image);
-			this.nickName = (TextView)view.findViewById(R.id.row_like_it_nick_name);
+			this.profileImage = (CircleImageView)view.findViewById(R.id.row_like_profile_image);
+			this.nickName = (TextView)view.findViewById(R.id.row_like_nick_name);
 		}
 	}
 
 
 	@Override
 	public LikeListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_like_it_list, parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_like_list, parent, false);
 		return new ViewHolder(view);
 	}
 
