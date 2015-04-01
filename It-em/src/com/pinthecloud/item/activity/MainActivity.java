@@ -15,6 +15,7 @@ import com.pinthecloud.item.dialog.GuideDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.interfaces.MainTabHolder;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
 public class MainActivity extends ItActivity {
@@ -96,7 +97,7 @@ public class MainActivity extends ItActivity {
 			@Override
 			public void onPageSelected(int position) {
 				if(position == MainPagerAdapter.TAB.NOTI.ordinal()){
-					mPrefHelper.remove(ItConstant.NOTIFICATION_NUMBER_KEY);
+					mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
 					setNotiTab();
 				}
 			}
@@ -118,7 +119,7 @@ public class MainActivity extends ItActivity {
 	private void setNotiTab(){
 		View tab = mTab.getTab(MainPagerAdapter.TAB.NOTI.ordinal());
 		final ImageView newNoti = (ImageView)tab.findViewById(R.id.tab_main_new_noti);
-		final int notiNumber = mPrefHelper.getInt(ItConstant.NOTIFICATION_NUMBER_KEY);
+		final int notiNumber = mPrefHelper.getInt(ItUser.NOTIFICATION_NUMBER_KEY);
 		runOnUiThread(new Runnable() {
 
 			@Override

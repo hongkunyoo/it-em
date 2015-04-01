@@ -22,7 +22,6 @@ import com.pinthecloud.item.helper.DeviceHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
-import com.pinthecloud.item.helper.VersionHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItDevice;
 import com.pinthecloud.item.model.ItUser;
@@ -63,7 +62,6 @@ public class ItApplication extends Application {
 	private ObjectPrefHelper objectPrefHelper;
 	private AimHelper aimHelper;
 	private UserHelper userHelper;
-	private VersionHelper versionHelper;
 	private DeviceHelper deviceHelper;
 	private BlobStorageHelper blobStorageHelper;
 
@@ -82,7 +80,6 @@ public class ItApplication extends Application {
 		objectPrefHelper = getObjectPrefHelper();
 		aimHelper = getAimHelper();
 		userHelper = getUserHelper();
-		versionHelper = getVersionHelper();
 		deviceHelper = getDeviceHelper();
 		blobStorageHelper = getBlobStorageHelper();
 	}
@@ -136,10 +133,6 @@ public class ItApplication extends Application {
 	public UserHelper getUserHelper() {
 		if(userHelper == null) userHelper = new UserHelper(app);
 		return userHelper;
-	}
-	public VersionHelper getVersionHelper() {
-		if(versionHelper == null) versionHelper = new VersionHelper(app);
-		return versionHelper;
 	}
 	public DeviceHelper getDeviceHelper() {
 		if(deviceHelper == null) deviceHelper = new DeviceHelper(app);
@@ -197,7 +190,6 @@ public class ItApplication extends Application {
 		mClient = developMode == REAL ? realClient : testClient;
 		getAimHelper().setMobileClient(mClient);
 		getUserHelper().setMobileClient(mClient);
-		getVersionHelper().setMobileClient(mClient);
 		getDeviceHelper().setMobileClient(mClient);
 
 		AsyncChainer.asyncChain(app, new Chainable(){

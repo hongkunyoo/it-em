@@ -18,10 +18,12 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.google.gson.Gson;
 import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.event.AppVersion;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItNotification;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
@@ -52,20 +54,30 @@ public class ItIntentService extends IntentService {
 		}
 
 		String message = intent.getExtras().getString("message");
-		alertNotification(message);
+
+		ItNotification itNoti = new Gson().fromJson(message, ItNotification.class);
+		if(itNoti.getType() != null){
+			alertItNotification(itNoti);
+			return;
+		}
+
+		AppVersion version = new Gson().fromJson(message, AppVersion.class);
+		if(version.getVersion() != 0){
+			updateApp(version);
+			return;
+		}
 	}
 
 
-	private void alertNotification(String message){
-		final ItNotification noti = new Gson().fromJson(message, ItNotification.class);
-		final PendingIntent pendingIntent = getPendingIntent(noti);
+	private void alertItNotification(final ItNotification itNoti){
+		final PendingIntent pendingIntent = getItNotificationIntent(itNoti);
 
 		AsyncChainer.asyncChain(mThis, new Chainable(){
 
 			@Override
 			public void doNext(Object obj, Object... params) {
-				if(!noti.getType().equals(ItNotification.TYPE.ProductTag.toString())){
-					getLargeIcon(obj, BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()));
+				if(!itNoti.getType().equals(ItNotification.TYPE.ProductTag.toString())){
+					getLargeIcon(obj, BlobStorageHelper.getUserProfileImgUrl(itNoti.getWhoMadeId()));
 				} else {
 					Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.noti_label_img);
 					AsyncChainer.notifyNext(obj, largeIcon);
@@ -76,7 +88,7 @@ public class ItIntentService extends IntentService {
 			@Override
 			public void doNext(Object obj, Object... params) {
 				Bitmap largeIcon = (Bitmap)params[0];
-				Notification notification = getNotification(noti, pendingIntent, largeIcon);
+				Notification notification = getNotification(itNoti.getWhoMade(), itNoti.notiContent(), pendingIntent, largeIcon);
 
 				// Notify
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -89,20 +101,20 @@ public class ItIntentService extends IntentService {
 				}
 
 				// Add Noti Number preference
-				int notiNumber = mApp.getPrefHelper().getInt(ItConstant.NOTIFICATION_NUMBER_KEY);
-				mApp.getPrefHelper().put(ItConstant.NOTIFICATION_NUMBER_KEY, ++notiNumber);
-				EventBus.getDefault().post(new NotificationEvent(noti));
+				int notiNumber = mApp.getPrefHelper().getInt(ItUser.NOTIFICATION_NUMBER_KEY);
+				mApp.getPrefHelper().put(ItUser.NOTIFICATION_NUMBER_KEY, ++notiNumber);
+				EventBus.getDefault().post(new NotificationEvent(itNoti));
 			}
 		});
 	}
 
 
-	private PendingIntent getPendingIntent(ItNotification noti){
+	private PendingIntent getItNotificationIntent(ItNotification itNoti){
 		// The stack builder object will contain an artificial back stack for the started Activity.
 		// This ensures that navigating backward from the Activity leads out of your application to the Home screen.
 		// Adds the Intent that starts the Activity to the top of the stack
 		Intent resultIntent = new Intent(mThis, ItemActivity.class);
-		resultIntent.putExtra(Item.INTENT_KEY, noti.makeItem());
+		resultIntent.putExtra(Item.INTENT_KEY, itNoti.makeItem());
 
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(mThis);
 		stackBuilder.addParentStack(ItemActivity.class);
@@ -134,15 +146,21 @@ public class ItIntentService extends IntentService {
 	}
 
 
-	private Notification getNotification(ItNotification noti, PendingIntent resultPendingIntent, Bitmap largeIcon){
+	private Notification getNotification(String title, String text, PendingIntent resultPendingIntent, Bitmap largeIcon){
 		// Set Notification
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mThis)
 		.setSmallIcon(R.drawable.ic_stat_notify)
 		.setLargeIcon(largeIcon)
-		.setContentTitle(noti.getWhoMade())
-		.setContentText(noti.notiContent())
+		.setContentTitle(title)
+		.setContentText(text)
 		.setAutoCancel(true)
 		.setContentIntent(resultPendingIntent);
 		return mBuilder.build();
+	}
+
+
+	private void updateApp(AppVersion version){
+		mApp.getPrefHelper().put(ItConstant.APP_VERSION_KEY, version.getVersion());
+		mApp.getPrefHelper().clear();
 	}
 }

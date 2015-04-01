@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.NotiListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
@@ -133,7 +132,7 @@ public class NotiFragment extends MainTabFragment {
 				mRefresh.setVisibility(View.VISIBLE);
 				if(refresh){
 					mRefresh.setRefreshing(false);
-					mPrefHelper.remove(ItConstant.NOTIFICATION_NUMBER_KEY);
+					mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
 					if(mTabHolder != null){
 						mTabHolder.updateNotiTab();	
 					}

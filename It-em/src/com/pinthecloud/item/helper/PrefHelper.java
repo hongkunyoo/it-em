@@ -1,11 +1,11 @@
 package com.pinthecloud.item.helper;
 
-import com.pinthecloud.item.ItConstant;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+
+import com.pinthecloud.item.ItConstant;
 
 public class PrefHelper {
 
@@ -28,8 +28,6 @@ public class PrefHelper {
 			mPref.edit().putInt(key, (Integer) obj).commit();
 		} else if (obj instanceof Float) {
 			mPref.edit().putFloat(key, (Float) obj).commit();
-		} else if (obj instanceof Double) {
-			mPref.edit().putFloat(key, (Float) obj).commit();
 		} else if (obj instanceof Character) {
 			mPref.edit().putString(key, (Character.toString((Character)obj))).commit();
 		} else if (obj instanceof Long) {
@@ -43,8 +41,7 @@ public class PrefHelper {
 			return mPref.getString(key, DEFAULT_STRING);
 		} else if (className.equals("java.lang.Integer") || className.equals("int")) {
 			return mPref.getInt(key, DEFAULT_INT);
-		} else if (className.equals("java.lang.Float") || className.equals("java.lang.Double")
-				|| className.equals("float") || className.equals("double")) {
+		} else if (className.equals("java.lang.Float") || className.equals("float")) {
 			return mPref.getFloat(key, DEFAULT_FLOAT);
 		} else if (className.equals("java.lang.Boolean") || className.equals("boolean")) {
 			return mPref.getBoolean(key, DEFAULT_BOOLEAN);
@@ -74,12 +71,18 @@ public class PrefHelper {
 		editor.remove(key);
 		editor.commit();
 	}
-	
+
 	public void clear(){
 		int developMode = getInt(ItConstant.DEVELOP_MODE_KEY);
+		int maxTextureSize = getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
+		float version = getFloat(ItConstant.APP_VERSION_KEY);
+
 		Editor editor = mPref.edit();
 		editor.clear();
 		editor.commit();
+
 		put(ItConstant.DEVELOP_MODE_KEY, developMode);
+		put(ItConstant.MAX_TEXTURE_SIZE_KEY, maxTextureSize);
+		put(ItConstant.APP_VERSION_KEY, version);
 	}
 }

@@ -20,7 +20,6 @@ import com.pinthecloud.item.helper.DeviceHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
-import com.pinthecloud.item.helper.VersionHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 
 import de.greenrobot.event.EventBus;
@@ -34,7 +33,6 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected ObjectPrefHelper mObjectPrefHelper;
 	protected AimHelper mAimHelper;
 	protected UserHelper mUserHelper;
-	protected VersionHelper mVersionHelper;
 	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 	protected GAHelper mGaHelper;
@@ -52,7 +50,6 @@ public abstract class ItActivity extends ActionBarActivity {
 		mObjectPrefHelper = mApp.getObjectPrefHelper();
 		mAimHelper = mApp.getAimHelper();
 		mUserHelper = mApp.getUserHelper();
-		mVersionHelper = mApp.getVersionHelper();
 		mDeviceHelper = mApp.getDeviceHelper();
 		mBlobStorageHelper = mApp.getBlobStorageHelper();
 

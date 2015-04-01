@@ -12,7 +12,6 @@ import com.pinthecloud.item.helper.DeviceHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
-import com.pinthecloud.item.helper.VersionHelper;
 
 public class ItFragment extends Fragment {
 
@@ -24,7 +23,6 @@ public class ItFragment extends Fragment {
 	protected ObjectPrefHelper mObjectPrefHelper;
 	protected AimHelper mAimHelper;
 	protected UserHelper mUserHelper;
-	protected VersionHelper mVersionHelper;
 	protected DeviceHelper mDeviceHelper;
 	protected BlobStorageHelper mBlobStorageHelper;
 
@@ -40,7 +38,6 @@ public class ItFragment extends Fragment {
 		mObjectPrefHelper = mApp.getObjectPrefHelper();
 		mAimHelper = mApp.getAimHelper();
 		mUserHelper = mApp.getUserHelper();
-		mVersionHelper = mApp.getVersionHelper();
 		mDeviceHelper = mApp.getDeviceHelper();
 		mBlobStorageHelper = mApp.getBlobStorageHelper();
 		

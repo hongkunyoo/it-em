@@ -6,10 +6,13 @@ import javax.microedition.khronos.opengles.GL10;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings.Secure;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -27,15 +30,10 @@ import com.pinthecloud.item.event.GcmRegistrationIdEvent;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
-import com.pinthecloud.item.model.AppVersion;
 import com.pinthecloud.item.model.ItDevice;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
 
 public class SplashActivity extends ItActivity {
-
-	private View mProgressLayout;
 
 
 	@Override
@@ -43,14 +41,28 @@ public class SplashActivity extends ItActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
-		findComponent();
-
-		/*** For under version ***/
-		if(mVersionHelper.getClientAppVersion() < 0.202){
-			mPrefHelper.clear();
+		if(mApp.isAdmin()){
+			Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_LONG).show();;
 		}
-		/*************************/
 
+		// Remove noti
+		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
+
+		// Check google play service
+		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mThisActivity) != ConnectionResult.SUCCESS) {
+			installGooglePlayService();
+			return;
+		}
+
+		// Check update
+		float lastVersion = mPrefHelper.getFloat(ItConstant.APP_VERSION_KEY);
+		float clientVersion = getClientAppVersion();
+		if(lastVersion > clientVersion){
+			updateApp();
+			return;
+		}
+		
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mThisActivity));
@@ -66,39 +78,23 @@ public class SplashActivity extends ItActivity {
 	}
 
 
-	private void findComponent(){
-		mProgressLayout = findViewById(R.id.splash_progress_layout);
-	}
-
-
 	private void runItem() {
-		if(mApp.isAdmin()){
-			Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_LONG).show();;
+		// If mobile id doesn't exist, get it
+		ItDevice device = mObjectPrefHelper.get(ItDevice.class);
+		if(device.getMobileId().equals(PrefHelper.DEFAULT_STRING)) {
+			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
+			device.setMobileId(mobileId);
+			mObjectPrefHelper.put(device);
 		}
 
-		// Remove noti
-		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
-
-		// Check google play service
-		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mThisActivity) != ConnectionResult.SUCCESS) {
-			installGooglePlayService();
+		// If registration id doesn't exist, get it
+		device = mObjectPrefHelper.get(ItDevice.class);
+		if(device.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
+			setRegistrationId();
 			return;
 		}
 
-		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
-
-			@Override
-			public void doNext(Object obj, Object... params) {
-				checkUpdate(obj);
-			}
-		}, new Chainable() {
-
-			@Override
-			public void doNext(Object obj, Object... params) {
-				checkDeviceInfo();
-			}
-		});
+		gotoNextActivity();
 	}
 
 
@@ -123,23 +119,7 @@ public class SplashActivity extends ItActivity {
 	}
 
 
-	private void checkUpdate(final Object obj){
-		mVersionHelper.getServerAppVersionAsync(new EntityCallback<AppVersion>() {
-
-			@Override
-			public void onCompleted(AppVersion serverVer) {
-				double clientVer = mVersionHelper.getClientAppVersion();
-				if (serverVer.getVersion() > clientVer) {
-					updateApp(obj, serverVer);
-				} else {
-					AsyncChainer.notifyNext(obj);
-				}
-			}
-		});
-	}
-
-
-	private void updateApp(final Object obj, final AppVersion serverVer){
+	private void updateApp(){
 		String message = getResources().getString(R.string.update_app_message);
 		ItAlertDialog updateDialog = ItAlertDialog.newInstance(message, null, null, true);
 		updateDialog.setCallback(new DialogCallback() {
@@ -148,13 +128,10 @@ public class SplashActivity extends ItActivity {
 			public void doPositiveThing(Bundle bundle) {
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_APP_ID));
 				startActivity(intent);
-
-				AsyncChainer.clearChain(obj);
 				finish();
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
-				AsyncChainer.clearChain(obj);
 				finish();
 			}
 		});
@@ -162,42 +139,38 @@ public class SplashActivity extends ItActivity {
 	}
 
 
-	private void goToNextActivity() {
-		ItUser user = mObjectPrefHelper.get(ItUser.class);
-		Intent intent = new Intent();
-		if (!user.checkLoggedIn()){
-			// New User
-			intent.setClass(mThisActivity, LoginActivity.class);
-		} else {
-			// Has Loggined
-			intent.setClass(mThisActivity, MainActivity.class);
+	private float getClientAppVersion() {
+		String versionName = "0.1";
+		try {
+			versionName = mApp.getPackageManager().getPackageInfo(mApp.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
 		}
-		startActivity(intent);
+		return Float.parseFloat(versionName);
 	}
 
-	private void checkDeviceInfo(){
-		// If mobile id doesn't exist, get it
-		ItDevice device = mObjectPrefHelper.get(ItDevice.class);
-		if(device.getMobileId().equals(PrefHelper.DEFAULT_STRING)) {
-			String mobileId = Secure.getString(mApp.getContentResolver(), Secure.ANDROID_ID);
-			device.setMobileId(mobileId);
-			mObjectPrefHelper.put(device);
-		}
 
-		// If registration id doesn't exist, get it
-		device = mObjectPrefHelper.get(ItDevice.class);
-		if(device.getRegistrationId().equals(PrefHelper.DEFAULT_STRING)) {
-			setRegistrationId();
-			return;
-		}
-
-		goToNextActivity();
+	private void gotoNextActivity() {
+		new Handler(Looper.getMainLooper()).postDelayed(new Runnable(){
+			
+			@Override
+			public void run() {
+				ItUser user = mObjectPrefHelper.get(ItUser.class);
+				Intent intent = new Intent();
+				if (!user.checkLoggedIn()){
+					// New User
+					intent.setClass(mThisActivity, LoginActivity.class);
+				} else {
+					// Has Loggined
+					intent.setClass(mThisActivity, MainActivity.class);
+				}
+				startActivity(intent);
+			}
+		}, 500);
 	}
 
 
 	private void setRegistrationId() {
 		// Get registration id
-		mProgressLayout.setVisibility(View.VISIBLE);
 		mDeviceHelper.getRegistrationIdAsync(mThisActivity, new EntityCallback<String>() {
 
 			@Override
@@ -214,13 +187,11 @@ public class SplashActivity extends ItActivity {
 
 
 	public void onEvent(GcmRegistrationIdEvent event){
-		mProgressLayout.setVisibility(View.GONE);
-
 		ItDevice deviceInfo = mObjectPrefHelper.get(ItDevice.class);
 		deviceInfo.setRegistrationId(event.getRegistrationId());
 		mObjectPrefHelper.put(deviceInfo);
 
-		checkDeviceInfo();
+		runItem();
 	}
 
 

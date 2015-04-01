@@ -302,5 +302,6 @@ public class SettingsFragment extends ItFragment {
 
 	private void removePreference(){
 		mObjectPrefHelper.remove(ItUser.class);
+		mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
 	}
 }

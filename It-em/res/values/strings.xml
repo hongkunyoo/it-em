@@ -19,9 +19,6 @@
     <string name="update_app_message">There is a new version. Please update App.</string>
     <string name="google_play_services_message">Please check Google Play Service.</string>
 
-    <!-- Splash -->
-    <string name="progress_setting">setting</string>
-
     <!-- Login -->
     <string name="facebook_login">Sign in with facebook</string>
     <string name="kakao_login">Sign in with kakao</string>

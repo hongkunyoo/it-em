@@ -12,7 +12,8 @@ import com.pinthecloud.item.helper.PrefHelper;
 public class ItUser implements Parcelable {
 
 	public static final String INTENT_KEY = "IT_USER_INTENT_KEY";
-
+	public static final String NOTIFICATION_NUMBER_KEY = "NOTIFICATION_NUMBER_KEY";
+	
 	public static enum PLATFORM {
 		FACEBOOK,
 		KAKAO
