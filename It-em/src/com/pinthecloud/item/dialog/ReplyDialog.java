@@ -200,7 +200,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 		ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
 				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
-				mItem.getImageWidth(), mItem.getImageHeight());
+				mItem.getImageNumber(), mItem.getImageWidth(), mItem.getImageHeight());
 		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
 
 			@Override

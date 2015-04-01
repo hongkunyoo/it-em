@@ -231,6 +231,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setComponent(){
 		mImageNumber.setText("1/" + mItem.getImageNumber());
 		mImageNumber.setVisibility(mItem.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
+		
 		mUserNickName.setText(mItem.getWhoMade());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
@@ -275,7 +276,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				onClickItButton();
+				onClickLikeButton();
 			}
 		});
 
@@ -448,14 +449,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setItemComponent(){
 		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
 		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(mActivity));
-
+		
+		setLikeNumber(mItem.getLikeItCount());
+		mLikeButton.setActivated(mItem.getPrevLikeId() != null);
+		
 		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
 		mUserDescription.setVisibility(!mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
 		mUserWebsite.setVisibility(!mItem.getWhoMadeUser().getWebPage().equals("") ? View.VISIBLE : View.GONE);
-
-		setLikeNumber(mItem.getLikeItCount());
-		mLikeButton.setActivated(mItem.getPrevLikeId() != null);
 	}
 
 
@@ -475,7 +476,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void onClickItButton(){
+	private void onClickLikeButton(){
 		final boolean isDoLike = !mLikeButton.isActivated();
 		final int currentLikeNum = Integer.parseInt(mLikeNumber.getText().toString());
 		setLikeButton(currentLikeNum, isDoLike);
@@ -492,7 +493,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			LikeIt like = new LikeIt(mUser.getNickName(), mUser.getId(), mItem.getId());
 			ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
 					mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
-					mItem.getImageWidth(), mItem.getImageHeight());
+					mItem.getImageNumber(), mItem.getImageWidth(), mItem.getImageHeight());
 			mAimHelper.addUnique(like, noti, new EntityCallback<LikeIt>() {
 
 				@Override
@@ -543,7 +544,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 		ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
 				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
-				mItem.getImageWidth(), mItem.getImageHeight());
+				mItem.getImageNumber(), mItem.getImageWidth(), mItem.getImageHeight());
 		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
 
 			@Override
@@ -580,7 +581,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setProductTagFrag(){
-		if(mItem.getProductTagList().size() > 0){
+		if(mItem.isHasProductTag()){
 			mProductTagEmptyView.setVisibility(View.GONE);
 			mProductTagTextLayout.setVisibility(View.VISIBLE);
 

@@ -37,7 +37,6 @@ public abstract class ItActivity extends ActionBarActivity {
 	protected BlobStorageHelper mBlobStorageHelper;
 	protected GAHelper mGaHelper;
 
-	protected ItFragment mCurrentFragment;
 	public abstract View getToolbarLayout();
 
 
@@ -97,8 +96,6 @@ public abstract class ItActivity extends ActionBarActivity {
 
 
 	public void setFragment(ItFragment fragment) {
-		this.mCurrentFragment = fragment;
-
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.activity_container, fragment);
 		transaction.commit();
@@ -107,8 +104,6 @@ public abstract class ItActivity extends ActionBarActivity {
 
 	public void replaceFragment(ItFragment fragment, boolean addToBackStack,
 			int enter, int exit, int popEnter, int popExit) {
-		this.mCurrentFragment = fragment;
-
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.setCustomAnimations(enter, exit, popEnter, popExit);
 		transaction.replace(R.id.activity_container, fragment);

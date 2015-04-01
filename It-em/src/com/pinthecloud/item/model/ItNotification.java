@@ -21,6 +21,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 	private String refWhoMadeId;
 	private String type;
 	private String typeRefId;
+	private int imageNumber;
 	private int imageWidth;
 	private int imageHeight;
 
@@ -28,7 +29,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		super();
 	}
 	public ItNotification(String whoMade, String whoMadeId, String refId, String refWhoMade, String refWhoMadeId,
-			String content, TYPE type, int imageWidth, int imageHeight) {
+			String content, TYPE type, int imageNumber, int imageWidth, int imageHeight) {
 		super();
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
@@ -37,6 +38,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		this.setRefWhoMadeId(refWhoMadeId);
 		this.setContent(content);
 		this.setType(type.toString());
+		this.setImageNumber(imageNumber);
 		this.setImageWidth(imageWidth);
 		this.setImageHeight(imageHeight);
 	}
@@ -68,6 +70,12 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 	public void setTypeRefId(String typeRefId) {
 		this.typeRefId = typeRefId;
 	}
+	public int getImageNumber() {
+		return imageNumber;
+	}
+	public void setImageNumber(int imageNumber) {
+		this.imageNumber = imageNumber;
+	}
 	public int getImageWidth() {
 		return imageWidth;
 	}
@@ -91,6 +99,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		this.setContent(noti.getContent());
 		this.setType(noti.getType());
 		this.setTypeRefId(noti.getTypeRefId());
+		this.setImageNumber(noti.getImageNumber());
 		this.setImageWidth(noti.getImageWidth());
 		this.setImageHeight(noti.getImageHeight());
 	}
@@ -130,6 +139,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		item.setId(refId);
 		item.setWhoMade(refWhoMade);
 		item.setWhoMadeId(refWhoMadeId);
+		item.setImageNumber(imageNumber);
 		item.setImageWidth(imageWidth);
 		item.setImageHeight(imageHeight);
 		return item;

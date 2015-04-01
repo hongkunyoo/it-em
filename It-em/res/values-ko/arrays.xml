@@ -9,11 +9,6 @@
     <string-array name="user_page_tab_title_array">
         <item>좋아요</item>
     </string-array>
-    
-    <!-- Upload -->
-    <string-array name="upload_image_select_array">
-        <item>앨범</item>
-    </string-array>
 
     <!-- Profile Settings -->
     <string-array name="profile_image_select_array">

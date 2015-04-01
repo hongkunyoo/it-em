@@ -157,7 +157,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 						LikeIt like = new LikeIt(user.getNickName(), user.getId(), item.getId());
 						ItNotification noti = new ItNotification(user.getNickName(), user.getId(), item.getId(),
 								item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
-								item.getImageWidth(), item.getImageHeight());
+								item.getImageNumber(), item.getImageWidth(), item.getImageHeight());
 						mApp.getAimHelper().addUnique(like, noti, new EntityCallback<LikeIt>() {
 
 							@Override
