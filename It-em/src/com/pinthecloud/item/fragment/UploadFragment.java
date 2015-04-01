@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.BrandListAdapter;
 import com.pinthecloud.item.adapter.UploadImageGridAdapter;
 import com.pinthecloud.item.dialog.CategoryDialog;
@@ -43,7 +44,6 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.ItLog;
 import com.pinthecloud.item.util.TextUtil;
 import com.pinthecloud.item.util.ViewUtil;
 
@@ -65,22 +65,10 @@ public class UploadFragment extends ItFragment {
 	private List<Brand> mBrandList;
 
 
-	public static ItFragment newInstance(ArrayList<String> pathList) {
-		ItFragment fragment = new UploadFragment();
-		Bundle bundle = new Bundle();
-		bundle.putStringArrayList(GalleryFragment.GALLERY_PATHS_KEY, pathList);
-		fragment.setArguments(bundle);
-		return fragment;
-	}
-
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		ItLog.log("onCreate");
-
-		mImagePathList = getArguments().getStringArrayList(GalleryFragment.GALLERY_PATHS_KEY);
+		mImagePathList = ((UploadActivity)mActivity).getImagePathList();
 	}
 
 
@@ -89,8 +77,6 @@ public class UploadFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_upload, container, false);
-
-		ItLog.log("onCreateView");
 
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
@@ -103,34 +89,6 @@ public class UploadFragment extends ItFragment {
 
 		return view;
 	}
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		ItLog.log("onStart");
-
-		//		mApp.getPicasso()
-		//		.load(mItemImageUri)
-		//		.placeholder(R.drawable.upload_thumbnail_default_img)
-		//		.fit().centerCrop()
-		//		.into(mItemImage);
-	}
-
-
-	//	@Override
-	//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	//		super.onActivityResult(requestCode, resultCode, data);
-	//		switch(requestCode){
-	//		case FileUtil.GALLERY:
-	//			if (resultCode == Activity.RESULT_OK){
-	//				mItemImageUri = data.getData();
-	//				mActivity.invalidateOptionsMenu();
-	//			}
-	//			break;
-	//		}
-	//	}
 
 
 	@Override
@@ -201,38 +159,6 @@ public class UploadFragment extends ItFragment {
 
 
 	private void setButton(){
-		//		mItemImage.setOnClickListener(new OnClickListener() {
-		//
-		//			@Override
-		//			public void onClick(View v) {
-		//				if(mItemImageUri == null){
-		//					String[] itemList = getResources().getStringArray(R.array.upload_image_select_array);
-		//					DialogCallback[] callbacks = getDialogCallbacks(itemList);
-		//
-		//					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
-		//					listDialog.setCallbacks(callbacks);
-		//					listDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-		//				} else {
-		//					Intent intent = new Intent(mActivity, ItemImageActivity.class);
-		//					intent.putExtra(Item.INTENT_KEY, mItemImageUri);
-		//					startActivity(intent);
-		//				}
-		//			}
-		//		});
-		//
-		//		mItemImageDelete.setOnClickListener(new OnClickListener() {
-		//
-		//			@Override
-		//			public void onClick(View v) {
-		//				// Set profile image default
-		//				mItemImageUri = null;
-		//				mItemImage.setImageResource(R.drawable.upload_thumbnail_default_img);
-		//
-		//				mActivity.invalidateOptionsMenu();
-		//				mItemImageDelete.setVisibility(View.GONE);
-		//			}
-		//		});
-
 		mBrandAddButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -287,7 +213,7 @@ public class UploadFragment extends ItFragment {
 
 	private void uploadItem(){
 		mApp.showProgressDialog(mActivity);
-		
+
 		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandInfoContent(mBrandList);
 		int width = 0;
 		int height = 0;
@@ -297,10 +223,10 @@ public class UploadFragment extends ItFragment {
 			width = Math.max(width, imageBitmaps[i].getWidth());
 			height = Math.max(height, imageBitmaps[i].getHeight());
 		}
-		
+
 		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
 		final Item item = new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(), width, height);
-		
+
 		final List<HashTag> tagList = new ArrayList<HashTag>();
 		List<String> hashTags = TextUtil.getSpanBodyList(content);
 		for(String hashTag : hashTags){

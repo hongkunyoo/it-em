@@ -1,6 +1,5 @@
 package com.pinthecloud.item.fragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -16,13 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.GalleryAdapter;
 import com.pinthecloud.item.model.Gallery;
 import com.pinthecloud.item.model.GalleryFolder;
 
 public class GalleryFragment extends ItFragment {
-
-	public static final String GALLERY_PATHS_KEY = "GALLERY_PATHS_KEY";
 
 	private RecyclerView mGridView;
 	private GalleryAdapter mGridAdapter;
@@ -82,14 +80,11 @@ public class GalleryFragment extends ItFragment {
 		switch (menuItem.getItemId()) {
 		case R.id.gallery_menu_submit:
 			List<Gallery> galleryList = mGridAdapter.getSelected();
-			List<String> pathList = new ArrayList<String>();
+			List<String> pathList = ((UploadActivity)mActivity).getImagePathList();
 			for (Gallery gallery : galleryList) {
 				pathList.add(gallery.getPath());
 			}
-
 			getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			ItFragment fragment = UploadFragment.newInstance((ArrayList<String>)pathList);
-			mActivity.replaceFragment(fragment, false, R.anim.pop_in, 0, 0, 0);
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);

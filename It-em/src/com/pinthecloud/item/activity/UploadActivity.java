@@ -1,5 +1,8 @@
 package com.pinthecloud.item.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -8,7 +11,6 @@ import android.view.View;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
-import com.pinthecloud.item.fragment.GalleryFolderFragment;
 import com.pinthecloud.item.fragment.UploadFragment;
 import com.pinthecloud.item.interfaces.DialogCallback;
 
@@ -16,6 +18,11 @@ public class UploadActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
+	private List<String> mImagePathList;
+
+	public List<String> getImagePathList() {
+		return mImagePathList;
+	}
 
 
 	@Override
@@ -24,8 +31,9 @@ public class UploadActivity extends ItActivity {
 		overridePendingTransition(R.anim.slide_in_up, R.anim.pop_out);
 		setContentView(R.layout.activity_toolbar_frame);
 
+		mImagePathList = new ArrayList<String>();
 		setToolbar();
-		setFragment(new GalleryFolderFragment());
+		setFragment(new UploadFragment());
 	}
 
 

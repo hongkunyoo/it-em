@@ -11,8 +11,7 @@
         android:id="@+id/upload_frag_image_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none" >
-    </android.support.v7.widget.RecyclerView>
+        android:scrollbars="none" />
 
     <LinearLayout
         android:layout_width="match_parent"

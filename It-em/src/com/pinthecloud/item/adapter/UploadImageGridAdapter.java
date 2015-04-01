@@ -127,6 +127,7 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 
 
 	private void setBlank(ViewHolder holder){
+		holder.image.setImageResource(R.drawable.upload_image_blank);
 		holder.image.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -135,8 +136,7 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 						R.anim.slide_in_up, R.anim.pop_out, R.anim.pop_in, R.anim.slide_out_down);
 			}
 		});
-
-		holder.image.setImageResource(R.drawable.upload_image_blank);
+		
 		holder.delete.setVisibility(View.GONE);
 	}
 
