@@ -10,7 +10,7 @@ import android.support.v4.util.SparseArrayCompat;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.HomeFragment;
-import com.pinthecloud.item.fragment.ItUserPageFragment;
+import com.pinthecloud.item.fragment.UserPageFragment;
 import com.pinthecloud.item.fragment.MainTabFragment;
 import com.pinthecloud.item.fragment.NotiFragment;
 import com.pinthecloud.item.interfaces.MainTabHolder;
@@ -56,14 +56,16 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements Custo
 			fragment = new HomeFragment();
 		} else if(position == TAB.NOTI.ordinal()){
 			fragment = new NotiFragment();
-			if (mTabHolder != null){
-				fragment.setTabHolder(mTabHolder);
-			}
 		} else if(position == TAB.IT_USER_PAGE.ordinal()){
-			ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
-			fragment = ItUserPageFragment.newInstance(myItUser.getId());
+			ItUser user = mApp.getObjectPrefHelper().get(ItUser.class);
+			fragment = UserPageFragment.newInstance(user.getId());
 		}
+		
 		mTabHolderList.put(position, fragment);
+		if (mTabHolder != null){
+			fragment.setTabHolder(mTabHolder);
+		}
+		
 		return fragment;
 	}
 

@@ -9,37 +9,37 @@ import android.support.v4.util.SparseArrayCompat;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.fragment.MyItemFragment;
-import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
+import com.pinthecloud.item.interfaces.UserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.view.PagerSlidingTabStrip.CustomTabProvider;
 
-public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements CustomTabProvider {
+public class UserPagePagerAdapter extends FragmentStatePagerAdapter implements CustomTabProvider {
 
 	private String[] mTitles;
-	private ItUser mItUser;
+	private ItUser mUser;
 	private int mHeaderHeight;
 	private int mTabHeight;
 
-	private SparseArrayCompat<ItUserPageScrollTabHolder> mScrollTabHolderList;
-	private ItUserPageScrollTabHolder mScrollTabHolder;
+	private SparseArrayCompat<UserPageScrollTabHolder> mScrollTabHolderList;
+	private UserPageScrollTabHolder mScrollTabHolder;
 
-	public void setScrollTabHolder(ItUserPageScrollTabHolder ScrollTabHolder) {
+	public void setScrollTabHolder(UserPageScrollTabHolder ScrollTabHolder) {
 		this.mScrollTabHolder = ScrollTabHolder;
 	}
-	public SparseArrayCompat<ItUserPageScrollTabHolder> getScrollTabHolderList() {
+	public SparseArrayCompat<UserPageScrollTabHolder> getScrollTabHolderList() {
 		return mScrollTabHolderList;
 	}
 
-	public ItUserPagePagerAdapter(FragmentManager fm, Context context, ItUser itUser, int headerHeight, int tabHeight) {
+	public UserPagePagerAdapter(FragmentManager fm, Context context, ItUser user, int headerHeight, int tabHeight) {
 		super(fm);
-		this.mItUser = itUser;
+		this.mUser = user;
 		this.mHeaderHeight = headerHeight;
 		this.mTabHeight = tabHeight;
-		this.mScrollTabHolderList = new SparseArrayCompat<ItUserPageScrollTabHolder>();
+		this.mScrollTabHolderList = new SparseArrayCompat<UserPageScrollTabHolder>();
 		
-		this.mTitles = mItUser.checkPro() ?
-				context.getResources().getStringArray(R.array.it_user_page_tab_pro_title_array) :
-					context.getResources().getStringArray(R.array.it_user_page_tab_title_array);
+		this.mTitles = mUser.checkPro() ?
+				context.getResources().getStringArray(R.array.user_page_tab_pro_title_array) :
+					context.getResources().getStringArray(R.array.user_page_tab_title_array);
 	}
 
 	@Override
@@ -49,12 +49,12 @@ public class ItUserPagePagerAdapter extends FragmentStatePagerAdapter implements
 
 	@Override
 	public int getPageLayoutResId(int position) {
-		return R.layout.tab_it_user_page;
+		return R.layout.tab_user_page;
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		MyItemFragment fragment = MyItemFragment.newInstance(position, mItUser, mHeaderHeight, mTabHeight);
+		MyItemFragment fragment = MyItemFragment.newInstance(position, mUser, mHeaderHeight, mTabHeight);
 		mScrollTabHolderList.put(position, fragment);
 		if (mScrollTabHolder != null){
 			fragment.setScrollTabHolder(mScrollTabHolder);

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.ItUserPageActivity;
+import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ReplyDialog;
@@ -264,7 +264,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 	private void goToItUserPageActivity(String itUserId){
-		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+		Intent intent = new Intent(mActivity, UserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, itUserId);
 		mActivity.startActivity(intent);
 	}

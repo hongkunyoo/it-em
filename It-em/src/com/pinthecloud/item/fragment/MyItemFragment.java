@@ -22,13 +22,13 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
-import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
+import com.pinthecloud.item.interfaces.UserPageScrollTabHolder;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.ViewUtil;
 
-public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHolder {
+public class MyItemFragment extends ItFragment implements UserPageScrollTabHolder {
 
 	private static final String POSITION_KEY = "POSITION_KEY";
 	private static final String HEADER_HEIGHT_KEY = "HEADER_HEIGHT_KEY";
@@ -50,23 +50,23 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	private TextView mGridEmptyText;
 	private ImageView mGridEmptyImage;
 
-	private ItUser mItUser;
+	private ItUser mUser;
 	private int mPosition;
 	private int mHeaderHeight;
 	private int mTabHeight;
 
-	private ItUserPageScrollTabHolder mScrollTabHolder;
+	private UserPageScrollTabHolder mScrollTabHolder;
 
-	public void setScrollTabHolder(ItUserPageScrollTabHolder scrollTabHolder) {
+	public void setScrollTabHolder(UserPageScrollTabHolder scrollTabHolder) {
 		mScrollTabHolder = scrollTabHolder;
 	}
 
 
-	public static MyItemFragment newInstance(int position, ItUser itUser, int headerHeight, int tabHeight) {
+	public static MyItemFragment newInstance(int position, ItUser user, int headerHeight, int tabHeight) {
 		MyItemFragment fragment = new MyItemFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(POSITION_KEY, position);
-		bundle.putParcelable(ItUser.INTENT_KEY, itUser);
+		bundle.putParcelable(ItUser.INTENT_KEY, user);
 		bundle.putInt(HEADER_HEIGHT_KEY, headerHeight);
 		bundle.putInt(TAB_HEIGHT_KEY, tabHeight);
 		fragment.setArguments(bundle);
@@ -78,11 +78,11 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPosition = getArguments().getInt(POSITION_KEY);
-		mItUser = getArguments().getParcelable(ItUser.INTENT_KEY);
+		mUser = getArguments().getParcelable(ItUser.INTENT_KEY);
 		mHeaderHeight = getArguments().getInt(HEADER_HEIGHT_KEY);
 		mTabHeight = getArguments().getInt(TAB_HEIGHT_KEY);
 
-		if(mItUser.checkPro()){
+		if(mUser.checkPro()){
 			MY_ITEM = 0;
 			IT_ITEM = 1;
 		} else {
@@ -231,7 +231,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 
 	private void updateMyItemGrid(){
-		mAimHelper.listMyItem(mItUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listMyItem(mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
@@ -244,7 +244,7 @@ public class MyItemFragment extends ItFragment implements ItUserPageScrollTabHol
 
 
 	private void updateItItemGrid(){
-		mAimHelper.listItItem(mItUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listItItem(mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

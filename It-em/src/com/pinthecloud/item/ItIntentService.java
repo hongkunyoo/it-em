@@ -82,16 +82,16 @@ public class ItIntentService extends IntentService {
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.notify(NOTIFICATION_ID, notification);
 
-				// Add Noti Number preference
-				int notiNumber = mApp.getPrefHelper().getInt(ItConstant.NOTIFICATION_NUMBER_KEY);
-				mApp.getPrefHelper().put(ItConstant.NOTIFICATION_NUMBER_KEY, ++notiNumber);
-				EventBus.getDefault().post(new NotificationEvent(noti));
-
 				// For Vibration
 				AudioManager audioManager = (AudioManager) mThis.getSystemService(Context.AUDIO_SERVICE);
 				if(AudioManager.RINGER_MODE_SILENT != audioManager.getRingerMode()){
 					((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(500);
 				}
+
+				// Add Noti Number preference
+				int notiNumber = mApp.getPrefHelper().getInt(ItConstant.NOTIFICATION_NUMBER_KEY);
+				mApp.getPrefHelper().put(ItConstant.NOTIFICATION_NUMBER_KEY, ++notiNumber);
+				EventBus.getDefault().post(new NotificationEvent(noti));
 			}
 		});
 	}

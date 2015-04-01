@@ -41,7 +41,6 @@ public class HomeFragment extends MainTabFragment {
 	private View mUploadLayout;
 	private ImageButton mUploadButton;
 
-	private ItUser mMyItUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
 
@@ -49,7 +48,6 @@ public class HomeFragment extends MainTabFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -61,7 +59,7 @@ public class HomeFragment extends MainTabFragment {
 
 		findComponent(view);
 		setComponent();
-		setButton();
+		updateProfile();
 		setRefreshLayout();
 		setList();
 		setScroll();
@@ -95,6 +93,13 @@ public class HomeFragment extends MainTabFragment {
 	}
 
 
+	@Override
+	public void updateProfile() {
+		ItUser user = mObjectPrefHelper.get(ItUser.class);
+		mUploadLayout.setVisibility(user.checkPro() ? View.VISIBLE : View.GONE);
+	}
+
+
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mLayout = view.findViewById(R.id.home_frag_layout);
@@ -109,11 +114,7 @@ public class HomeFragment extends MainTabFragment {
 		int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
 		int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
 		mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
-		mUploadLayout.setVisibility(mMyItUser.checkPro() ? View.VISIBLE : View.GONE);
-	}
 
-
-	private void setButton(){
 		mUploadButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -180,7 +181,9 @@ public class HomeFragment extends MainTabFragment {
 
 	public void updateGrid() {
 		page = 0;
-		mAimHelper.listItem(page, mMyItUser.getId(), new ListCallback<Item>() {
+
+		ItUser user = mObjectPrefHelper.get(ItUser.class);
+		mAimHelper.listItem(page, user.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
@@ -197,7 +200,9 @@ public class HomeFragment extends MainTabFragment {
 
 	private void addNextItem() {
 		mIsAdding = true;
-		mAimHelper.listItem(++page, mMyItUser.getId(), new ListCallback<Item>() {
+
+		ItUser user = mObjectPrefHelper.get(ItUser.class);
+		mAimHelper.listItem(++page, user.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

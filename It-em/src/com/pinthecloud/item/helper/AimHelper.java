@@ -339,7 +339,7 @@ public class AimHelper {
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
-				AsyncChainer.waitChain(3);
+				AsyncChainer.waitChain(item.getImageNumber()+2);
 
 				JsonObject jo = new JsonObject();
 				jo.add("item", item.toJson());
@@ -357,21 +357,9 @@ public class AimHelper {
 					}
 				});
 
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId(), new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(obj, entity);
-					}
-				});
-
-				mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						AsyncChainer.notifyNext(obj, entity);
-					}
-				});
+				for(int i=0 ; i<item.getImageNumber() ; i++){
+					deleteItemImage(obj, item, i);
+				}
 			}
 
 		}, new Chainable(){
@@ -382,6 +370,28 @@ public class AimHelper {
 				callback.onCompleted(result);	
 			}
 		});
+	}
+
+
+	private void deleteItemImage(final Object obj, Item item, int index){
+		String imageId = index == 0 ? item.getId() : item.getId() + "_" + index;
+		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId, new EntityCallback<Boolean>() {
+
+			@Override
+			public void onCompleted(Boolean entity) {
+				AsyncChainer.notifyNext(obj, entity);
+			}
+		});
+
+		if(index == 0){
+			mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
+
+				@Override
+				public void onCompleted(Boolean entity) {
+					AsyncChainer.notifyNext(obj, entity);
+				}
+			});
+		}
 	}
 
 

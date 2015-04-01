@@ -40,13 +40,13 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mDescription;
 	private EditText mWebsite;
 
-	private ItUser mMyItUser;
+	private ItUser mUser;
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -174,7 +174,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
-		mNickName.setText(mMyItUser.getNickName());
+		mNickName.setText(mUser.getNickName());
 		mNickName.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -190,8 +190,8 @@ public class ProfileSettingsFragment extends ItFragment {
 			}
 		});
 
-		mDescription.setText(mMyItUser.getSelfIntro());
-		mWebsite.setText(mMyItUser.getWebPage());
+		mDescription.setText(mUser.getSelfIntro());
+		mWebsite.setText(mUser.getWebPage());
 	}
 
 
@@ -213,7 +213,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setProfileImage(){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mMyItUser.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mUser.getId()))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);
@@ -269,9 +269,9 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private boolean isProfileSettingsChanged(){
-		return !mMyItUser.getNickName().equals(mNickName.getText().toString())
-				|| !mMyItUser.getSelfIntro().equals(mDescription.getText().toString())
-				|| !mMyItUser.getWebPage().equals(mWebsite.getText().toString());
+		return !mUser.getNickName().equals(mNickName.getText().toString())
+				|| !mUser.getSelfIntro().equals(mDescription.getText().toString())
+				|| !mUser.getWebPage().equals(mWebsite.getText().toString());
 	}
 
 
@@ -290,7 +290,7 @@ public class ProfileSettingsFragment extends ItFragment {
 					if(entity == null){
 						AsyncChainer.notifyNext(obj, "");
 					} else {
-						if(entity.getId().equals(mMyItUser.getId())){
+						if(entity.getId().equals(mUser.getId())){
 							AsyncChainer.notifyNext(obj, "");
 						} else {
 							AsyncChainer.notifyNext(obj, getResources().getString(R.string.duplicated_nick_name_message));
@@ -313,10 +313,10 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void updateProfileSettings(){
-		mMyItUser.setNickName(mNickName.getText().toString());
-		mMyItUser.setSelfIntro(mDescription.getText().toString());
-		mMyItUser.setWebPage(mWebsite.getText().toString());
-		mUserHelper.updateUser(mMyItUser, new EntityCallback<ItUser>() {
+		mUser.setNickName(mNickName.getText().toString());
+		mUser.setSelfIntro(mDescription.getText().toString());
+		mUser.setWebPage(mWebsite.getText().toString());
+		mUserHelper.updateUser(mUser, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
@@ -353,7 +353,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mMyItUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mUser.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -362,7 +362,7 @@ public class ProfileSettingsFragment extends ItFragment {
 					}
 				});
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mMyItUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
 						profileThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override

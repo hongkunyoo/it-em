@@ -6,11 +6,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.fragment.ItUserPageFragment;
+import com.pinthecloud.item.fragment.UserPageFragment;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.ViewUtil;
 
-public class ItUserPageActivity extends ItActivity {
+public class UserPageActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
@@ -25,7 +25,7 @@ public class ItUserPageActivity extends ItActivity {
 		String userId = getIntent().getStringExtra(ItUser.INTENT_KEY);
 		setToolbar();
 		setContainer();
-		setFragment(ItUserPageFragment.newInstance(userId));
+		setFragment(UserPageFragment.newInstance(userId));
 	}
 
 

@@ -16,11 +16,31 @@
         android:layout_height="wrap_content" >
 
         <com.pinthecloud.item.view.DynamicHeightImageView
-            android:id="@+id/row_home_item_item_image"
+            android:id="@+id/row_home_item_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
+
+        <com.pinthecloud.item.view.ItTextView
+            android:id="@+id/row_home_item_image_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:background="@drawable/feed_card_img_num_bg"
+            android:drawableLeft="@drawable/feed_card_img_num_ic"
+            android:drawablePadding="@dimen/content_margin"
+            android:drawableStart="@drawable/feed_card_img_num_ic"
+            android:gravity="center"
+            android:textColor="@color/item_image_number"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:textType="body" />
 
         <LinearLayout
             android:id="@+id/row_home_item_unfold"

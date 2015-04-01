@@ -45,7 +45,7 @@ public class SettingsFragment extends ItFragment {
 	private TextView mNickName;
 	private RelativeLayout mLogout;
 
-	private ItUser mMyItUser;
+	private ItUser mUser;
 
 
 	@Override
@@ -55,7 +55,7 @@ public class SettingsFragment extends ItFragment {
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
 		mGaHelper.sendScreen(mThisFragment);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mUser = mObjectPrefHelper.get(ItUser.class);
 		setActionBar();
 		findComponent(view);
 		setComponent();
@@ -89,8 +89,8 @@ public class SettingsFragment extends ItFragment {
 		String proSettings = getResources().getString(R.string.pro_settings);
 		String bePro = getResources().getString(R.string.be_pro);
 
-		mProSettingsText.setText(mMyItUser.checkPro() ? proSettings : bePro);
-		mNickName.setText(mMyItUser.getNickName());
+		mProSettingsText.setText(mUser.checkPro() ? proSettings : bePro);
+		mNickName.setText(mUser.getNickName());
 	}
 
 
@@ -108,60 +108,61 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				ItFragment fragment = mMyItUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
+				ItFragment fragment = mUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
+				fragment = new BeProFragment();
 				mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 			}
 		});
 
-		mNotiMyItem.setChecked(mMyItUser.isNotiMyItem());
+		mNotiMyItem.setChecked(mUser.isNotiMyItem());
 		mNotiMyItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mMyItUser.setNotiMyItem(mNotiMyItem.isChecked());
-				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+				mUser.setNotiMyItem(mNotiMyItem.isChecked());
+				mUserHelper.update(mUser, new EntityCallback<ItUser>() {
 
 					@Override
 					public void onCompleted(ItUser entity) {
-						mMyItUser = entity;
-						mObjectPrefHelper.put(mMyItUser);
-						mNotiMyItem.setChecked(mMyItUser.isNotiMyItem());
+						mUser = entity;
+						mObjectPrefHelper.put(mUser);
+						mNotiMyItem.setChecked(mUser.isNotiMyItem());
 					}
 				});
 			}
 		});
 
-		mNotiItItem.setChecked(mMyItUser.isNotiItItem());
+		mNotiItItem.setChecked(mUser.isNotiItItem());
 		mNotiItItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mMyItUser.setNotiItItem(mNotiItItem.isChecked());
-				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+				mUser.setNotiItItem(mNotiItItem.isChecked());
+				mUserHelper.update(mUser, new EntityCallback<ItUser>() {
 
 					@Override
 					public void onCompleted(ItUser entity) {
-						mMyItUser = entity;
-						mObjectPrefHelper.put(mMyItUser);
-						mNotiItItem.setChecked(mMyItUser.isNotiMyItem());
+						mUser = entity;
+						mObjectPrefHelper.put(mUser);
+						mNotiItItem.setChecked(mUser.isNotiMyItem());
 					}
 				});
 			}
 		});
 
-		mNotiReplyItem.setChecked(mMyItUser.isNotiReplyItem());
+		mNotiReplyItem.setChecked(mUser.isNotiReplyItem());
 		mNotiReplyItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mMyItUser.setNotiReplyItem(mNotiReplyItem.isChecked());
-				mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+				mUser.setNotiReplyItem(mNotiReplyItem.isChecked());
+				mUserHelper.update(mUser, new EntityCallback<ItUser>() {
 
 					@Override
 					public void onCompleted(ItUser entity) {
-						mMyItUser = entity;
-						mObjectPrefHelper.put(mMyItUser);
-						mNotiReplyItem.setChecked(mMyItUser.isNotiMyItem());
+						mUser = entity;
+						mObjectPrefHelper.put(mUser);
+						mNotiReplyItem.setChecked(mUser.isNotiMyItem());
 					}
 				});
 			}
@@ -179,9 +180,9 @@ public class SettingsFragment extends ItFragment {
 					@Override
 					public void doPositiveThing(Bundle bundle) {
 						mApp.showProgressDialog(mActivity);
-						if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.FACEBOOK.toString())) {
+						if (mUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.FACEBOOK.toString())) {
 							facebookLogout();
-						} else if (mMyItUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.KAKAO.toString())) {
+						} else if (mUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.KAKAO.toString())) {
 							kakaoLogout();
 						}
 					}

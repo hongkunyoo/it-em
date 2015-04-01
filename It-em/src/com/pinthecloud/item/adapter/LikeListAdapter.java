@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.ItUserPageActivity;
+import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.LikeIt;
@@ -80,7 +80,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 
 			@Override
 			public void onClick(View v) {
-				goToItUserPageActivity(like.getWhoMadeId());
+				gotoUserPageActivity(like.getWhoMadeId());
 			}
 		});
 
@@ -88,7 +88,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 
 			@Override
 			public void onClick(View v) {
-				goToItUserPageActivity(like.getWhoMadeId());
+				gotoUserPageActivity(like.getWhoMadeId());
 			}
 		});
 	}
@@ -109,9 +109,9 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 	}
 
 
-	private void goToItUserPageActivity(String itUserId){
-		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
-		intent.putExtra(ItUser.INTENT_KEY, itUserId);
+	private void gotoUserPageActivity(String userId){
+		Intent intent = new Intent(mActivity, UserPageActivity.class);
+		intent.putExtra(ItUser.INTENT_KEY, userId);
 		mActivity.startActivity(intent);
 	}
 }

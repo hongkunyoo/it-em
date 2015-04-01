@@ -5,30 +5,30 @@
     android:layout_height="match_parent" >
 
     <ProgressBar
-        android:id="@+id/it_user_page_frag_progress_bar"
+        android:id="@+id/user_page_frag_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
     <RelativeLayout
-        android:id="@+id/it_user_page_frag_container_layout"
+        android:id="@+id/user_page_frag_container_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/it_user_page_frag_pager"
+            android:id="@+id/user_page_frag_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <LinearLayout
-            android:id="@+id/it_user_page_frag_header_layout"
+            android:id="@+id/user_page_frag_header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <LinearLayout
-                android:id="@+id/it_user_page_frag_profile_layout"
+                android:id="@+id/user_page_frag_profile_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -36,7 +36,7 @@
                 android:padding="@dimen/key_line_first" >
 
                 <com.pinthecloud.item.view.CircleImageView
-                    android:id="@+id/it_user_page_frag_profile_image"
+                    android:id="@+id/user_page_frag_profile_image"
                     android:layout_width="@dimen/profile_settings_image_width"
                     android:layout_height="@dimen/profile_settings_image_width"
                     android:layout_marginEnd="@dimen/key_line_first"
@@ -55,7 +55,7 @@
                         android:orientation="horizontal" >
 
                         <com.pinthecloud.item.view.ItTextView
-                            android:id="@+id/it_user_page_frag_nick_name"
+                            android:id="@+id/user_page_frag_nick_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -64,7 +64,7 @@
                             app:textType="subhead" />
 
                         <ImageButton
-                            android:id="@+id/it_user_page_frag_settings"
+                            android:id="@+id/user_page_frag_settings"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
@@ -74,7 +74,7 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/it_user_page_frag_type"
+                        android:id="@+id/user_page_frag_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin"
@@ -82,7 +82,7 @@
                         android:visibility="gone" />
 
                     <com.pinthecloud.item.view.ItTextView
-                        android:id="@+id/it_user_page_frag_description"
+                        android:id="@+id/user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin"
@@ -90,7 +90,7 @@
                         app:textType="caption" />
 
                     <com.pinthecloud.item.view.ItTextView
-                        android:id="@+id/it_user_page_frag_website"
+                        android:id="@+id/user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin"
@@ -102,14 +102,14 @@
             <include layout="@layout/custom_line" />
 
             <com.pinthecloud.item.view.PagerSlidingTabStrip
-                android:id="@+id/it_user_page_frag_tab"
+                android:id="@+id/user_page_frag_tab"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
                 android:background="@android:color/white"
                 app:pstsDividerColor="@android:color/transparent"
                 app:pstsIndicatorColor="@android:color/transparent"
                 app:pstsShouldExpand="true"
-                app:pstsTabBackground="@drawable/it_user_page_tab"
+                app:pstsTabBackground="@drawable/user_page_tab"
                 app:pstsTabSwitch="true"
                 app:pstsUnderlineColor="@android:color/transparent" />
         </LinearLayout>

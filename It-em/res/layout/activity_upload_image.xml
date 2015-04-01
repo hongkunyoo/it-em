@@ -21,11 +21,12 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/item_image"
+        android:id="@+id/upload_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitCenter" />
 
 </RelativeLayout>

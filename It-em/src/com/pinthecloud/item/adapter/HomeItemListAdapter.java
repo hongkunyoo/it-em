@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.ItUserPageActivity;
+import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItDialogFragment;
@@ -56,7 +56,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public View view;
 
 		public DynamicHeightImageView itemImage;
+		public TextView imageNumber;
 		public View unfold;
+		
 		public Button likeButton;
 		public View replyLayout;
 		public TextView reply;
@@ -70,8 +72,10 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			super(view);
 			this.view = view;
 
-			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_item_image);
+			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_image);
+			this.imageNumber = (TextView)view.findViewById(R.id.row_home_item_image_number);
 			this.unfold = view.findViewById(R.id.row_home_item_unfold);
+			
 			this.likeButton = (Button)view.findViewById(R.id.row_home_item_like_button);
 			this.replyLayout = view.findViewById(R.id.row_home_item_reply_layout);
 			this.reply = (TextView)view.findViewById(R.id.row_home_item_reply);
@@ -108,6 +112,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setComponent(ViewHolder holder, Item item){
+		holder.imageNumber.setText(""+item.getImageNumber());
+		holder.imageNumber.setVisibility(item.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
+		
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
@@ -146,9 +153,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 						mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.LIKE, GAHelper.HOME);
 
 						// Do like it
-						ItUser myItUser = mApp.getObjectPrefHelper().get(ItUser.class);
-						LikeIt like = new LikeIt(myItUser.getNickName(), myItUser.getId(), item.getId());
-						ItNotification noti = new ItNotification(myItUser.getNickName(), myItUser.getId(), item.getId(),
+						ItUser user = mApp.getObjectPrefHelper().get(ItUser.class);
+						LikeIt like = new LikeIt(user.getNickName(), user.getId(), item.getId());
+						ItNotification noti = new ItNotification(user.getNickName(), user.getId(), item.getId(),
 								item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
 								item.getImageWidth(), item.getImageHeight());
 						mApp.getAimHelper().addUnique(like, noti, new EntityCallback<LikeIt>() {
@@ -202,7 +209,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 			@Override
 			public void onClick(View v) {
-				gotoItUserPage(item);
+				gotoUserPage(item);
 			}
 		});
 
@@ -210,16 +217,16 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 			@Override
 			public void onClick(View v) {
-				gotoItUserPage(item);
+				gotoUserPage(item);
 			}
 		});
 	}
 
 
-	private void gotoItUserPage(Item item){
+	private void gotoUserPage(Item item){
 		mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.HOME);
 
-		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+		Intent intent = new Intent(mActivity, UserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, item.getWhoMadeId());
 		mActivity.startActivity(intent);
 	}

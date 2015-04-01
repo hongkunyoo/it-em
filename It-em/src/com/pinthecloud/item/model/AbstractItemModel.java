@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.util.RandomUtil;
 
 public class AbstractItemModel<T> {
 
@@ -62,28 +61,11 @@ public class AbstractItemModel<T> {
 		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getId().equals(this.whoMadeId);
 	}
 
-	public T rand() {
-		return this.rand(false);
-	}
-
-	@SuppressWarnings("unchecked")
-	public T rand(boolean hasId) {
-		if (hasId) {
-			this.setId(RandomUtil.getString());
-		}
-		this.setContent(RandomUtil.getObjName() + " is a " + RandomUtil.getObjName());
-		this.setWhoMade(RandomUtil.getName());
-		this.setWhoMade(RandomUtil.getString());
-		this.setRawCreateDateTime(ItDateTime.getToday().toString());
-		this.setRefId(RandomUtil.getString(10));
-		return (T)this;
-	}
-
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);
 	}
-	
+
 	public JsonElement toJson() {
 		Gson gson = new Gson();
 		JsonObject json = gson.fromJson(gson.toJson(this), JsonObject.class);

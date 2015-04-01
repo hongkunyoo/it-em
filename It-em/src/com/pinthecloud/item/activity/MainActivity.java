@@ -65,6 +65,13 @@ public class MainActivity extends ItActivity {
 			@Override
 			public void updateFragment() {
 			}
+			@Override
+			public void updateProfile() {
+				SparseArrayCompat<MainTabHolder> tabHolderList = mViewPagerAdapter.getTabHolderList();
+				for(int i=0 ; i<tabHolderList.size() ; i++){
+					tabHolderList.valueAt(i).updateProfile();
+				}
+			}
 		});
 
 		mViewPager.setOffscreenPageLimit(mViewPagerAdapter.getCount());

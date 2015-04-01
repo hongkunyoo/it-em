@@ -5,10 +5,10 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,9 +30,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.MainActivity;
-import com.pinthecloud.item.activity.WebViewActivity;
+import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.adapter.ItemImagePagerAdapter;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.analysis.GAHelper;
@@ -58,12 +57,12 @@ import com.pinthecloud.item.view.DynamicHeightViewPager;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
-	private SwipeRefreshLayout mRefresh;
 	private ScrollView mScrollLayout;
 	private int mBaseScrollY;
 
 	private DynamicHeightViewPager mImagePager;
 	private ItemImagePagerAdapter mImagePagerAdapter;
+	private TextView mImageNumber;
 
 	private ProgressBar mProgressBar;
 	private View mItemLayout;
@@ -93,7 +92,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mUserDescription;
 	private TextView mUserWebsite;
 
-	private ItUser mMyItUser;
+	private ItUser mUser;
 	private Item mItem;
 
 	private boolean isDoingLike = false;
@@ -111,7 +110,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mUser = mObjectPrefHelper.get(ItUser.class);
 		mItem = getArguments().getParcelable(Item.INTENT_KEY);
 	}
 
@@ -129,7 +128,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		setComponent();
 		setImagePager();
 		setButton();
-		setRefreshLayout();
 		setScroll();
 		setReplyList();
 
@@ -199,10 +197,11 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
-		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.item_frag_scroll_refresh);
 		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 
 		mImagePager = (DynamicHeightViewPager)view.findViewById(R.id.item_frag_image_pager);
+		mImageNumber = (TextView)view.findViewById(R.id.item_frag_image_number);
+
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
@@ -230,6 +229,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
+		mImageNumber.setText("1/" + mItem.getImageNumber());
+		mImageNumber.setVisibility(mItem.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
 		mUserNickName.setText(mItem.getWhoMade());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
@@ -240,8 +241,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				mReplyInputSubmit.setEnabled(reply.length() > 0);
 			}
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -252,9 +252,21 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setImagePager(){
 		mImagePagerAdapter = new ItemImagePagerAdapter(mActivity, mItem);
-		mImagePager.setHeightRatio((double)mItem.getImageHeight()/mItem.getImageWidth());
 		mImagePager.setOffscreenPageLimit(mImagePagerAdapter.getCount());
 		mImagePager.setAdapter(mImagePagerAdapter);
+		mImagePager.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+			@Override
+			public void onPageSelected(int position) {
+				mImageNumber.setText((position+1) + "/" + mItem.getImageNumber());
+			}
+			@Override
+			public void onPageScrollStateChanged(int state) {
+			}
+		});
 	}
 
 
@@ -292,7 +304,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			@Override
 			public void onClick(View v) {
 				String content = mReplyInputText.getText().toString().trim();
-				Reply reply = new Reply(content, mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+				Reply reply = new Reply(content, mUser.getNickName(), mUser.getId(), mItem.getId());
 				mReplyInputText.setText("");
 				submitReply(reply);
 			}
@@ -302,7 +314,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				gotoItUserPage();
+				gotoUserPage();
 			}
 		});
 
@@ -310,7 +322,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				gotoItUserPage();
+				gotoUserPage();
 			}
 		});
 
@@ -324,34 +336,19 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					webSite = "http://" + webSite;
 				}
 
-				Intent intent = new Intent(mActivity, WebViewActivity.class);
-				intent.putExtra(WebViewActivity.WEB_VIEW_INTENT_KEY, webSite);
-				startActivity(intent);
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
+				mActivity.startActivity(intent);
 			}
 		});
 	}
 
 
-	private void gotoItUserPage(){
+	private void gotoUserPage(){
 		mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
 
-		Intent intent = new Intent(mActivity, ItUserPageActivity.class);
+		Intent intent = new Intent(mActivity, UserPageActivity.class);
 		intent.putExtra(ItUser.INTENT_KEY, mItem.getWhoMadeId());
 		startActivity(intent);
-	}
-
-
-	private void setRefreshLayout(){
-		int height = ViewUtil.getActionBarHeight(mActivity)/2;
-		mRefresh.setColorSchemeResources(R.color.accent_color);
-		mRefresh.setProgressViewOffset(true, height, ViewUtil.getActionBarHeight(mActivity)+height);
-		mRefresh.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh() {
-				updateItemFrag();
-			}
-		});
 	}
 
 
@@ -413,7 +410,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mItemLayout.setVisibility(View.GONE);
 
-		mAimHelper.getItem(mItem, mMyItUser.getId(), new EntityCallback<Item>() {
+		mAimHelper.getItem(mItem, mUser.getId(), new EntityCallback<Item>() {
 
 			@Override
 			public void onCompleted(Item entity) {
@@ -421,8 +418,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					if(entity != null){
 						mProgressBar.setVisibility(View.GONE);
 						mItemLayout.setVisibility(View.VISIBLE);
-						mRefresh.setRefreshing(false);
-						
+
 						mItem = entity;
 						setItemComponent();
 						setProductTagFrag();
@@ -493,8 +489,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.LIKE, GAHelper.ITEM);
 
 			// Do Like
-			LikeIt like = new LikeIt(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
-			ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
+			LikeIt like = new LikeIt(mUser.getNickName(), mUser.getId(), mItem.getId());
+			ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
 					mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
 					mItem.getImageWidth(), mItem.getImageHeight());
 			mAimHelper.addUnique(like, noti, new EntityCallback<LikeIt>() {
@@ -545,7 +541,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
 		mReplyListEmptyView.setVisibility(mItem.getReplyCount()+1 > 0 ? View.GONE : View.VISIBLE);
 
-		ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
+		ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
 				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
 				mItem.getImageWidth(), mItem.getImageHeight());
 		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {

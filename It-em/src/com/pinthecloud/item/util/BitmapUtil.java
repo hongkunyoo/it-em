@@ -59,7 +59,7 @@ public class BitmapUtil {
 		}
 		return bitmap;
 	}
-
+	
 
 	private static int calculateSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 		// Raw height and width of image

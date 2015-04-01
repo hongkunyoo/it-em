@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 
@@ -38,7 +38,7 @@ public class BeProFragment extends ItFragment {
 		findComponent(view);
 		setComponent();
 		setButton();
-		
+
 		return view;
 	}
 
@@ -99,8 +99,8 @@ public class BeProFragment extends ItFragment {
 
 
 	private void bePro(final String inviteKey){
-		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
-		mUserHelper.bePro(myItUser, inviteKey, ItUser.TYPE.PRO, new EntityCallback<ItUser>() {
+		ItUser user = mObjectPrefHelper.get(ItUser.class);
+		mUserHelper.bePro(user, inviteKey, ItUser.TYPE.PRO, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
@@ -110,9 +110,9 @@ public class BeProFragment extends ItFragment {
 
 					mObjectPrefHelper.put(entity);
 
-					Intent intent = new Intent(mActivity, MainActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(intent);
+					getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+					ItFragment fragment = new ProSettingsFragment();
+					mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 				} else {
 					mApp.dismissProgressDialog();
 					Toast.makeText(mActivity, getResources().getString(R.string.invalid_pro), Toast.LENGTH_LONG).show();

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.WebViewActivity;
 import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.model.ProductTag;
 
@@ -137,8 +137,7 @@ public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 			public void onClick(View v) {
 				mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.PRICE, GAHelper.PRODUCT_TAG);
 
-				Intent intent = new Intent(mActivity, WebViewActivity.class);
-				intent.putExtra(WebViewActivity.WEB_VIEW_INTENT_KEY, tag.getWebPage());
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tag.getWebPage()));
 				mActivity.startActivity(intent);
 			}
 		});

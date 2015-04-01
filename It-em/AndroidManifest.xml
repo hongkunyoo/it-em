@@ -77,7 +77,7 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ItUserPageActivity"
+            android:name=".activity.UserPageActivity"
             android:label="@string/none"
             android:screenOrientation="portrait" />
         <activity
@@ -94,17 +94,12 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ItemImageActivity"
+            android:name=".activity.UploadImageActivity"
             android:label="@string/none"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.WebViewActivity"
-            android:label="@string/none"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

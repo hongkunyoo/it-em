@@ -14,21 +14,21 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.BitmapUtil;
 import com.pinthecloud.item.util.ImageUtil;
 
-public class ItemImageActivity extends ItActivity {
+public class UploadImageActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
 
 	private PhotoViewAttacher mAttacher;
-	private ImageView mItemImage;
-	private Bitmap mItemImageBitmap;
+	private ImageView mImage;
+	private Bitmap mImageBitmap;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(0, 0);
-		setContentView(R.layout.activity_item_image);
+		overridePendingTransition(R.anim.slide_in_pop_up, 0);
+		setContentView(R.layout.activity_upload_image);
 
 		setToolbar();
 		findComponent();
@@ -48,14 +48,14 @@ public class ItemImageActivity extends ItActivity {
 	public void onStop() {
 		super.onStop();
 		mGaHelper.reportActivityStop(mThisActivity);
-		mItemImage.setImageBitmap(null);
+		mImage.setImageBitmap(null);
 	}
 
 
 	@Override
 	public void finish() {
 		super.finish();
-		overridePendingTransition(0, 0);
+		overridePendingTransition(R.anim.pop_in, R.anim.slide_out_pop_down);
 	}
 
 
@@ -87,27 +87,27 @@ public class ItemImageActivity extends ItActivity {
 
 
 	private void findComponent(){
-		mItemImage = (ImageView)findViewById(R.id.item_image);
+		mImage = (ImageView)findViewById(R.id.upload_image);
 	}
 
 
 	private void setComponent(){
-		mAttacher = new PhotoViewAttacher(mItemImage);
+		mAttacher = new PhotoViewAttacher(mImage);
 
 		String path = getIntent().getStringExtra(Item.INTENT_KEY);
-		mItemImageBitmap = ImageUtil.refineItemImage(path, ImageUtil.ITEM_IMAGE_WIDTH);
-
+		mImageBitmap = ImageUtil.refineItemImage(path, ImageUtil.ITEM_IMAGE_WIDTH);
+		
 		int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
-		if(mItemImageBitmap.getHeight() > maxSize){
-			int width = mItemImageBitmap.getWidth();
-			int height = mItemImageBitmap.getHeight();
-			mItemImageBitmap = BitmapUtil.scale(mItemImageBitmap, (int)(width*((float)maxSize/height)), maxSize);
+		if(mImageBitmap.getHeight() > maxSize){
+			int width = mImageBitmap.getWidth();
+			int height = mImageBitmap.getHeight();
+			mImageBitmap = BitmapUtil.scale(mImageBitmap, (int)(width*((float)maxSize/height)), maxSize);
 		}
 	}
 
 
 	private void setImageView(){
-		mItemImage.setImageBitmap(mItemImageBitmap);
+		mImage.setImageBitmap(mImageBitmap);
 		mAttacher.update();
 	}
 }

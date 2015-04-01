@@ -30,8 +30,8 @@ public class SettingsActivity extends ItActivity {
 
 	@Override
 	public void finish() {
-		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
-		Intent intent = new Intent().putExtra(ItUser.INTENT_KEY, myItUser);
+		ItUser user = mObjectPrefHelper.get(ItUser.class);
+		Intent intent = new Intent().putExtra(ItUser.INTENT_KEY, user);
 		setResult(Activity.RESULT_OK, intent);
 
 		super.finish();

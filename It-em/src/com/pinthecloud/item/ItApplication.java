@@ -24,7 +24,10 @@ import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
 import com.pinthecloud.item.helper.VersionHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.model.ItDevice;
 import com.pinthecloud.item.model.ItUser;
+import com.pinthecloud.item.util.AsyncChainer;
+import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.squareup.picasso.Picasso;
 
 @ReportsCrashes(formKey = "", mailTo="item@pinthecloud.com", mode = ReportingInteractionMode.TOAST, resToastText=R.string.error_report_message,
@@ -191,23 +194,42 @@ public class ItApplication extends Application {
 
 	public void switchClient(int developMode, final EntityCallback<Boolean> callback) {
 		getPrefHelper().put(ItConstant.DEVELOP_MODE_KEY, developMode);
-		if (developMode == REAL) {
-			mClient = realClient;
-		} else if(developMode == TEST) {
-			mClient = testClient;
-		}
-
+		mClient = developMode == REAL ? realClient : testClient;
 		getAimHelper().setMobileClient(mClient);
 		getUserHelper().setMobileClient(mClient);
 		getVersionHelper().setMobileClient(mClient);
 		getDeviceHelper().setMobileClient(mClient);
 
-		ItUser user = getObjectPrefHelper().get(ItUser.class);
-		getUserHelper().getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {
+		AsyncChainer.asyncChain(app, new Chainable(){
 
 			@Override
-			public void onCompleted(ItUser entity) {
-				getObjectPrefHelper().put(entity);
+			public void doNext(final Object obj, Object... params) {
+				AsyncChainer.waitChain(2);
+
+				ItUser user = getObjectPrefHelper().get(ItUser.class);
+				getUserHelper().getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {
+
+					@Override
+					public void onCompleted(ItUser entity) {
+						getObjectPrefHelper().put(entity);
+						AsyncChainer.notifyNext(obj);
+					}
+				});
+
+				ItDevice device = getObjectPrefHelper().get(ItDevice.class);
+				getDeviceHelper().getByMobileId(device.getMobileId(), new EntityCallback<ItDevice>() {
+
+					@Override
+					public void onCompleted(ItDevice entity) {
+						getObjectPrefHelper().put(entity);
+						AsyncChainer.notifyNext(obj);
+					}
+				});
+			}
+		}, new Chainable(){
+
+			@Override
+			public void doNext(Object obj, Object... params) {
 				callback.onCompleted(true);
 			}
 		});

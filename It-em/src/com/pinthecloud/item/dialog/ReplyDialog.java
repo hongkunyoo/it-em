@@ -119,8 +119,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 				mInputSubmit.setEnabled(reply.length() > 0);
 			}
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 			@Override
 			public void afterTextChanged(Editable s) {

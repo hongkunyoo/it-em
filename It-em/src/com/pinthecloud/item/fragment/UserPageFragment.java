@@ -3,6 +3,7 @@ package com.pinthecloud.item.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
@@ -25,23 +26,22 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.activity.ItUserPageActivity;
 import com.pinthecloud.item.activity.SettingsActivity;
-import com.pinthecloud.item.activity.WebViewActivity;
-import com.pinthecloud.item.adapter.ItUserPagePagerAdapter;
+import com.pinthecloud.item.activity.UserPageActivity;
+import com.pinthecloud.item.adapter.UserPagePagerAdapter;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ProfileImageDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
-import com.pinthecloud.item.interfaces.ItUserPageScrollTabHolder;
+import com.pinthecloud.item.interfaces.UserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.view.PagerSlidingTabStrip;
 
-public class ItUserPageFragment extends MainTabFragment {
+public class UserPageFragment extends MainTabFragment {
 
 	private final int SETTINGS = 0;
 
@@ -59,14 +59,14 @@ public class ItUserPageFragment extends MainTabFragment {
 
 	private PagerSlidingTabStrip mTab;
 	private ViewPager mViewPager;
-	private ItUserPagePagerAdapter mViewPagerAdapter;
+	private UserPagePagerAdapter mViewPagerAdapter;
 
-	private String mItUserId;
-	private ItUser mItUser;
+	private String mUserId;
+	private ItUser mUser;
 
 
 	public static MainTabFragment newInstance(String userId) {
-		MainTabFragment fragment = new ItUserPageFragment();
+		MainTabFragment fragment = new UserPageFragment();
 		Bundle args = new Bundle();
 		args.putString(ItUser.INTENT_KEY, userId);
 		fragment.setArguments(args);
@@ -77,7 +77,7 @@ public class ItUserPageFragment extends MainTabFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mItUserId = getArguments().getString(ItUser.INTENT_KEY);
+		mUserId = getArguments().getString(ItUser.INTENT_KEY);
 	}
 
 
@@ -85,11 +85,11 @@ public class ItUserPageFragment extends MainTabFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_it_user_page, container, false);
+		View view = inflater.inflate(R.layout.fragment_user_page, container, false);
 		findComponent(view);
 		setButton();
 
-		if(mActivity instanceof ItUserPageActivity){
+		if(mActivity instanceof UserPageActivity){
 			updateFragment();
 		}
 
@@ -103,8 +103,8 @@ public class ItUserPageFragment extends MainTabFragment {
 		switch(requestCode){
 		case SETTINGS:
 			if (resultCode == Activity.RESULT_OK){
-				mItUser = data.getParcelableExtra(ItUser.INTENT_KEY);
-				setProfile();
+				mUser = data.getParcelableExtra(ItUser.INTENT_KEY);
+				mTabHolder.updateProfile();
 
 				mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -118,7 +118,7 @@ public class ItUserPageFragment extends MainTabFragment {
 							mHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 						}
 
-						SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
+						SparseArrayCompat<UserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
 						for(int i=0 ; i<scrollTabHolderList.size() ; i++){
 							scrollTabHolderList.valueAt(i).updateHeader(mHeader.getHeight());	
 						}
@@ -133,7 +133,7 @@ public class ItUserPageFragment extends MainTabFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(mItUser != null){
+		if(mUser != null){
 			setProfileImage();
 		}
 	}
@@ -149,14 +149,14 @@ public class ItUserPageFragment extends MainTabFragment {
 	@Override
 	public void updateFragment() {
 		mGaHelper.sendScreen(mThisFragment);
-		
+
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
 			public void doNext(Object obj, Object... params) {
 				mProgressBar.setVisibility(View.VISIBLE);
 				mContainer.setVisibility(View.GONE);
-				setItUser(obj);
+				setUser(obj);
 			}
 		}, new Chainable(){
 
@@ -164,7 +164,7 @@ public class ItUserPageFragment extends MainTabFragment {
 			public void doNext(Object obj, Object... params) {
 				mProgressBar.setVisibility(View.GONE);
 				mContainer.setVisibility(View.VISIBLE);
-				setProfile();
+				updateProfile();
 				setProfileImage();
 
 				mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -189,19 +189,36 @@ public class ItUserPageFragment extends MainTabFragment {
 	}
 
 
+	@Override
+	public void updateProfile() {
+		if(mActionBar != null) mActionBar.setTitle(mUser.getNickName());
+		mNickName.setText(mUser.getNickName());
+		mDescription.setText(mUser.getSelfIntro());
+		mWebsite.setText(mUser.getWebPage());
+
+		mDescription.setVisibility(!mUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
+		mWebsite.setVisibility(!mUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
+		mSettings.setVisibility(mUser.checkMe() ? View.VISIBLE : View.GONE);
+
+		boolean isItem = mUser.getItUserId().equals(ItConstant.ITEM_ID_FACEBOOK);
+		mType.setImageResource(isItem ? R.drawable.general_guide_ic : R.drawable.general_editor_ic);
+		mType.setVisibility(isItem || mUser.checkPro() ? View.VISIBLE : View.GONE);
+	}
+
+
 	private void findComponent(View view){
 		mActionBar = mActivity.getSupportActionBar();
-		mContainer = (RelativeLayout)view.findViewById(R.id.it_user_page_frag_container_layout);
-		mProgressBar = (ProgressBar)view.findViewById(R.id.it_user_page_frag_progress_bar);
-		mHeader = (LinearLayout)view.findViewById(R.id.it_user_page_frag_header_layout);
-		mProfileImage = (ImageView)view.findViewById(R.id.it_user_page_frag_profile_image);
-		mType = (ImageView)view.findViewById(R.id.it_user_page_frag_type);
-		mNickName = (TextView)view.findViewById(R.id.it_user_page_frag_nick_name);
-		mDescription = (TextView)view.findViewById(R.id.it_user_page_frag_description);
-		mWebsite = (TextView)view.findViewById(R.id.it_user_page_frag_website);
-		mSettings = (ImageButton)view.findViewById(R.id.it_user_page_frag_settings);
-		mViewPager = (ViewPager)view.findViewById(R.id.it_user_page_frag_pager);
-		mTab = (PagerSlidingTabStrip)view.findViewById(R.id.it_user_page_frag_tab);
+		mContainer = (RelativeLayout)view.findViewById(R.id.user_page_frag_container_layout);
+		mProgressBar = (ProgressBar)view.findViewById(R.id.user_page_frag_progress_bar);
+		mHeader = (LinearLayout)view.findViewById(R.id.user_page_frag_header_layout);
+		mProfileImage = (ImageView)view.findViewById(R.id.user_page_frag_profile_image);
+		mType = (ImageView)view.findViewById(R.id.user_page_frag_type);
+		mNickName = (TextView)view.findViewById(R.id.user_page_frag_nick_name);
+		mDescription = (TextView)view.findViewById(R.id.user_page_frag_description);
+		mWebsite = (TextView)view.findViewById(R.id.user_page_frag_website);
+		mSettings = (ImageButton)view.findViewById(R.id.user_page_frag_settings);
+		mViewPager = (ViewPager)view.findViewById(R.id.user_page_frag_pager);
+		mTab = (PagerSlidingTabStrip)view.findViewById(R.id.user_page_frag_tab);
 	}
 
 
@@ -215,9 +232,8 @@ public class ItUserPageFragment extends MainTabFragment {
 				if(!webSite.matches(webSiteRegx)){
 					webSite = "http://" + webSite;
 				}
-				
-				Intent intent = new Intent(mActivity, WebViewActivity.class);
-				intent.putExtra(WebViewActivity.WEB_VIEW_INTENT_KEY, webSite);
+
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webSite));
 				mActivity.startActivity(intent);
 			}
 		});
@@ -226,7 +242,7 @@ public class ItUserPageFragment extends MainTabFragment {
 
 			@Override
 			public void onClick(View v) {
-				ItDialogFragment replyDialog = ProfileImageDialog.newInstance(mItUser);
+				ItDialogFragment replyDialog = ProfileImageDialog.newInstance(mUser);
 				replyDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
@@ -242,18 +258,18 @@ public class ItUserPageFragment extends MainTabFragment {
 	}
 
 
-	private void setItUser(final Object obj){
-		mItUser = mObjectPrefHelper.get(ItUser.class);
-		if(mItUserId.equals(mItUser.getId())){
+	private void setUser(final Object obj){
+		mUser = mObjectPrefHelper.get(ItUser.class);
+		if(mUserId.equals(mUser.getId())){
 			AsyncChainer.notifyNext(obj);
 		} else {
-			mUserHelper.get(mItUserId, new EntityCallback<ItUser>() {
+			mUserHelper.get(mUserId, new EntityCallback<ItUser>() {
 
 				@Override
 				public void onCompleted(ItUser entity) {
 					if(isAdded()){
 						if(entity != null){
-							mItUser = entity;
+							mUser = entity;
 							AsyncChainer.notifyNext(obj);
 						} else {
 							String message = getResources().getString(R.string.not_exist_user);
@@ -279,25 +295,9 @@ public class ItUserPageFragment extends MainTabFragment {
 	}
 
 
-	private void setProfile(){
-		if(mActionBar != null) mActionBar.setTitle(mItUser.getNickName());
-		mNickName.setText(mItUser.getNickName());
-		mDescription.setText(mItUser.getSelfIntro());
-		mWebsite.setText(mItUser.getWebPage());
-
-		mDescription.setVisibility(!mItUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
-		mWebsite.setVisibility(!mItUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
-		mSettings.setVisibility(mItUser.checkMe() ? View.VISIBLE : View.GONE);
-		
-		boolean isItem = mItUser.getItUserId().equals(ItConstant.ITEM_ID_FACEBOOK);
-		mType.setImageResource(isItem ? R.drawable.general_guide_ic : R.drawable.general_editor_ic);
-		mType.setVisibility(isItem || mItUser.checkPro() ? View.VISIBLE : View.GONE);
-	}
-
-
 	private void setProfileImage(){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mUser.getId()))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);
@@ -305,9 +305,9 @@ public class ItUserPageFragment extends MainTabFragment {
 
 
 	private void setViewPager(){
-		mViewPagerAdapter = new ItUserPagePagerAdapter(getChildFragmentManager(), mActivity, mItUser, 
+		mViewPagerAdapter = new UserPagePagerAdapter(getChildFragmentManager(), mActivity, mUser, 
 				mHeader.getHeight(), mTab.getHeight());
-		mViewPagerAdapter.setScrollTabHolder(new ItUserPageScrollTabHolder() {
+		mViewPagerAdapter.setScrollTabHolder(new UserPageScrollTabHolder() {
 
 			@Override
 			public void onScroll(RecyclerView view, RecyclerView.LayoutManager layoutManager, int pagePosition) {
@@ -321,7 +321,7 @@ public class ItUserPageFragment extends MainTabFragment {
 			@Override
 			public void updateTabNumber(int position, int number) {
 				View tab = mTab.getTab(position);
-				TextView numberText = (TextView)tab.findViewById(R.id.tab_it_user_page_number);
+				TextView numberText = (TextView)tab.findViewById(R.id.tab_user_page_number);
 				numberText.setText(""+number);
 			}
 
@@ -343,8 +343,8 @@ public class ItUserPageFragment extends MainTabFragment {
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 				// Get scroll tab holder interface
-				SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
-				ItUserPageScrollTabHolder fragmentContent = null;
+				SparseArrayCompat<UserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
+				UserPageScrollTabHolder fragmentContent = null;
 
 				// Scroll grid view items of tab fragment
 				int currentItem = mViewPager.getCurrentItem();
@@ -363,8 +363,8 @@ public class ItUserPageFragment extends MainTabFragment {
 			@Override
 			public void onPageSelected(int position) {
 				// Scroll header by grid view items scroll y
-				SparseArrayCompat<ItUserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
-				ItUserPageScrollTabHolder fragmentContent = scrollTabHolderList.valueAt(position);
+				SparseArrayCompat<UserPageScrollTabHolder> scrollTabHolderList = mViewPagerAdapter.getScrollTabHolderList();
+				UserPageScrollTabHolder fragmentContent = scrollTabHolderList.valueAt(position);
 				fragmentContent.adjustScroll((int) (mHeader.getHeight() - mHeader.getScrollY()));
 			}
 			@Override
@@ -377,7 +377,7 @@ public class ItUserPageFragment extends MainTabFragment {
 	private void setTabName(){
 		for(int i=0 ; i<mViewPagerAdapter.getCount() ; i++){
 			View tab = mTab.getTab(i);
-			TextView name = (TextView)tab.findViewById(R.id.tab_it_user_page_name);
+			TextView name = (TextView)tab.findViewById(R.id.tab_user_page_name);
 			name.setText(mViewPagerAdapter.getPageTitle(i));
 		}
 	}

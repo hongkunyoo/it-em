@@ -32,13 +32,13 @@ public class ProSettingsFragment extends ItFragment {
 	private TextView mBankAccount;
 	private Button mEditBankAccount;
 
-	private ItUser mMyItUser;
+	private ItUser mUser;
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -77,7 +77,7 @@ public class ProSettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
-		mEmail.setText(mMyItUser.getEmail());
+		mEmail.setText(mUser.getEmail());
 		mEmail.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -122,8 +122,8 @@ public class ProSettingsFragment extends ItFragment {
 
 					@Override
 					public void doPositiveThing(Bundle bundle) {
-						mMyItUser = bundle.getParcelable(ItUser.INTENT_KEY);
-						mObjectPrefHelper.put(mMyItUser);
+						mUser = bundle.getParcelable(ItUser.INTENT_KEY);
+						mObjectPrefHelper.put(mUser);
 						setBankAccount();
 					}
 					@Override
@@ -137,14 +137,14 @@ public class ProSettingsFragment extends ItFragment {
 
 
 	private void setMileage(){
-		mUserHelper.get(mMyItUser.getId(), new EntityCallback<ItUser>() {
+		mUserHelper.get(mUser.getId(), new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
-				mMyItUser = entity;
-				mObjectPrefHelper.put(mMyItUser);
+				mUser = entity;
+				mObjectPrefHelper.put(mUser);
 				
-				String mileage = String.format(Locale.US, "%,d", mMyItUser.getMileage());
+				String mileage = String.format(Locale.US, "%,d", mUser.getMileage());
 				mMileage.setText(mileage);
 			}
 		});
@@ -152,9 +152,9 @@ public class ProSettingsFragment extends ItFragment {
 	
 	
 	private void setBankAccount(){
-		String bankName = mMyItUser.bankNameString(mActivity);
-		String bankAccountNumber = mMyItUser.getBankAccountNumber();
-		String bankAccountName = mMyItUser.getBankAccountName();
+		String bankName = mUser.bankNameString(mActivity);
+		String bankAccountNumber = mUser.getBankAccountNumber();
+		String bankAccountName = mUser.getBankAccountName();
 
 		if(bankAccountNumber.equals("") || bankAccountName.equals("")){
 			mEmptyBankAccount.setVisibility(View.VISIBLE);
@@ -175,7 +175,7 @@ public class ProSettingsFragment extends ItFragment {
 
 
 	private boolean isEmailChanged(){
-		return !mMyItUser.getEmail().equals(mEmail.getText().toString());
+		return !mUser.getEmail().equals(mEmail.getText().toString());
 	}
 
 
@@ -192,16 +192,16 @@ public class ProSettingsFragment extends ItFragment {
 	private void updateEmail(){
 		mApp.showProgressDialog(mActivity);
 
-		mMyItUser.setEmail(mEmail.getText().toString());
-		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+		mUser.setEmail(mEmail.getText().toString());
+		mUserHelper.update(mUser, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.email_edited), Toast.LENGTH_LONG).show();
 
-				mMyItUser = entity;
-				mObjectPrefHelper.put(mMyItUser);
+				mUser = entity;
+				mObjectPrefHelper.put(mUser);
 			}
 		});
 	}

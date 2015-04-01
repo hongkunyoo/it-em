@@ -50,7 +50,7 @@
     <!-- Like -->
     <string name="like_user">People who like this item</string>
 
-    <!-- It User Page -->
+    <!-- User Page -->
     <string name="not_exist_user">This user doesn\'t exist.</string>
 
     <!-- Guide -->
@@ -69,7 +69,7 @@
     <string name="apply_link">Apply Link</string>
     <string name="apply_editor">http://goo.gl/forms/d1rfeKJVcQ</string>
     <string name="code">CODE</string>
-    <string name="valid_pro">Congratulation for coming editor!\nNow set editor information in editor settings.</string>
+    <string name="valid_pro">Congratulation becoming editor!\nNow set editor information.</string>
     <string name="invalid_pro">Invalid Editor key. Please check it.</string>
 
     <!-- Upload -->
