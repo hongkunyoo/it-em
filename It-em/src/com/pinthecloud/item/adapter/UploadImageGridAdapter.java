@@ -15,10 +15,11 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.UploadImageActivity;
+import com.pinthecloud.item.activity.ImageActivity;
 import com.pinthecloud.item.fragment.GalleryFolderFragment;
+import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.fragment.UploadFragment;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.ViewUtil;
 
 public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGridAdapter.ViewHolder> {
 
@@ -29,14 +30,14 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
-	private RecyclerView mGridView;
+	private ItFragment mFrag;
 	private List<String> mImageList;
 
 
-	public UploadImageGridAdapter(ItActivity activity, RecyclerView gridView, List<String> imageList) {
+	public UploadImageGridAdapter(ItActivity activity, ItFragment frag, List<String> imageList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
-		this.mGridView = gridView;
+		this.mFrag = frag;
 		this.mImageList = imageList;
 	}
 
@@ -97,8 +98,8 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, UploadImageActivity.class);
-				intent.putExtra(Item.INTENT_KEY, path);
+				Intent intent = new Intent(mActivity, ImageActivity.class);
+				intent.putExtra(Item.INTENT_KEY, ItConstant.FILE_PREFIX + path);
 				mActivity.startActivity(intent);
 			}
 		});
@@ -107,19 +108,17 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 
 			@Override
 			public void onClick(View v) {
-				remove(path);
-				mActivity.invalidateOptionsMenu();
+				((UploadFragment)mFrag).deleteImage(path);
 			}
 		});
 	}
 
 
 	private void setNormalImageView(ViewHolder holder, String path){
-		int width = mActivity.getResources().getDimensionPixelSize(R.dimen.upload_image_width);
 		mApp.getPicasso()
 		.load(ItConstant.FILE_PREFIX + path)
 		.placeholder(R.drawable.upload_image_blank)
-		.resize(width, width).centerCrop()
+		.fit().centerCrop()
 		.into(holder.image);
 
 		holder.delete.setVisibility(View.VISIBLE);
@@ -136,7 +135,7 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 						R.anim.slide_in_up, R.anim.pop_out, R.anim.pop_in, R.anim.slide_out_down);
 			}
 		});
-		
+
 		holder.delete.setVisibility(View.GONE);
 	}
 
@@ -150,10 +149,6 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 	public void remove(String path) {
 		int position = mImageList.indexOf(path);
 		mImageList.remove(position);
-
 		notifyDataSetChanged();
-
-		int gridColumnNum = mActivity.getResources().getInteger(R.integer.gallery_grid_column_num);
-		ViewUtil.setListHeightBasedOnChildren(mGridView, (int)Math.ceil((double)getItemCount()/gridColumnNum));
 	}
 }

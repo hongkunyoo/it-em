@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -63,6 +66,8 @@ public class UploadFragment extends ItFragment {
 	private BrandListAdapter mBrandListAdapter;
 	private LinearLayoutManager mBrandListLayoutManager;
 	private List<Brand> mBrandList;
+
+	private boolean isUploading = false;
 
 
 	@Override
@@ -110,11 +115,17 @@ public class UploadFragment extends ItFragment {
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 		case R.id.upload_menu_submit:
+			if(isUploading){
+				break;
+			}
+
+			isUploading = true;
 			trimContent();
 			String message = checkBrand();
 			if(message.equals("")){
 				uploadItem();
 			} else {
+				isUploading = false;
 				Toast toast = Toast.makeText(mActivity, message, Toast.LENGTH_LONG);
 				TextView textView = (TextView)toast.getView().findViewById(android.R.id.message);
 				textView.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -168,10 +179,13 @@ public class UploadFragment extends ItFragment {
 
 					@Override
 					public void doPositiveThing(Bundle bundle) {
+						categoryDialog.dismiss();
+
 						String category = bundle.getString(CATEGORY_INTENT_KEY);
 						mBrandListAdapter.add(mBrandList.size(), new Brand(category));
 						mBrandListView.smoothScrollToPosition(mBrandList.size()-1);
-						categoryDialog.dismiss();
+
+						ViewUtil.setListHeightBasedOnChildren(mBrandListView, mBrandListAdapter.getItemCount());
 					}
 					@Override
 					public void doNegativeThing(Bundle bundle) {
@@ -183,17 +197,47 @@ public class UploadFragment extends ItFragment {
 	}
 
 
+	public void deleteBrand(Brand brand){
+		mBrandListAdapter.remove(brand);
+		ViewUtil.setListHeightBasedOnChildren(mBrandListView, mBrandListAdapter.getItemCount());
+	}
+
+
 	private void setImageGrid(){
 		mImageGridView.setHasFixedSize(true);
 
-		int gridColumnNum = getResources().getInteger(R.integer.gallery_grid_column_num);
+		final int gridColumnNum = getResources().getInteger(R.integer.gallery_grid_column_num);
 		mImageGridLayoutManager = new GridLayoutManager(mActivity, gridColumnNum);
 		mImageGridView.setLayoutManager(mImageGridLayoutManager);
 		mImageGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mImageGridAdapter = new UploadImageGridAdapter(mActivity, mImageGridView, mImagePathList);
+		mImageGridAdapter = new UploadImageGridAdapter(mActivity, mThisFragment, mImagePathList);
 		mImageGridView.setAdapter(mImageGridAdapter);
 
+		mImageGridView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mImageGridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				} else {
+					mImageGridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+
+				int rowCount = (int)Math.ceil((double)mImageGridAdapter.getItemCount()/gridColumnNum);
+				ViewUtil.setListHeightBasedOnChildren(mImageGridView, rowCount);
+			}
+		});
+	}
+
+
+	public void deleteImage(String path){
+		mImageGridAdapter.remove(path);
+		mActivity.invalidateOptionsMenu();
+
+		int gridColumnNum = mActivity.getResources().getInteger(R.integer.gallery_grid_column_num);
 		ViewUtil.setListHeightBasedOnChildren(mImageGridView, (int)Math.ceil((double)mImageGridAdapter.getItemCount()/gridColumnNum));
 	}
 
@@ -205,26 +249,50 @@ public class UploadFragment extends ItFragment {
 		mBrandListView.setLayoutManager(mBrandListLayoutManager);
 		mBrandListView.setItemAnimator(new DefaultItemAnimator());
 
-		mBrandList = new ArrayList<Brand>();
-		mBrandListAdapter = new BrandListAdapter(mBrandList);
+		if(mBrandList == null){
+			mBrandList = new ArrayList<Brand>();	
+		}
+		mBrandListAdapter = new BrandListAdapter(mThisFragment, mBrandList);
 		mBrandListView.setAdapter(mBrandListAdapter);
+		
+		mBrandListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mBrandListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				} else {
+					mBrandListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+
+				ViewUtil.setListHeightBasedOnChildren(mBrandListView, mBrandListAdapter.getItemCount());
+			}
+		});
 	}
 
 
 	private void uploadItem(){
 		mApp.showProgressDialog(mActivity);
 
-		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandInfoContent(mBrandList);
-		int width = 0;
-		int height = 0;
 		final Bitmap[] imageBitmaps = new Bitmap[mImagePathList.size()];
 		for(int i=0 ; i<mImagePathList.size() ; i++){
 			imageBitmaps[i] = ImageUtil.refineItemImage(mImagePathList.get(i), ImageUtil.ITEM_IMAGE_WIDTH);
-			width = Math.max(width, imageBitmaps[i].getWidth());
-			height = Math.max(height, imageBitmaps[i].getHeight());
 		}
 
+		int width = 0;
+		int height = 0;
+		double heightRatio = 0;
+		for(int i=0 ; i<mImagePathList.size() ; i++){
+			if(heightRatio < (double)imageBitmaps[i].getHeight()/imageBitmaps[i].getWidth()){
+				width = imageBitmaps[i].getWidth();
+				height = imageBitmaps[i].getHeight();
+			}
+		}
+		
 		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
+		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandInfoContent(mBrandList);
 		final Item item = new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(), width, height);
 
 		final List<HashTag> tagList = new ArrayList<HashTag>();
@@ -261,6 +329,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doNext(Object obj, Object... params) {
+				isUploading = false;
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
 

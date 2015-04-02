@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ public class GalleryFragment extends ItFragment {
 	private GalleryAdapter mGridAdapter;
 	private GridLayoutManager mGridLayoutManager;
 	private GalleryFolder mFolder;
+	private List<String> mImagePathList;
 
 
 	public static ItFragment newInstance(GalleryFolder folder) {
@@ -41,6 +43,7 @@ public class GalleryFragment extends ItFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mFolder = getArguments().getParcelable(GalleryFolder.INTENT_KEY);
+		mImagePathList = ((UploadActivity)mActivity).getImagePathList();
 	}
 
 
@@ -52,7 +55,7 @@ public class GalleryFragment extends ItFragment {
 
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-
+		setActionBar();
 		findComponent(view);
 		setGrid();
 
@@ -80,9 +83,8 @@ public class GalleryFragment extends ItFragment {
 		switch (menuItem.getItemId()) {
 		case R.id.gallery_menu_submit:
 			List<Gallery> galleryList = mGridAdapter.getSelected();
-			List<String> pathList = ((UploadActivity)mActivity).getImagePathList();
 			for (Gallery gallery : galleryList) {
-				pathList.add(gallery.getPath());
+				mImagePathList.add(gallery.getPath());
 			}
 			getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			break;
@@ -91,6 +93,18 @@ public class GalleryFragment extends ItFragment {
 	}
 
 
+	public void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		int selected = mImagePathList.size() + (mGridAdapter == null ? 0 : mGridAdapter.getSelected().size());
+		if(selected > 0){
+			int maxGallery = mActivity.getResources().getInteger(R.integer.gallery_max_num);
+			actionBar.setTitle(mFolder.getName() + "  (" + selected + "/" + maxGallery + ")");
+		} else {
+			actionBar.setTitle(mFolder.getName());
+		}
+	}
+	
+	
 	private void findComponent(View view){
 		mGridView = (RecyclerView)view.findViewById(R.id.gallery_frag_grid);
 	}
@@ -104,7 +118,7 @@ public class GalleryFragment extends ItFragment {
 		mGridView.setLayoutManager(mGridLayoutManager);
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
-		mGridAdapter = new GalleryAdapter(mActivity, mFolder);
+		mGridAdapter = new GalleryAdapter(mActivity, mThisFragment, mFolder.getGalleryList(), mImagePathList);
 		mGridView.setAdapter(mGridAdapter);
 	}
 }

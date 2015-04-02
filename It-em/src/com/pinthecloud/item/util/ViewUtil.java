@@ -12,18 +12,26 @@ import com.pinthecloud.item.activity.ItActivity;
 public class ViewUtil {
 
 	@SuppressWarnings("unchecked")
-	public static void setListHeightBasedOnChildren(RecyclerView recyclerView, int rowCount) {
+	public static void setListHeightBasedOnChildren(final RecyclerView recyclerView, final int rowCount) {
 		@SuppressWarnings("rawtypes")
 		RecyclerView.Adapter adapter = recyclerView.getAdapter();
+		RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+		
 		int totalHeight = 0;
 		int desiredWidth = MeasureSpec.makeMeasureSpec(recyclerView.getWidth(), MeasureSpec.AT_MOST);
+		
 		for (int i=0 ; i<rowCount ; i++) {
-			RecyclerView.ViewHolder holder = adapter.onCreateViewHolder(recyclerView, adapter.getItemViewType(i));
-			adapter.onBindViewHolder(holder, i);
+			if(layoutManager.findViewByPosition(i) != null){
+				totalHeight += layoutManager.findViewByPosition(i).getHeight();	
+			} else {
+				RecyclerView.ViewHolder holder = adapter.onCreateViewHolder(recyclerView, adapter.getItemViewType(i));
+				adapter.onBindViewHolder(holder, i);
 
-			holder.itemView.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
-			totalHeight += holder.itemView.getMeasuredHeight();
+				holder.itemView.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+				totalHeight += holder.itemView.getMeasuredHeight();
+			}
 		}
+		
 		recyclerView.getLayoutParams().height = totalHeight;
 		recyclerView.requestLayout();
 	}

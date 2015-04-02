@@ -3,7 +3,6 @@ package com.pinthecloud.item.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,22 +14,25 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
+import com.pinthecloud.item.fragment.GalleryFragment;
+import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.model.Gallery;
-import com.pinthecloud.item.model.GalleryFolder;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
-	private GalleryFolder mFolder;
+	private ItFragment mFrag;
 	private List<Gallery> mGalleryList;
+	private List<String> mImagePathList;
 
 
-	public GalleryAdapter(ItActivity activity, GalleryFolder folder) {
+	public GalleryAdapter(ItActivity activity, ItFragment frag, List<Gallery> galleryList, List<String> imagePathList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
-		this.mFolder = folder;
-		this.mGalleryList = folder.getGalleryList();
+		this.mFrag = frag;
+		this.mGalleryList = galleryList;
+		this.mImagePathList = imagePathList;
 	}
 
 
@@ -75,18 +77,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 			@Override
 			public void onClick(View v) {
 				int maxGallery = mActivity.getResources().getInteger(R.integer.gallery_max_num);
-				if(getSelected().size() < maxGallery || gallery.isSeleted()){
+				if(mImagePathList.size() + getSelected().size() < maxGallery || gallery.isSeleted()){
 					gallery.setSeleted(!gallery.isSeleted());
 					holder.imageSelected.setVisibility(gallery.isSeleted() ? View.VISIBLE : View.GONE);
-
+					
 					mActivity.invalidateOptionsMenu();
-					ActionBar actionBar = mActivity.getSupportActionBar();
-					int selected = getSelected().size();
-					if(selected > 0){
-						actionBar.setTitle(mFolder.getName() + "  (" + selected + "/" + maxGallery + ")");
-					} else {
-						actionBar.setTitle(mFolder.getName());
-					}
+					((GalleryFragment)mFrag).setActionBar();
 				}
 			}
 		});

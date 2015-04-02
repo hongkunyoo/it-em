@@ -16,12 +16,12 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
-import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.GAHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
@@ -34,7 +34,7 @@ import com.pinthecloud.item.view.RoundedTopCornerTransformation;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
 
-	private final double MAX_HEIGHT_RATIO = 1.2;
+	private final double MAX_HEIGHT_RATIO = 1.1;
 
 	private ItApplication mApp;
 	private ItActivity mActivity;

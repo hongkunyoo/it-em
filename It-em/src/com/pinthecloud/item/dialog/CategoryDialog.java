@@ -33,13 +33,15 @@ public class CategoryDialog extends ItDialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_category, container, false);
+
 		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setGrid();
+
 		return view;
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		mGridView = (RecyclerView)view.findViewById(R.id.category_frag_list);
 	}
@@ -68,8 +70,8 @@ public class CategoryDialog extends ItDialogFragment {
 					mGridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				}
 
-				int count = (int)Math.ceil((float)mGridAdapter.getItemCount()/gridColumnNum);
-				ViewUtil.setListHeightBasedOnChildren(mGridView, count);
+				int rowCount = (int)Math.ceil((double)mGridAdapter.getItemCount()/gridColumnNum);
+				ViewUtil.setListHeightBasedOnChildren(mGridView, rowCount);
 			}
 		});
 	}

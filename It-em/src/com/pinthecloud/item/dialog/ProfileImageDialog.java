@@ -20,7 +20,7 @@ public class ProfileImageDialog extends ItDialogFragment {
 	private TextView mNickName;
 	private ImageView mProfileImage;
 
-	private ItUser mItUser;
+	private ItUser mUser;
 
 
 	public static ProfileImageDialog newInstance(ItUser itUser) {
@@ -35,7 +35,7 @@ public class ProfileImageDialog extends ItDialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mItUser = getArguments().getParcelable(ItUser.INTENT_KEY);
+		mUser = getArguments().getParcelable(ItUser.INTENT_KEY);
 	}
 
 
@@ -73,7 +73,7 @@ public class ProfileImageDialog extends ItDialogFragment {
 
 
 	private void setComponent(){
-		mNickName.setText(mItUser.getNickName());
+		mNickName.setText(mUser.getNickName());
 
 		mClose.setOnClickListener(new OnClickListener() {
 
@@ -87,7 +87,7 @@ public class ProfileImageDialog extends ItDialogFragment {
 
 	private void setImageView(){
 		Picasso.with(mProfileImage.getContext())
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItUser.getId()))
+		.load(BlobStorageHelper.getUserProfileImgUrl(mUser.getId()))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);

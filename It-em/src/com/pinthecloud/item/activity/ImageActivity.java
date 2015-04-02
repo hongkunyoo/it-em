@@ -1,26 +1,32 @@
 package com.pinthecloud.item.activity;
 
+import java.io.IOException;
+
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.BitmapUtil;
-import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.view.DynamicHeightImageView;
 
-public class UploadImageActivity extends ItActivity {
+import de.greenrobot.event.EventBus;
+
+public class ImageActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
 
 	private PhotoViewAttacher mAttacher;
-	private ImageView mImage;
+	private DynamicHeightImageView mImage;
+
 	private Bitmap mImageBitmap;
 
 
@@ -28,11 +34,11 @@ public class UploadImageActivity extends ItActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.slide_in_pop_up, 0);
-		setContentView(R.layout.activity_upload_image);
+		setContentView(R.layout.activity_image);
 
 		setToolbar();
-		findComponent();
 		setComponent();
+		getImage();
 	}
 
 
@@ -86,23 +92,41 @@ public class UploadImageActivity extends ItActivity {
 	}
 
 
-	private void findComponent(){
-		mImage = (ImageView)findViewById(R.id.upload_image);
+	private void setComponent(){
+		mImage = (DynamicHeightImageView)findViewById(R.id.image);
+		mAttacher = new PhotoViewAttacher(mImage);
 	}
 
 
-	private void setComponent(){
-		mAttacher = new PhotoViewAttacher(mImage);
+	private void getImage(){
+		(new AsyncTask<Void,Void,Bitmap>(){
 
-		String path = getIntent().getStringExtra(Item.INTENT_KEY);
-		mImageBitmap = ImageUtil.refineItemImage(path, ImageUtil.ITEM_IMAGE_WIDTH);
-		
-		int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
-		if(mImageBitmap.getHeight() > maxSize){
-			int width = mImageBitmap.getWidth();
-			int height = mImageBitmap.getHeight();
-			mImageBitmap = BitmapUtil.scale(mImageBitmap, (int)(width*((float)maxSize/height)), maxSize);
-		}
+			@Override
+			protected Bitmap doInBackground(Void... params) {
+				try {
+					String path = getIntent().getStringExtra(Item.INTENT_KEY);
+					mImageBitmap = mApp.getPicasso().load(path).get();
+				} catch (IOException e) {
+					EventBus.getDefault().post(new ItException("getImage", ItException.TYPE.INTERNAL_ERROR));
+				}
+				return mImageBitmap;
+			}
+
+			@Override
+			protected void onPostExecute(Bitmap image) {
+				// Scale image
+				int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
+				if(mImageBitmap.getHeight() > maxSize){
+					int width = mImageBitmap.getWidth();
+					int height = mImageBitmap.getHeight();
+					mImageBitmap = BitmapUtil.scale(mImageBitmap, (int)(width*((float)maxSize/height)), maxSize);
+				}
+				
+				// Set image to view
+				mImage.setHeightRatio((double)mImageBitmap.getHeight()/mImageBitmap.getWidth());
+				setImageView();
+			};
+		}).execute();
 	}
 
 

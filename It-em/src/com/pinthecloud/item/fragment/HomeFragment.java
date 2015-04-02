@@ -41,6 +41,7 @@ public class HomeFragment extends MainTabFragment {
 	private View mUploadLayout;
 	private ImageButton mUploadButton;
 
+	private ItUser mUser;
 	private boolean mIsAdding = false;
 	private int page = 0;
 
@@ -48,6 +49,7 @@ public class HomeFragment extends MainTabFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -95,8 +97,8 @@ public class HomeFragment extends MainTabFragment {
 
 	@Override
 	public void updateProfile() {
-		ItUser user = mObjectPrefHelper.get(ItUser.class);
-		mUploadLayout.setVisibility(user.checkPro() ? View.VISIBLE : View.GONE);
+		mUser = mObjectPrefHelper.get(ItUser.class);
+		mUploadLayout.setVisibility(mUser.checkPro() ? View.VISIBLE : View.GONE);
 	}
 
 
@@ -181,9 +183,7 @@ public class HomeFragment extends MainTabFragment {
 
 	public void updateGrid() {
 		page = 0;
-
-		ItUser user = mObjectPrefHelper.get(ItUser.class);
-		mAimHelper.listItem(page, user.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(page, mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
@@ -200,9 +200,7 @@ public class HomeFragment extends MainTabFragment {
 
 	private void addNextItem() {
 		mIsAdding = true;
-
-		ItUser user = mObjectPrefHelper.get(ItUser.class);
-		mAimHelper.listItem(++page, user.getId(), new ListCallback<Item>() {
+		mAimHelper.listItem(++page, mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {

@@ -165,7 +165,7 @@ public class SplashActivity extends ItActivity {
 				}
 				startActivity(intent);
 			}
-		}, 500);
+		}, 1000);
 	}
 
 

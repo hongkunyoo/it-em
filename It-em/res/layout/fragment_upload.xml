@@ -1,76 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
+    android:id="@+id/upload_frag_scroll_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    android:paddingTop="?attr/actionBarSize" >
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/upload_frag_image_grid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none" />
+    android:fillViewport="true"
+    android:paddingTop="?attr/actionBarSize"
+    android:scrollbars="none" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/key_line_first"
-        android:layout_marginLeft="@dimen/key_line_first"
-        android:layout_marginRight="@dimen/key_line_first"
-        android:layout_marginStart="@dimen/key_line_first"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/upload_frag_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/upload_frag_image_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_line"
-            android:ems="10"
-            android:gravity="center_vertical"
-            android:hint="@string/description"
-            android:inputType="textMultiLine"
-            android:maxLines="5"
-            android:textColor="@color/brand_text_color"
-            android:textColorHint="@color/brand_text_color_light"
-            android:textSize="@dimen/font_small" >
+            android:layout_marginTop="@dimen/content_margin"
+            android:paddingEnd="@dimen/content_margin"
+            android:paddingLeft="@dimen/content_margin"
+            android:paddingRight="@dimen/content_margin"
+            android:paddingStart="@dimen/content_margin"
+            android:scrollbars="none" />
 
-            <requestFocus />
-        </EditText>
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/row_height" >
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/key_line_first"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginRight="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first"
+            android:orientation="vertical" >
 
-            <com.pinthecloud.item.view.ItTextView
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/upload_frag_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/brand_info"
-                android:textColor="@color/gray_dark"
-                app:textType="caption" />
-
-            <Button
-                android:id="@+id/upload_frag_brand_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/general_button"
-                android:minHeight="@dimen/none"
-                android:minWidth="@dimen/none"
-                android:text="@string/add"
+                android:background="@drawable/edit_text_line"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:hint="@string/description"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
                 android:textColor="@color/brand_text_color"
-                android:textStyle="bold" />
-        </RelativeLayout>
+                android:textColorHint="@color/brand_text_color_light"
+                android:textSize="@dimen/font_small" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height" >
+
+                <com.pinthecloud.item.view.ItTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/brand_info"
+                    android:textColor="@color/gray_dark"
+                    app:textType="caption" />
+
+                <Button
+                    android:id="@+id/upload_frag_brand_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/general_button"
+                    android:minHeight="@dimen/none"
+                    android:minWidth="@dimen/none"
+                    android:text="@string/add"
+                    android:textColor="@color/brand_text_color"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/upload_frag_brand_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/upload_frag_brand_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none" />
-
-</LinearLayout>
+</ScrollView>

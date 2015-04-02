@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.analysis.GAHelper;
+import com.pinthecloud.item.helper.GAHelper;
 import com.pinthecloud.item.model.ProductTag;
 
 public class ProductTagListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

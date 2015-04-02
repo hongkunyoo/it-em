@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,12 +36,12 @@ import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.adapter.ItemImagePagerAdapter;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
-import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.dialog.ItAlertDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.LikeDialog;
 import com.pinthecloud.item.dialog.ProductTagDialog;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.GAHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
@@ -57,6 +59,7 @@ import com.pinthecloud.item.view.DynamicHeightViewPager;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
+	private SwipeRefreshLayout mRefresh;
 	private ScrollView mScrollLayout;
 	private int mBaseScrollY;
 
@@ -128,6 +131,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		setComponent();
 		setImagePager();
 		setButton();
+		setRefreshLayout();
 		setScroll();
 		setReplyList();
 
@@ -197,6 +201,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
+		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.item_frag_refresh);
 		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 
 		mImagePager = (DynamicHeightViewPager)view.findViewById(R.id.item_frag_image_pager);
@@ -231,7 +236,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setComponent(){
 		mImageNumber.setText("1/" + mItem.getImageNumber());
 		mImageNumber.setVisibility(mItem.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
-		
+
 		mUserNickName.setText(mItem.getWhoMade());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
@@ -353,6 +358,20 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void setRefreshLayout(){
+		int height = ViewUtil.getActionBarHeight(mActivity)/2;
+		mRefresh.setColorSchemeResources(R.color.accent_color);
+		mRefresh.setProgressViewOffset(true, height, ViewUtil.getActionBarHeight(mActivity)+height);
+		mRefresh.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				updateItemFrag();
+			}
+		});
+	}
+
+
 	private void setScroll(){
 		final View toolbarLayout = mActivity.getToolbarLayout();
 		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
@@ -419,6 +438,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					if(entity != null){
 						mProgressBar.setVisibility(View.GONE);
 						mItemLayout.setVisibility(View.VISIBLE);
+						mRefresh.setRefreshing(false);
 
 						mItem = entity;
 						setItemComponent();
@@ -449,10 +469,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setItemComponent(){
 		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
 		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(mActivity));
-		
+
 		setLikeNumber(mItem.getLikeItCount());
 		mLikeButton.setActivated(mItem.getPrevLikeId() != null);
-		
+
 		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
 		mUserDescription.setVisibility(!mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
@@ -625,7 +645,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 					mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				}
 
-				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));		
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
 			}
 		});
 

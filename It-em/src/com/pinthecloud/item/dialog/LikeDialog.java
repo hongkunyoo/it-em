@@ -59,8 +59,8 @@ public class LikeDialog extends ItDialogFragment {
 
 		return view;
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mListView = (RecyclerView)view.findViewById(R.id.like_frag_list);

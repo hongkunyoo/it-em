@@ -30,18 +30,10 @@ public class BankAccountEditDialog extends ItDialogFragment {
 	private Button mCancel;
 	private Button mSubmit;
 
-	private ItUser mMyItUser;
 	private DialogCallback mCallback;
 
 	public void setCallback(DialogCallback mCallback) {
 		this.mCallback = mCallback;
-	}
-
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
 	}
 
 
@@ -178,10 +170,11 @@ public class BankAccountEditDialog extends ItDialogFragment {
 	private void updateBankAccount(int bankName, String bankAccountNumber, final String bankAccountName){
 		mApp.showProgressDialog(mActivity);
 
-		mMyItUser.setBankName(bankName);
-		mMyItUser.setBankAccountNumber(bankAccountNumber);
-		mMyItUser.setBankAccountName(bankAccountName);
-		mUserHelper.update(mMyItUser, new EntityCallback<ItUser>() {
+		ItUser user = mObjectPrefHelper.get(ItUser.class);
+		user.setBankName(bankName);
+		user.setBankAccountNumber(bankAccountNumber);
+		user.setBankAccountName(bankAccountName);
+		mUserHelper.update(user, new EntityCallback<ItUser>() {
 
 			@Override
 			public void onCompleted(ItUser entity) {

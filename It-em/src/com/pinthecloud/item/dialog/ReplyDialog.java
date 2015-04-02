@@ -45,7 +45,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	private Button mInputSubmit;
 
 	private Item mItem;
-	private ItUser mMyItUser;
+	private ItUser mUser;
 
 
 	public static ReplyDialog newInstance(Item item) {
@@ -60,7 +60,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMyItUser = mObjectPrefHelper.get(ItUser.class);
+		mUser = mObjectPrefHelper.get(ItUser.class);
 		mItem = getArguments().getParcelable(Item.INTENT_KEY);
 	}
 
@@ -134,7 +134,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 			@Override
 			public void onClick(View v) {
 				String content = mInputText.getText().toString().trim();
-				Reply reply = new Reply(content, mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId());
+				Reply reply = new Reply(content, mUser.getNickName(), mUser.getId(), mItem.getId());
 				mInputText.setText("");
 				submitReply(reply);
 			}
@@ -198,7 +198,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
 		showReplyList(mItem.getReplyCount()+1);
 
-		ItNotification noti = new ItNotification(mMyItUser.getNickName(), mMyItUser.getId(), mItem.getId(),
+		ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
 				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
 				mItem.getImageNumber(), mItem.getImageWidth(), mItem.getImageHeight());
 		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {

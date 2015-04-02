@@ -14,13 +14,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.fragment.ItFragment;
+import com.pinthecloud.item.fragment.UploadFragment;
 import com.pinthecloud.item.fragment.UploadFragment.Brand;
 
 public class BrandListAdapter extends RecyclerView.Adapter<BrandListAdapter.ViewHolder> {
 
+	private ItFragment mFrag;
 	private List<Brand> mBrandList;
 
-	public BrandListAdapter(List<Brand> brandList) {
+	public BrandListAdapter(ItFragment frag, List<Brand> brandList) {
+		this.mFrag = frag;
 		this.mBrandList = brandList;
 	}
 
@@ -28,14 +32,14 @@ public class BrandListAdapter extends RecyclerView.Adapter<BrandListAdapter.View
 		public View view;
 		public TextView category;
 		public EditText brand;
-		public ImageButton remove;
+		public ImageButton delete;
 
 		public ViewHolder(View view) {
 			super(view);
 			this.view = view;
 			this.category = (TextView)view.findViewById(R.id.row_brand_category);
 			this.brand = (EditText)view.findViewById(R.id.row_brand_brand);
-			this.remove = (ImageButton)view.findViewById(R.id.row_brand_remove);
+			this.delete = (ImageButton)view.findViewById(R.id.row_brand_delete);
 		}
 	}
 
@@ -83,11 +87,11 @@ public class BrandListAdapter extends RecyclerView.Adapter<BrandListAdapter.View
 
 
 	private void setButton(ViewHolder holder, final Brand brand){
-		holder.remove.setOnClickListener(new OnClickListener() {
+		holder.delete.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				remove(brand);
+				((UploadFragment)mFrag).deleteBrand(brand);
 			}
 		});
 	}

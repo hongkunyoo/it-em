@@ -15,9 +15,9 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.ItemActivity;
-import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.helper.GAHelper;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.ImageUtil;
 

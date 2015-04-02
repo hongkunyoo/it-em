@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.analysis.GAHelper;
 import com.pinthecloud.item.helper.AimHelper;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.DeviceHelper;
+import com.pinthecloud.item.helper.GAHelper;
 import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/content_margin" >
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.pinthecloud.item.view.RoundedSquareImageView
         android:id="@+id/row_upload_image"
-        android:layout_width="@dimen/upload_image_width"
-        android:layout_height="@dimen/upload_image_width"
-        android:layout_margin="@dimen/content_big_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:riv_corner_radius="@dimen/content_margin" />
 
     <ImageButton
         android:id="@+id/row_upload_image_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/row_upload_image"
+        android:layout_alignRight="@+id/row_upload_image"
+        android:layout_alignTop="@+id/row_upload_image"
         android:background="@android:color/transparent"
         android:contentDescription="@string/delete"
         android:src="@drawable/upload_image_delete_button" />

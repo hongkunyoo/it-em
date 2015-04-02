@@ -46,7 +46,7 @@ public class UploadActivity extends ItActivity {
 
 	@Override
 	public void onBackPressed() {
-		if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+		if(getSupportFragmentManager().getBackStackEntryCount() == 0 && mImagePathList.size() > 0){
 			String message = getResources().getString(R.string.delete_item);
 			String delete = getResources().getString(R.string.delete);
 			ItAlertDialog dialog = ItAlertDialog.newInstance(message, delete, null, true);

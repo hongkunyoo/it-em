@@ -41,7 +41,8 @@ public class ProfileSettingsFragment extends ItFragment {
 	private EditText mWebsite;
 
 	private ItUser mUser;
-
+	private boolean isUpdating = false;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,11 @@ public class ProfileSettingsFragment extends ItFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.profile_settings_menu_submit:
+			if(isUpdating){
+				break;
+			}
+			
+			isUpdating = true;
 			trimProfileSettings();
 			if(isProfileSettingsChanged()){
 				mApp.showProgressDialog(mActivity);
@@ -145,6 +151,7 @@ public class ProfileSettingsFragment extends ItFragment {
 						if(message.equals("")){
 							updateProfileSettings();
 						} else {
+							isUpdating = false;
 							mApp.dismissProgressDialog();
 							Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
 						}
@@ -320,6 +327,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 			@Override
 			public void onCompleted(ItUser entity) {
+				isUpdating = false;
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
 
