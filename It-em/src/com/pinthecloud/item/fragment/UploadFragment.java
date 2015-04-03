@@ -320,7 +320,7 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
-				AsyncChainer.waitChain(mImagePathList.size()+1);
+				AsyncChainer.waitChain(mImagePathList.size()+2);
 
 				for(int i=0 ; i<mImagePathList.size() ; i++){
 					uploadItemImage(obj, item, mImagePathList.get(i), imageBitmaps[i], i);
@@ -381,6 +381,16 @@ public class UploadFragment extends ItFragment {
 		});
 
 		if(index == 0){
+			Bitmap previewImageBitmap = ImageUtil.refineItemImage(imagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH);
+			mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+					previewImageBitmap, new EntityCallback<String>() {
+
+				@Override
+				public void onCompleted(String entity) {
+					AsyncChainer.notifyNext(obj);
+				}
+			});
+			
 			Bitmap thumbnailImageBitmap = ImageUtil.refineSquareImage(imagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE);
 			mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
 					thumbnailImageBitmap, new EntityCallback<String>() {

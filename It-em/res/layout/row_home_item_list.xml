@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/key_line_first"
-    android:layout_marginEnd="@dimen/content_big_margin"
-    android:layout_marginLeft="@dimen/content_big_margin"
-    android:layout_marginRight="@dimen/content_big_margin"
-    android:layout_marginStart="@dimen/content_big_margin"
+    android:layout_marginBottom="@dimen/content_big_margin"
+    android:layout_marginEnd="@dimen/content_margin"
+    android:layout_marginLeft="@dimen/content_margin"
+    android:layout_marginRight="@dimen/content_margin"
+    android:layout_marginStart="@dimen/content_margin"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -28,12 +28,11 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="@dimen/layout_margin"
-            android:layout_marginRight="@dimen/layout_margin"
-            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginEnd="@dimen/content_big_margin"
+            android:layout_marginRight="@dimen/content_big_margin"
+            android:layout_marginTop="@dimen/content_big_margin"
             android:background="@drawable/feed_card_img_num_bg"
             android:drawableLeft="@drawable/feed_card_img_num_ic"
-            android:drawablePadding="@dimen/content_margin"
             android:drawableStart="@drawable/feed_card_img_num_ic"
             android:gravity="center"
             android:textColor="@color/item_image_number"
@@ -75,66 +74,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/layout_margin" >
+            android:padding="@dimen/content_big_margin" >
+
+            <com.pinthecloud.item.view.ItTextView
+                android:id="@+id/row_home_item_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="@color/brand_text_color"
+                app:textType="body" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <com.pinthecloud.item.view.ItTextView
+                    android:id="@+id/row_home_item_like_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/content_margin"
+                    android:layout_marginRight="@dimen/content_margin"
+                    android:drawableLeft="@drawable/feed_like_ic"
+                    android:drawableStart="@drawable/feed_like_ic"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray_dark"
+                    app:textType="caption" />
+
+                <com.pinthecloud.item.view.ItTextView
+                    android:id="@+id/row_home_item_reply_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/feed_comment_ic"
+                    android:drawableStart="@drawable/feed_comment_ic"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray_dark"
+                    app:textType="caption" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin" >
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/row_home_item_like_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal" >
-
-                    <Button
-                        android:id="@+id/row_home_item_like_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/home_item_like_button"
-                        android:drawableLeft="@drawable/home_item_like"
-                        android:drawablePadding="@dimen/content_margin"
-                        android:drawableStart="@drawable/home_item_like"
-                        android:gravity="center"
-                        android:minHeight="@dimen/none"
-                        android:minWidth="@dimen/none"
-                        android:text="@string/like"
-                        android:textColor="@color/home_item_like_text"
-                        android:textSize="@dimen/font_micro"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:id="@+id/row_home_item_reply_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/layout_margin"
-                        android:layout_marginStart="@dimen/layout_margin"
-                        android:gravity="center_vertical" >
-
-                        <com.pinthecloud.item.view.ItTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/comments"
-                            android:textColor="@color/gray_dark"
-                            app:textType="caption" />
-
-                        <com.pinthecloud.item.view.ItTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/space"
-                            android:textColor="@color/gray_dark"
-                            app:textType="caption" />
-
-                        <com.pinthecloud.item.view.ItTextView
-                            android:id="@+id/row_home_item_reply"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/gray_dark"
-                            android:textStyle="bold"
-                            app:textType="caption" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:background="@drawable/home_item_like_button"
+                    android:drawableLeft="@drawable/home_item_like"
+                    android:drawablePadding="@dimen/content_margin"
+                    android:drawableStart="@drawable/home_item_like"
+                    android:gravity="center"
+                    android:minHeight="@dimen/none"
+                    android:minWidth="@dimen/none"
+                    android:text="@string/like"
+                    android:textColor="@color/home_item_like_text"
+                    android:textSize="@dimen/font_micro"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/row_home_item_product_tag"
@@ -144,7 +145,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:background="@drawable/home_item_tag_button"
-                    android:contentDescription="@string/product_tag"
                     android:drawableLeft="@drawable/home_item_tag"
                     android:drawablePadding="@dimen/content_margin"
                     android:drawableStart="@drawable/home_item_tag"
@@ -156,14 +156,6 @@
                     android:textSize="@dimen/font_micro"
                     android:textStyle="bold" />
             </RelativeLayout>
-
-            <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/row_home_item_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/content_big_margin"
-                android:textColor="@color/brand_text_color"
-                app:textType="body" />
         </LinearLayout>
 
         <include layout="@layout/custom_line" />
@@ -173,10 +165,10 @@
             android:layout_height="@dimen/row_height"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingEnd="@dimen/layout_margin"
-            android:paddingLeft="@dimen/layout_margin"
-            android:paddingRight="@dimen/layout_margin"
-            android:paddingStart="@dimen/layout_margin" >
+            android:paddingEnd="@dimen/content_big_margin"
+            android:paddingLeft="@dimen/content_big_margin"
+            android:paddingRight="@dimen/content_big_margin"
+            android:paddingStart="@dimen/content_big_margin" >
 
             <com.pinthecloud.item.view.CircleImageView
                 android:id="@+id/row_home_item_profile_image"
@@ -189,8 +181,8 @@
                 android:id="@+id/row_home_item_nick_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/layout_margin"
-                android:layout_marginStart="@dimen/layout_margin"
+                android:layout_marginLeft="@dimen/content_big_margin"
+                android:layout_marginStart="@dimen/content_big_margin"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/brand_text_color"

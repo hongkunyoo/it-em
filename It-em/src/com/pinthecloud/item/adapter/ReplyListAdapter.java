@@ -167,11 +167,8 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private void setNoramlText(NormalViewHolder holder, final Reply reply){
 		holder.nickName.setText(reply.getWhoMade());
 		holder.content.setText(reply.getContent());
-		if(reply.getRawCreateDateTime() != null){
-			holder.time.setText(reply.getCreateDateTime().getElapsedDateTime(mActivity));
-		} else {
-			holder.time.setText("");
-		}
+		holder.time.setText(reply.getRawCreateDateTime() == null ? "" :
+			reply.getCreateDateTime().getElapsedTimeString(mActivity));
 	}
 
 

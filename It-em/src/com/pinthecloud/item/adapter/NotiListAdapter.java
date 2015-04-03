@@ -77,7 +77,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 
 
 	private void setComponent(ViewHolder holder, final ItNotification noti){
-		holder.time.setText(noti.getCreateDateTime().getElapsedDateTime(mApp));
+		holder.time.setText(noti.getCreateDateTime().getElapsedTimeString(mApp));
 		holder.receive.setText(noti.notiContent());
 		holder.content.setText(noti.getContent());
 		holder.content.setVisibility(noti.getContent() != null && !noti.getContent().equals("") ? View.VISIBLE : View.GONE);

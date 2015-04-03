@@ -20,6 +20,7 @@
 
     <!-- Item -->
     <string name="like">좋아요</string>
+    <string name="uploaded_on">%1$s 업로드됨</string>
     <string name="of">님의</string>
     <string name="delete">삭제</string>
     <string name="not_exist_item">삭제된 아이템 이에요.</string>
@@ -32,10 +33,10 @@
     <string name="first_reply">첫번째 댓글을 써보세요</string>
 
     <!-- Like -->
-    <string name="like_user">이 아이템을 좋아하는 사용자</string>
+    <string name="like_user">이 아이템을 좋아하는 유저</string>
 
     <!-- User Page -->
-    <string name="not_exist_user">이 사용자가 존재하지 않습니다.</string>
+    <string name="not_exist_user">존재하지 않는 유저에요.</string>
 
     <!-- Guide -->
     <string name="guide_description">잇템은 선별된 에디터만 업로드가 가능해요.</string>

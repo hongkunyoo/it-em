@@ -28,8 +28,8 @@
 
     <!-- Item -->
     <string name="like">Like</string>
-    <string name="upload_date">Uploaded on</string>
-    <string name="upload_by">Uploaded by</string>
+    <string name="uploaded_on">Uploaded on %1$s</string>
+    <string name="uploaded_by">Uploaded by</string>
     <string name="plus">+</string>
     <string name="of">\'s</string>
     <string name="delete">Delete</string>
@@ -44,7 +44,7 @@
     <string name="first_reply">Be first of comments</string>
 
     <!-- Like -->
-    <string name="like_user">People who like this item</string>
+    <string name="like_user">Users who like this item</string>
 
     <!-- User Page -->
     <string name="not_exist_user">This user doesn\'t exist.</string>
@@ -96,7 +96,7 @@
     <string name="profile_image_edited">Profile image is changed.</string>
 
     <!-- Pro Settings -->
-    <string name="edit">EDIT</string>
+    <string name="edit">Edit</string>
     <string name="mileage">Mileage</string>
     <string name="email">Email</string>
     <string name="bank_account">Bank Account</string>

@@ -4,7 +4,10 @@
     <!-- Custom Gallery -->
     <integer name="gallery_grid_column_num">3</integer>
     <integer name="gallery_max_num">6</integer>
-
+    
+    <!-- Home -->
+    <integer name="home_item_grid_column_num">2</integer>
+    
     <!-- My Item -->
     <integer name="my_item_grid_column_num">3</integer>
 

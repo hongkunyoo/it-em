@@ -2,6 +2,7 @@ package com.pinthecloud.item.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -468,7 +469,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setItemComponent(){
 		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
-		mDate.setText(mItem.getCreateDateTime().getElapsedDateTime(mActivity));
+
+		String elapsedTime = mItem.getCreateDateTime().getElapsedTimeString(mActivity);
+		String uploadedOn = String.format(Locale.US, mActivity.getResources().getString(R.string.uploaded_on), elapsedTime);
+		mDate.setText(uploadedOn);
 
 		setLikeNumber(mItem.getLikeItCount());
 		mLikeButton.setActivated(mItem.getPrevLikeId() != null);

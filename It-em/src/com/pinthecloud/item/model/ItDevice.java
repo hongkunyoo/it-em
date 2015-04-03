@@ -1,11 +1,7 @@
 package com.pinthecloud.item.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.google.gson.Gson;
-
-public class ItDevice implements Parcelable {
+public class ItDevice {
 
 	@com.google.gson.annotations.SerializedName("id")
 	private String id;
@@ -57,49 +53,5 @@ public class ItDevice implements Parcelable {
 	}
 	public void setMobileOs(String mobileOs) {
 		this.mobileOs = mobileOs;
-	}
-	public void readDeviceInfo(ItDevice deviceInfo) {
-		this.setId(deviceInfo.getId());
-		this.setWhoMadeId(deviceInfo.getWhoMadeId());
-		this.setMobileId(deviceInfo.getMobileId());
-		this.setRegistrationId(deviceInfo.getRegistrationId());
-		this.setMobileOs(deviceInfo.getMobileOs());
-	}
-
-	@Override
-	public String toString() {
-		return new Gson().toJson(this);
-	}
-
-
-	/*
-	 * Parcelable
-	 */
-	public static final Parcelable.Creator<ItDevice> CREATOR = new Creator<ItDevice>(){
-		public ItDevice createFromParcel(Parcel in){
-			return new ItDevice(in);
-		}
-		public ItDevice[] newArray(int size){
-			return new ItDevice[size]; 
-		}
-	};
-
-	public ItDevice(Parcel in){
-		this();
-		readToParcel(in);
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(this.toString());
-	}
-
-	public void readToParcel(Parcel in){
-		this.readDeviceInfo(new Gson().fromJson(in.readString(), ItDevice.class));
-	}
-
-	@Override
-	public int describeContents() {
-		return 0;
 	}
 }

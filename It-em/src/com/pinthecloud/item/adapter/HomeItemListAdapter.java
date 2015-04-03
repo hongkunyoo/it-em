@@ -14,11 +14,10 @@ import android.widget.TextView;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.activity.ItemActivity;
+import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.ProductTagDialog;
-import com.pinthecloud.item.dialog.ReplyDialog;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.helper.GAHelper;
@@ -34,7 +33,7 @@ import com.pinthecloud.item.view.RoundedTopCornerTransformation;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
 
-	private final double MAX_HEIGHT_RATIO = 1.1;
+	private final double MAX_HEIGHT_RATIO = 2.3;
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
@@ -59,11 +58,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public TextView imageNumber;
 		public View unfold;
 		
-		public Button likeButton;
-		public View replyLayout;
-		public TextView reply;
-		public Button productTag;
 		public TextView content;
+		public TextView likeNumber;
+		public TextView replyNumber;
+		public Button likeButton;
+		public Button productTag;
 
 		public CircleImageView profileImage;
 		public TextView nickName;
@@ -76,12 +75,12 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			this.imageNumber = (TextView)view.findViewById(R.id.row_home_item_image_number);
 			this.unfold = view.findViewById(R.id.row_home_item_unfold);
 			
-			this.likeButton = (Button)view.findViewById(R.id.row_home_item_like_button);
-			this.replyLayout = view.findViewById(R.id.row_home_item_reply_layout);
-			this.reply = (TextView)view.findViewById(R.id.row_home_item_reply);
-			this.productTag = (Button)view.findViewById(R.id.row_home_item_product_tag);
 			this.content = (TextView)view.findViewById(R.id.row_home_item_content);
-
+			this.likeNumber = (TextView)view.findViewById(R.id.row_home_item_like_number);
+			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_reply_number);
+			this.likeButton = (Button)view.findViewById(R.id.row_home_item_like_button);
+			this.productTag = (Button)view.findViewById(R.id.row_home_item_product_tag);
+			
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_profile_image);
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_nick_name);
 		}
@@ -118,8 +117,9 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
-		holder.replyLayout.setVisibility(item.getReplyCount() > 0 ? View.VISIBLE : View.GONE);
-		holder.reply.setText(""+item.getReplyCount());
+		setLikeNumber(holder, item.getLikeItCount());
+		holder.replyNumber.setVisibility(item.getReplyCount() > 0 ? View.VISIBLE : View.GONE);
+		holder.replyNumber.setText(""+item.getReplyCount());
 
 		holder.productTag.setActivated(item.isHasProductTag());
 	}
@@ -134,16 +134,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			}
 		});
 
-		final String like = mActivity.getResources().getString(R.string.like);
-		holder.likeButton.setText(item.getLikeItCount() == 0 ? like : ""+item.getLikeItCount());
 		holder.likeButton.setActivated(item.getPrevLikeId() != null);
 		holder.likeButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String likeNum = holder.likeButton.getText().toString();
-				final int currentLikeNum = likeNum.equals(like) ? 0 : Integer.parseInt(likeNum);
 				final boolean isDoLike = !holder.likeButton.isActivated();
+				final int currentLikeNum = Integer.parseInt(holder.likeNumber.getText().toString());
 				setLikeButton(holder, currentLikeNum, isDoLike);
 
 				if(!isDoingLike){
@@ -179,15 +176,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 						});
 					}
 				}
-			}
-		});
-
-		holder.replyLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment replyDialog = ReplyDialog.newInstance(item);
-				replyDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 
@@ -246,16 +234,16 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		holder.itemImage.setHeightRatio(heightRatio);
 		holder.unfold.setVisibility(heightRatio < MAX_HEIGHT_RATIO ? View.GONE : View.VISIBLE);
 
-		int radius = mActivity.getResources().getDimensionPixelSize(R.dimen.content_big_margin)/2;
+		int radius = mActivity.getResources().getDimensionPixelSize(R.dimen.content_margin)/2;
 		if(heightRatio < MAX_HEIGHT_RATIO){
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(item.getId()))
+			.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.transform(new RoundedTopCornerTransformation(radius, 0))
 			.into(holder.itemImage);
 		} else {
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(item.getId()))
+			.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.transform(new RoundedTopCornerTransformation(radius, 0))
 			.resize(item.getCoverImageWidth(), (int) (item.getCoverImageWidth()*heightRatio)).centerCrop()
@@ -281,17 +269,22 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	private void setLikeButton(ViewHolder holder, int currentLikeNum, boolean isDoLike){
 		if(isDoLike) {
 			// Do Like
-			holder.likeButton.setText("" + (currentLikeNum+1));
+			setLikeNumber(holder, currentLikeNum+1);
 			holder.likeButton.setActivated(true);
 		} else {
 			// Cancel Like
-			String like = mActivity.getResources().getString(R.string.like);
-			holder.likeButton.setText(--currentLikeNum == 0 ? like : ""+currentLikeNum);
+			setLikeNumber(holder, currentLikeNum-1);
 			holder.likeButton.setActivated(false);
 		}
 	}
 
 
+	private void setLikeNumber(ViewHolder holder, int likeNumber){
+		holder.likeNumber.setVisibility(likeNumber > 0 ? View.VISIBLE : View.GONE);
+		holder.likeNumber.setText(""+likeNumber);
+	}
+	
+	
 	public void addAll(List<Item> itemList) {
 		mItemList.addAll(itemList);
 		notifyDataSetChanged();

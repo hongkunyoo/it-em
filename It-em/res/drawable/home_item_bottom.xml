@@ -3,8 +3,8 @@
     android:shape="rectangle" >
 
     <corners
-        android:bottomLeftRadius="@dimen/content_big_margin"
-        android:bottomRightRadius="@dimen/content_big_margin"
+        android:bottomLeftRadius="@dimen/content_margin"
+        android:bottomRightRadius="@dimen/content_margin"
         android:topLeftRadius="@dimen/none"
         android:topRightRadius="@dimen/none" />
 

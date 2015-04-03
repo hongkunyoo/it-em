@@ -109,7 +109,6 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				ItFragment fragment = mUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
-				fragment = new BeProFragment();
 				mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 			}
 		});
