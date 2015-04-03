@@ -281,19 +281,20 @@ public class UploadFragment extends ItFragment {
 			imageBitmaps[i] = ImageUtil.refineItemImage(mImagePathList.get(i), ImageUtil.ITEM_IMAGE_WIDTH);
 		}
 
-		int width = 0;
-		int height = 0;
+		int mainWidth = 0;
+		int mainHeight = 0;
 		double heightRatio = 0;
 		for(int i=0 ; i<mImagePathList.size() ; i++){
 			if(heightRatio < (double)imageBitmaps[i].getHeight()/imageBitmaps[i].getWidth()){
-				width = imageBitmaps[i].getWidth();
-				height = imageBitmaps[i].getHeight();
+				mainWidth = imageBitmaps[i].getWidth();
+				mainHeight = imageBitmaps[i].getHeight();
 			}
 		}
 		
 		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
 		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandInfoContent(mBrandList);
-		final Item item = new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(), width, height);
+		final Item item = new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(),
+				imageBitmaps[0].getWidth(), imageBitmaps[0].getHeight(), mainWidth, mainHeight);
 
 		final List<HashTag> tagList = new ArrayList<HashTag>();
 		List<String> hashTags = TextUtil.getSpanBodyList(content);

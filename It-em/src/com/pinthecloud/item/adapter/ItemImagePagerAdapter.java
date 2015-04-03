@@ -79,7 +79,7 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 	}
 
 	private void setImageView(final DynamicHeightImageView image, String imageId){
-		double heightRatio = Math.min((double)mItem.getImageHeight()/mItem.getImageWidth(), MAX_HEIGHT_RATIO);
+		double heightRatio = Math.min((double)mItem.getMainImageHeight()/mItem.getMainImageWidth(), MAX_HEIGHT_RATIO);
 		image.setHeightRatio(heightRatio);
 		
 		mApp.getPicasso()

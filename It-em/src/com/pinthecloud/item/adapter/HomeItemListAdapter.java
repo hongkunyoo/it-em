@@ -157,7 +157,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 						LikeIt like = new LikeIt(user.getNickName(), user.getId(), item.getId());
 						ItNotification noti = new ItNotification(user.getNickName(), user.getId(), item.getId(),
 								item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
-								item.getImageNumber(), item.getImageWidth(), item.getImageHeight());
+								item.getImageNumber(), item.getMainImageWidth(), item.getMainImageHeight());
 						mApp.getAimHelper().addUnique(like, noti, new EntityCallback<LikeIt>() {
 
 							@Override
@@ -242,7 +242,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setImageView(final ViewHolder holder, final Item item) {
-		double heightRatio = Math.min((double)item.getImageHeight()/item.getImageWidth(), MAX_HEIGHT_RATIO);
+		double heightRatio = Math.min((double)item.getCoverImageHeight()/item.getCoverImageWidth(), MAX_HEIGHT_RATIO);
 		holder.itemImage.setHeightRatio(heightRatio);
 		holder.unfold.setVisibility(heightRatio < MAX_HEIGHT_RATIO ? View.GONE : View.VISIBLE);
 
@@ -258,7 +258,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			.load(BlobStorageHelper.getItemImgUrl(item.getId()))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.transform(new RoundedTopCornerTransformation(radius, 0))
-			.resize(item.getImageWidth(), (int) (item.getImageWidth()*heightRatio)).centerCrop()
+			.resize(item.getCoverImageWidth(), (int) (item.getCoverImageWidth()*heightRatio)).centerCrop()
 			.into(holder.itemImage);
 		}
 

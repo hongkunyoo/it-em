@@ -103,17 +103,20 @@ public class ImageActivity extends ItActivity {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
+				Bitmap bitmap = null;
 				try {
 					String path = getIntent().getStringExtra(Item.INTENT_KEY);
-					mImageBitmap = mApp.getPicasso().load(path).get();
+					bitmap = mApp.getPicasso().load(path).get();
 				} catch (IOException e) {
 					EventBus.getDefault().post(new ItException("getImage", ItException.TYPE.INTERNAL_ERROR));
 				}
-				return mImageBitmap;
+				return bitmap;
 			}
 
 			@Override
 			protected void onPostExecute(Bitmap image) {
+				mImageBitmap = image;
+				
 				// Scale image
 				int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
 				if(mImageBitmap.getHeight() > maxSize){

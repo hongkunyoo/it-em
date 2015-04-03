@@ -2,14 +2,10 @@ package com.pinthecloud.item.model;
 
 import java.util.Locale;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.google.gson.Gson;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 
-public class ItNotification extends AbstractItemModel<ItNotification> implements Parcelable {
+public class ItNotification extends AbstractItemModel<ItNotification> {
 
 	public static enum TYPE {
 		LikeIt,
@@ -22,14 +18,14 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 	private String type;
 	private String typeRefId;
 	private int imageNumber;
-	private int imageWidth;
-	private int imageHeight;
+	private int mainImageWidth;
+	private int mainImageHeight;
 
 	public ItNotification() {
 		super();
 	}
 	public ItNotification(String whoMade, String whoMadeId, String refId, String refWhoMade, String refWhoMadeId,
-			String content, TYPE type, int imageNumber, int imageWidth, int imageHeight) {
+			String content, TYPE type, int imageNumber, int mainImageWidth, int mainImageHeight) {
 		super();
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
@@ -39,8 +35,8 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		this.setContent(content);
 		this.setType(type.toString());
 		this.setImageNumber(imageNumber);
-		this.setImageWidth(imageWidth);
-		this.setImageHeight(imageHeight);
+		this.setMainImageWidth(mainImageWidth);
+		this.setMainImageHeight(mainImageHeight);
 	}
 
 	public String getRefWhoMade() {
@@ -76,34 +72,19 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 	public void setImageNumber(int imageNumber) {
 		this.imageNumber = imageNumber;
 	}
-	public int getImageWidth() {
-		return imageWidth;
+	public int getMainImageWidth() {
+		return mainImageWidth;
 	}
-	public void setImageWidth(int imageWidth) {
-		this.imageWidth = imageWidth;
+	public void setMainImageWidth(int mainImageWidth) {
+		this.mainImageWidth = mainImageWidth;
 	}
-	public int getImageHeight() {
-		return imageHeight;
+	public int getMainImageHeight() {
+		return mainImageHeight;
 	}
-	public void setImageHeight(int imageHeight) {
-		this.imageHeight = imageHeight;
+	public void setMainImageHeight(int mainImageHeight) {
+		this.mainImageHeight = mainImageHeight;
 	}
-	public void readNotiRecord(ItNotification noti) {
-		this.setId(noti.getId());
-		this.setRawCreateDateTime(noti.getRawCreateDateTime());
-		this.setWhoMade(noti.getWhoMade());
-		this.setWhoMadeId(noti.getWhoMadeId());
-		this.setRefId(noti.getRefId());
-		this.setRefWhoMade(noti.getRefWhoMade());
-		this.setRefWhoMadeId(noti.getRefWhoMadeId());
-		this.setContent(noti.getContent());
-		this.setType(noti.getType());
-		this.setTypeRefId(noti.getTypeRefId());
-		this.setImageNumber(noti.getImageNumber());
-		this.setImageWidth(noti.getImageWidth());
-		this.setImageHeight(noti.getImageHeight());
-	}
-
+	
 	public String notiContent(){
 		ItApplication app = ItApplication.getInstance();
 		ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
@@ -140,40 +121,8 @@ public class ItNotification extends AbstractItemModel<ItNotification> implements
 		item.setWhoMade(refWhoMade);
 		item.setWhoMadeId(refWhoMadeId);
 		item.setImageNumber(imageNumber);
-		item.setImageWidth(imageWidth);
-		item.setImageHeight(imageHeight);
+		item.setMainImageWidth(mainImageWidth);
+		item.setMainImageHeight(mainImageHeight);
 		return item;
-	}
-
-
-	/*
-	 * Parcelable
-	 */
-	public static final Parcelable.Creator<ItNotification> CREATOR = new Creator<ItNotification>(){
-		public ItNotification createFromParcel(Parcel in){
-			return new ItNotification(in);
-		}
-		public ItNotification[] newArray(int size){
-			return new ItNotification[size]; 
-		}
-	};
-
-	public ItNotification(Parcel in){
-		this();
-		readToParcel(in);
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(this.toString());
-	}
-
-	public void readToParcel(Parcel in){
-		this.readNotiRecord(new Gson().fromJson(in.readString(), ItNotification.class));
-	}
-
-	@Override
-	public int describeContents() {
-		return 0;
 	}
 }

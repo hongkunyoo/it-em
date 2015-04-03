@@ -18,21 +18,26 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	private boolean hasProductTag;
 	private List<ProductTag> productTagList;
 	private int imageNumber;
-	private int imageWidth;
-	private int imageHeight;
+	private int coverImageWidth;
+	private int coverImageHeight;
+	private int mainImageWidth;
+	private int mainImageHeight;
 	private ItUser whoMadeUser;
 
 	public Item() {
 		super();
 	}
-	public Item(String content, String whoMade, String whoMadeId, int imageNumber, int imageWidth, int imageHeight) {
+	public Item(String content, String whoMade, String whoMadeId, int imageNumber, 
+			int coverImageWidth, int coverImageHeight, int mainImageWidth, int mainImageHeight) {
 		super();
 		this.setContent(content);
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
 		this.setImageNumber(imageNumber);
-		this.setImageWidth(imageWidth);
-		this.setImageHeight(imageHeight);
+		this.setCoverImageWidth(coverImageWidth);
+		this.setCoverImageHeight(coverImageHeight);
+		this.setMainImageWidth(mainImageWidth);
+		this.setMainImageHeight(mainImageHeight);
 	}
 
 	@Override
@@ -78,17 +83,29 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setImageNumber(int imageNumber) {
 		this.imageNumber = imageNumber;
 	}
-	public int getImageWidth() {
-		return imageWidth;
+	public int getCoverImageWidth() {
+		return coverImageWidth;
 	}
-	public void setImageWidth(int imageWidth) {
-		this.imageWidth = imageWidth;
+	public void setCoverImageWidth(int coverImageWidth) {
+		this.coverImageWidth = coverImageWidth;
 	}
-	public int getImageHeight() {
-		return imageHeight;
+	public int getCoverImageHeight() {
+		return coverImageHeight;
 	}
-	public void setImageHeight(int imageHeight) {
-		this.imageHeight = imageHeight;
+	public void setCoverImageHeight(int coverImageHeight) {
+		this.coverImageHeight = coverImageHeight;
+	}
+	public int getMainImageWidth() {
+		return mainImageWidth;
+	}
+	public void setMainImageWidth(int mainImageWidth) {
+		this.mainImageWidth = mainImageWidth;
+	}
+	public int getMainImageHeight() {
+		return mainImageHeight;
+	}
+	public void setMainImageHeight(int mainImageHeight) {
+		this.mainImageHeight = mainImageHeight;
 	}
 	public String getPrevLikeId() {
 		return prevLikeId;
@@ -115,8 +132,10 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setHasProductTag(item.isHasProductTag());
 		this.setProductTagList(item.getProductTagList());
 		this.setImageNumber(item.getImageNumber());
-		this.setImageWidth(item.getImageWidth());
-		this.setImageHeight(item.getImageHeight());
+		this.setCoverImageWidth(item.getCoverImageWidth());
+		this.setCoverImageHeight(item.getCoverImageHeight());
+		this.setMainImageWidth(item.getMainImageWidth());
+		this.setMainImageHeight(item.getMainImageHeight());
 		this.setPrevLikeId(item.getPrevLikeId());
 		this.setWhoMadeUser(item.getWhoMadeUser());
 	}
