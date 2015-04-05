@@ -6,20 +6,18 @@
     <color name="brand_color_dark">#1e292e</color>
     <color name="brand_text_color">#de263238</color>
     <color name="brand_text_color_light">#96263238</color>
-    <color name="accent_color">#ffAB00</color>
-    <color name="line_color">#16000000</color>
+    <color name="accent_color">#ffA000</color>
+    <color name="line_color">#25000000</color>
     <color name="black_pressed">#47000000</color>
-    <color name="gray_dark">#78909c</color>
-    <color name="gray_pressed">#80ECEFF1</color>
+    <color name="gray_dark">#b0bec5</color>
+    <color name="gray_pressed">#5AECEFF1</color>
     <color name="gray">#ECEFF1</color>
-    <color name="gray_light">#d2d4d6</color>
+    <color name="gray_light">#cfd8dc</color>
+    <color name="gray_super_light">#d2d8de</color>
     <color name="red">#ef5350</color>
     <color name="blue">#01579b</color>
     <color name="green">#00897b</color>
     <color name="green_pressed">#0f6f63</color>
-
-    <!-- Reply -->
-    <color name="reply_submit_disable">#64ffab00</color>
 
     <!-- Be Pro -->
     <color name="be_pro_code_hint">#87ffffff</color>

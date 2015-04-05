@@ -234,7 +234,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		holder.itemImage.setHeightRatio(heightRatio);
 		holder.unfold.setVisibility(heightRatio < MAX_HEIGHT_RATIO ? View.GONE : View.VISIBLE);
 
-		int radius = mActivity.getResources().getDimensionPixelSize(R.dimen.content_margin)/2;
+		int radius = mActivity.getResources().getDimensionPixelSize(R.dimen.content_margin);
 		if(heightRatio < MAX_HEIGHT_RATIO){
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))

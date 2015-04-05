@@ -30,7 +30,7 @@
     <string name="like">Like</string>
     <string name="uploaded_on">Uploaded on %1$s</string>
     <string name="uploaded_by">Uploaded by</string>
-    <string name="plus">+</string>
+    <string name="plus">+ </string>
     <string name="of">\'s</string>
     <string name="delete">Delete</string>
     <string name="not_exist_item">It is deleted item.</string>
@@ -134,8 +134,8 @@
     <!-- Product Tag -->
     <string name="product_tag">Product Label</string>
     <string name="price_kor">%1$swon</string>
-    <string name="empty_product_tag">Product Label is empty yet</string>
-    <string name="get_product">GET!</string>
+    <string name="empty_product_tag">You cannot get this item yet</string>
+    <string name="get_product">GET</string>
 
     <!-- ItDateTime -->
     <string name="second_ago">sec ago</string>

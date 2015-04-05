@@ -105,7 +105,7 @@ public class ItApplication extends Application {
 			if (getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY) == TEST) {
 				mClient = testClient;
 			} else {
-				mClient = realClient;
+				mClient = testClient;
 			}
 		}
 		return mClient;

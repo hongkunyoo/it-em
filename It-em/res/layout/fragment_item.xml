@@ -89,7 +89,7 @@
                             android:id="@+id/item_frag_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/content_big_margin"
+                            android:layout_marginTop="@dimen/content_margin"
                             android:textColor="@color/gray_dark"
                             app:textType="caption" />
 
@@ -105,16 +105,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/home_item_like_button"
-                                android:drawableLeft="@drawable/home_item_like"
-                                android:drawablePadding="@dimen/content_margin"
-                                android:drawableStart="@drawable/home_item_like"
                                 android:gravity="center"
                                 android:minHeight="@dimen/none"
-                                android:minWidth="@dimen/none"
-                                android:text="@string/like"
-                                android:textColor="@color/home_item_like_text"
-                                android:textSize="@dimen/font_micro"
-                                android:textStyle="bold" />
+                                android:minWidth="@dimen/none" />
 
                             <LinearLayout
                                 android:id="@+id/item_frag_like_number_layout"
@@ -130,21 +123,17 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/plus"
                                     android:textColor="@color/gray_dark"
-                                    android:textStyle="bold"
-                                    app:textType="subhead" />
+                                    app:textType="caption" />
 
                                 <com.pinthecloud.item.view.ItTextView
                                     android:id="@+id/item_frag_like_number"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/gray_dark"
-                                    android:textStyle="bold"
-                                    app:textType="subhead" />
+                                    app:textType="caption" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-
-                    <include layout="@layout/custom_line" />
 
                     <RelativeLayout
                         android:id="@+id/item_frag_product_tag_layout"
