@@ -51,7 +51,6 @@ public class UserPageFragment extends MainTabFragment {
 
 	private View mHeader;
 	private ImageView mProfileImage;
-	private ImageView mType;
 	private TextView mNickName;
 	private TextView mDescription;
 	private TextView mWebsite;
@@ -201,8 +200,6 @@ public class UserPageFragment extends MainTabFragment {
 		mSettings.setVisibility(mUser.checkMe() ? View.VISIBLE : View.GONE);
 
 		boolean isItem = mUser.getItUserId().equals(ItConstant.ITEM_ID_FACEBOOK);
-		mType.setImageResource(isItem ? R.drawable.general_guide_ic : R.drawable.general_editor_ic);
-		mType.setVisibility(isItem || mUser.checkPro() ? View.VISIBLE : View.GONE);
 	}
 
 
@@ -212,7 +209,6 @@ public class UserPageFragment extends MainTabFragment {
 		mProgressBar = (ProgressBar)view.findViewById(R.id.user_page_frag_progress_bar);
 		mHeader = (LinearLayout)view.findViewById(R.id.user_page_frag_header_layout);
 		mProfileImage = (ImageView)view.findViewById(R.id.user_page_frag_profile_image);
-		mType = (ImageView)view.findViewById(R.id.user_page_frag_type);
 		mNickName = (TextView)view.findViewById(R.id.user_page_frag_nick_name);
 		mDescription = (TextView)view.findViewById(R.id.user_page_frag_description);
 		mWebsite = (TextView)view.findViewById(R.id.user_page_frag_website);

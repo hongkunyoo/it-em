@@ -73,19 +73,11 @@
                             android:visibility="gone" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/user_page_frag_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin"
-                        android:contentDescription="@string/be_pro"
-                        android:visibility="gone" />
-
                     <com.pinthecloud.item.view.ItTextView
                         android:id="@+id/user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/content_small_margin"
                         android:textColor="@color/gray_dark"
                         app:textType="caption" />
 
@@ -93,7 +85,7 @@
                         android:id="@+id/user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin"
+                        android:layout_marginTop="@dimen/content_small_margin"
                         android:textColor="@color/blue"
                         app:textType="caption" />
                 </LinearLayout>
@@ -107,9 +99,11 @@
                 android:layout_height="@dimen/row_height"
                 android:background="@android:color/white"
                 app:pstsDividerColor="@android:color/transparent"
-                app:pstsIndicatorColor="@android:color/transparent"
+                app:pstsIndicatorColor="@color/accent_color"
+                app:pstsIndicatorHeight="@dimen/line_thick_width"
                 app:pstsShouldExpand="true"
                 app:pstsTabBackground="@drawable/user_page_tab"
+                app:pstsTabPaddingLeftRight="@dimen/key_line_first"
                 app:pstsTabSwitch="true"
                 app:pstsUnderlineColor="@android:color/transparent" />
         </LinearLayout>

@@ -36,7 +36,7 @@
     <dimen name="profile_image_width">212dp</dimen>
 
     <!-- Profile Settings -->
-    <dimen name="profile_settings_image_width">128dp</dimen>
+    <dimen name="profile_settings_image_width">100dp</dimen>
 
     <!-- Font -->
     <dimen name="font_x_large">24sp</dimen>
