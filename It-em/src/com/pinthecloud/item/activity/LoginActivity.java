@@ -182,9 +182,9 @@ public class LoginActivity extends ItActivity {
 	}
 
 
-	private void facebookLogin(final GraphUser user){
-		ItUser itUser = new ItUser(user.getId(), ItUser.PLATFORM.FACEBOOK, user.getFirstName().replace(" ", "_"), ItUser.TYPE.VIEWER);
-		itemLogin(itUser, "https://graph.facebook.com/"+itUser.getItUserId()+"/picture?type=large");
+	private void facebookLogin(final GraphUser facebookUser){
+		ItUser user = new ItUser(facebookUser.getId(), ItUser.PLATFORM.FACEBOOK, facebookUser.getFirstName().replace(" ", "_"), ItUser.TYPE.VIEWER);
+		itemLogin(user, "https://graph.facebook.com/"+user.getItUserId()+"/picture?type=large");
 	}
 
 
@@ -192,9 +192,9 @@ public class LoginActivity extends ItActivity {
 		UserManagement.requestMe(new MeResponseCallback() {
 
 			@Override
-			protected void onSuccess(final UserProfile userProfile) {
-				ItUser itUser = new ItUser(""+userProfile.getId(), ItUser.PLATFORM.KAKAO, userProfile.getNickname().replace(" ", "_"), ItUser.TYPE.VIEWER);
-				itemLogin(itUser, userProfile.getProfileImagePath());
+			protected void onSuccess(final UserProfile kakaoUser) {
+				ItUser user = new ItUser(""+kakaoUser.getId(), ItUser.PLATFORM.KAKAO, kakaoUser.getNickname().replace(" ", "_"), ItUser.TYPE.VIEWER);
+				itemLogin(user, kakaoUser.getProfileImagePath());
 			}
 
 			@Override
@@ -215,7 +215,7 @@ public class LoginActivity extends ItActivity {
 	}
 
 
-	private void itemLogin(final ItUser itUser, final String imageUrl) {
+	private void itemLogin(final ItUser user, final String imageUrl) {
 		mApp.showProgressDialog(mThisActivity);
 		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
 
@@ -223,20 +223,21 @@ public class LoginActivity extends ItActivity {
 			public void doNext(Object object, Object... params) {
 				ItDevice myDevice = mObjectPrefHelper.get(ItDevice.class);
 				ItDevice device = new ItDevice(myDevice.getMobileId(), myDevice.getRegistrationId());
-				signin(object, itUser, device);
+				signin(object, user, device);
 			}
 		}, new Chainable(){
 
 			@Override
 			public void doNext(Object obj, Object... params) {
-				mBlobStorageHelper.isExistAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, itUser.getId(), new EntityCallback<Boolean>() {
+				final ItUser user = mObjectPrefHelper.get(ItUser.class);
+				mBlobStorageHelper.isExistAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId(), new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
 						if(entity){
 							goToNextActivity();
 						} else {
-							getProfileImageFromService(imageUrl, itUser);
+							getProfileImageFromService(user, imageUrl);
 						}
 					}
 				});
@@ -245,22 +246,20 @@ public class LoginActivity extends ItActivity {
 	}
 
 
-	private void signin(final Object obj, final ItUser itUser, ItDevice device){
-		mUserHelper.signin(itUser, device, new PairEntityCallback<ItUser, ItDevice>() {
+	private void signin(final Object obj, final ItUser user, ItDevice device){
+		mUserHelper.signin(user, device, new PairEntityCallback<ItUser, ItDevice>() {
 
 			@Override
 			public void onCompleted(ItUser user, ItDevice device) {
 				mObjectPrefHelper.put(user);
 				mObjectPrefHelper.put(device);
-
-				itUser.setId(user.getId());
 				AsyncChainer.notifyNext(obj);
 			}
 		});
 	}
 
 
-	private void getProfileImageFromService(final String url, final ItUser itUser){
+	private void getProfileImageFromService(final ItUser user, final String url){
 		(new AsyncTask<Void,Void,Bitmap>(){
 
 			@Override
@@ -276,13 +275,13 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			protected void onPostExecute(Bitmap result) {
-				uploadProfileImage(itUser, result);
+				uploadProfileImage(user, result);
 			};
 		}).execute();
 	}
 
 
-	private void uploadProfileImage(final ItUser itUser, final Bitmap profileImage){
+	private void uploadProfileImage(final ItUser user, final Bitmap profileImage){
 		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
 
 			@Override
@@ -290,7 +289,7 @@ public class LoginActivity extends ItActivity {
 				AsyncChainer.waitChain(2);
 
 				Bitmap profileImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_IMAGE_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, itUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
 					@Override
@@ -300,7 +299,7 @@ public class LoginActivity extends ItActivity {
 				});
 
 				Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, itUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
 						profileThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override
