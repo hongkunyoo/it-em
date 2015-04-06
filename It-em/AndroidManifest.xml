@@ -56,7 +56,6 @@
 
         <activity
             android:name="com.pinthecloud.item.activity.SplashActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
