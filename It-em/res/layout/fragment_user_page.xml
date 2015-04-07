@@ -97,13 +97,10 @@
                 android:id="@+id/user_page_frag_tab"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
-                android:background="@android:color/white"
                 app:pstsDividerColor="@android:color/transparent"
                 app:pstsIndicatorColor="@color/accent_color"
                 app:pstsIndicatorHeight="@dimen/line_thick_width"
                 app:pstsShouldExpand="true"
-                app:pstsTabBackground="@drawable/user_page_tab"
-                app:pstsTabPaddingLeftRight="@dimen/key_line_first"
                 app:pstsTabSwitch="true"
                 app:pstsUnderlineColor="@android:color/transparent" />
         </LinearLayout>

@@ -3,6 +3,7 @@
     <!-- Common -->
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">0.5dp</dimen>
+    <dimen name="grid_margin">1dp</dimen>
     <dimen name="line_thick_width">2dp</dimen>
     <dimen name="content_small_margin">2dp</dimen>
     <dimen name="content_margin">4dp</dimen>
