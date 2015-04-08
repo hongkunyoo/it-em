@@ -9,9 +9,8 @@
     <color name="accent_color">#ffA000</color>
     <color name="line_color">#25000000</color>
     <color name="black_pressed">#47000000</color>
-    <color name="gray_dark">#b0bec5</color>
-    <color name="gray_pressed">#5AECEFF1</color>
     <color name="gray">#ECEFF1</color>
+    <color name="gray_dark">#b0bec5</color>
     <color name="gray_light">#cfd8dc</color>
     <color name="gray_super_light">#d2d8de</color>
     <color name="red">#ef5350</color>

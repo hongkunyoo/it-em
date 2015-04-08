@@ -126,8 +126,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
-                android:drawableEnd="@drawable/noti_toggle_button"
-                android:drawableRight="@drawable/noti_toggle_button"
+                android:drawableEnd="@drawable/settings_noti_toggle_button"
+                android:drawableRight="@drawable/settings_noti_toggle_button"
                 android:textOff=""
                 android:textOn="" />
         </RelativeLayout>
@@ -153,8 +153,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
-                android:drawableEnd="@drawable/noti_toggle_button"
-                android:drawableRight="@drawable/noti_toggle_button"
+                android:drawableEnd="@drawable/settings_noti_toggle_button"
+                android:drawableRight="@drawable/settings_noti_toggle_button"
                 android:textOff=""
                 android:textOn="" />
         </RelativeLayout>
@@ -180,8 +180,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
-                android:drawableEnd="@drawable/noti_toggle_button"
-                android:drawableRight="@drawable/noti_toggle_button"
+                android:drawableEnd="@drawable/settings_noti_toggle_button"
+                android:drawableRight="@drawable/settings_noti_toggle_button"
                 android:textOff=""
                 android:textOn="" />
         </RelativeLayout>

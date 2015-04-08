@@ -30,8 +30,7 @@
     <string name="like">Like</string>
     <string name="uploaded_on">Uploaded on %1$s</string>
     <string name="uploaded_by">Uploaded by</string>
-    <string name="plus">+ </string>
-    <string name="of">\'s</string>
+    <string name="plus">+</string>
     <string name="delete">Delete</string>
     <string name="not_exist_item">It is deleted item.</string>
     <string name="delete_item">Do you delete this item?</string>
@@ -77,6 +76,7 @@
     <string name="brand">Brand</string>
     <string name="add">Add</string>
     <string name="bad_brand_message">Only letter,number,underbar is allowed in brand.</string>
+    <string name="too_big_item_image_message">%1$dth image is too big to upload.</string>
 
     <!-- Gallery -->
     <string name="select_album">Select Album</string>
@@ -113,14 +113,15 @@
     <string name="bank_account_edited">Bank Account is edited.</string>
 
     <!-- Notification -->
-    <string name="noti_general_content">%1$s %3$s %2$s item.</string>
-    <string name="noti_product_tag_content">%2$s %1$s item.</string>
-    <string name="noti_name_title_my">my</string>
+    <string name="noti_general_content">%1$s %3$s %2$s.</string>
+    <string name="noti_product_tag_content">%2$s %1$s.</string>
+    <string name="my_item">my item</string>
+    <string name="of_item">%1$s\'s item</string>
     <string name="noti_like">likes</string>
     <string name="noti_reply">comments on</string>
     <string name="noti_product_tag">Product label is put on</string>
     <string name="new_noti">New noti came. Refresh noti screen.</string>
-    <string name="empty_noti">Notification has not come</string>
+    <string name="empty_noti">Notification has not come.</string>
 
     <!-- Settings -->
     <string name="logout">Logout</string>

@@ -3,9 +3,9 @@
     <!-- Common -->
     <dimen name="none">0dp</dimen>
     <dimen name="line_width">0.5dp</dimen>
-    <dimen name="grid_margin">1dp</dimen>
     <dimen name="line_thick_width">2dp</dimen>
-    <dimen name="content_small_margin">2dp</dimen>
+    <dimen name="content_small_margin">1dp</dimen>
+    <dimen name="content_medium_margin">2dp</dimen>
     <dimen name="content_margin">4dp</dimen>
     <dimen name="content_big_margin">8dp</dimen>
     <dimen name="layout_margin">12dp</dimen>
@@ -19,22 +19,18 @@
 
     <!-- Splash -->
     <dimen name="logo_margin">60dp</dimen>
-
-    <!-- Login -->
-    <dimen name="login_button_bottom_margin">32dp</dimen>
-
+    
     <!-- Be Pro -->
     <dimen name="be_pro_homepage_height">24dp</dimen>
 
     <!-- Noti -->
     <dimen name="noti_item_image_width">52dp</dimen>
-    <dimen name="noti_content_margin">56dp</dimen>
 
+    <!-- User Page -->
+    <dimen name="user_page_tab_indicator_margin">25dp</dimen>
+    
     <!-- Gallery Folder -->
     <dimen name="gallery_folder_image_width">66dp</dimen>
-
-    <!-- Profile Image -->
-    <dimen name="profile_image_width">212dp</dimen>
 
     <!-- Profile Settings -->
     <dimen name="profile_settings_image_width">100dp</dimen>

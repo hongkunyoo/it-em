@@ -1,7 +1,9 @@
 package com.pinthecloud.item.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -62,7 +64,7 @@ public class LoginActivity extends ItActivity {
 
 		// Kakao
 		mKakaoSessionCallback = new SessionCallback() {
-			
+
 			@Override
 			public void onSessionOpening() {
 			}
@@ -74,10 +76,10 @@ public class LoginActivity extends ItActivity {
 			public void onSessionClosed(KakaoException exception) {
 			}
 		};
-		
+
 		mKakaoSession = com.kakao.Session.getCurrentSession();
 		mKakaoSession.addCallback(mKakaoSessionCallback);
-		
+
 		// Set Activity
 		findComponent();
 		setButton();
@@ -264,33 +266,57 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
-				Bitmap bitmap = null;
+				Bitmap profileImage = null;
 				try {
-					bitmap = mApp.getPicasso().load(url).get();
+					profileImage = mApp.getPicasso().load(url).get();
 				} catch (IOException e) {
 					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.INTERNAL_ERROR));
 				}
-				return bitmap;
+				return profileImage;
 			}
 
 			@Override
-			protected void onPostExecute(Bitmap result) {
-				uploadProfileImage(user, result);
+			protected void onPostExecute(Bitmap profileImage) {
+				getProfileImage(user, profileImage);
 			};
 		}).execute();
 	}
 
 
-	private void uploadProfileImage(final ItUser user, final Bitmap profileImage){
+	private void getProfileImage(final ItUser user, final Bitmap originProfileImage){
+		(new AsyncTask<Void,Void,List<Bitmap>>(){
+
+			@Override
+			protected List<Bitmap> doInBackground(Void... params) {
+				Bitmap profileImage = ImageUtil.refineSquareImage(originProfileImage, ImageUtil.PROFILE_IMAGE_SIZE, false);
+				Bitmap profileThumbnailImage = ImageUtil.refineSquareImage(originProfileImage, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE, false);
+				
+				List<Bitmap> profileImageList = new ArrayList<Bitmap>();
+				profileImageList.add(profileImage);
+				profileImageList.add(profileThumbnailImage);
+				return profileImageList;
+			}
+
+			@Override
+			protected void onPostExecute(List<Bitmap> profileImageList) {
+				uploadProfileImage(user, profileImageList);
+			};
+		}).execute();
+	}
+	
+	
+	private void uploadProfileImage(final ItUser user, final List<Bitmap> profileImageList){
 		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				Bitmap profileImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_IMAGE_SIZE);
+				Bitmap profileImage = profileImageList.get(0);
+				Bitmap profileThumbnailImage = profileImageList.get(1);
+
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId(), 
-						profileImageBitmap, new EntityCallback<String>() {
+						profileImage, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
@@ -298,9 +324,8 @@ public class LoginActivity extends ItActivity {
 					}
 				});
 
-				Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(profileImage, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
-						profileThumbnailImageBitmap, new EntityCallback<String>() {
+						profileThumbnailImage, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {

@@ -27,19 +27,19 @@ import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.LikeIt;
 import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.pinthecloud.item.view.RoundedTopCornerTransformation;
 
 public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapter.ViewHolder> {
 
-	private final double MAX_HEIGHT_RATIO = 2.3;
-
 	private ItApplication mApp;
 	private ItActivity mActivity;
 	private ItFragment mFrag;
 	private List<Item> mItemList;
 
+	private double MAX_HEIGHT_RATIO;
 	private boolean isDoingLike = false;
 
 
@@ -48,6 +48,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		this.mActivity = activity;
 		this.mFrag = frag;
 		this.mItemList = itemList;
+
+		int width = ViewUtil.getDeviceWidth(activity);
+		int height = ViewUtil.getDeviceHeight(activity);
+		int hiddenHeight = ViewUtil.getActionBarHeight(activity)*3 + ViewUtil.getStatusBarHeight(activity);
+		this.MAX_HEIGHT_RATIO = (double)(2*(height-hiddenHeight))/width;
 	}
 
 
@@ -230,12 +235,12 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 
 	private void setImageView(final ViewHolder holder, final Item item) {
-		double heightRatio = Math.min((double)item.getCoverImageHeight()/item.getCoverImageWidth(), MAX_HEIGHT_RATIO);
-		holder.itemImage.setHeightRatio(heightRatio);
-		holder.unfold.setVisibility(heightRatio < MAX_HEIGHT_RATIO ? View.GONE : View.VISIBLE);
+		double heightRatio = (double)item.getCoverImageHeight()/item.getCoverImageWidth();
+		holder.itemImage.setHeightRatio(Math.min(heightRatio, MAX_HEIGHT_RATIO));
+		holder.unfold.setVisibility(heightRatio <= MAX_HEIGHT_RATIO ? View.GONE : View.VISIBLE);
 
 		int radius = mActivity.getResources().getDimensionPixelSize(R.dimen.content_margin);
-		if(heightRatio < MAX_HEIGHT_RATIO){
+		if(heightRatio <= MAX_HEIGHT_RATIO){
 			mApp.getPicasso()
 			.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
@@ -246,7 +251,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.transform(new RoundedTopCornerTransformation(radius, 0))
-			.resize(item.getCoverImageWidth(), (int) (item.getCoverImageWidth()*heightRatio)).centerCrop()
+			.resize(item.getCoverImageWidth(), (int) (item.getCoverImageWidth()*MAX_HEIGHT_RATIO)).centerCrop()
 			.into(holder.itemImage);
 		}
 

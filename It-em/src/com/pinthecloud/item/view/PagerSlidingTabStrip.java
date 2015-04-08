@@ -87,6 +87,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private int scrollOffset = 52;
 	private int indicatorHeight = 8;
+	private int indicatorPadding = 0;
 	private int underlineHeight = 2;
 	private int dividerPadding = 12;
 	private int tabPadding = 24;
@@ -132,6 +133,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		scrollOffset = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, scrollOffset, dm);
 		indicatorHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, indicatorHeight, dm);
+		indicatorPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, indicatorPadding, dm);
 		underlineHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, underlineHeight, dm);
 		dividerPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dividerPadding, dm);
 		tabPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, tabPadding, dm);
@@ -155,6 +157,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		underlineColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsUnderlineColor, underlineColor);
 		dividerColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsDividerColor, dividerColor);
 		indicatorHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsIndicatorHeight, indicatorHeight);
+		indicatorPadding = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsIndicatorPadding, indicatorPadding);
 		underlineHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsUnderlineHeight, underlineHeight);
 		dividerPadding = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsDividerPadding, dividerPadding);
 		tabPadding = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsTabPaddingLeftRight, tabPadding);
@@ -346,8 +349,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		// default: line below current tab
 		View currentTab = tabsContainer.getChildAt(currentPosition);
-		float lineLeft = currentTab.getLeft()+50;
-		float lineRight = currentTab.getRight()-50;
+		float lineLeft = currentTab.getLeft();
+		float lineRight = currentTab.getRight();
 
 		// if there is an offset, start interpolating left and right coordinates between current and next tab
 		if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
@@ -359,6 +362,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			lineRight = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * lineRight);
 		}
 
+		lineLeft += indicatorPadding;
+		lineRight -= indicatorPadding;
+		
 		canvas.drawRect(lineLeft, height - indicatorHeight, lineRight, height, rectPaint);
 
 		// draw underline
@@ -432,6 +438,14 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	public int getIndicatorHeight() {
 		return indicatorHeight;
+	}
+
+	public int getIndicatorPadding() {
+		return indicatorPadding;
+	}
+
+	public void setIndicatorPadding(int indicatorPadding) {
+		this.indicatorPadding = indicatorPadding;
 	}
 
 	public void setUnderlineColor(int underlineColor) {

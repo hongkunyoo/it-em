@@ -10,7 +10,12 @@
     android:layout_marginStart="@dimen/content_big_margin"
     android:background="@drawable/noti_list_background"
     android:orientation="horizontal"
-    android:padding="@dimen/key_line_first" >
+    android:paddingBottom="@dimen/key_line_first"
+    android:paddingEnd="@dimen/key_line_first"
+    android:paddingLeft="@dimen/none"
+    android:paddingRight="@dimen/key_line_first"
+    android:paddingStart="@dimen/none"
+    android:paddingTop="@dimen/key_line_first" >
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -20,13 +25,15 @@
         <com.pinthecloud.item.view.CircleImageView
             android:id="@+id/row_noti_profile_image"
             android:layout_width="@dimen/profile_preview_image_width"
-            android:layout_height="@dimen/profile_preview_image_width" />
+            android:layout_height="@dimen/profile_preview_image_width"
+            android:layout_marginLeft="@dimen/key_line_first"
+            android:layout_marginStart="@dimen/key_line_first" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/noti_content_margin"
-            android:layout_marginStart="@dimen/noti_content_margin"
+            android:layout_marginLeft="@dimen/key_line_second"
+            android:layout_marginStart="@dimen/key_line_second"
             android:orientation="vertical" >
 
             <com.pinthecloud.item.view.ItTextView

@@ -23,10 +23,9 @@ import com.pinthecloud.item.helper.ObjectPrefHelper;
 import com.pinthecloud.item.helper.PrefHelper;
 import com.pinthecloud.item.helper.UserHelper;
 import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.interfaces.PairEntityCallback;
 import com.pinthecloud.item.model.ItDevice;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.util.AsyncChainer;
-import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.squareup.picasso.Picasso;
 
 @ReportsCrashes(formKey = "", mailTo="item@pinthecloud.com", mode = ReportingInteractionMode.TOAST, resToastText=R.string.error_report_message,
@@ -102,11 +101,8 @@ public class ItApplication extends Application {
 			}
 
 			// Default is REAL (int 0)
-			if (getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY) == TEST) {
-				mClient = testClient;
-			} else {
-				mClient = testClient;
-			}
+			int mode = getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY);
+			mClient = mode == REAL ? realClient : testClient;
 		}
 		return mClient;
 	}
@@ -178,7 +174,7 @@ public class ItApplication extends Application {
 					add("677830442331776"); // HongKun - Facebook
 					add("13108175"); // HongKun - Kakao
 					add("756536111102631"); // HwaJeong - Facebook
-					add(ItConstant.ITEM_ID_FACEBOOK); // Item@pinthecloud.com - Facebook
+					add("1536364146612739"); // Item@pinthecloud.com - Facebook
 				}
 			};
 		}
@@ -192,36 +188,14 @@ public class ItApplication extends Application {
 		getUserHelper().setMobileClient(mClient);
 		getDeviceHelper().setMobileClient(mClient);
 
-		AsyncChainer.asyncChain(app, new Chainable(){
+		ItUser user = getObjectPrefHelper().get(ItUser.class);
+		ItDevice device = getObjectPrefHelper().get(ItDevice.class);
+		getUserHelper().signin(user, device, new PairEntityCallback<ItUser, ItDevice>() {
 
 			@Override
-			public void doNext(final Object obj, Object... params) {
-				AsyncChainer.waitChain(2);
-
-				ItUser user = getObjectPrefHelper().get(ItUser.class);
-				getUserHelper().getByItUserId(user.getItUserId(), new EntityCallback<ItUser>() {
-
-					@Override
-					public void onCompleted(ItUser entity) {
-						getObjectPrefHelper().put(entity);
-						AsyncChainer.notifyNext(obj);
-					}
-				});
-
-				ItDevice device = getObjectPrefHelper().get(ItDevice.class);
-				getDeviceHelper().getByMobileId(device.getMobileId(), new EntityCallback<ItDevice>() {
-
-					@Override
-					public void onCompleted(ItDevice entity) {
-						getObjectPrefHelper().put(entity);
-						AsyncChainer.notifyNext(obj);
-					}
-				});
-			}
-		}, new Chainable(){
-
-			@Override
-			public void doNext(Object obj, Object... params) {
+			public void onCompleted(ItUser user, ItDevice device) {
+				getObjectPrefHelper().put(user);
+				getObjectPrefHelper().put(device);
 				callback.onCompleted(true);
 			}
 		});

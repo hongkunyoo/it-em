@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -18,7 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +30,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pinthecloud.item.R;
@@ -120,17 +120,36 @@ public class UploadFragment extends ItFragment {
 			}
 
 			isUploading = true;
-			trimContent();
-			String message = checkBrand();
-			if(message.equals("")){
-				uploadItem();
-			} else {
-				isUploading = false;
-				Toast toast = Toast.makeText(mActivity, message, Toast.LENGTH_LONG);
-				TextView textView = (TextView)toast.getView().findViewById(android.R.id.message);
-				textView.setGravity(Gravity.CENTER_HORIZONTAL);
-				toast.show();
-			}
+			mApp.showProgressDialog(mActivity);
+			
+			AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+				@Override
+				public void doNext(final Object obj, Object... params) {
+					trimContent();
+					String message = checkBrand();
+					if(message.equals("")){
+						getImageList(obj);
+					} else {
+						AsyncChainer.notifyNext(obj, message);
+					}
+				}
+			}, new Chainable(){
+
+				@Override
+				public void doNext(Object obj, Object... params) {
+					String message = params[0].toString();
+					if(message.equals("")){
+						@SuppressWarnings("unchecked")
+						List<Bitmap> imageList = (List<Bitmap>)params[1];
+						uploadItem(imageList);
+					} else {
+						isUploading = false;
+						mApp.dismissProgressDialog();
+						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+					}
+				}
+			});
 			break;
 		}
 		return super.onOptionsItemSelected(menuItem);
@@ -215,7 +234,7 @@ public class UploadFragment extends ItFragment {
 		mImageGridView.setAdapter(mImageGridAdapter);
 
 		mImageGridView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			
+
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
@@ -254,9 +273,9 @@ public class UploadFragment extends ItFragment {
 		}
 		mBrandListAdapter = new BrandListAdapter(mThisFragment, mBrandList);
 		mBrandListView.setAdapter(mBrandListAdapter);
-		
+
 		mBrandListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			
+
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
@@ -273,35 +292,38 @@ public class UploadFragment extends ItFragment {
 	}
 
 
-	private void uploadItem(){
-		mApp.showProgressDialog(mActivity);
+	private void getImageList(final Object obj){
+		(new AsyncTask<Void,Void,List<Bitmap>>(){
 
-		final Bitmap[] imageBitmaps = new Bitmap[mImagePathList.size()];
-		for(int i=0 ; i<mImagePathList.size() ; i++){
-			imageBitmaps[i] = ImageUtil.refineItemImage(mImagePathList.get(i), ImageUtil.ITEM_IMAGE_WIDTH);
-		}
-
-		int mainWidth = 0;
-		int mainHeight = 0;
-		double heightRatio = 0;
-		for(int i=0 ; i<mImagePathList.size() ; i++){
-			if(heightRatio < (double)imageBitmaps[i].getHeight()/imageBitmaps[i].getWidth()){
-				mainWidth = imageBitmaps[i].getWidth();
-				mainHeight = imageBitmaps[i].getHeight();
+			@Override
+			protected List<Bitmap> doInBackground(Void... params) {
+				List<Bitmap> imageList = new ArrayList<Bitmap>();
+				for(int i=0 ; i<mImagePathList.size() ; i++){
+					Bitmap image = ImageUtil.refineItemImage(mImagePathList.get(i), ImageUtil.ITEM_IMAGE_WIDTH, true);
+					imageList.add(image);
+				}
+				return imageList;
 			}
-		}
+
+			@Override
+			protected void onPostExecute(List<Bitmap> imageList) {
+				String message = "";
+				for(int i=0 ; i<imageList.size() ; i++){
+					if(imageList.get(i) == null){
+						message = String.format(Locale.US, getResources().getString(R.string.too_big_item_image_message), i+1);
+						break;
+					}
+				}
+				AsyncChainer.notifyNext(obj, message, imageList);
+			};
+		}).execute();
+	}
+	
+	
+	private void uploadItem(final List<Bitmap> imageList){
+		final Item item = getItem(imageList);
+		final List<HashTag> tagList = getTagList(item.getContent());
 		
-		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
-		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandInfoContent(mBrandList);
-		final Item item = new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(),
-				imageBitmaps[0].getWidth(), imageBitmaps[0].getHeight(), mainWidth, mainHeight);
-
-		final List<HashTag> tagList = new ArrayList<HashTag>();
-		List<String> hashTags = TextUtil.getSpanBodyList(content);
-		for(String hashTag : hashTags){
-			tagList.add(new HashTag(hashTag));
-		}
-
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -309,9 +331,9 @@ public class UploadFragment extends ItFragment {
 				mAimHelper.addItem(item, tagList, new EntityCallback<Item>() {
 
 					@Override
-					public void onCompleted(Item entity) {
-						item.setId(entity.getId());
-						item.setRawCreateDateTime(entity.getRawCreateDateTime());
+					public void onCompleted(Item addedItem) {
+						item.setId(addedItem.getId());
+						item.setRawCreateDateTime(addedItem.getRawCreateDateTime());
 						AsyncChainer.notifyNext(obj);
 					}
 				});
@@ -323,7 +345,7 @@ public class UploadFragment extends ItFragment {
 				AsyncChainer.waitChain(mImagePathList.size()+2);
 
 				for(int i=0 ; i<mImagePathList.size() ; i++){
-					uploadItemImage(obj, item, mImagePathList.get(i), imageBitmaps[i], i);
+					uploadItemImage(obj, item, mImagePathList.get(i), imageList.get(i), i);
 				}
 			}
 		}, new Chainable(){
@@ -341,13 +363,45 @@ public class UploadFragment extends ItFragment {
 			}
 		});
 	}
+	
+	
+	private Item getItem(List<Bitmap> imageList){
+		int coverWidth = imageList.get(0).getWidth();
+		int coverHeight = imageList.get(0).getHeight();
+		int mainWidth = 0;
+		int mainHeight = 0;
+		double maxHeightRatio = 0;
+		for(int i=0 ; i<imageList.size() ; i++){
+			double heightRatio = (double)imageList.get(i).getHeight()/imageList.get(i).getWidth();
+			if(maxHeightRatio < heightRatio){
+				maxHeightRatio = heightRatio;
+				mainWidth = imageList.get(i).getWidth();
+				mainHeight = imageList.get(i).getHeight();
+			}
+		}
+		
+		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
+		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandContent(mBrandList);
+		return new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(),
+				coverWidth, coverHeight, mainWidth, mainHeight);
+	}
+	
+	
+	private List<HashTag> getTagList(String content){
+		List<HashTag> tagList = new ArrayList<HashTag>();
+		List<String> hashTags = TextUtil.getSpanBodyList(content);
+		for(String hashTag : hashTags){
+			tagList.add(new HashTag(hashTag));
+		}
+		return tagList;
+	}
+	
+	
+	private String getBrandContent(List<Brand> originList){
+		List<Brand> brandList = new ArrayList<Brand>();
+		brandList.addAll(originList);
 
-
-	private String getBrandInfoContent(List<Brand> originList){
-		List<Brand> brandInfoList = new ArrayList<Brand>();
-		brandInfoList.addAll(originList);
-
-		Collections.sort(brandInfoList, new Comparator<Brand>(){
+		Collections.sort(brandList, new Comparator<Brand>(){
 
 			@Override
 			public int compare(Brand lhs, Brand rhs) {
@@ -357,53 +411,77 @@ public class UploadFragment extends ItFragment {
 
 		String content = "";
 		List<String> categoryList = new ArrayList<String>();
-		for(Brand brandInfo : brandInfoList){
-			if(!categoryList.contains(brandInfo.getCategory())){
-				categoryList.add(brandInfo.getCategory());
-				content = content + brandInfo.getCategory() + " ";
+		for(Brand brand : brandList){
+			if(!categoryList.contains(brand.getCategory())){
+				categoryList.add(brand.getCategory());
+				content = content + brand.getCategory() + " ";
 			}
-			content = content + "#" + brandInfo.getBrand() + 
-					(brandInfoList.indexOf(brandInfo) != brandInfoList.size()-1 ? " " : "");
+			
+			int brandIndex = brandList.indexOf(brand);
+			content = content + "#" + brand.getBrand() + (brandIndex != brandList.size()-1 ? " " : "");
 		}
 		return content;
 	}
 
 
-	private void uploadItemImage(final Object obj, Item item, String imagePath, Bitmap imageBitmap, int index){
+	private void uploadItemImage(final Object obj, final Item item, String imagePath, Bitmap imageBitmap, int index){
 		String imageId = index == 0 ? item.getId() : item.getId() + "_" + index;
 		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId, imageBitmap,
 				new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
-				AsyncChainer.notifyNext(obj);
+				AsyncChainer.notifyNext(obj, item);
 			}
 		});
 
 		if(index == 0){
-			Bitmap previewImageBitmap = ImageUtil.refineItemImage(imagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH);
-			mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
-					previewImageBitmap, new EntityCallback<String>() {
-
-				@Override
-				public void onCompleted(String entity) {
-					AsyncChainer.notifyNext(obj);
-				}
-			});
-			
-			Bitmap thumbnailImageBitmap = ImageUtil.refineSquareImage(imagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE);
-			mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
-					thumbnailImageBitmap, new EntityCallback<String>() {
-
-				@Override
-				public void onCompleted(String entity) {
-					AsyncChainer.notifyNext(obj);
-				}
-			});
+			uploadCoverImage(obj, item, imagePath);
 		}
 	}
 
 
+	private void uploadCoverImage(final Object obj, final Item item, final String imagePath){
+		(new AsyncTask<Void,Void,List<Bitmap>>(){
+
+			@Override
+			protected List<Bitmap> doInBackground(Void... params) {
+				Bitmap previewImage = ImageUtil.refineItemImage(imagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH, true);
+				Bitmap thumbnailImage = ImageUtil.refineSquareImage(imagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE, true);
+				
+				List<Bitmap> imageList = new ArrayList<Bitmap>();
+				imageList.add(previewImage);
+				imageList.add(thumbnailImage);
+				return imageList;
+			}
+
+			@Override
+			protected void onPostExecute(List<Bitmap> imageList) {
+				Bitmap previewImage = imageList.get(0);
+				Bitmap thumbnailImage = imageList.get(1);
+				
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+						previewImage, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(obj, item);
+					}
+				});
+
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
+						thumbnailImage, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(obj, item);
+					}
+				});
+			};
+		}).execute();
+	}
+	
+	
 	private void trimContent(){
 		mContent.setText(mContent.getText().toString().trim());
 		for(int i=0 ; i<mBrandList.size() ; i++){

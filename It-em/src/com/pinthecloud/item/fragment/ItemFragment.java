@@ -486,6 +486,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void deleteItem(final Item item){
 		mApp.showProgressDialog(mActivity);
+		
 		mAimHelper.delItem(mThisFragment, item, new EntityCallback<Boolean>() {
 
 			@Override

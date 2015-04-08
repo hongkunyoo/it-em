@@ -58,7 +58,9 @@ public class SplashActivity extends ItActivity {
 		// Check update
 		float lastVersion = mPrefHelper.getFloat(ItConstant.APP_VERSION_KEY);
 		float clientVersion = getClientAppVersion();
-		if(lastVersion > clientVersion){
+		if(lastVersion < clientVersion){
+			mPrefHelper.put(ItConstant.APP_VERSION_KEY, clientVersion);
+		} else if(lastVersion > clientVersion) {
 			updateApp();
 			return;
 		}

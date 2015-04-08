@@ -1,6 +1,8 @@
 package com.pinthecloud.item.fragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.database.Cursor;
@@ -93,16 +95,16 @@ public class GalleryFolderFragment extends ItFragment {
 
 	private List<GalleryFolder> getGalleryFolderList() {
 		List<GalleryFolder> folderList = new ArrayList<GalleryFolder>();
-
+		
 		String[] columns = new String[]{
 				MediaStore.Images.Media._ID,
 				MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
 				MediaStore.Images.Media.DATA
 		};
-		String orderBy = MediaStore.Images.Media.BUCKET_DISPLAY_NAME;
+		String orderBy = MediaStore.Images.Media.DATE_TAKEN + " DESC";
 		Cursor cursor = mActivity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 				columns, null, null, orderBy);
-
+		
 		if (cursor.moveToFirst()) {
 			List<String> folderNameList = new ArrayList<String>();
 			int bucketColumn = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
@@ -117,11 +119,19 @@ public class GalleryFolderFragment extends ItFragment {
 					folderList.add(new GalleryFolder(bucket));
 				}
 
-				Gallery item = new Gallery(data);
-				folderList.get(folderList.size()-1).getGalleryList().add(item);
+				int bucketIndex = folderNameList.indexOf(bucket);
+				folderList.get(bucketIndex).getGalleryList().add(new Gallery(data));
 			} while (cursor.moveToNext());
 		}
 
+		Collections.sort(folderList, new Comparator<GalleryFolder>(){
+
+			@Override
+			public int compare(GalleryFolder lhs, GalleryFolder rhs) {
+				return lhs.getName().compareToIgnoreCase(rhs.getName());
+			}
+		});
+		
 		cursor.close();
 		return folderList;
 	}

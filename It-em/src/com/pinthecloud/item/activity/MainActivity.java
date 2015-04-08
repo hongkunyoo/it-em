@@ -41,8 +41,19 @@ public class MainActivity extends ItActivity {
 			showGuide();
 		}
 	}
+	
+	
+	@Override
+	public void onBackPressed() {
+		int home = MainPagerAdapter.TAB.HOME.ordinal();
+		if(mViewPager.getCurrentItem() != home){
+			mViewPager.setCurrentItem(home);
+		} else {
+			super.onBackPressed();	
+		}
+	}
 
-
+	
 	@Override
 	public View getToolbarLayout() {
 		return null;

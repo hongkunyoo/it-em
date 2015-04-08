@@ -57,6 +57,7 @@ public class RoundedImageView extends ImageView {
 	private ColorStateList borderColor =
 			ColorStateList.valueOf(RoundedDrawable.DEFAULT_BORDER_COLOR);
 	private boolean isOval = false;
+	private boolean isSquare = false;
 	private boolean mutateBackground = false;
 	private Shader.TileMode tileModeX = DEFAULT_TILE_MODE;
 	private Shader.TileMode tileModeY = DEFAULT_TILE_MODE;
@@ -106,6 +107,7 @@ public class RoundedImageView extends ImageView {
 
 		mutateBackground = a.getBoolean(R.styleable.RoundedImageView_riv_mutate_background, false);
 		isOval = a.getBoolean(R.styleable.RoundedImageView_riv_oval, false);
+		isSquare = a.getBoolean(R.styleable.RoundedImageView_riv_square, false);
 
 		final int tileMode = a.getInt(R.styleable.RoundedImageView_riv_tile_mode, TILE_MODE_UNDEFINED);
 		if (tileMode != TILE_MODE_UNDEFINED) {
@@ -395,5 +397,14 @@ public class RoundedImageView extends ImageView {
 		mutateBackground = mutate;
 		updateBackgroundDrawableAttrs(true);
 		invalidate();
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		if(isSquare){
+			super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+		} else {
+			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		}
 	}
 }

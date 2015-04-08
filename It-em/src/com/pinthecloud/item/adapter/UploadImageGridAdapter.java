@@ -99,7 +99,8 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ImageActivity.class);
-				intent.putExtra(Item.INTENT_KEY, ItConstant.FILE_PREFIX + path);
+				intent.putExtra(Item.INTENT_KEY, path);
+				intent.putExtra(ImageActivity.FROM_INTERNET_KEY, false);
 				mActivity.startActivity(intent);
 			}
 		});
