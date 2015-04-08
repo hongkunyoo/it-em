@@ -52,7 +52,7 @@ public class ItAlertListDialog extends ItDialogFragment{
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if(mCallbacks[which] != null){
-					mCallbacks[which].doPositiveThing(null);	
+					mCallbacks[which].doPositive(null);	
 				}
 				dismiss();
 			}

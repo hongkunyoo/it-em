@@ -36,10 +36,7 @@ public class UserPagePagerAdapter extends FragmentStatePagerAdapter implements C
 		this.mHeaderHeight = headerHeight;
 		this.mTabHeight = tabHeight;
 		this.mScrollTabHolderList = new SparseArrayCompat<UserPageScrollTabHolder>();
-		
-		this.mTitles = mUser.checkPro() ?
-				context.getResources().getStringArray(R.array.user_page_tab_pro_title_array) :
-					context.getResources().getStringArray(R.array.user_page_tab_title_array);
+		this.mTitles = context.getResources().getStringArray(R.array.user_page_tab_title_array);
 	}
 
 	@Override

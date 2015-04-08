@@ -123,15 +123,19 @@ public abstract class ItActivity extends ActionBarActivity {
 				message = getResources().getString(R.string.error_message);
 			}
 
-			ItAlertDialog exceptionDialog = ItAlertDialog.newInstance(message, null, null, false);
+			ItAlertDialog exceptionDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
 			exceptionDialog.setCallback(new DialogCallback() {
 
 				@Override
-				public void doPositiveThing(Bundle bundle) {
+				public void doPositive(Bundle bundle) {
 					// Do nothing
 				}
 				@Override
-				public void doNegativeThing(Bundle bundle) {
+				public void doNeutral(Bundle bundle) {
+					// Do nothing
+				}
+				@Override
+				public void doNegative(Bundle bundle) {
 					// Do nothing
 				}
 			});

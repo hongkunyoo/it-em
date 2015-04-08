@@ -17,6 +17,8 @@
 
     <!-- Home -->
     <string name="unfold">펼쳐보기</string>
+    <string name="mileage_guide_message">마일리지를 받기위한 정보가 없습니다. 입력하시겠습니까?</string>
+    <string name="never_see">다시보지 않기</string>
 
     <!-- Item -->
     <string name="like">좋아요</string>
@@ -37,10 +39,6 @@
     <!-- User Page -->
     <string name="not_exist_user">없는 유저입니다.</string>
 
-    <!-- Guide -->
-    <string name="guide_description">잇템은 선별된 에디터만 업로드가 가능해요.</string>
-    <string name="guide_be_pro">나도 에디터가 되고 싶어요</string>
-
     <!-- My Item -->
     <string name="empty_my_item">올린 아이템이 없어요.\n자신만의 스타일을 공유해보세요!</string>
     <string name="empty_like_item">좋아하는 아이템이 없어요.\n좋은 아이템을 찾아서 좋아요를 눌러보세요!</string>
@@ -49,14 +47,6 @@
     <string name="product_tag">상품라벨</string>
     <string name="empty_product_tag">아직은 이 아이템을 살 수 없습니다.</string>
     <string name="price_kor">%1$s원</string>
-
-    <!-- Be Pro -->
-    <string name="be_pro">에디터 되기</string>
-    <string name="pro_settings">에디터 설정</string>
-    <string name="be_pro_description">잇템은 에디터로 초대받은 사람만 업로드를 할 수 있어요.\n그리고 좋은 패션과 스타일을 공유해주는 댓가로 리워드를 받아요.\n에디터가 되고 싶으시다면 아래 링크로 지원해주세요.</string>
-    <string name="valid_pro">에디터가 되신 것을 축하해요!\n이제 에디터 정보를 입력해주세요.</string>
-    <string name="invalid_pro">틀린 키입니다. 다시 확인해 주세요.</string>
-    <string name="apply_link">지원링크</string>
 
     <!-- Upload -->
     <string name="new_item">새 아이템</string>
@@ -85,8 +75,9 @@
     <string name="profile_edited">프로필이 수정되었습니다.</string>
     <string name="profile_image_edited">프로필 이미지를 바꿨습니다.</string>
 
-    <!-- Pro Settings -->
+    <!-- Mileage -->
     <string name="mileage">마일리지</string>
+    <string name="mileage_manage">마일리지 관리</string>
     <string name="email">이메일</string>
     <string name="bank_account">은행 계좌</string>
     <string name="bank_account_number">계좌 번호(- 미포함)</string>

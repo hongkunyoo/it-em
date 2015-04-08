@@ -6,7 +6,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.pinthecloud.item.R;
@@ -74,6 +76,14 @@ public class ViewUtil {
 		if(bitmap != null){
 			bitmap.recycle();
 			imageView.setImageBitmap(null);
+		}
+	}
+
+	public static void hideKeyboard(ItActivity activity) {   
+		View view = activity.getCurrentFocus();
+		if (view != null) {
+			InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+			inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
 	}
 }

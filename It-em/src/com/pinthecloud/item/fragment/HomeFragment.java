@@ -19,12 +19,18 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.MileageActivity;
 import com.pinthecloud.item.activity.UploadActivity;
 import com.pinthecloud.item.adapter.HomeItemListAdapter;
+import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItDialogFragment;
+import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.util.ViewUtil;
 
 public class HomeFragment extends MainTabFragment {
 
@@ -61,7 +67,6 @@ public class HomeFragment extends MainTabFragment {
 
 		findComponent(view);
 		setComponent();
-		updateProfile();
 		setRefreshLayout();
 		setList();
 		setScroll();
@@ -76,9 +81,40 @@ public class HomeFragment extends MainTabFragment {
 		if (resultCode == Activity.RESULT_OK){
 			switch(requestCode){
 			case UPLOAD:
+				// Show new item
 				Item item = data.getParcelableExtra(Item.INTENT_KEY);
 				mGridAdapter.add(0, item);
 				mGridView.smoothScrollToPosition(0);
+
+				// Show mileage guide dialog
+				boolean mileageGuideRead = mPrefHelper.getBoolean(ItConstant.MILEAGE_GUIDE_READ_KEY);
+				String bankAccountNumber = mUser.getBankAccountNumber();
+				String bankAccountName = mUser.getBankAccountName();
+				
+				if(!mileageGuideRead && (bankAccountNumber.equals("") || bankAccountName.equals(""))){
+					ViewUtil.hideKeyboard(mActivity);
+					
+					String message = getResources().getString(R.string.mileage_guide_message);
+					String never = getResources().getString(R.string.never_see);
+					ItAlertDialog mileageDialog = ItAlertDialog.newInstance(message, null, null, never, true, true);
+					mileageDialog.setCallback(new DialogCallback() {
+
+						@Override
+						public void doPositive(Bundle bundle) {
+							Intent intent = new Intent(mActivity, MileageActivity.class);
+							startActivity(intent);
+						}
+						@Override
+						public void doNeutral(Bundle bundle) {
+							// Do nothing
+						}
+						@Override
+						public void doNegative(Bundle bundle) {
+							mPrefHelper.put(ItConstant.MILEAGE_GUIDE_READ_KEY, true);
+						}
+					});
+					mileageDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+				}
 				break;
 			}
 		}
@@ -92,13 +128,6 @@ public class HomeFragment extends MainTabFragment {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mLayout.setVisibility(View.GONE);
 		updateGrid(false);
-	}
-
-
-	@Override
-	public void updateProfile() {
-		mUser = mObjectPrefHelper.get(ItUser.class);
-		mUploadLayout.setVisibility(mUser.checkPro() ? View.VISIBLE : View.GONE);
 	}
 
 

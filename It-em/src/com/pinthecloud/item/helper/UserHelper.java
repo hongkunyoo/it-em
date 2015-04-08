@@ -21,11 +21,10 @@ import com.pinthecloud.item.model.ItUser;
 import de.greenrobot.event.EventBus;
 
 public class UserHelper {
-	
+
 	private final String SIGNIN = "signin";
 	private final String UPDATE_USER = "update_user";
-	private final String BE_PRO = "be_pro";
-	
+
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
 	private MobileServiceTable<ItUser> userTable;
@@ -56,7 +55,7 @@ public class UserHelper {
 		JsonObject jo = new JsonObject();
 		jo.add("user", userJson);
 		jo.add("device", deviceJson);
-		
+
 		mClient.invokeApi(SIGNIN, jo, new ApiJsonOperationCallback() {
 
 			@Override
@@ -73,34 +72,8 @@ public class UserHelper {
 			}
 		});
 	}
-	
-	
-	public void bePro(ItUser user, String key, ItUser.TYPE type, final EntityCallback<ItUser> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("bePro", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
 
-		JsonObject jo = new JsonObject();
-		jo.addProperty("user", user.toString());
-		jo.addProperty("key", key);
-		jo.addProperty("validType", type.toString());
-		
-		mClient.invokeApi(BE_PRO, jo, new ApiJsonOperationCallback() {
 
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted(new Gson().fromJson(_json, ItUser.class));
-				} else {
-					EventBus.getDefault().post(new ItException("bePro", ItException.TYPE.INTERNAL_ERROR, response));
-				}
-			}
-		});
-	}
-	
-	
 	public void add(ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("add", ItException.TYPE.NETWORK_UNAVAILABLE));
@@ -215,17 +188,19 @@ public class UserHelper {
 			}
 		});
 	}
-	
-	
+
+
 	public void updateUser(ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("updateUser", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
 		}
 
+		Gson gson = new Gson();
+		JsonObject userJson = gson.fromJson(gson.toJson(user), JsonObject.class);
 		JsonObject jo = new JsonObject();
-		jo.addProperty("user", user.toString());
-		
+		jo.add("user", userJson);
+
 		mClient.invokeApi(UPDATE_USER, jo, new ApiJsonOperationCallback() {
 
 			@Override

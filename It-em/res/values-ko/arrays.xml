@@ -2,11 +2,8 @@
 <resources>
     
     <!-- User Page -->
-    <string-array name="user_page_tab_pro_title_array">
-        <item>내 아이템</item>
-        <item>좋아요</item>
-    </string-array>
     <string-array name="user_page_tab_title_array">
+        <item>내 아이템</item>
         <item>좋아요</item>
     </string-array>
 

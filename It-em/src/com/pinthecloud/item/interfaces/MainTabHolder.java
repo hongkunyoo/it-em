@@ -7,5 +7,4 @@ public interface MainTabHolder {
 
 	// Main to Fragment
 	public void updateFragment();
-	public void updateProfile();
 }

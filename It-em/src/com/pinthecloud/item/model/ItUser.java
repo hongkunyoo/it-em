@@ -21,8 +21,7 @@ public class ItUser implements Parcelable {
 
 	public static enum TYPE {
 		VIEWER,
-		SELLER,
-		PRO
+		SELLER
 	}
 
 	@com.google.gson.annotations.SerializedName("id")
@@ -198,10 +197,6 @@ public class ItUser implements Parcelable {
 
 	public boolean checkMe(){
 		return ItApplication.getInstance().getObjectPrefHelper().get(ItUser.class).getItUserId().equals(this.itUserId);
-	}
-
-	public boolean checkPro(){
-		return TYPE.PRO.toString().equals(this.type);
 	}
 
 	@Override

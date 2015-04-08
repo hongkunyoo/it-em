@@ -57,7 +57,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 			public void onClick(View v) {
 				Bundle bundle = new Bundle();
 				bundle.putString(UploadFragment.CATEGORY_INTENT_KEY, category);
-				mCallback.doPositiveThing(bundle);
+				mCallback.doPositive(bundle);
 			}
 		});
 	}

@@ -183,7 +183,7 @@ public class BankAccountEditDialog extends ItDialogFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putParcelable(ItUser.INTENT_KEY, entity);
-				mCallback.doPositiveThing(bundle);
+				mCallback.doPositive(bundle);
 				dismiss();
 			}
 		});

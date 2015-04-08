@@ -67,11 +67,6 @@ public class NotiFragment extends MainTabFragment {
 	}
 
 
-	@Override
-	public void updateProfile() {
-	}
-
-
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mEmptyView = view.findViewById(R.id.noti_frag_empty_view);

@@ -23,7 +23,7 @@ import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItUser;
 
-public class ProSettingsFragment extends ItFragment {
+public class MileageFragment extends ItFragment {
 	
 	private TextView mMileage;
 	private EditText mEmail;
@@ -46,7 +46,7 @@ public class ProSettingsFragment extends ItFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = inflater.inflate(R.layout.fragment_pro_settings, container, false);
+		View view = inflater.inflate(R.layout.fragment_mileage, container, false);
 
 		mGaHelper.sendScreen(mThisFragment);
 		setActionBar();
@@ -62,7 +62,7 @@ public class ProSettingsFragment extends ItFragment {
 	
 	private void setActionBar(){
 		ActionBar actionBar = mActivity.getSupportActionBar();
-		actionBar.setTitle(getResources().getString(R.string.pro_settings));
+		actionBar.setTitle(getResources().getString(R.string.mileage_manage));
 	}
 
 
@@ -121,13 +121,18 @@ public class ProSettingsFragment extends ItFragment {
 				bankAccountEditDialog.setCallback(new DialogCallback() {
 
 					@Override
-					public void doPositiveThing(Bundle bundle) {
+					public void doPositive(Bundle bundle) {
 						mUser = bundle.getParcelable(ItUser.INTENT_KEY);
 						mObjectPrefHelper.put(mUser);
 						setBankAccount();
 					}
 					@Override
-					public void doNegativeThing(Bundle bundle) {
+					public void doNeutral(Bundle bundle) {
+						// Do nothing
+					}
+					@Override
+					public void doNegative(Bundle bundle) {
+						// Do nothing
 					}
 				});
 				bankAccountEditDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);

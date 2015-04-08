@@ -49,16 +49,20 @@ public class UploadActivity extends ItActivity {
 		if(getSupportFragmentManager().getBackStackEntryCount() == 0 && mImagePathList.size() > 0){
 			String message = getResources().getString(R.string.delete_item);
 			String delete = getResources().getString(R.string.delete);
-			ItAlertDialog dialog = ItAlertDialog.newInstance(message, delete, null, true);
+			ItAlertDialog dialog = ItAlertDialog.newInstance(message, delete, null, null, false, true);
 
 			dialog.setCallback(new DialogCallback() {
 
 				@Override
-				public void doPositiveThing(Bundle bundle) {
+				public void doPositive(Bundle bundle) {
 					mThisActivity.finish();
 				}
 				@Override
-				public void doNegativeThing(Bundle bundle) {
+				public void doNeutral(Bundle bundle) {
+					// Do nothing
+				}
+				@Override
+				public void doNegative(Bundle bundle) {
 					// Do nothing
 				}
 			});

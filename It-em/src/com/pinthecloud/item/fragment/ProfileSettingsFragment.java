@@ -240,34 +240,49 @@ public class ProfileSettingsFragment extends ItFragment {
 		callbacks[0] = new DialogCallback() {
 
 			@Override
-			public void doPositiveThing(Bundle bundle) {
+			public void doPositive(Bundle bundle) {
 				FileUtil.getMediaFromGallery(mThisFragment);
 			}
 			@Override
-			public void doNegativeThing(Bundle bundle) {
+			public void doNeutral(Bundle bundle) {
+				// Do nothing				
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
+				// Do nothing
 			}
 		};
 
 		callbacks[1] = new DialogCallback() {
 
 			@Override
-			public void doPositiveThing(Bundle bundle) {
+			public void doPositive(Bundle bundle) {
 				mProfileImageUri = FileUtil.getMediaFromCamera(mThisFragment);
 			}
 			@Override
-			public void doNegativeThing(Bundle bundle) {
+			public void doNeutral(Bundle bundle) {
+				// Do nothing				
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
+				// Do nothing
 			}
 		};
 
 		callbacks[2] = new DialogCallback() {
 
 			@Override
-			public void doPositiveThing(Bundle bundle) {
+			public void doPositive(Bundle bundle) {
 				// Set profile image default
 				getProfileImage(R.drawable.profile_default_img);
 			}
 			@Override
-			public void doNegativeThing(Bundle bundle) {
+			public void doNeutral(Bundle bundle) {
+				// Do nothing				
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
+				// Do nothing
 			}
 		};
 
@@ -334,7 +349,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				isUpdating = false;
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
-
+				
 				mObjectPrefHelper.put(entity);
 				mActivity.onBackPressed();
 			}
@@ -350,7 +365,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				super.onPreExecute();
 				mApp.showProgressDialog(mActivity);
 			}
-			
+
 			@Override
 			protected List<Bitmap> doInBackground(Void... params) {
 				Bitmap profileImage = ImageUtil.refineSquareImage(imagePath, ImageUtil.PROFILE_IMAGE_SIZE, true);

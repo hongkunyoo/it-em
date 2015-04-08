@@ -19,9 +19,6 @@
 
     <!-- Splash -->
     <dimen name="logo_margin">60dp</dimen>
-    
-    <!-- Be Pro -->
-    <dimen name="be_pro_homepage_height">24dp</dimen>
 
     <!-- Noti -->
     <dimen name="noti_item_image_width">52dp</dimen>

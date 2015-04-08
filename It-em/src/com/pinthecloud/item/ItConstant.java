@@ -11,5 +11,5 @@ public class ItConstant {
 	public static final String DEVELOP_MODE_KEY = "DEVELOP_MODE_KEY";
 	public static final String MAX_TEXTURE_SIZE_KEY = "MAX_TEXTURE_SIZE_KEY";
 	public static final String APP_VERSION_KEY = "APP_VERSION_KEY";
-	public static final String GUIDE_READ_KEY = "GUIDE_READ_KEY";
+	public static final String MILEAGE_GUIDE_READ_KEY = "MILEAGE_GUIDE_READ_KEY";
 }

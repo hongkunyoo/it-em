@@ -102,7 +102,7 @@ public class UserPageFragment extends MainTabFragment {
 		case SETTINGS:
 			if (resultCode == Activity.RESULT_OK){
 				mUser = data.getParcelableExtra(ItUser.INTENT_KEY);
-				mTabHolder.updateProfile();
+				updateProfile();
 
 				mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -187,19 +187,6 @@ public class UserPageFragment extends MainTabFragment {
 	}
 
 
-	@Override
-	public void updateProfile() {
-		if(mActionBar != null) mActionBar.setTitle(mUser.getNickName());
-		mNickName.setText(mUser.getNickName());
-		mDescription.setText(mUser.getSelfIntro());
-		mWebsite.setText(mUser.getWebPage());
-
-		mDescription.setVisibility(!mUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
-		mWebsite.setVisibility(!mUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
-		mSettings.setVisibility(mUser.checkMe() ? View.VISIBLE : View.GONE);
-	}
-
-
 	private void findComponent(View view){
 		mActionBar = mActivity.getSupportActionBar();
 		mContainer = (RelativeLayout)view.findViewById(R.id.user_page_frag_container_layout);
@@ -266,15 +253,19 @@ public class UserPageFragment extends MainTabFragment {
 							AsyncChainer.notifyNext(obj);
 						} else {
 							String message = getResources().getString(R.string.not_exist_user);
-							ItAlertDialog notExistUserDialog = ItAlertDialog.newInstance(message, null, null, false);
+							ItAlertDialog notExistUserDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
 							notExistUserDialog.setCallback(new DialogCallback() {
 
 								@Override
-								public void doPositiveThing(Bundle bundle) {
+								public void doPositive(Bundle bundle) {
 									mActivity.finish();
 								}
 								@Override
-								public void doNegativeThing(Bundle bundle) {
+								public void doNeutral(Bundle bundle) {
+									// Do nothing
+								}
+								@Override
+								public void doNegative(Bundle bundle) {
 									// Do nothing
 								}
 							});
@@ -288,6 +279,18 @@ public class UserPageFragment extends MainTabFragment {
 	}
 
 
+	public void updateProfile() {
+		if(mActionBar != null) mActionBar.setTitle(mUser.getNickName());
+		mNickName.setText(mUser.getNickName());
+		mDescription.setText(mUser.getSelfIntro());
+		mWebsite.setText(mUser.getWebPage());
+
+		mDescription.setVisibility(!mUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
+		mWebsite.setVisibility(!mUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
+		mSettings.setVisibility(mUser.checkMe() ? View.VISIBLE : View.GONE);
+	}
+	
+	
 	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mUser.getId()))

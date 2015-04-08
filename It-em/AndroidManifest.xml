@@ -93,6 +93,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.MileageActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.ImageActivity"
             android:label="@string/none"
             android:launchMode="singleTop"

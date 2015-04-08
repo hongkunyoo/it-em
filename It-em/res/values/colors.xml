@@ -17,9 +17,6 @@
     <color name="blue">#01579b</color>
     <color name="green">#00897b</color>
     <color name="green_pressed">#0f6f63</color>
-
-    <!-- Be Pro -->
-    <color name="be_pro_code_hint">#87ffffff</color>
     
     <!-- Home -->
     <color name="item_image_number">#c8ffffff</color>

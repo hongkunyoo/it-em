@@ -136,7 +136,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		setScroll();
 		setReplyList();
 
-		updateItemFrag();
+		updateItemFrag(false);
 
 		return view;
 	}
@@ -367,7 +367,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onRefresh() {
-				updateItemFrag();
+				updateItemFrag(true);
 			}
 		});
 	}
@@ -427,7 +427,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void updateItemFrag(){
+	private void updateItemFrag(final boolean refresh){
 		mProgressBar.setVisibility(View.VISIBLE);
 		mItemLayout.setVisibility(View.GONE);
 
@@ -435,32 +435,38 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Item entity) {
-				if(isAdded()){
-					if(entity != null){
-						mProgressBar.setVisibility(View.GONE);
-						mItemLayout.setVisibility(View.VISIBLE);
-						mRefresh.setRefreshing(false);
+				if(!isAdded()){
+					return;
+				}
 
-						mItem = entity;
-						setItemComponent();
-						setProductTagFrag();
-						setReplyFrag();
-					} else {
-						String message = getResources().getString(R.string.not_exist_item);
-						ItAlertDialog notExistItemDialog = ItAlertDialog.newInstance(message, null, null, false);
-						notExistItemDialog.setCallback(new DialogCallback() {
+				if(entity != null){
+					if(refresh) mRefresh.setRefreshing(false);
+					mProgressBar.setVisibility(View.GONE);
+					mItemLayout.setVisibility(View.VISIBLE);
 
-							@Override
-							public void doPositiveThing(Bundle bundle) {
-								mActivity.finish();
-							}
-							@Override
-							public void doNegativeThing(Bundle bundle) {
-								// Do nothing
-							}
-						});
-						notExistItemDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-					}
+					mItem = entity;
+					setItemComponent();
+					setProductTagFrag();
+					setReplyFrag();
+				} else {
+					String message = getResources().getString(R.string.not_exist_item);
+					ItAlertDialog notExistItemDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
+					notExistItemDialog.setCallback(new DialogCallback() {
+
+						@Override
+						public void doPositive(Bundle bundle) {
+							mActivity.finish();
+						}
+						@Override
+						public void doNeutral(Bundle bundle) {
+							// Do nothing
+						}
+						@Override
+						public void doNegative(Bundle bundle) {
+							// Do nothing
+						}
+					});
+					notExistItemDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 				}
 			}
 		});
@@ -486,7 +492,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void deleteItem(final Item item){
 		mApp.showProgressDialog(mActivity);
-		
+
 		mAimHelper.delItem(mThisFragment, item, new EntityCallback<Boolean>() {
 
 			@Override

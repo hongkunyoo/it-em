@@ -64,7 +64,7 @@ public class SplashActivity extends ItActivity {
 			updateApp();
 			return;
 		}
-		
+
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mThisActivity));
@@ -102,18 +102,21 @@ public class SplashActivity extends ItActivity {
 
 	private void installGooglePlayService(){
 		String message = getResources().getString(R.string.google_play_services_message);
-		ItAlertDialog gcmDialog = ItAlertDialog.newInstance(message, null, null, true);
+		ItAlertDialog gcmDialog = ItAlertDialog.newInstance(message, null, null, null, false, true);
 		gcmDialog.setCallback(new DialogCallback() {
 
 			@Override
-			public void doPositiveThing(Bundle bundle) {
+			public void doPositive(Bundle bundle) {
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_SERVICE_APP_ID));
 				startActivity(intent);
 				finish();
 			}
-
 			@Override
-			public void doNegativeThing(Bundle bundle) {
+			public void doNeutral(Bundle bundle) {
+				// Do nothing
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
 				finish();
 			}
 		});
@@ -123,17 +126,21 @@ public class SplashActivity extends ItActivity {
 
 	private void updateApp(){
 		String message = getResources().getString(R.string.update_app_message);
-		ItAlertDialog updateDialog = ItAlertDialog.newInstance(message, null, null, true);
+		ItAlertDialog updateDialog = ItAlertDialog.newInstance(message, null, null, null, false, true);
 		updateDialog.setCallback(new DialogCallback() {
 
 			@Override
-			public void doPositiveThing(Bundle bundle) {
+			public void doPositive(Bundle bundle) {
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ItConstant.GOOGLE_PLAY_APP_ID));
 				startActivity(intent);
 				finish();
 			}
 			@Override
-			public void doNegativeThing(Bundle bundle) {
+			public void doNeutral(Bundle bundle) {
+				// Do nothing				
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
 				finish();
 			}
 		});
@@ -153,7 +160,7 @@ public class SplashActivity extends ItActivity {
 
 	private void gotoNextActivity() {
 		new Handler(Looper.getMainLooper()).postDelayed(new Runnable(){
-			
+
 			@Override
 			public void run() {
 				ItUser user = mObjectPrefHelper.get(ItUser.class);

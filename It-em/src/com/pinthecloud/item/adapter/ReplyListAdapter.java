@@ -249,11 +249,16 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		callbacks[0] = new DialogCallback() {
 
 			@Override
-			public void doPositiveThing(Bundle bundle) {
+			public void doPositive(Bundle bundle) {
 				mReplyCallback.deleteReply(reply);
 			}
 			@Override
-			public void doNegativeThing(Bundle bundle) {
+			public void doNeutral(Bundle bundle) {
+				// Do nothing
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
+				// Do nothing
 			}
 		};
 		return callbacks;

@@ -8,11 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MainPagerAdapter;
-import com.pinthecloud.item.dialog.GuideDialog;
-import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.interfaces.MainTabHolder;
 import com.pinthecloud.item.model.ItUser;
@@ -36,13 +33,9 @@ public class MainActivity extends ItActivity {
 		setTab();
 		setTabImage();
 		setNotiTab();
-
-		if(!mPrefHelper.getBoolean(ItConstant.GUIDE_READ_KEY)){
-			showGuide();
-		}
 	}
-	
-	
+
+
 	@Override
 	public void onBackPressed() {
 		int home = MainPagerAdapter.TAB.HOME.ordinal();
@@ -53,7 +46,7 @@ public class MainActivity extends ItActivity {
 		}
 	}
 
-	
+
 	@Override
 	public View getToolbarLayout() {
 		return null;
@@ -76,13 +69,6 @@ public class MainActivity extends ItActivity {
 			}
 			@Override
 			public void updateFragment() {
-			}
-			@Override
-			public void updateProfile() {
-				SparseArrayCompat<MainTabHolder> tabHolderList = mViewPagerAdapter.getTabHolderList();
-				for(int i=0 ; i<tabHolderList.size() ; i++){
-					tabHolderList.valueAt(i).updateProfile();
-				}
 			}
 		});
 
@@ -138,12 +124,6 @@ public class MainActivity extends ItActivity {
 				newNoti.setVisibility(notiNumber > 0 ? View.VISIBLE : View.GONE);
 			}
 		});
-	}
-
-
-	private void showGuide(){
-		GuideDialog guideDialog = new GuideDialog();
-		guideDialog.show(getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 	}
 
 

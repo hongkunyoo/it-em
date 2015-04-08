@@ -25,6 +25,8 @@
 
     <!-- Home -->
     <string name="unfold">Unfold</string>
+    <string name="mileage_guide_message">Information for mileage does not exist. Do you want to set the information?</string>
+    <string name="never_see">Never see again</string>
 
     <!-- Item -->
     <string name="like">Like</string>
@@ -37,7 +39,7 @@
 
     <!-- Reply -->
     <string name="comments">Comments</string>
-    <string name="submit">Submit</string>
+    <string name="submit">SUBMIT</string>
     <string name="write_reply">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
     <string name="first_reply">Be first of comments</string>
@@ -48,24 +50,10 @@
     <!-- User Page -->
     <string name="not_exist_user">This user doesn\'t exist.</string>
 
-    <!-- Guide -->
-    <string name="guide_description">IT:EM allows only editor to upload item.</string>
-    <string name="guide_be_pro"><u>I also want to be editor</u></string>
-
     <!-- My Item -->
     <string name="empty_my_item">Item is empty.\nShare your own style!</string>
     <string name="empty_like_item">You have not like any item.\nGive like to lovely item!</string>
     <string name="empty">Empty</string>
-
-    <!-- Be Pro -->
-    <string name="be_pro">Be Editor</string>
-    <string name="pro_settings">Editor Settings</string>
-    <string name="be_pro_description">IT:EM only allows Editor to upload item.\nEditor receives reward by sharing style.\nIf you want to be Editor, send apply through below link.</string>
-    <string name="apply_link">Apply Link</string>
-    <string name="apply_editor">http://goo.gl/forms/d1rfeKJVcQ</string>
-    <string name="code">CODE</string>
-    <string name="valid_pro">Congratulation becoming editor!\nNow set editor information.</string>
-    <string name="invalid_pro">Invalid Editor key. Please check it.</string>
 
     <!-- Upload -->
     <string name="new_item">New Item</string>
@@ -95,9 +83,9 @@
     <string name="profile_edited">Profile is edited.</string>
     <string name="profile_image_edited">Profile image is changed.</string>
 
-    <!-- Pro Settings -->
-    <string name="edit">Edit</string>
+    <!-- Mileage -->
     <string name="mileage">Mileage</string>
+    <string name="mileage_manage">Mileage Manage</string>
     <string name="email">Email</string>
     <string name="bank_account">Bank Account</string>
     <string name="bank_account_number">Account Number(don\'t include -)</string>
@@ -107,6 +95,7 @@
     <string name="not_exist_bank_account">Register bank account for mileage</string>
     <string name="bad_email_message">It is unproper email address.</string>
     <string name="email_edited">Email is edited.</string>
+    <string name="edit">Edit</string>
 
     <!-- Bank Account Edit -->
     <string name="bad_bank_account_name_message">It is unproper account name.</string>

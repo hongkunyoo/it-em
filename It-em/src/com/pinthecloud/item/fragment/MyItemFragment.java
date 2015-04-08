@@ -34,8 +34,8 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 	private static final String HEADER_HEIGHT_KEY = "HEADER_HEIGHT_KEY";
 	private static final String TAB_HEIGHT_KEY = "TAB_HEIGHT_KEY";
 
-	private int MY_ITEM;
-	private int IT_ITEM;
+	private final int MY_ITEM = 0;
+	private final int LIKE = 1;
 
 	private View mLayout;
 	private SwipeRefreshLayout mRefresh;
@@ -81,14 +81,6 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 		mUser = getArguments().getParcelable(ItUser.INTENT_KEY);
 		mHeaderHeight = getArguments().getInt(HEADER_HEIGHT_KEY);
 		mTabHeight = getArguments().getInt(TAB_HEIGHT_KEY);
-
-		if(mUser.checkPro()){
-			MY_ITEM = 0;
-			IT_ITEM = 1;
-		} else {
-			MY_ITEM = -1;
-			IT_ITEM = 0;
-		}
 	}
 
 
@@ -97,24 +89,24 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_item, container, false);
-		
+
 		mGaHelper.sendScreen(mThisFragment);
-		
+
 		findComponent(view);
 		setComponent();
 		setGrid();
 		updateHeader(mHeaderHeight);
 		setScroll();
 		setRefreshLayout();
-		
+
 		mProgressBar.setVisibility(View.VISIBLE);
 		mRefresh.setVisibility(View.GONE);
 		updateGrid(false);
-		
+
 		return view;
 	}
-	
-	
+
+
 	@Override
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
@@ -129,7 +121,7 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 		mGridAdapter.notifyHeader(headerHeight);
 		int height = ViewUtil.getActionBarHeight(mActivity)/2;
 		mRefresh.setProgressViewOffset(true, headerHeight-height, headerHeight+height);
-		
+
 		mLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
 			@SuppressLint("NewApi")
@@ -176,7 +168,7 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 		if(mPosition == MY_ITEM){
 			mGridEmptyImage.setImageResource(R.drawable.mypage_item_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_my_item));
-		} else if(mPosition == IT_ITEM) {
+		} else if(mPosition == LIKE) {
 			mGridEmptyImage.setImageResource(R.drawable.mypage_it_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_like_item));
 		}
@@ -219,12 +211,12 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 			}
 		});
 	}
-	
-	
+
+
 	private void updateGrid(boolean refresh) {
 		if(mPosition == MY_ITEM){
 			updateMyItemGrid(refresh);
-		} else if(mPosition == IT_ITEM) {
+		} else if(mPosition == LIKE) {
 			updateItItemGrid(refresh);
 		}
 	}
@@ -267,11 +259,11 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 		mItemList.clear();
 		mGridAdapter.addAll(list);
 		mGridView.scrollToPosition(0);
-		
+
 		if(mScrollTabHolder != null){
 			mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());	
 		}
-		
+
 		mGridEmptyLayout.setVisibility(count > 0 ? View.GONE : View.VISIBLE);
 	}
 

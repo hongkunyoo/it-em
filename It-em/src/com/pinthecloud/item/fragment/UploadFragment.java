@@ -121,7 +121,7 @@ public class UploadFragment extends ItFragment {
 
 			isUploading = true;
 			mApp.showProgressDialog(mActivity);
-			
+
 			AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 				@Override
@@ -197,7 +197,7 @@ public class UploadFragment extends ItFragment {
 				categoryDialog.setCallback(new DialogCallback() {
 
 					@Override
-					public void doPositiveThing(Bundle bundle) {
+					public void doPositive(Bundle bundle) {
 						categoryDialog.dismiss();
 
 						String category = bundle.getString(CATEGORY_INTENT_KEY);
@@ -207,7 +207,12 @@ public class UploadFragment extends ItFragment {
 						ViewUtil.setListHeightBasedOnChildren(mBrandListView, mBrandListAdapter.getItemCount());
 					}
 					@Override
-					public void doNegativeThing(Bundle bundle) {
+					public void doNeutral(Bundle bundle) {
+						// Do nothing
+					}
+					@Override
+					public void doNegative(Bundle bundle) {
+						// Do nothing
 					}
 				});
 				categoryDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
@@ -318,12 +323,12 @@ public class UploadFragment extends ItFragment {
 			};
 		}).execute();
 	}
-	
-	
+
+
 	private void uploadItem(final List<Bitmap> imageList){
 		final Item item = getItem(imageList);
 		final List<HashTag> tagList = getTagList(item.getContent());
-		
+
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
 			@Override
@@ -363,8 +368,8 @@ public class UploadFragment extends ItFragment {
 			}
 		});
 	}
-	
-	
+
+
 	private Item getItem(List<Bitmap> imageList){
 		int coverWidth = imageList.get(0).getWidth();
 		int coverHeight = imageList.get(0).getHeight();
@@ -379,14 +384,14 @@ public class UploadFragment extends ItFragment {
 				mainHeight = imageList.get(i).getHeight();
 			}
 		}
-		
+
 		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
 		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandContent(mBrandList);
 		return new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(),
 				coverWidth, coverHeight, mainWidth, mainHeight);
 	}
-	
-	
+
+
 	private List<HashTag> getTagList(String content){
 		List<HashTag> tagList = new ArrayList<HashTag>();
 		List<String> hashTags = TextUtil.getSpanBodyList(content);
@@ -395,8 +400,8 @@ public class UploadFragment extends ItFragment {
 		}
 		return tagList;
 	}
-	
-	
+
+
 	private String getBrandContent(List<Brand> originList){
 		List<Brand> brandList = new ArrayList<Brand>();
 		brandList.addAll(originList);
@@ -416,7 +421,7 @@ public class UploadFragment extends ItFragment {
 				categoryList.add(brand.getCategory());
 				content = content + brand.getCategory() + " ";
 			}
-			
+
 			int brandIndex = brandList.indexOf(brand);
 			content = content + "#" + brand.getBrand() + (brandIndex != brandList.size()-1 ? " " : "");
 		}
@@ -448,7 +453,7 @@ public class UploadFragment extends ItFragment {
 			protected List<Bitmap> doInBackground(Void... params) {
 				Bitmap previewImage = ImageUtil.refineItemImage(imagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH, true);
 				Bitmap thumbnailImage = ImageUtil.refineSquareImage(imagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE, true);
-				
+
 				List<Bitmap> imageList = new ArrayList<Bitmap>();
 				imageList.add(previewImage);
 				imageList.add(thumbnailImage);
@@ -459,7 +464,7 @@ public class UploadFragment extends ItFragment {
 			protected void onPostExecute(List<Bitmap> imageList) {
 				Bitmap previewImage = imageList.get(0);
 				Bitmap thumbnailImage = imageList.get(1);
-				
+
 				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
 						previewImage, new EntityCallback<String>() {
 
@@ -480,8 +485,8 @@ public class UploadFragment extends ItFragment {
 			};
 		}).execute();
 	}
-	
-	
+
+
 	private void trimContent(){
 		mContent.setText(mContent.getText().toString().trim());
 		for(int i=0 ; i<mBrandList.size() ; i++){

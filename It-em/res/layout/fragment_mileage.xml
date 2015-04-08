@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/email"
-                android:src="@drawable/pro_settings_email_submit_button" />
+                android:src="@drawable/mileage_email_submit_button" />
         </LinearLayout>
 
         <com.pinthecloud.item.view.ItTextView

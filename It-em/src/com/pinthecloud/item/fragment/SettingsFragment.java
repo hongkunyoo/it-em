@@ -35,8 +35,7 @@ public class SettingsFragment extends ItFragment {
 
 	private LinearLayout mLayout;
 	private View mProfileSettings;
-	private View mProSettings;
-	private TextView mProSettingsText;
+	private View mMileage;
 
 	private ToggleButton mNotiMyItem;
 	private ToggleButton mNotiItItem;
@@ -75,8 +74,7 @@ public class SettingsFragment extends ItFragment {
 	private void findComponent(View view){
 		mLayout = (LinearLayout)view.findViewById(R.id.settings_layout);
 		mProfileSettings = view.findViewById(R.id.settings_profile_settings);
-		mProSettings = view.findViewById(R.id.settings_pro_settings);
-		mProSettingsText = (TextView)view.findViewById(R.id.settings_pro_settings_text);
+		mMileage = view.findViewById(R.id.settings_mileage);
 		mNotiMyItem = (ToggleButton)view.findViewById(R.id.settings_noti_my_item);
 		mNotiItItem = (ToggleButton)view.findViewById(R.id.settings_noti_it_item);
 		mNotiReplyItem = (ToggleButton)view.findViewById(R.id.settings_noti_reply_item);
@@ -86,10 +84,6 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void setComponent(){
-		String proSettings = getResources().getString(R.string.pro_settings);
-		String bePro = getResources().getString(R.string.be_pro);
-
-		mProSettingsText.setText(mUser.checkPro() ? proSettings : bePro);
 		mNickName.setText(mUser.getNickName());
 	}
 
@@ -104,11 +98,11 @@ public class SettingsFragment extends ItFragment {
 			}
 		});
 
-		mProSettings.setOnClickListener(new OnClickListener() {
+		mMileage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				ItFragment fragment = mUser.checkPro() ? new ProSettingsFragment() : new BeProFragment();
+				ItFragment fragment = new MileageFragment();
 				mActivity.replaceFragment(fragment, true, R.anim.slide_in_pop_up, 0, R.anim.pop_in, R.anim.slide_out_pop_down);
 			}
 		});
@@ -172,12 +166,11 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				String message = getResources().getString(R.string.logout_message);
-				ItAlertDialog logoutDialog = ItAlertDialog.newInstance(message, null, null, true);
-
+				ItAlertDialog logoutDialog = ItAlertDialog.newInstance(message, null, null, null, false, true);
 				logoutDialog.setCallback(new DialogCallback() {
 
 					@Override
-					public void doPositiveThing(Bundle bundle) {
+					public void doPositive(Bundle bundle) {
 						mApp.showProgressDialog(mActivity);
 						if (mUser.getPlatform().equalsIgnoreCase(ItUser.PLATFORM.FACEBOOK.toString())) {
 							facebookLogout();
@@ -186,7 +179,11 @@ public class SettingsFragment extends ItFragment {
 						}
 					}
 					@Override
-					public void doNegativeThing(Bundle bundle) {
+					public void doNeutral(Bundle bundle) {
+						// Do nothing
+					}
+					@Override
+					public void doNegative(Bundle bundle) {
 						// Do nothing
 					}
 				});
