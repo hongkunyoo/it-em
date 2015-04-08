@@ -102,7 +102,7 @@
     <string name="bank_account_edited">은행 계좌가 수정되었습니다.</string>
 
     <!-- Notification -->
-    <string name="noti_general_content">%1$s님이 %2$s %3$s.</string>
+    <string name="noti_general_content">%1$s님이 %2$s%3$s.</string>
     <string name="noti_product_tag_content">%1$s %2$s.</string>
     <string name="my_item">내 아이템</string>
     <string name="of_item">%1$s님의 아이템</string>

@@ -129,24 +129,26 @@ public class NotiFragment extends MainTabFragment {
 
 			@Override
 			public void onCompleted(List<ItNotification> list, int count) {
-				if(isAdded()){
-					if(refresh){
-						mRefresh.setRefreshing(false);
-
-						mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
-						if(mTabHolder != null){
-							mTabHolder.updateNotiTab();	
-						}
-					} else {
-						mProgressBar.setVisibility(View.GONE);
-						mRefresh.setVisibility(View.VISIBLE);
-					}
-
-					mNotiList.clear();
-					mListAdapter.addAll(list);
-
-					mEmptyView.setVisibility(count > 0 ? View.GONE : View.VISIBLE);
+				if(!isAdded()){
+					return;
 				}
+
+				if(refresh){
+					mRefresh.setRefreshing(false);
+
+					mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
+					if(mTabHolder != null){
+						mTabHolder.updateNotiTab();	
+					}
+				} else {
+					mProgressBar.setVisibility(View.GONE);
+					mRefresh.setVisibility(View.VISIBLE);
+				}
+
+				mNotiList.clear();
+				mListAdapter.addAll(list);
+
+				mEmptyView.setVisibility(count > 0 ? View.GONE : View.VISIBLE);
 			}
 		});
 	}
@@ -158,6 +160,10 @@ public class NotiFragment extends MainTabFragment {
 
 			@Override
 			public void onCompleted(List<ItNotification> list, int count) {
+				if(!isAdded()){
+					return;
+				}
+
 				mIsAdding = false;
 				mListAdapter.addAll(list);
 			}

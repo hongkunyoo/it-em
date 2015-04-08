@@ -188,17 +188,19 @@ public class HomeFragment extends MainTabFragment {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
-				if(isAdded()){
-					if(refresh){
-						mRefresh.setRefreshing(false);
-					} else {
-						mProgressBar.setVisibility(View.GONE);
-						mLayout.setVisibility(View.VISIBLE);
-					}
-
-					mItemList.clear();
-					mGridAdapter.addAll(list);
+				if(!isAdded()){
+					return;
 				}
+
+				if(refresh){
+					mRefresh.setRefreshing(false);
+				} else {
+					mProgressBar.setVisibility(View.GONE);
+					mLayout.setVisibility(View.VISIBLE);
+				}
+
+				mItemList.clear();
+				mGridAdapter.addAll(list);
 			}
 		});
 	}
@@ -209,11 +211,13 @@ public class HomeFragment extends MainTabFragment {
 		mAimHelper.listItem(++page, mUser.getId(), new ListCallback<Item>() {
 
 			@Override
-			public void onCompleted(List<Item> list, int count) {
-				if(isAdded()){
-					mIsAdding = false;
-					mGridAdapter.addAll(list);
+			public void onCompleted(final List<Item> list, int count) {
+				if(!isAdded()){
+					return;
 				}
+
+				mIsAdding = false;
+				mGridAdapter.addAll(list);
 			}
 		});
 	}
