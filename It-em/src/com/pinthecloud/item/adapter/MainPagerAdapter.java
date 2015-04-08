@@ -26,7 +26,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter implements Custo
 	}
 
 	private ItApplication mApp;
-	private int[] mTitleIcons = {R.drawable.main_tab_home, R.drawable.main_tab_noti, R.drawable.main_tab_it_user_page};
+	private int[] mTitleIcons = {R.drawable.main_tab_home, R.drawable.main_tab_noti, R.drawable.main_tab_user_page};
 
 	private MainTabHolder mTabHolder;
 	private SparseArrayCompat<MainTabHolder> mTabHolderList;

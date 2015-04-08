@@ -5,11 +5,12 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/content_margin" >
 
-    <com.pinthecloud.item.view.RoundedSquareImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/row_upload_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:riv_corner_radius="@dimen/content_margin" />
+        app:riv_corner_radius="@dimen/content_margin"
+        app:riv_square="true" />
 
     <ImageButton
         android:id="@+id/row_upload_image_delete"
@@ -18,6 +19,7 @@
         android:layout_alignEnd="@+id/row_upload_image"
         android:layout_alignRight="@+id/row_upload_image"
         android:layout_alignTop="@+id/row_upload_image"
+        android:layout_margin="@dimen/content_small_margin"
         android:background="@android:color/transparent"
         android:contentDescription="@string/delete"
         android:src="@drawable/upload_image_delete_button" />

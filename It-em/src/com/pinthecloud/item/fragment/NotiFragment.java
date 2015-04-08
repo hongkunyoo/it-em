@@ -23,8 +23,8 @@ import com.pinthecloud.item.model.ItUser;
 public class NotiFragment extends MainTabFragment {
 
 	private ProgressBar mProgressBar;
+	private View mEmptyView;
 	private SwipeRefreshLayout mRefresh;
-	private View mListEmptyView;
 	private RecyclerView mListView;
 	private NotiListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
@@ -74,8 +74,8 @@ public class NotiFragment extends MainTabFragment {
 
 	private void findComponent(View view){
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
+		mEmptyView = view.findViewById(R.id.noti_frag_empty_view);
 		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.noti_frag_refresh);
-		mListEmptyView = view.findViewById(R.id.noti_frag_list_empty_layout);
 		mListView = (RecyclerView)view.findViewById(R.id.noti_frag_list);
 	}
 
@@ -129,21 +129,24 @@ public class NotiFragment extends MainTabFragment {
 
 			@Override
 			public void onCompleted(List<ItNotification> list, int count) {
-				mRefresh.setVisibility(View.VISIBLE);
-				if(refresh){
-					mRefresh.setRefreshing(false);
-					mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
-					if(mTabHolder != null){
-						mTabHolder.updateNotiTab();	
+				if(isAdded()){
+					if(refresh){
+						mRefresh.setRefreshing(false);
+
+						mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
+						if(mTabHolder != null){
+							mTabHolder.updateNotiTab();	
+						}
+					} else {
+						mProgressBar.setVisibility(View.GONE);
+						mRefresh.setVisibility(View.VISIBLE);
 					}
-				} else {
-					mProgressBar.setVisibility(View.GONE);
+
+					mNotiList.clear();
+					mListAdapter.addAll(list);
+
+					mEmptyView.setVisibility(count > 0 ? View.GONE : View.VISIBLE);
 				}
-
-				mNotiList.clear();
-				mListAdapter.addAll(list);
-
-				showNotiList(count);
 			}
 		});
 	}
@@ -159,16 +162,5 @@ public class NotiFragment extends MainTabFragment {
 				mListAdapter.addAll(list);
 			}
 		});
-	}
-
-
-	private void showNotiList(int notiCount){
-		if(notiCount > 0){
-			mListEmptyView.setVisibility(View.GONE);
-			mListView.setVisibility(View.VISIBLE);
-		} else {
-			mListEmptyView.setVisibility(View.VISIBLE);
-			mListView.setVisibility(View.GONE);
-		}
 	}
 }

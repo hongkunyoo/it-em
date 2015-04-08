@@ -92,7 +92,8 @@ public class FileUtil {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
 			try{
 				return getMediaPathFromGalleryUri_API19(context, mediaUri);
-			} catch(Exception e) {
+			} catch(IllegalArgumentException e) {
+				// Do nothing
 			}
 		}
 		return getMediaPathFromGalleryUri_API11to18(context, mediaUri);

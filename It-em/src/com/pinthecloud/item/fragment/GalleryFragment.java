@@ -55,10 +55,10 @@ public class GalleryFragment extends ItFragment {
 
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-		setActionBar();
 		findComponent(view);
 		setGrid();
-
+		setActionBar();
+		
 		return view;
 	}
 
@@ -91,18 +91,6 @@ public class GalleryFragment extends ItFragment {
 		}
 		return super.onOptionsItemSelected(menuItem);
 	}
-
-
-	public void setActionBar(){
-		ActionBar actionBar = mActivity.getSupportActionBar();
-		int selected = mImagePathList.size() + (mGridAdapter == null ? 0 : mGridAdapter.getSelected().size());
-		if(selected > 0){
-			int maxGallery = mActivity.getResources().getInteger(R.integer.gallery_max_num);
-			actionBar.setTitle(mFolder.getName() + "  (" + selected + "/" + maxGallery + ")");
-		} else {
-			actionBar.setTitle(mFolder.getName());
-		}
-	}
 	
 	
 	private void findComponent(View view){
@@ -120,5 +108,17 @@ public class GalleryFragment extends ItFragment {
 
 		mGridAdapter = new GalleryAdapter(mActivity, mThisFragment, mFolder.getGalleryList(), mImagePathList);
 		mGridView.setAdapter(mGridAdapter);
+	}
+	
+	
+	public void setActionBar(){
+		ActionBar actionBar = mActivity.getSupportActionBar();
+		int selected = mImagePathList.size() + (mGridAdapter == null ? 0 : mGridAdapter.getSelected().size());
+		if(selected > 0){
+			int maxGallery = mActivity.getResources().getInteger(R.integer.gallery_max_num);
+			actionBar.setTitle(mFolder.getName() + "  (" + selected + "/" + maxGallery + ")");
+		} else {
+			actionBar.setTitle(mFolder.getName());
+		}
 	}
 }

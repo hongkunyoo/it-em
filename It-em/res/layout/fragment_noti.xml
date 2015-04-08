@@ -5,6 +5,19 @@
     android:layout_height="match_parent"
     android:background="@color/brand_color" >
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/noti_frag_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/noti_frag_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/brand_color"
+            android:scrollbars="none" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,7 +26,7 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/noti_frag_list_empty_layout"
+        android:id="@+id/noti_frag_empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -34,18 +47,5 @@
             android:textColor="@color/gray_dark"
             app:textType="body" />
     </LinearLayout>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/noti_frag_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/noti_frag_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/brand_color"
-            android:scrollbars="none" />
-    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

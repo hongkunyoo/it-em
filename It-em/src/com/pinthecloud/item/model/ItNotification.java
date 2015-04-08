@@ -91,9 +91,9 @@ public class ItNotification extends AbstractItemModel<ItNotification> {
 
 		String refWhoMade = "";
 		if(getRefWhoMadeId().equals(myItUser.getId())){
-			refWhoMade = app.getResources().getString(R.string.noti_name_title_my);
+			refWhoMade = app.getResources().getString(R.string.my_item);
 		} else {
-			refWhoMade = getRefWhoMade() + app.getResources().getString(R.string.of);
+			refWhoMade = getRefWhoMade() + app.getResources().getString(R.string.of_item);
 		}
 
 		String type = "";

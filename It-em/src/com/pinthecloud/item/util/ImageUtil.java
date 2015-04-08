@@ -16,56 +16,66 @@ public class ImageUtil {
 	public static final String ITEM_THUMBNAIL_IMAGE_POSTFIX = "_thumbnail";
 
 
-	public static Bitmap refineItemImage(String imagePath, int maxWidth){
-		Bitmap bitmap = null;
-		
+	public static Bitmap refineItemImage(String imagePath, int maxWidth, boolean recycle){
 		int orientation = BitmapUtil.getImageOrientation(imagePath);
+		Bitmap bitmap = null;
 		if(orientation == 0 || orientation == 180){
 			bitmap = BitmapUtil.decodeInSampleSize(imagePath, maxWidth, -1);
-
-			// Scale by maxWidth
-			int width = bitmap.getWidth();
-			int height = bitmap.getHeight();
-			if(width > maxWidth) {
-				bitmap = BitmapUtil.scale(bitmap, maxWidth, (int)(height*((double)maxWidth/width)));
-			}
 		} else {
 			bitmap = BitmapUtil.decodeInSampleSize(imagePath, -1, maxWidth);
+		}
+		if(bitmap == null) return null;
 
-			// Scale by maxWidth
-			int width = bitmap.getWidth();
-			int height = bitmap.getHeight();
-			if(height > maxWidth) {
-				bitmap = BitmapUtil.scale(bitmap, (int)(width*((double)maxWidth/height)), maxWidth);
-			}
+		bitmap = BitmapUtil.rotate(bitmap, orientation, recycle);
+		if(bitmap == null) return null;
+
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		if(width > maxWidth) {
+			bitmap = BitmapUtil.scale(bitmap, maxWidth, (int)(height*((double)maxWidth/width)), recycle);
 		}
 
-		return BitmapUtil.rotate(bitmap, BitmapUtil.getImageOrientation(imagePath));
+		return bitmap;
 	}
 
 
-	public static Bitmap refineSquareImage(String imagePath, int size){
+	public static Bitmap refineSquareImage(String imagePath, int size, boolean recycle){
 		Bitmap bitmap = BitmapUtil.decodeInSampleSize(imagePath, size, size);
-		bitmap = BitmapUtil.cropSquare(bitmap);
+		if(bitmap == null) return null;
+
+		bitmap = BitmapUtil.rotate(bitmap, BitmapUtil.getImageOrientation(imagePath), recycle);
+		if(bitmap == null) return null;
+
+		bitmap = BitmapUtil.cropSquare(bitmap, recycle);
+		if(bitmap == null) return null;
+
 		if(bitmap.getWidth() > size){
-			bitmap = BitmapUtil.scale(bitmap, size, size);
+			bitmap = BitmapUtil.scale(bitmap, size, size, recycle);
 		}
-		return BitmapUtil.rotate(bitmap, BitmapUtil.getImageOrientation(imagePath));
+
+		return bitmap;
 	}
 
 
-	public static Bitmap refineSquareImage(Resources resources, int id, int size){
+	public static Bitmap refineSquareImage(Resources resources, int id, int size, boolean recycle){
 		Bitmap bitmap = BitmapUtil.decodeInSampleSize(resources, id, size, size);
-		return refineSquareImage(bitmap, size);
+		if(bitmap == null) return null;
+
+		return refineSquareImage(bitmap, size, recycle);
 	}
 
 
-	public static Bitmap refineSquareImage(Bitmap bitmap, int size){
-		bitmap = BitmapUtil.decodeInSampleSize(bitmap, size, size);
-		bitmap = BitmapUtil.cropSquare(bitmap);
+	public static Bitmap refineSquareImage(Bitmap bitmap, int size, boolean recycle){
+		bitmap = BitmapUtil.decodeInSampleSize(bitmap, size, size, recycle);
+		if(bitmap == null) return null;
+
+		bitmap = BitmapUtil.cropSquare(bitmap, recycle);
+		if(bitmap == null) return null;
+
 		if(bitmap.getWidth() > size){
-			bitmap = BitmapUtil.scale(bitmap, size, size);
+			bitmap = BitmapUtil.scale(bitmap, size, size, recycle);
 		}
+
 		return bitmap;
 	}
 }

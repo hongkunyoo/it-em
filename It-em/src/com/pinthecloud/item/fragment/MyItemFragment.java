@@ -109,7 +109,7 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 		
 		mProgressBar.setVisibility(View.VISIBLE);
 		mRefresh.setVisibility(View.GONE);
-		updateGrid();
+		updateGrid(false);
 		
 		return view;
 	}
@@ -215,66 +215,64 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 
 			@Override
 			public void onRefresh() {
-				updateGrid();
+				updateGrid(true);
 			}
 		});
 	}
 	
 	
-	private void updateGrid() {
+	private void updateGrid(boolean refresh) {
 		if(mPosition == MY_ITEM){
-			updateMyItemGrid();
+			updateMyItemGrid(refresh);
 		} else if(mPosition == IT_ITEM) {
-			updateItItemGrid();
+			updateItItemGrid(refresh);
 		}
 	}
 
 
-	private void updateMyItemGrid(){
+	private void updateMyItemGrid(final boolean refresh){
 		mAimHelper.listMyItem(mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				if(isAdded()){
-					setGridItem(list, count);
+					setGridItem(list, count, refresh);
 				}
 			}
 		});
 	}
 
 
-	private void updateItItemGrid(){
+	private void updateItItemGrid(final boolean refresh){
 		mAimHelper.listItItem(mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				if(isAdded()){
-					setGridItem(list, count);
+					setGridItem(list, count, refresh);
 				}
 			}
 		});
 	}
 
 
-	private void setGridItem(List<Item> list, int count){
-		mProgressBar.setVisibility(View.GONE);
-		mRefresh.setVisibility(View.VISIBLE);
-		mRefresh.setRefreshing(false);
+	private void setGridItem(List<Item> list, int count, boolean refresh){
+		if(refresh){
+			mRefresh.setRefreshing(false);
+		} else {
+			mProgressBar.setVisibility(View.GONE);
+			mRefresh.setVisibility(View.VISIBLE);
+		}
 
 		mItemList.clear();
 		mGridAdapter.addAll(list);
 		mGridView.scrollToPosition(0);
+		
 		if(mScrollTabHolder != null){
 			mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());	
 		}
 		
-		showGrid(count);
-	}
-
-
-	private void showGrid(int count){
 		mGridEmptyLayout.setVisibility(count > 0 ? View.GONE : View.VISIBLE);
-		mGridView.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
 	}
 
 

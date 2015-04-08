@@ -50,9 +50,12 @@ public class UserHelper {
 			return;
 		}
 
+		Gson gson = new Gson();
+		JsonObject userJson = gson.fromJson(gson.toJson(user), JsonObject.class);
+		JsonObject deviceJson = gson.fromJson(gson.toJson(device), JsonObject.class);
 		JsonObject jo = new JsonObject();
-		jo.addProperty("user", user.toString());
-		jo.addProperty("device", device.toString());
+		jo.add("user", userJson);
+		jo.add("device", deviceJson);
 		
 		mClient.invokeApi(SIGNIN, jo, new ApiJsonOperationCallback() {
 

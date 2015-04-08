@@ -30,7 +30,7 @@ public class RoundedTopCornerTransformation implements Transformation {
 
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
-		paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+		paint.setShader(new BitmapShader(source, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
 
 		Rect rect = new Rect(margin, margin, width - margin, height - margin);
 		RectF rectF = new RectF(rect);

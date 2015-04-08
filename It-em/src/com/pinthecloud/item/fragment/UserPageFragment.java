@@ -24,7 +24,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.SettingsActivity;
 import com.pinthecloud.item.activity.UserPageActivity;
@@ -198,8 +197,6 @@ public class UserPageFragment extends MainTabFragment {
 		mDescription.setVisibility(!mUser.getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mWebsite.setVisibility(!mUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
 		mSettings.setVisibility(mUser.checkMe() ? View.VISIBLE : View.GONE);
-
-		boolean isItem = mUser.getItUserId().equals(ItConstant.ITEM_ID_FACEBOOK);
 	}
 
 

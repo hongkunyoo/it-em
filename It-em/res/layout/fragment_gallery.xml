@@ -8,11 +8,11 @@
         android:id="@+id/gallery_frag_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/line_thick_width"
-        android:paddingEnd="@dimen/line_width"
-        android:paddingLeft="@dimen/line_width"
-        android:paddingRight="@dimen/line_width"
-        android:paddingStart="@dimen/line_width"
+        android:paddingBottom="@dimen/content_medium_margin"
+        android:paddingEnd="@dimen/content_small_margin"
+        android:paddingLeft="@dimen/content_small_margin"
+        android:paddingRight="@dimen/content_small_margin"
+        android:paddingStart="@dimen/content_small_margin"
         android:scrollbars="none" />
 
 </RelativeLayout>

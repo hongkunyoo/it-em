@@ -77,7 +77,7 @@
                         android:id="@+id/user_page_frag_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_small_margin"
+                        android:layout_marginTop="@dimen/content_medium_margin"
                         android:textColor="@color/gray_dark"
                         app:textType="caption" />
 
@@ -85,7 +85,7 @@
                         android:id="@+id/user_page_frag_website"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_small_margin"
+                        android:layout_marginTop="@dimen/content_medium_margin"
                         android:textColor="@color/blue"
                         app:textType="caption" />
                 </LinearLayout>
@@ -101,9 +101,9 @@
                 app:pstsDividerColor="@android:color/transparent"
                 app:pstsIndicatorColor="@color/accent_color"
                 app:pstsIndicatorHeight="@dimen/line_thick_width"
+                app:pstsIndicatorPadding="@dimen/user_page_tab_indicator_margin"
                 app:pstsShouldExpand="true"
                 app:pstsTabBackground="@drawable/user_page_tab"
-                app:pstsTabPaddingLeftRight="@dimen/key_line_first"
                 app:pstsTabSwitch="true"
                 app:pstsUnderlineColor="@android:color/transparent" />
         </LinearLayout>

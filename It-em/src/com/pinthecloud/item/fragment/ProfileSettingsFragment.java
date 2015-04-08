@@ -1,9 +1,13 @@
 package com.pinthecloud.item.fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.Editable;
@@ -42,7 +46,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private ItUser mUser;
 	private boolean isUpdating = false;
-	
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,14 +60,14 @@ public class ProfileSettingsFragment extends ItFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile_settings, container, false);
-		
+
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
 		setActionBar();
 		findComponent(view);
 		setComponent();
 		setButton();
-		
+
 		return view;
 	}
 
@@ -99,7 +103,7 @@ public class ProfileSettingsFragment extends ItFragment {
 				break;
 			}
 
-			updateProfileImage(imagePath);
+			getProfileImage(imagePath);
 		}
 	}
 
@@ -126,40 +130,43 @@ public class ProfileSettingsFragment extends ItFragment {
 			if(isUpdating){
 				break;
 			}
-			
+
 			isUpdating = true;
 			trimProfileSettings();
-			if(isProfileSettingsChanged()){
-				mApp.showProgressDialog(mActivity);
 
-				AsyncChainer.asyncChain(mThisFragment, new Chainable(){
-
-					@Override
-					public void doNext(Object obj, Object... params) {
-						String message = checkWebsite(obj, mWebsite.getText().toString());
-						if(message.equals("")){
-							checkNickName(obj, mNickName.getText().toString());
-						} else {
-							AsyncChainer.notifyNext(obj, message);
-						}
-					}
-				}, new Chainable(){
-
-					@Override
-					public void doNext(Object obj, Object... params) {
-						String message = params[0].toString();
-						if(message.equals("")){
-							updateProfileSettings();
-						} else {
-							isUpdating = false;
-							mApp.dismissProgressDialog();
-							Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
-						}
-					}
-				});
-			} else {
+			if(!isProfileSettingsChanged()){
+				isUpdating = false;
 				mActivity.onBackPressed();
+				break;
 			}
+
+			mApp.showProgressDialog(mActivity);
+
+			AsyncChainer.asyncChain(mThisFragment, new Chainable(){
+
+				@Override
+				public void doNext(Object obj, Object... params) {
+					String message = checkWebsite(obj, mWebsite.getText().toString());
+					if(message.equals("")){
+						checkNickName(obj, mNickName.getText().toString());
+					} else {
+						AsyncChainer.notifyNext(obj, message);
+					}
+				}
+			}, new Chainable(){
+
+				@Override
+				public void doNext(Object obj, Object... params) {
+					String message = params[0].toString();
+					if(message.equals("")){
+						updateProfileSettings();
+					} else {
+						isUpdating = false;
+						mApp.dismissProgressDialog();
+						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
+					}
+				}
+			});
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -170,8 +177,8 @@ public class ProfileSettingsFragment extends ItFragment {
 		ActionBar actionBar = mActivity.getSupportActionBar();
 		actionBar.setTitle(getResources().getString(R.string.profile_settings));
 	}
-	
-	
+
+
 	private void findComponent(View view){
 		mProfileImage = (ImageView)view.findViewById(R.id.profile_settings_frag_profile_image);
 		mNickName = (EditText)view.findViewById(R.id.profile_settings_frag_nick_name);
@@ -257,7 +264,7 @@ public class ProfileSettingsFragment extends ItFragment {
 			@Override
 			public void doPositiveThing(Bundle bundle) {
 				// Set profile image default
-				updateProfileImage(R.drawable.profile_default_img);
+				getProfileImage(R.drawable.profile_default_img);
 			}
 			@Override
 			public void doNegativeThing(Bundle bundle) {
@@ -283,8 +290,8 @@ public class ProfileSettingsFragment extends ItFragment {
 
 
 	private void checkNickName(final Object obj, String nickName){
-		int nickNameMinLength = getResources().getInteger(R.integer.nick_name_min_length);
 		String nickNameRegx = "^[a-zA-Z0-9가-힣_]+";
+		int nickNameMinLength = getResources().getInteger(R.integer.nick_name_min_length);
 		if(nickName.length() < nickNameMinLength){
 			AsyncChainer.notifyNext(obj, getResources().getString(R.string.min_nick_name_message));
 		} else if(!nickName.matches(nickNameRegx)){
@@ -294,14 +301,10 @@ public class ProfileSettingsFragment extends ItFragment {
 
 				@Override
 				public void onCompleted(ItUser entity) {
-					if(entity == null){
+					if(entity == null || entity.getId().equals(mUser.getId())){
 						AsyncChainer.notifyNext(obj, "");
 					} else {
-						if(entity.getId().equals(mUser.getId())){
-							AsyncChainer.notifyNext(obj, "");
-						} else {
-							AsyncChainer.notifyNext(obj, getResources().getString(R.string.duplicated_nick_name_message));
-						}
+						AsyncChainer.notifyNext(obj, getResources().getString(R.string.duplicated_nick_name_message));
 					}
 				}
 			});
@@ -323,6 +326,7 @@ public class ProfileSettingsFragment extends ItFragment {
 		mUser.setNickName(mNickName.getText().toString());
 		mUser.setSelfIntro(mDescription.getText().toString());
 		mUser.setWebPage(mWebsite.getText().toString());
+
 		mUserHelper.updateUser(mUser, new EntityCallback<ItUser>() {
 
 			@Override
@@ -338,19 +342,63 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void updateProfileImage(String imagePath){
-		mApp.showProgressDialog(mActivity);
-		Bitmap profileImageBitmap = ImageUtil.refineSquareImage(imagePath, ImageUtil.PROFILE_IMAGE_SIZE);
-		Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(imagePath, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
-		updateProfileImage(profileImageBitmap, profileThumbnailImageBitmap);
+	private void getProfileImage(final String imagePath){
+		(new AsyncTask<Void,Void,List<Bitmap>>(){
+
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				mApp.showProgressDialog(mActivity);
+			}
+			
+			@Override
+			protected List<Bitmap> doInBackground(Void... params) {
+				Bitmap profileImage = ImageUtil.refineSquareImage(imagePath, ImageUtil.PROFILE_IMAGE_SIZE, true);
+				Bitmap profileThumbnailImage = ImageUtil.refineSquareImage(imagePath, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE, true);
+
+				List<Bitmap> profileImageList = new ArrayList<Bitmap>();
+				profileImageList.add(profileImage);
+				profileImageList.add(profileThumbnailImage);
+				return profileImageList;
+			}
+
+			@Override
+			protected void onPostExecute(List<Bitmap> profileImageList) {
+				Bitmap profileImage = profileImageList.get(0);
+				Bitmap profileThumbnailImage = profileImageList.get(1);
+				updateProfileImage(profileImage, profileThumbnailImage);
+			};
+		}).execute();
 	}
 
 
-	private void updateProfileImage(int resId){
-		mApp.showProgressDialog(mActivity);
-		Bitmap profileImageBitmap = ImageUtil.refineSquareImage(getResources(), resId, ImageUtil.PROFILE_IMAGE_SIZE);
-		Bitmap profileThumbnailImageBitmap = ImageUtil.refineSquareImage(getResources(), resId, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE);
-		updateProfileImage(profileImageBitmap, profileThumbnailImageBitmap);
+	private void getProfileImage(final int resId){
+		(new AsyncTask<Void,Void,List<Bitmap>>(){
+
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				mApp.showProgressDialog(mActivity);
+			}
+
+			@Override
+			protected List<Bitmap> doInBackground(Void... params) {
+				Bitmap profileImage = ImageUtil.refineSquareImage(getResources(), resId, ImageUtil.PROFILE_IMAGE_SIZE, true);
+				Bitmap profileThumbnailImage = ImageUtil.refineSquareImage(getResources(), resId, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE, true);
+
+				List<Bitmap> profileImageList = new ArrayList<Bitmap>();
+				profileImageList.add(profileImage);
+				profileImageList.add(profileThumbnailImage);
+				return profileImageList;
+			}
+
+			@Override
+			protected void onPostExecute(List<Bitmap> profileImageList) {
+				Bitmap profileImage = profileImageList.get(0);
+				Bitmap profileThumbnailImage = profileImageList.get(1);
+				updateProfileImage(profileImage, profileThumbnailImage);
+			};
+		}).execute();
 	}
 
 

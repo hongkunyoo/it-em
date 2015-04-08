@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:padding="@dimen/dialog_margin" >
@@ -18,7 +18,7 @@
         android:src="@drawable/general_dialog_close_ic" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
@@ -34,9 +34,10 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/profile_image_frag_profile_image"
-            android:layout_width="@dimen/profile_image_width"
-            android:layout_height="@dimen/profile_image_width"
-            app:riv_corner_radius="@dimen/content_margin" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:riv_corner_radius="@dimen/content_margin"
+            app:riv_square="true" />
     </LinearLayout>
 
 </RelativeLayout>

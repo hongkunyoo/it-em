@@ -38,9 +38,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginEnd="@dimen/layout_margin"
-                    android:layout_marginRight="@dimen/layout_margin"
-                    android:layout_marginTop="@dimen/layout_margin"
+                    android:layout_margin="@dimen/layout_margin"
                     android:shadowColor="@color/black_pressed"
                     android:shadowDx="@integer/shadow"
                     android:shadowDy="@integer/shadow"
@@ -258,13 +256,6 @@
                                     android:textColor="@color/brand_text_color"
                                     android:textStyle="bold"
                                     app:textType="subhead" />
-
-                                <ImageView
-                                    android:id="@+id/item_frag_user_type"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/content_margin"
-                                    android:contentDescription="@string/be_pro" />
 
                                 <com.pinthecloud.item.view.ItTextView
                                     android:id="@+id/item_frag_user_description"

@@ -15,21 +15,26 @@ import com.pinthecloud.item.activity.ImageActivity;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.squareup.picasso.Callback;
 
 public class ItemImagePagerAdapter extends PagerAdapter {
 
-	private final double MAX_HEIGHT_RATIO = 1.6;
-
 	private ItApplication mApp;
 	private ItActivity mActivity;
 	private Item mItem;
+	private double MAX_HEIGHT_RATIO;
 
 	public ItemImagePagerAdapter(ItActivity activity, Item item) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mItem = item;
+		
+		int width = ViewUtil.getDeviceWidth(activity);
+		int height = ViewUtil.getDeviceHeight(activity);
+		int hiddenHeight = ViewUtil.getActionBarHeight(activity)*2 + ViewUtil.getStatusBarHeight(activity);
+		this.MAX_HEIGHT_RATIO = (double)(height-hiddenHeight)/width;
 	}
 
 	@Override
@@ -44,21 +49,26 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		DynamicHeightImageView image = new DynamicHeightImageView(mActivity);
-		image.setAdjustViewBounds(true);
-		image.setScaleType(ScaleType.CENTER_CROP);
+		double heightRatio = (double)mItem.getMainImageHeight()/mItem.getMainImageWidth();
+		DynamicHeightImageView imageView = new DynamicHeightImageView(mActivity);
+		imageView.setAdjustViewBounds(true);
+		imageView.setScaleType(ScaleType.CENTER_CROP);
+		imageView.setHeightRatio(Math.min(heightRatio, MAX_HEIGHT_RATIO));
+		imageView.setImageResource(R.drawable.feed_loading_default_img);
 		
 		String imageId = position == 0 ? mItem.getId() : mItem.getId() + "_" + position;
-		setButton(image, imageId);
-		setImageView(image, imageId);
+		setButton(imageView, imageId);
+		setImageView(imageView, imageId);
 		
-		((ViewPager)container).addView(image);
-		return image;
+		((ViewPager)container).addView(imageView);
+		return imageView;
 	}
 
 	@Override
-	public void destroyItem(ViewGroup container, int position, Object object) {    
-		((ViewPager)container).removeView((DynamicHeightImageView)object);
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		DynamicHeightImageView imageView = (DynamicHeightImageView)object;
+		imageView.setImageBitmap(null);
+		((ViewPager)container).removeView(imageView);
 	}
 
 	@Override 
@@ -73,26 +83,24 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ImageActivity.class);
 				intent.putExtra(Item.INTENT_KEY, BlobStorageHelper.getItemImgUrl(imageId));
+				intent.putExtra(ImageActivity.FROM_INTERNET_KEY, true);
 				mActivity.startActivity(intent);
 			}
 		});
 	}
 
-	private void setImageView(final DynamicHeightImageView image, String imageId){
-		double heightRatio = Math.min((double)mItem.getMainImageHeight()/mItem.getMainImageWidth(), MAX_HEIGHT_RATIO);
-		image.setHeightRatio(heightRatio);
-		
+	private void setImageView(final DynamicHeightImageView imageView, String imageId){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(imageId))
 		.placeholder(R.drawable.feed_loading_default_img)
-		.into(image, new Callback(){
+		.into(imageView, new Callback(){
 
 			@Override
 			public void onError() {
 			}
 			@Override
 			public void onSuccess() {
-				image.setScaleType(ScaleType.FIT_CENTER);
+				imageView.setScaleType(ScaleType.FIT_CENTER);
 			}
 		});
 	}

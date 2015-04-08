@@ -21,7 +21,6 @@
     <!-- Item -->
     <string name="like">좋아요</string>
     <string name="uploaded_on">%1$s 업로드</string>
-    <string name="of">님의</string>
     <string name="delete">삭제</string>
     <string name="not_exist_item">삭제된 아이템입니다.</string>
     <string name="delete_item">이 아이템을 삭제하시겠습니까?</string>
@@ -36,7 +35,7 @@
     <string name="like_user">이 아이템을 좋아하는 유저</string>
 
     <!-- User Page -->
-    <string name="not_exist_user">존재하지 않는 유저입니다.</string>
+    <string name="not_exist_user">없는 유저입니다.</string>
 
     <!-- Guide -->
     <string name="guide_description">잇템은 선별된 에디터만 업로드가 가능해요.</string>
@@ -68,6 +67,7 @@
     <string name="brand">브랜드</string>
     <string name="add">추가</string>
     <string name="bad_brand_message">브랜드에는 문자,숫자,언더바가 허용됩니다.</string>
+    <string name="too_big_item_image_message">%1$d번째 이미지가 너무 커서 업로드 할 수 없어요.</string>
 
     <!-- Gallery -->
     <string name="select_album">앨범 선택</string>
@@ -104,12 +104,13 @@
     <!-- Notification -->
     <string name="noti_general_content">%1$s님이 %2$s %3$s.</string>
     <string name="noti_product_tag_content">%1$s %2$s.</string>
-    <string name="noti_name_title_my">내</string>
-    <string name="noti_like">아이템을 좋아합니다</string>
-    <string name="noti_reply">아이템에 댓글을 달았습니다</string>
-    <string name="noti_product_tag">아이템에 상품라벨이 달렸습니다</string>
-    <string name="new_noti">새로운 알람이 왔어요. 알람 화면을 새로고침 해보세요.</string>
-    <string name="empty_noti">받은 알람이 없어요</string>
+    <string name="my_item">내 아이템</string>
+    <string name="of_item">%1$s님의 아이템</string>
+    <string name="noti_like">을 좋아합니다</string>
+    <string name="noti_reply">에 댓글을 달았습니다</string>
+    <string name="noti_product_tag">에 상품라벨이 달렸습니다</string>
+    <string name="new_noti">새로운 알람이 있습니다. 알람화면을 새로고침 하세요.</string>
+    <string name="empty_noti">받은 알람이 없습니다.</string>
 
     <!-- Settings -->
     <string name="logout">로그아웃</string>

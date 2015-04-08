@@ -15,11 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
-            android:paddingBottom="@dimen/line_thick_width"
-            android:paddingEnd="@dimen/line_width"
-            android:paddingLeft="@dimen/line_width"
-            android:paddingRight="@dimen/line_width"
-            android:paddingStart="@dimen/line_width"
+            android:paddingEnd="@dimen/content_small_margin"
+            android:paddingLeft="@dimen/content_small_margin"
+            android:paddingRight="@dimen/content_small_margin"
+            android:paddingStart="@dimen/content_small_margin"
             android:scrollbars="none" />
     </android.support.v4.widget.SwipeRefreshLayout>
 

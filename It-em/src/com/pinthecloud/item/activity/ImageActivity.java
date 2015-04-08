@@ -1,7 +1,5 @@
 package com.pinthecloud.item.activity;
 
-import java.io.IOException;
-
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -10,24 +8,26 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
-import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.util.BitmapUtil;
+import com.pinthecloud.item.util.ImageUtil;
+import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.DynamicHeightImageView;
-
-import de.greenrobot.event.EventBus;
+import com.squareup.picasso.Callback;
 
 public class ImageActivity extends ItActivity {
+
+	public static final String FROM_INTERNET_KEY = "FROM_INTERNET_KEY";
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
 
 	private PhotoViewAttacher mAttacher;
-	private DynamicHeightImageView mImage;
+	private DynamicHeightImageView mImageView;
 
-	private Bitmap mImageBitmap;
+	private String mPath;
+	private boolean mFromInternet;
+	private Bitmap mImage;
 
 
 	@Override
@@ -36,9 +36,15 @@ public class ImageActivity extends ItActivity {
 		overridePendingTransition(R.anim.slide_in_pop_up, 0);
 		setContentView(R.layout.activity_image);
 
+		mPath = getIntent().getStringExtra(Item.INTENT_KEY);
+		mFromInternet = getIntent().getBooleanExtra(FROM_INTERNET_KEY, false);
+
 		setToolbar();
 		setComponent();
-		getImage();
+
+		if(!mFromInternet){
+			getImage();
+		}
 	}
 
 
@@ -54,7 +60,12 @@ public class ImageActivity extends ItActivity {
 	public void onStop() {
 		super.onStop();
 		mGaHelper.reportActivityStop(mThisActivity);
-		mImage.setImageBitmap(null);
+
+		if(mFromInternet){
+			mImageView.setImageBitmap(null);
+		} else {
+			ViewUtil.recycleImageView(mImageView);	
+		}
 	}
 
 
@@ -93,8 +104,30 @@ public class ImageActivity extends ItActivity {
 
 
 	private void setComponent(){
-		mImage = (DynamicHeightImageView)findViewById(R.id.image);
-		mAttacher = new PhotoViewAttacher(mImage);
+		mImageView = (DynamicHeightImageView)findViewById(R.id.image);
+		mAttacher = new PhotoViewAttacher(mImageView);
+	}
+
+
+	private void setImageView(){
+		boolean fromInternet = getIntent().getBooleanExtra(FROM_INTERNET_KEY, false);
+		if(fromInternet){
+			mApp.getPicasso()
+			.load(mPath)
+			.into(mImageView, new Callback(){
+
+				@Override
+				public void onError() {
+				}
+				@Override
+				public void onSuccess() {
+					mAttacher.update();
+				}
+			});
+		} else {
+			mImageView.setImageBitmap(mImage);
+			mAttacher.update();
+		}
 	}
 
 
@@ -103,38 +136,14 @@ public class ImageActivity extends ItActivity {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
-				Bitmap bitmap = null;
-				try {
-					String path = getIntent().getStringExtra(Item.INTENT_KEY);
-					bitmap = mApp.getPicasso().load(path).get();
-				} catch (IOException e) {
-					EventBus.getDefault().post(new ItException("getImage", ItException.TYPE.INTERNAL_ERROR));
-				}
-				return bitmap;
+				return ImageUtil.refineItemImage(mPath, ImageUtil.ITEM_IMAGE_WIDTH, true);
 			}
 
 			@Override
 			protected void onPostExecute(Bitmap image) {
-				mImageBitmap = image;
-				
-				// Scale image
-				int maxSize = mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
-				if(mImageBitmap.getHeight() > maxSize){
-					int width = mImageBitmap.getWidth();
-					int height = mImageBitmap.getHeight();
-					mImageBitmap = BitmapUtil.scale(mImageBitmap, (int)(width*((float)maxSize/height)), maxSize);
-				}
-				
-				// Set image to view
-				mImage.setHeightRatio((double)mImageBitmap.getHeight()/mImageBitmap.getWidth());
+				mImage = image;
 				setImageView();
 			};
 		}).execute();
-	}
-
-
-	private void setImageView(){
-		mImage.setImageBitmap(mImageBitmap);
-		mAttacher.update();
 	}
 }
