@@ -104,7 +104,7 @@ public class ItApplication extends Application {
 
 			// Default is REAL (int 0)
 			int mode = getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY);
-			mClient = mode == REAL ? realClient : testClient;
+			mClient = mode == REAL ? testClient : testClient;
 		}
 		return mClient;
 	}

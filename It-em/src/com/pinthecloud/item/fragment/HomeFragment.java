@@ -90,30 +90,9 @@ public class HomeFragment extends MainTabFragment {
 				boolean mileageGuideRead = mPrefHelper.getBoolean(ItConstant.MILEAGE_GUIDE_READ_KEY);
 				String bankAccountNumber = mUser.getBankAccountNumber();
 				String bankAccountName = mUser.getBankAccountName();
-				
 				if(!mileageGuideRead && (bankAccountNumber.equals("") || bankAccountName.equals(""))){
 					ViewUtil.hideKeyboard(mActivity);
-					
-					String message = getResources().getString(R.string.mileage_guide_message);
-					String never = getResources().getString(R.string.never_see);
-					ItAlertDialog mileageDialog = ItAlertDialog.newInstance(message, null, null, never, true, true);
-					mileageDialog.setCallback(new DialogCallback() {
-
-						@Override
-						public void doPositive(Bundle bundle) {
-							Intent intent = new Intent(mActivity, MileageActivity.class);
-							startActivity(intent);
-						}
-						@Override
-						public void doNeutral(Bundle bundle) {
-							// Do nothing
-						}
-						@Override
-						public void doNegative(Bundle bundle) {
-							mPrefHelper.put(ItConstant.MILEAGE_GUIDE_READ_KEY, true);
-						}
-					});
-					mileageDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+					showMileageGuideDialog();
 				}
 				break;
 			}
@@ -249,5 +228,29 @@ public class HomeFragment extends MainTabFragment {
 				mGridAdapter.addAll(list);
 			}
 		});
+	}
+
+
+	private void showMileageGuideDialog(){
+		String message = getResources().getString(R.string.mileage_guide_message);
+		String never = getResources().getString(R.string.never_see);
+		ItAlertDialog mileageDialog = ItAlertDialog.newInstance(message, null, null, never, true, true);
+		mileageDialog.setCallback(new DialogCallback() {
+
+			@Override
+			public void doPositive(Bundle bundle) {
+				Intent intent = new Intent(mActivity, MileageActivity.class);
+				startActivity(intent);
+			}
+			@Override
+			public void doNeutral(Bundle bundle) {
+				// Do nothing
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
+				mPrefHelper.put(ItConstant.MILEAGE_GUIDE_READ_KEY, true);
+			}
+		});
+		mileageDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 	}
 }
