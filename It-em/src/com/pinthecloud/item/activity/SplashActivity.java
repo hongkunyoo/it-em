@@ -35,6 +35,8 @@ import com.pinthecloud.item.model.ItUser;
 
 public class SplashActivity extends ItActivity {
 
+	private final int SPLASH_TIME = 1000;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class SplashActivity extends ItActivity {
 			return;
 		}
 
+		// Run item
 		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
 			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_surface_layout);
 			layout.addView(new GetMaxTextureSizeSurfaceView(mThisActivity));
@@ -149,12 +152,12 @@ public class SplashActivity extends ItActivity {
 
 
 	private float getClientAppVersion() {
-		String versionName = "0.1";
 		try {
-			versionName = mApp.getPackageManager().getPackageInfo(mApp.getPackageName(), 0).versionName;
+			String version = mApp.getPackageManager().getPackageInfo(mApp.getPackageName(), 0).versionName;
+			return Float.parseFloat(version);
 		} catch (NameNotFoundException e) {
+			return 0.1f;
 		}
-		return Float.parseFloat(versionName);
 	}
 
 
@@ -165,6 +168,7 @@ public class SplashActivity extends ItActivity {
 			public void run() {
 				ItUser user = mObjectPrefHelper.get(ItUser.class);
 				Intent intent = new Intent();
+				
 				if (!user.checkLoggedIn()){
 					// New User
 					intent.setClass(mThisActivity, LoginActivity.class);
@@ -172,10 +176,11 @@ public class SplashActivity extends ItActivity {
 					// Has Loggined
 					intent.setClass(mThisActivity, MainActivity.class);
 				}
+				
 				startActivity(intent);
 				finish();
 			}
-		}, 1000);
+		}, SPLASH_TIME);
 	}
 
 

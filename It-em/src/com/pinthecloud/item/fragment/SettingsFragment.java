@@ -218,7 +218,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.REAL, new EntityCallback<Boolean>() {
+				mApp.switchClient(ItApplication.REAL_MODE, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -233,7 +233,7 @@ public class SettingsFragment extends ItFragment {
 			@Override
 			public void onClick(View v) {
 				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.TEST, new EntityCallback<Boolean>() {
+				mApp.switchClient(ItApplication.TEST_MODE, new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {

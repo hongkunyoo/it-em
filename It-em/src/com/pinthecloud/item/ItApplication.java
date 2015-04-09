@@ -3,7 +3,6 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -34,8 +33,8 @@ customReportContent = {ReportField.APP_VERSION_NAME, ReportField.ANDROID_VERSION
 public class ItApplication extends Application {
 
 	// Admin
-	public static int REAL = 0;
-	public static int TEST = 1;
+	public static final int TEST_MODE = 0;
+	public static final int REAL_MODE = 1;
 	private ArrayList<String> adminList;
 
 	// Windows Azure Mobile Service Keys
@@ -70,7 +69,7 @@ public class ItApplication extends Application {
 		super.onCreate();
 		app = this;
 
-		ACRA.init(app);
+		//		ACRA.init(app);
 		com.kakao.Session.initialize(this, AuthType.KAKAO_TALK);
 
 		mClient = getMobileClient();
@@ -102,9 +101,13 @@ public class ItApplication extends Application {
 				// Do nothing
 			}
 
-			// Default is REAL (int 0)
-			int mode = getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY);
-			mClient = mode == REAL ? realClient : testClient;
+			// Default is TEST (int 0)
+			if(isAdmin()){
+				int mode = getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY);
+				mClient = (mode == TEST_MODE ? testClient : realClient);
+			} else {
+				mClient = realClient;
+			}
 		}
 		return mClient;
 	}
@@ -139,10 +142,6 @@ public class ItApplication extends Application {
 	public BlobStorageHelper getBlobStorageHelper() {
 		if(blobStorageHelper == null) blobStorageHelper = new BlobStorageHelper(app);
 		return blobStorageHelper;
-	}
-
-	public static boolean isDebugging() {
-		return app.getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY) == ItApplication.TEST;
 	}
 
 	public boolean isOnline(){
@@ -185,7 +184,8 @@ public class ItApplication extends Application {
 
 	public void switchClient(int developMode, final EntityCallback<Boolean> callback) {
 		getPrefHelper().put(ItConstant.DEVELOP_MODE_KEY, developMode);
-		mClient = developMode == REAL ? realClient : testClient;
+		mClient = (developMode == TEST_MODE ? testClient : realClient);
+
 		getAimHelper().setMobileClient(mClient);
 		getUserHelper().setMobileClient(mClient);
 		getDeviceHelper().setMobileClient(mClient);
@@ -201,5 +201,9 @@ public class ItApplication extends Application {
 				callback.onCompleted(true);
 			}
 		});
+	}
+
+	public static boolean isDebugging() {
+		return app.getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY) == TEST_MODE;
 	}
 }

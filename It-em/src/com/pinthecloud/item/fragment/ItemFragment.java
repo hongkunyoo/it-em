@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,7 +58,6 @@ import com.pinthecloud.item.view.DynamicHeightViewPager;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
-	private SwipeRefreshLayout mRefresh;
 	private ScrollView mScrollLayout;
 	private int mBaseScrollY;
 
@@ -72,6 +69,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private View mItemLayout;
 	private TextView mContent;
 	private TextView mDate;
+
 	private Button mLikeButton;
 	private View mLikeNumberLayout;
 	private TextView mLikeNumber;
@@ -132,11 +130,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		setComponent();
 		setImagePager();
 		setButton();
-		setRefreshLayout();
 		setScroll();
 		setReplyList();
 
-		updateItemFrag(false);
+		updateItemFrag();
 
 		return view;
 	}
@@ -202,7 +199,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
-		mRefresh = (SwipeRefreshLayout)view.findViewById(R.id.item_frag_refresh);
 		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
 
 		mImagePager = (DynamicHeightViewPager)view.findViewById(R.id.item_frag_image_pager);
@@ -212,6 +208,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mDate = (TextView)view.findViewById(R.id.item_frag_date);
+
 		mLikeButton = (Button)view.findViewById(R.id.item_frag_like_button);
 		mLikeNumberLayout = view.findViewById(R.id.item_frag_like_number_layout);
 		mLikeNumber = (TextView)view.findViewById(R.id.item_frag_like_number);
@@ -359,20 +356,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setRefreshLayout(){
-		int height = ViewUtil.getActionBarHeight(mActivity)/2;
-		mRefresh.setColorSchemeResources(R.color.accent_color);
-		mRefresh.setProgressViewOffset(true, height, ViewUtil.getActionBarHeight(mActivity)+height);
-		mRefresh.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh() {
-				updateItemFrag(true);
-			}
-		});
-	}
-
-
 	private void setScroll(){
 		final View toolbarLayout = mActivity.getToolbarLayout();
 		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
@@ -427,7 +410,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void updateItemFrag(final boolean refresh){
+	private void updateItemFrag(){
 		mProgressBar.setVisibility(View.VISIBLE);
 		mItemLayout.setVisibility(View.GONE);
 
@@ -440,7 +423,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				}
 
 				if(entity != null){
-					if(refresh) mRefresh.setRefreshing(false);
 					mProgressBar.setVisibility(View.GONE);
 					mItemLayout.setVisibility(View.VISIBLE);
 

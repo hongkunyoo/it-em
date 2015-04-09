@@ -51,8 +51,8 @@
     <string name="not_exist_user">This user doesn\'t exist.</string>
 
     <!-- My Item -->
-    <string name="empty_my_item">Item is empty.\nShare your own style!</string>
-    <string name="empty_like_item">You have not like any item.\nGive like to lovely item!</string>
+    <string name="empty_my_item">Item is empty.\nShare your own daily look!</string>
+    <string name="empty_like_item">You have not liked any item.\nGive like to lovely item!</string>
     <string name="empty">Empty</string>
 
     <!-- Upload -->

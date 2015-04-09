@@ -13,19 +13,11 @@ import com.pinthecloud.item.R;
 public class ItTextView extends TextView {
 
 	public static enum TYPE{
-		TITLE(0),
-		SUBHEAD(1),
-		BODY(2),
-		CAPTION(3),
-		BUTTON(4);
-
-		private int value;
-		private TYPE(int value){
-			this.value = value;
-		}
-		public int getValue(){
-			return this.value;	
-		}
+		TITLE,
+		SUBHEAD,
+		BODY,
+		CAPTION,
+		BUTTON
 	}
 
 	private int mTextType = TYPE.TITLE.ordinal();
@@ -45,11 +37,6 @@ public class ItTextView extends TextView {
 		mTextType = a.getInt(R.styleable.ItTextView_textType, 0);
 		a.recycle();
 
-		setTextProperty(mTextType);
-	}
-
-	public void setTextType(TYPE textType) {
-		this.mTextType = textType.getValue();
 		setTextProperty(mTextType);
 	}
 
@@ -86,14 +73,5 @@ public class ItTextView extends TextView {
 	private void setButton(){
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_medium));
 		setText(getText().toString().toUpperCase(Locale.US));
-	}
-
-
-	@Override
-	public void setText(CharSequence text, BufferType type) {
-		if(mTextType == TYPE.BUTTON.ordinal()){
-			text = text.toString().toUpperCase(Locale.US);
-		}
-		super.setText(text, type);
 	}
 }
