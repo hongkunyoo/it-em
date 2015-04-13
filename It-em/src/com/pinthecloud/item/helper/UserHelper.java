@@ -120,55 +120,6 @@ public class UserHelper {
 	}
 
 
-	public void getByNickName(String nickName, final EntityCallback<ItUser> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		userTable.where().field("nickName").eq(nickName).execute(new TableQueryCallback<ItUser>() {
-
-			@Override
-			public void onCompleted(List<ItUser> entity, int count, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					if(entity.size() == 0){
-						callback.onCompleted(null);
-					} else {
-						callback.onCompleted(entity.get(0));
-					}
-				} else {
-					EventBus.getDefault().post(new ItException("getByNickName", ItException.TYPE.INTERNAL_ERROR, exception));
-				}
-			}
-		});
-	}
-
-	public void getByItUserId(String itUserId, final EntityCallback<ItUser> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		userTable.where().field("itUserId").eq(itUserId).execute(new TableQueryCallback<ItUser>() {
-
-			@Override
-			public void onCompleted(List<ItUser> entity, int count, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					if(entity.size() == 0){
-						callback.onCompleted(null);
-					} else {
-						callback.onCompleted(entity.get(0));
-					}
-				} else {
-					EventBus.getDefault().post(new ItException("getByItUserId", ItException.TYPE.INTERNAL_ERROR, exception));
-				}
-			}
-		});
-	}
-
-
 	public void update(ItUser user, final EntityCallback<ItUser> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("update", ItException.TYPE.NETWORK_UNAVAILABLE));
@@ -190,7 +141,7 @@ public class UserHelper {
 	}
 
 
-	public void updateUser(ItUser user, final EntityCallback<ItUser> callback) {
+	public void updateUser(ItUser user, final EntityCallback<Integer> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("updateUser", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -203,14 +154,10 @@ public class UserHelper {
 
 		mClient.invokeApi(UPDATE_USER, jo, new ApiJsonOperationCallback() {
 
+			@SuppressWarnings("deprecation")
 			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted(new Gson().fromJson(_json, ItUser.class));
-				} else {
-					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, exception));
-				}
+			public void onCompleted(JsonElement _json, Exception exception, ServiceFilterResponse response) {
+				callback.onCompleted(response.getStatus().getStatusCode());
 			}
 		});
 	}

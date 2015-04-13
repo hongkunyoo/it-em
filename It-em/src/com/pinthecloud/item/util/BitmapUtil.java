@@ -11,67 +11,51 @@ import android.media.ExifInterface;
 
 public class BitmapUtil {
 
-	public static Bitmap decodeInSampleSize(String imagePath, int reqWidth, int reqHeight) {
-		try{
-			// First decode with inJustDecodeBounds=true to check dimensions
-			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(imagePath, options);
+	public static Bitmap decodeInSampleSize(String imagePath, int reqWidth, int reqHeight) throws OutOfMemoryError {
+		// First decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(imagePath, options);
 
-			// Calculate inSampleSize
-			options.inSampleSize = calculateSize(options, reqWidth, reqHeight);
+		// Calculate inSampleSize
+		options.inSampleSize = calculateSize(options, reqWidth, reqHeight);
 
-			// Decode bitmap with inSampleSize set
-			options.inJustDecodeBounds = false;
-			return BitmapFactory.decodeFile(imagePath, options);
-		}catch(OutOfMemoryError e){
-			return null;
-		}
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeFile(imagePath, options);
 	}
 
 
-	public static Bitmap decodeInSampleSize(Resources res, int resId, int reqWidth, int reqHeight) {
-		try{
-			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeResource(res, resId, options);
-			options.inSampleSize = calculateSize(options, reqWidth, reqHeight);
-			options.inJustDecodeBounds = false;
-			return BitmapFactory.decodeResource(res, resId, options);
-		}catch(OutOfMemoryError e){
-			return null;
-		}
+	public static Bitmap decodeInSampleSize(Resources res, int resId, int reqWidth, int reqHeight) throws OutOfMemoryError {
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeResource(res, resId, options);
+		options.inSampleSize = calculateSize(options, reqWidth, reqHeight);
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeResource(res, resId, options);
 	}
 
 
-	public static Bitmap decodeInSampleSize(byte[] encodeByte, int reqWidth, int reqHeight) {
-		try{
-			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length, options);
-			options.inSampleSize = calculateSize(options, reqWidth, reqHeight);
-			options.inJustDecodeBounds = false;
-			return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length, options);
-		}catch(OutOfMemoryError e){
-			return null;
-		}
+	public static Bitmap decodeInSampleSize(byte[] encodeByte, int reqWidth, int reqHeight) throws OutOfMemoryError {
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length, options);
+		options.inSampleSize = calculateSize(options, reqWidth, reqHeight);
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length, options);
 	}
 
 
-	public static Bitmap decodeInSampleSize(Bitmap bitmap, int reqWidth, int reqHeight, boolean recycle) {
+	public static Bitmap decodeInSampleSize(Bitmap bitmap, int reqWidth, int reqHeight, boolean recycle) throws OutOfMemoryError {
 		if(bitmap.getWidth() >= reqWidth*2 && bitmap.getHeight() >= reqHeight*2) {
-			try{
-				ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
-				byte[] byteArray = byteArrayBitmapStream.toByteArray();
-				Bitmap output = decodeInSampleSize(byteArray, reqWidth, reqHeight);
-				if(recycle && bitmap != output){
-					bitmap.recycle();
-				}
-				return output;
-			}catch(OutOfMemoryError e){
-				return null;
+			ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+			byte[] byteArray = byteArrayBitmapStream.toByteArray();
+			Bitmap output = decodeInSampleSize(byteArray, reqWidth, reqHeight);
+			if(recycle && bitmap != output){
+				bitmap.recycle();
 			}
+			return output;
 		} else {
 			return bitmap;
 		}
@@ -125,50 +109,38 @@ public class BitmapUtil {
 	}
 
 
-	public static Bitmap rotate(Bitmap bitmap, int degree, boolean recycle) {
+	public static Bitmap rotate(Bitmap bitmap, int degree, boolean recycle) throws OutOfMemoryError {
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
 		Matrix mtx = new Matrix();
 		mtx.postRotate(degree);
 
-		try{
-			Bitmap output = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
-			if(recycle && bitmap != output){
-				bitmap.recycle();
-			}
-			return output;
-		}catch(OutOfMemoryError e){
-			return null;
+		Bitmap output = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+		if(recycle && bitmap != output){
+			bitmap.recycle();
 		}
+		return output;
 	}
 
 
-	public static Bitmap scale(Bitmap bitmap, int width, int height, boolean recycle) {
-		try{
-			Bitmap output = Bitmap.createScaledBitmap(bitmap, width, height, true);
-			if(recycle && bitmap != output){
-				bitmap.recycle();
-			}
-			return output;
-		}catch(OutOfMemoryError e){
-			return null;	
+	public static Bitmap scale(Bitmap bitmap, int width, int height, boolean recycle) throws OutOfMemoryError {
+		Bitmap output = Bitmap.createScaledBitmap(bitmap, width, height, true);
+		if(recycle && bitmap != output){
+			bitmap.recycle();
 		}
+		return output;
 	}
 
 
-	public static Bitmap crop(Bitmap bitmap, int x, int y, int width, int height, boolean recycle) {
-		try{
-			Bitmap output = Bitmap.createBitmap(bitmap, x, y, width, height);
-			if(recycle && bitmap != output){
-				bitmap.recycle();
-			}
-			return output;
-		}catch(OutOfMemoryError e){
-			return null;	
+	public static Bitmap crop(Bitmap bitmap, int x, int y, int width, int height, boolean recycle) throws OutOfMemoryError {
+		Bitmap output = Bitmap.createBitmap(bitmap, x, y, width, height);
+		if(recycle && bitmap != output){
+			bitmap.recycle();
 		}
+		return output;
 	}
 
-	public static Bitmap cropSquare(Bitmap bitmap, boolean recycle) {
+	public static Bitmap cropSquare(Bitmap bitmap, boolean recycle) throws OutOfMemoryError {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if(width > height){

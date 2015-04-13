@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -55,12 +54,12 @@ import com.pinthecloud.item.util.TextUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
 import com.pinthecloud.item.view.DynamicHeightViewPager;
+import com.pinthecloud.item.view.NotifyingScrollView;
+import com.pinthecloud.item.view.NotifyingScrollView.OnScrollChangedListener;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
-	private ScrollView mScrollLayout;
-	private int mBaseScrollY;
-
+	private NotifyingScrollView mScrollView;
 	private DynamicHeightViewPager mImagePager;
 	private ItemImagePagerAdapter mImagePagerAdapter;
 	private TextView mImageNumber;
@@ -199,7 +198,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void findComponent(View view){
-		mScrollLayout = (ScrollView)view.findViewById(R.id.item_frag_scroll_layout);
+		mScrollView = (NotifyingScrollView)view.findViewById(R.id.item_frag_scroll_view);
 
 		mImagePager = (DynamicHeightViewPager)view.findViewById(R.id.item_frag_image_pager);
 		mImageNumber = (TextView)view.findViewById(R.id.item_frag_image_number);
@@ -359,38 +358,35 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setScroll(){
 		final View toolbarLayout = mActivity.getToolbarLayout();
 		final int actionBarHeight = ViewUtil.getActionBarHeight(mActivity);
-		mScrollLayout.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
+
+		mScrollView.setOverScrollMode(ScrollView.OVER_SCROLL_NEVER);
+		mScrollView.setOnScrollChangedListener(new OnScrollChangedListener() {
 
 			@Override
-			public void onScrollChanged() {
-				int currentScrollY = mScrollLayout.getScrollY();
-				if(currentScrollY >= 0){
-					int diffY = currentScrollY-mBaseScrollY;
-					if(diffY < 0){
-						// Scroll Up, Toolbar Down
-						toolbarLayout.scrollTo(0, Math.max(toolbarLayout.getScrollY()+diffY, 0));
-					} else if(diffY > 0) {
-						// Scroll Down, Toolbar Up
-						toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+diffY, actionBarHeight));
-					}
-					mBaseScrollY = currentScrollY;
+			public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
+				// Toolbar scroll
+				int diff = t - oldt;
+				if(diff <= 0){ // Scroll Up, Toolbar Down
+					toolbarLayout.scrollTo(0, Math.max(toolbarLayout.getScrollY()+diff, 0));
+				} else { // Scroll Down, Toolbar Up
+					toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+diff, actionBarHeight));
 				}
 			}
 		});
 
-		mScrollLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-					mScrollLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+					mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 				} else {
-					mScrollLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+					mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				}
 
-				mScrollLayout.scrollTo(0, ViewUtil.getActionBarHeight(mActivity));
+				mScrollView.scrollTo(0, ViewUtil.getActionBarHeight(mActivity));
 			}
 		});
 	}
@@ -413,6 +409,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void updateItemFrag(){
 		mProgressBar.setVisibility(View.VISIBLE);
 		mItemLayout.setVisibility(View.GONE);
+		mProductTagLayout.setVisibility(View.GONE);
 
 		mAimHelper.getItem(mItem, mUser.getId(), new EntityCallback<Item>() {
 
@@ -425,6 +422,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				if(entity != null){
 					mProgressBar.setVisibility(View.GONE);
 					mItemLayout.setVisibility(View.VISIBLE);
+					mProductTagLayout.setVisibility(View.VISIBLE);
 
 					mItem = entity;
 					setItemComponent();

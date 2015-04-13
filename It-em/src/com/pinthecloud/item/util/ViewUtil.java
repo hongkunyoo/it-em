@@ -11,10 +11,10 @@ import android.view.View.MeasureSpec;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
-import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 
 public class ViewUtil {
+
 
 	@SuppressWarnings("unchecked")
 	public static void setListHeightBasedOnChildren(final RecyclerView recyclerView, final int rowCount) {
@@ -40,17 +40,12 @@ public class ViewUtil {
 		recyclerView.getLayoutParams().height = totalHeight;
 		recyclerView.requestLayout();
 	}
-
-
-	public static int getActionBarHeight(ItActivity activity){
-		int actionBarHeight = 0;
-		final TypedValue tv = new TypedValue();
-		if (activity.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)){
-			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, activity.getResources().getDisplayMetrics());
-		}
-		return actionBarHeight;
-	}
-
+	
+	public static int getActionBarHeight(Context context) {
+		TypedValue tv = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+        return TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+    }
 
 	public static int getDeviceWidth(ItActivity activity){
 		DisplayMetrics displayMetrics = new DisplayMetrics();

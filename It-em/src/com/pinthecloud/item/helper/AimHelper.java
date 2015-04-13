@@ -39,7 +39,6 @@ public class AimHelper {
 	private final String AIM_LIST_IT_ITEM = "aim_list_it_item";
 	private final String AIM_LIST_MY_ITEM = "aim_list_my_item";
 	private final String AIM_LIST_MY_NOTI = "aim_list_my_noti";
-	private final String AIM_UPDATE = "aim_update";
 
 	private ItApplication mApp;
 	private MobileServiceClient mClient;
@@ -400,27 +399,5 @@ public class AimHelper {
 				}
 			});
 		}
-	}
-
-
-	public <E extends AbstractItemModel<E>> void update(final E obj, final EntityCallback<E> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("update", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		mClient.invokeApi(AIM_UPDATE, obj.toJson(), new ApiJsonOperationCallback() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));
-				} else {
-					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, response));
-				}
-			}
-		});
 	}
 }

@@ -247,31 +247,33 @@ public class UserPageFragment extends MainTabFragment {
 
 				@Override
 				public void onCompleted(ItUser entity) {
-					if(isAdded()){
-						if(entity != null){
-							mUser = entity;
-							AsyncChainer.notifyNext(obj);
-						} else {
-							String message = getResources().getString(R.string.not_exist_user);
-							ItAlertDialog notExistUserDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
-							notExistUserDialog.setCallback(new DialogCallback() {
+					if(!isAdded()){
+						return;
+					}
 
-								@Override
-								public void doPositive(Bundle bundle) {
-									mActivity.finish();
-								}
-								@Override
-								public void doNeutral(Bundle bundle) {
-									// Do nothing
-								}
-								@Override
-								public void doNegative(Bundle bundle) {
-									// Do nothing
-								}
-							});
-							notExistUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
-							AsyncChainer.clearChain(obj);
-						}
+					if(entity != null){
+						mUser = entity;
+						AsyncChainer.notifyNext(obj);
+					} else {
+						String message = getResources().getString(R.string.not_exist_user);
+						ItAlertDialog notExistUserDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
+						notExistUserDialog.setCallback(new DialogCallback() {
+
+							@Override
+							public void doPositive(Bundle bundle) {
+								mActivity.finish();
+							}
+							@Override
+							public void doNeutral(Bundle bundle) {
+								// Do nothing
+							}
+							@Override
+							public void doNegative(Bundle bundle) {
+								// Do nothing
+							}
+						});
+						notExistUserDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+						AsyncChainer.clearChain(obj);
 					}
 				}
 			});
@@ -289,8 +291,8 @@ public class UserPageFragment extends MainTabFragment {
 		mWebsite.setVisibility(!mUser.getWebPage().equals("") ? View.VISIBLE : View.GONE);
 		mSettings.setVisibility(mUser.checkMe() ? View.VISIBLE : View.GONE);
 	}
-	
-	
+
+
 	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mUser.getId()))

@@ -10,16 +10,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.google.gson.Gson;
 import com.pinthecloud.item.activity.ItemActivity;
 import com.pinthecloud.item.event.AppVersion;
-import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItNotification;
@@ -76,33 +77,26 @@ public class ItIntentService extends IntentService {
 
 			@Override
 			public void doNext(Object obj, Object... params) {
-				if(!itNoti.getType().equals(ItNotification.TYPE.ProductTag.toString())){
-					getLargeIcon(obj, BlobStorageHelper.getUserProfileImgUrl(itNoti.getWhoMadeId()));
-				} else {
+				if(itNoti.getType().equals(ItNotification.TYPE.ProductTag.toString())){
 					Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.noti_label_img);
 					AsyncChainer.notifyNext(obj, largeIcon);
+				} else {
+					getLargeIcon(obj, BlobStorageHelper.getUserProfileImgUrl(itNoti.getWhoMadeId()));
 				}
 			}
 		}, new Chainable(){
 
 			@Override
 			public void doNext(Object obj, Object... params) {
-				Bitmap largeIcon = (Bitmap)params[0];
-				Notification notification = getNotification(itNoti.getWhoMade(), itNoti.notiContent(), pendingIntent, largeIcon);
-
-				// Notify
-				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-				mNotificationManager.notify(NOTIFICATION_ID, notification);
-
-				// For Vibration
-				AudioManager audioManager = (AudioManager) mThis.getSystemService(Context.AUDIO_SERVICE);
-				if(AudioManager.RINGER_MODE_SILENT != audioManager.getRingerMode()){
-					((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(500);
-				}
-
-				// Add Noti Number preference
+				// Add noti Number preference
 				int notiNumber = mApp.getPrefHelper().getInt(ItUser.NOTIFICATION_NUMBER_KEY);
 				mApp.getPrefHelper().put(ItUser.NOTIFICATION_NUMBER_KEY, ++notiNumber);
+
+				// Alert noti
+				Bitmap largeIcon = (Bitmap)params[0];
+				Notification notification = getNotification(itNoti.getWhoMade(), itNoti.notiContent(), pendingIntent, largeIcon);
+				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				mNotificationManager.notify(NOTIFICATION_ID, notification);
 				EventBus.getDefault().post(new NotificationEvent(itNoti));
 			}
 		});
@@ -129,18 +123,15 @@ public class ItIntentService extends IntentService {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
-				Bitmap bitmap = null;
 				try {
-					bitmap = mApp.getPicasso().load(url).get();
+					return mApp.getPicasso().load(url).get();
 				} catch (IOException e) {
-					EventBus.getDefault().post(new ItException("getLargeIcon", ItException.TYPE.INTERNAL_ERROR));
+					return null;
 				}
-				return bitmap;
 			}
-
 			@Override
-			protected void onPostExecute(Bitmap result) {
-				AsyncChainer.notifyNext(obj, result);
+			protected void onPostExecute(Bitmap icon) {
+				AsyncChainer.notifyNext(obj, icon);
 			};
 		}).execute();
 	}
@@ -155,6 +146,17 @@ public class ItIntentService extends IntentService {
 		.setContentText(text)
 		.setAutoCancel(true)
 		.setContentIntent(resultPendingIntent);
+
+		AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		int ringerMode = audioManager.getRingerMode();
+		if(ringerMode == AudioManager.RINGER_MODE_NORMAL){
+			Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+			mBuilder.setSound(alarmSound);
+		} else if(ringerMode == AudioManager.RINGER_MODE_VIBRATE) {
+			mBuilder.setVibrate(new long[] {225, 225, 225, 225});
+		}
+		mBuilder.setLights(Color.YELLOW, 500, 1500);
+		
 		return mBuilder.build();
 	}
 

@@ -121,10 +121,6 @@ public class HomeFragment extends MainTabFragment {
 
 
 	private void setComponent(){
-		int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
-		int uploadLayoutHeight = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
-		mUploadLayout.getLayoutParams().height = uploadLayoutHeight;
-
 		mUploadButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -163,7 +159,8 @@ public class HomeFragment extends MainTabFragment {
 
 
 	private void setScroll(){
-		final int maxUploadScrollY = mUploadLayout.getLayoutParams().height;
+		int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
+		final int maxUploadScrollY = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
@@ -177,12 +174,10 @@ public class HomeFragment extends MainTabFragment {
 					addNextItem();
 				}
 
-				// Scroll upload button by dy
-				if(dy < 0){
-					// Scroll Up, Upload button Up
+				// Scroll upload button
+				if(dy <= 0){ // Scroll Up, Upload button Up
 					mUploadLayout.scrollTo(0, Math.min(mUploadLayout.getScrollY()-dy, 0));
-				} else if(dy > 0) {
-					// Scroll down, Upload button Down
+				} else { // Scroll down, Upload button Down
 					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxUploadScrollY));
 				}
 			}

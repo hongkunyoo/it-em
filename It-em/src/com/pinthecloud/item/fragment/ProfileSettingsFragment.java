@@ -1,5 +1,6 @@
 package com.pinthecloud.item.fragment;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,10 +148,15 @@ public class ProfileSettingsFragment extends ItFragment {
 				@Override
 				public void doNext(Object obj, Object... params) {
 					String message = checkWebsite(obj, mWebsite.getText().toString());
+					
 					if(message.equals("")){
-						checkNickName(obj, mNickName.getText().toString());
+						message = checkNickName(obj, mNickName.getText().toString());	
+					}
+					
+					if(message.equals("")){
+						updateProfileSettings(obj);
 					} else {
-						AsyncChainer.notifyNext(obj, message);
+						AsyncChainer.notifyNext(obj, message, false);
 					}
 				}
 			}, new Chainable(){
@@ -158,12 +164,15 @@ public class ProfileSettingsFragment extends ItFragment {
 				@Override
 				public void doNext(Object obj, Object... params) {
 					String message = params[0].toString();
-					if(message.equals("")){
-						updateProfileSettings();
-					} else {
-						isUpdating = false;
-						mApp.dismissProgressDialog();
-						Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();	
+					boolean result = (Boolean)params[1];
+					
+					isUpdating = false;
+					mApp.dismissProgressDialog();
+					Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+					
+					if(result){
+						mObjectPrefHelper.put(mUser);
+						mActivity.onBackPressed();
 					}
 				}
 			});
@@ -304,25 +313,15 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void checkNickName(final Object obj, String nickName){
+	private String checkNickName(final Object obj, String nickName){
 		String nickNameRegx = "^[a-zA-Z0-9가-힣_]+";
 		int nickNameMinLength = getResources().getInteger(R.integer.nick_name_min_length);
 		if(nickName.length() < nickNameMinLength){
-			AsyncChainer.notifyNext(obj, getResources().getString(R.string.min_nick_name_message));
+			return getResources().getString(R.string.min_nick_name_message);
 		} else if(!nickName.matches(nickNameRegx)){
-			AsyncChainer.notifyNext(obj, getResources().getString(R.string.bad_nick_name_message));
+			return getResources().getString(R.string.bad_nick_name_message);
 		} else {
-			mUserHelper.getByNickName(nickName, new EntityCallback<ItUser>() {
-
-				@Override
-				public void onCompleted(ItUser entity) {
-					if(entity == null || entity.getId().equals(mUser.getId())){
-						AsyncChainer.notifyNext(obj, "");
-					} else {
-						AsyncChainer.notifyNext(obj, getResources().getString(R.string.duplicated_nick_name_message));
-					}
-				}
-			});
+			return "";
 		}
 	}
 
@@ -337,21 +336,26 @@ public class ProfileSettingsFragment extends ItFragment {
 	}
 
 
-	private void updateProfileSettings(){
+	private void updateProfileSettings(final Object obj){
 		mUser.setNickName(mNickName.getText().toString());
 		mUser.setSelfIntro(mDescription.getText().toString());
 		mUser.setWebPage(mWebsite.getText().toString());
-
-		mUserHelper.updateUser(mUser, new EntityCallback<ItUser>() {
+		
+		mUserHelper.updateUser(mUser, new EntityCallback<Integer>() {
 
 			@Override
-			public void onCompleted(ItUser entity) {
-				isUpdating = false;
-				mApp.dismissProgressDialog();
-				Toast.makeText(mActivity, getResources().getString(R.string.profile_edited), Toast.LENGTH_LONG).show();
+			public void onCompleted(Integer statusCode) {
+				if(!isAdded()){
+					return;
+				}
 				
-				mObjectPrefHelper.put(entity);
-				mActivity.onBackPressed();
+				if(statusCode == HttpURLConnection.HTTP_OK){
+					AsyncChainer.notifyNext(obj, getResources().getString(R.string.profile_edited), true);
+				} else if(statusCode == HttpURLConnection.HTTP_CONFLICT) {
+					AsyncChainer.notifyNext(obj, getResources().getString(R.string.duplicated_nick_name_message), false);
+				} else {
+					AsyncChainer.notifyNext(obj, getResources().getString(R.string.error_message), false);
+				}
 			}
 		});
 	}

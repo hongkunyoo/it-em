@@ -167,7 +167,6 @@ public class FileUtil {
 
 
 	public static Uri getLastCaptureBitmapUri(Context context){
-		Uri uri =null;
 		String[] IMAGE_PROJECTION = {
 				MediaStore.Images.ImageColumns.DATA, 
 				MediaStore.Images.ImageColumns._ID,
@@ -175,6 +174,7 @@ public class FileUtil {
 		Cursor cursorImages = context.getContentResolver().query(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 				IMAGE_PROJECTION, null, null,null);
+		Uri uri =null;
 		if (cursorImages != null && cursorImages.moveToLast()) {
 			uri = Uri.parse(cursorImages.getString(0));
 			cursorImages.close();

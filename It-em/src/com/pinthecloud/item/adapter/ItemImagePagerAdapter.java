@@ -33,7 +33,7 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 		
 		int width = ViewUtil.getDeviceWidth(activity);
 		int height = ViewUtil.getDeviceHeight(activity);
-		int hiddenHeight = ViewUtil.getActionBarHeight(activity)*2 + ViewUtil.getStatusBarHeight(activity);
+		int hiddenHeight = (int)(ViewUtil.getActionBarHeight(activity)*2.5 + ViewUtil.getStatusBarHeight(activity));
 		this.MAX_HEIGHT_RATIO = (double)(height-hiddenHeight)/width;
 	}
 
