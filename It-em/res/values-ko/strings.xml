@@ -50,14 +50,15 @@
 
     <!-- Upload -->
     <string name="new_item">새 아이템</string>
-    <string name="uploaded">업로드 완료</string>
+    <string name="item_uploaded">아이템이 업로드 되었습니다.</string>
+    <string name="item_deleted">아이템이 삭제되었습니다.</string>
     <string name="description">설명</string>
     <string name="select_source">소스 선택</string>
     <string name="brand_info">브랜드 정보</string>
     <string name="brand">브랜드</string>
     <string name="add">추가</string>
     <string name="bad_brand_message">브랜드에는 문자,숫자,언더바가 허용됩니다.</string>
-    <string name="too_big_item_image_message">%1$d번째 이미지가 너무 커서 업로드 할 수 없어요.</string>
+    <string name="too_big_item_image_message">%1$d번째 이미지가 너무 커서 업로드 할 수 없습니다.</string>
 
     <!-- Gallery -->
     <string name="select_album">앨범 선택</string>

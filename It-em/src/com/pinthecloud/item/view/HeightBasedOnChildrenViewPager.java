@@ -5,13 +5,13 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class DynamicHeightViewPager extends ViewPager {
+public class HeightBasedOnChildrenViewPager extends ViewPager {
 
-	public DynamicHeightViewPager(Context context) {
+	public HeightBasedOnChildrenViewPager(Context context) {
 		super(context);
 	}
 
-	public DynamicHeightViewPager(Context context, AttributeSet attrs) {
+	public HeightBasedOnChildrenViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 

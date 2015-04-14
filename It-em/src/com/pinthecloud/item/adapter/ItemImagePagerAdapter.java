@@ -30,10 +30,10 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mItem = item;
-		
+
 		int width = ViewUtil.getDeviceWidth(activity);
 		int height = ViewUtil.getDeviceHeight(activity);
-		int hiddenHeight = (int)(ViewUtil.getActionBarHeight(activity)*2.5 + ViewUtil.getStatusBarHeight(activity));
+		int hiddenHeight = ViewUtil.getActionBarHeight(activity) + ViewUtil.getStatusBarHeight(activity);
 		this.MAX_HEIGHT_RATIO = (double)(height-hiddenHeight)/width;
 	}
 
@@ -55,11 +55,11 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 		imageView.setScaleType(ScaleType.CENTER_CROP);
 		imageView.setHeightRatio(Math.min(heightRatio, MAX_HEIGHT_RATIO));
 		imageView.setImageResource(R.drawable.feed_loading_default_img);
-		
+
 		String imageId = position == 0 ? mItem.getId() : mItem.getId() + "_" + position;
 		setButton(imageView, imageId);
 		setImageView(imageView, imageId);
-		
+
 		((ViewPager)container).addView(imageView);
 		return imageView;
 	}
@@ -78,7 +78,7 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 
 	private void setButton(DynamicHeightImageView image, final String imageId){
 		image.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mActivity, ImageActivity.class);

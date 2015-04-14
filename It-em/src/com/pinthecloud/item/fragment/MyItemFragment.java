@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.MyItemGridAdapter;
-import com.pinthecloud.item.interfaces.UserPageScrollTabHolder;
 import com.pinthecloud.item.interfaces.ListCallback;
+import com.pinthecloud.item.interfaces.UserPageScrollTabHolder;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.ViewUtil;
@@ -33,7 +33,7 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 	private static final String POSITION_KEY = "POSITION_KEY";
 	private static final String HEADER_HEIGHT_KEY = "HEADER_HEIGHT_KEY";
 	private static final String TAB_HEIGHT_KEY = "TAB_HEIGHT_KEY";
-
+	
 	private final int MY_ITEM = 0;
 	private final int LIKE = 1;
 
@@ -105,8 +105,8 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 
 		return view;
 	}
-
-
+	
+	
 	@Override
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {

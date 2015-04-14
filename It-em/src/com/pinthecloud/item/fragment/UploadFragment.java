@@ -359,7 +359,7 @@ public class UploadFragment extends ItFragment {
 			public void doNext(Object obj, Object... params) {
 				isUploading = false;
 				mApp.dismissProgressDialog();
-				Toast.makeText(mActivity, getResources().getString(R.string.uploaded), Toast.LENGTH_LONG).show();
+				Toast.makeText(mActivity, getResources().getString(R.string.item_uploaded), Toast.LENGTH_LONG).show();
 
 				Intent intent = new Intent();
 				intent.putExtra(Item.INTENT_KEY, item);

@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="?attr/actionBarSize" >
 
-                <com.pinthecloud.item.view.DynamicHeightViewPager
+                <com.pinthecloud.item.view.HeightBasedOnChildrenViewPager
                     android:id="@+id/item_frag_image_pager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

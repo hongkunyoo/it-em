@@ -246,13 +246,13 @@ public class UserPageFragment extends MainTabFragment {
 			mUserHelper.get(mUserId, new EntityCallback<ItUser>() {
 
 				@Override
-				public void onCompleted(ItUser entity) {
+				public void onCompleted(ItUser user) {
 					if(!isAdded()){
 						return;
 					}
 
-					if(entity != null){
-						mUser = entity;
+					if(user != null){
+						mUser = user;
 						AsyncChainer.notifyNext(obj);
 					} else {
 						String message = getResources().getString(R.string.not_exist_user);

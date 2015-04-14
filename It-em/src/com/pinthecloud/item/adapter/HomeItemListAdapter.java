@@ -62,7 +62,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public DynamicHeightImageView itemImage;
 		public TextView imageNumber;
 		public View unfold;
-		
+
 		public TextView content;
 		public TextView likeNumber;
 		public TextView replyNumber;
@@ -79,13 +79,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			this.itemImage = (DynamicHeightImageView)view.findViewById(R.id.row_home_item_image);
 			this.imageNumber = (TextView)view.findViewById(R.id.row_home_item_image_number);
 			this.unfold = view.findViewById(R.id.row_home_item_unfold);
-			
+
 			this.content = (TextView)view.findViewById(R.id.row_home_item_content);
 			this.likeNumber = (TextView)view.findViewById(R.id.row_home_item_like_number);
 			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_reply_number);
 			this.likeButton = (Button)view.findViewById(R.id.row_home_item_like_button);
 			this.productTag = (Button)view.findViewById(R.id.row_home_item_product_tag);
-			
+
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_profile_image);
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_nick_name);
 		}
@@ -118,7 +118,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	private void setComponent(ViewHolder holder, Item item){
 		holder.imageNumber.setText(""+item.getImageNumber());
 		holder.imageNumber.setVisibility(item.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
-		
+
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
@@ -135,7 +135,11 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 			@Override
 			public void onClick(View v) {
-				gotoItem(item);
+				mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
+
+				Intent intent = new Intent(mActivity, ItemActivity.class);
+				intent.putExtra(Item.INTENT_KEY, item);
+				mActivity.startActivity(intent);
 			}
 		});
 
@@ -225,15 +229,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	}
 
 
-	private void gotoItem(Item item){
-		mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.HOME);
-
-		Intent intent = new Intent(mActivity, ItemActivity.class);
-		intent.putExtra(Item.INTENT_KEY, item);
-		mActivity.startActivity(intent);
-	}
-
-
 	private void setImageView(final ViewHolder holder, final Item item) {
 		double heightRatio = (double)item.getCoverImageHeight()/item.getCoverImageWidth();
 		holder.itemImage.setHeightRatio(Math.min(heightRatio, MAX_HEIGHT_RATIO));
@@ -288,8 +283,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		holder.likeNumber.setVisibility(likeNumber > 0 ? View.VISIBLE : View.GONE);
 		holder.likeNumber.setText(""+likeNumber);
 	}
-	
-	
+
+
 	public void addAll(List<Item> itemList) {
 		mItemList.addAll(itemList);
 		notifyDataSetChanged();

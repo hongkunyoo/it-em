@@ -10,11 +10,9 @@ import android.widget.ScrollView;
 public class NotifyingScrollView extends ScrollView {
 
 	private OnScrollChangedListener mOnScrollChangedListener;
-
 	public interface OnScrollChangedListener {
 		void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt);
 	}
-
 	public void setOnScrollChangedListener(OnScrollChangedListener listener) {
 		mOnScrollChangedListener = listener;
 	}

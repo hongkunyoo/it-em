@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MainActivity;
@@ -53,14 +54,14 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.TextUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.pinthecloud.item.view.DynamicHeightViewPager;
+import com.pinthecloud.item.view.HeightBasedOnChildrenViewPager;
 import com.pinthecloud.item.view.NotifyingScrollView;
 import com.pinthecloud.item.view.NotifyingScrollView.OnScrollChangedListener;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private NotifyingScrollView mScrollView;
-	private DynamicHeightViewPager mImagePager;
+	private HeightBasedOnChildrenViewPager mImagePager;
 	private ItemImagePagerAdapter mImagePagerAdapter;
 	private TextView mImageNumber;
 
@@ -95,7 +96,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private ItUser mUser;
 	private Item mItem;
-
 	private boolean isDoingLike = false;
 
 
@@ -171,7 +171,19 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	public boolean onOptionsItemSelected(MenuItem menu) {
 		switch (menu.getItemId()) {
 		case R.id.item_menu_delete:
-			deleteItem(mItem);
+			mApp.showProgressDialog(mActivity);
+			mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
+
+				@Override
+				public void onCompleted(Boolean entity) {
+					mApp.dismissProgressDialog();
+					Toast.makeText(mActivity, getResources().getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
+
+					Intent intent = new Intent(mActivity, MainActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
+				}
+			});
 			break;
 		}
 		return super.onOptionsItemSelected(menu);
@@ -184,14 +196,16 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(Boolean entity) {
-				if(isAdded()){
-					mReplyListAdapter.remove(reply);
-					mItem.setReplyCount(mItem.getReplyCount()-1);
-
-					setReplyTitle(mItem.getReplyCount());
-					ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-					mReplyListEmptyView.setVisibility(mItem.getReplyCount() > 0 ? View.GONE : View.VISIBLE);
+				if(!isAdded()){
+					return;
 				}
+
+				mReplyListAdapter.remove(reply);
+				mItem.setReplyCount(mItem.getReplyCount()-1);
+
+				setReplyTitle(mItem.getReplyCount());
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
+				mReplyListEmptyView.setVisibility(mItem.getReplyCount() > 0 ? View.GONE : View.VISIBLE);
 			}
 		});
 	}
@@ -200,7 +214,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void findComponent(View view){
 		mScrollView = (NotifyingScrollView)view.findViewById(R.id.item_frag_scroll_view);
 
-		mImagePager = (DynamicHeightViewPager)view.findViewById(R.id.item_frag_image_pager);
+		mImagePager = (HeightBasedOnChildrenViewPager)view.findViewById(R.id.item_frag_image_pager);
 		mImageNumber = (TextView)view.findViewById(R.id.item_frag_image_number);
 
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
@@ -414,17 +428,17 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mAimHelper.getItem(mItem, mUser.getId(), new EntityCallback<Item>() {
 
 			@Override
-			public void onCompleted(Item entity) {
+			public void onCompleted(Item item) {
 				if(!isAdded()){
 					return;
 				}
 
-				if(entity != null){
+				if(item != null){
 					mProgressBar.setVisibility(View.GONE);
 					mItemLayout.setVisibility(View.VISIBLE);
 					mProductTagLayout.setVisibility(View.VISIBLE);
 
-					mItem = entity;
+					mItem = item;
 					setItemComponent();
 					setProductTagFrag();
 					setReplyFrag();
@@ -467,23 +481,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mUserDescription.setVisibility(!mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
 		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
 		mUserWebsite.setVisibility(!mItem.getWhoMadeUser().getWebPage().equals("") ? View.VISIBLE : View.GONE);
-	}
-
-
-	private void deleteItem(final Item item){
-		mApp.showProgressDialog(mActivity);
-
-		mAimHelper.delItem(mThisFragment, item, new EntityCallback<Boolean>() {
-
-			@Override
-			public void onCompleted(Boolean entity) {
-				mApp.dismissProgressDialog();
-
-				Intent intent = new Intent(mActivity, MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
-			}
-		});
 	}
 
 

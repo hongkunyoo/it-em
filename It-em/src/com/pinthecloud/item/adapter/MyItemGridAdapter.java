@@ -31,7 +31,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private ItApplication mApp;
 	private ItActivity mActivity;
 	private ItFragment mFrag;
-	
+
 	private List<Item> mItemList;
 	private int mGridColumnNum;
 	private int mHeaderHeight;
@@ -44,15 +44,15 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		this.mItemList = itemList;
 		this.mGridColumnNum = gridColumnNum;
 	}
-	
-	
+
+
 	public static class HeaderViewHolder extends RecyclerView.ViewHolder {
 		public HeaderViewHolder(View view) {
 			super(view);
 		}
 	}
-	
-	
+
+
 	public static class NormalViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public ImageView itemImage;
@@ -121,7 +121,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			@Override
 			public void onClick(View v) {
 				mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_ITEM, GAHelper.MY_PAGE);
-				
+
 				Intent intent = new Intent(mActivity, ItemActivity.class);
 				intent.putExtra(Item.INTENT_KEY, item);
 				mActivity.startActivity(intent);
@@ -143,8 +143,8 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		mItemList.addAll(itemList);
 		notifyDataSetChanged();
 	}
-	
-	
+
+
 	public void notifyHeader(int headerHeight){
 		this.mHeaderHeight = headerHeight;
 		for(int i=0 ; i<mGridColumnNum ; i++){
