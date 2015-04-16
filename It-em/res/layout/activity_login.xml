@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
-        android:paddingBottom="@dimen/logo_margin"
+        android:paddingBottom="@dimen/key_line_second"
         android:src="@drawable/splash_logo" />
 
     <LinearLayout

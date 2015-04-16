@@ -15,7 +15,7 @@
     </string-array>
 
     <!-- Reply -->
-    <string-array name="reply_long_click_array">
+    <string-array name="more_array">
         <item>삭제</item>
     </string-array>
 

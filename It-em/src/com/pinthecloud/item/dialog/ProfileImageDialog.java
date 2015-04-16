@@ -19,7 +19,6 @@ public class ProfileImageDialog extends ItDialogFragment {
 	private ImageButton mClose;
 	private TextView mNickName;
 	private ImageView mProfileImage;
-
 	private ItUser mUser;
 
 

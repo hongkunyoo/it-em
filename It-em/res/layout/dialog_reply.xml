@@ -51,17 +51,19 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" >
+                android:layout_height="wrap_content" >
 
                 <com.pinthecloud.item.view.ItTextView
                     android:id="@+id/reply_frag_list_empty_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/row_small_height"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/content_big_margin"
+                    android:layout_marginEnd="@dimen/key_line_first"
                     android:layout_marginLeft="@dimen/key_line_second"
+                    android:layout_marginRight="@dimen/key_line_first"
                     android:layout_marginStart="@dimen/key_line_second"
-                    android:gravity="center_vertical"
-                    android:text="@string/first_reply"
+                    android:layout_marginTop="@dimen/content_big_margin"
+                    android:text="@string/empty_reply"
                     android:textColor="@color/gray_dark"
                     android:visibility="gone"
                     app:textType="caption" />
@@ -109,7 +111,7 @@
 
                         <requestFocus />
                     </EditText>
-                    
+
                     <Button
                         android:id="@+id/reply_frag_inputbar_submit"
                         android:layout_width="wrap_content"

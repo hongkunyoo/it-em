@@ -88,17 +88,18 @@ public class LikeDialog extends ItDialogFragment {
 
 			@Override
 			public void onCompleted(List<LikeIt> list, int count) {
-				if(isAdded()){
-					mProgressBar.setVisibility(View.GONE);
-					mListView.setVisibility(View.VISIBLE);
-
-					mItem.setLikeItCount(count);
-
-					mLikeList.clear();
-					mListAdapter.addAll(list);
-
-					ViewUtil.setListHeightBasedOnChildren(mListView, count);
+				if(!isAdded()){
+					return;
 				}
+
+				mProgressBar.setVisibility(View.GONE);
+				mListView.setVisibility(View.VISIBLE);
+
+				mLikeList.clear();
+				mListAdapter.addAll(list);
+
+				mItem.setLikeItCount(count);
+				ViewUtil.setListHeightBasedOnChildren(mListView, count);
 			}
 		});
 	}

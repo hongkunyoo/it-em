@@ -16,13 +16,14 @@
     <dimen name="key_line_second">72dp</dimen>
     <dimen name="profile_preview_image_width">40dp</dimen>
     <dimen name="profile_thumbnail_image_width">32dp</dimen>
+    <dimen name="item_thumbnail_image_width">52dp</dimen>
 
-    <!-- Splash -->
-    <dimen name="logo_margin">60dp</dimen>
-
-    <!-- Noti -->
-    <dimen name="noti_item_image_width">52dp</dimen>
-
+    <!-- Item -->
+    <dimen name="item_images_scroll_height">60dp</dimen>
+    
+    <!-- Profile Image -->
+    <dimen name="profile_image_width">212dp</dimen>
+    
     <!-- User Page -->
     <dimen name="user_page_tab_indicator_margin">25dp</dimen>
     

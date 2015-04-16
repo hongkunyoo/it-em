@@ -153,7 +153,7 @@ public class HomeFragment extends MainTabFragment {
 		mGridView.setItemAnimator(new DefaultItemAnimator());
 
 		mItemList = new ArrayList<Item>();
-		mGridAdapter = new HomeItemListAdapter(mActivity, mThisFragment, mItemList);
+		mGridAdapter = new HomeItemListAdapter(mActivity, mThisFragment, gridColumnNum, mItemList);
 		mGridView.setAdapter(mGridAdapter);
 	}
 

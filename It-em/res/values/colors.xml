@@ -10,14 +10,14 @@
     <color name="line_color">#25000000</color>
     <color name="black_pressed">#47000000</color>
     <color name="gray">#ECEFF1</color>
+    <color name="gray_super_dark">#78909C</color>
     <color name="gray_dark">#b0bec5</color>
     <color name="gray_light">#cfd8dc</color>
-    <color name="gray_super_light">#d2d8de</color>
     <color name="red">#ef5350</color>
     <color name="blue">#01579b</color>
     <color name="green">#00897b</color>
     <color name="green_pressed">#0f6f63</color>
-    
+
     <!-- Home -->
     <color name="item_image_number">#c8ffffff</color>
 

@@ -15,7 +15,7 @@
     <integer name="category_grid_column_num">2</integer>
 
     <!-- Item -->
-    <integer name="item_display_reply_num">2</integer>
+    <integer name="item_display_reply_num">10</integer>
     <integer name="shadow">2</integer>
 
     <!-- Upload -->

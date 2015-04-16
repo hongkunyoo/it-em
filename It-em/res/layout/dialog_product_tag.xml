@@ -30,6 +30,12 @@
             android:textColor="@color/brand_text_color"
             android:textStyle="bold"
             app:textType="subhead" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -46,12 +52,13 @@
         <com.pinthecloud.item.view.ItTextView
             android:id="@+id/product_tag_frag_empty_view"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/row_small_height"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_big_margin"
             android:layout_marginEnd="@dimen/key_line_first"
             android:layout_marginLeft="@dimen/key_line_second"
             android:layout_marginRight="@dimen/key_line_first"
             android:layout_marginStart="@dimen/key_line_second"
-            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/content_big_margin"
             android:text="@string/empty_product_tag"
             android:textColor="@color/gray_dark"
             android:visibility="gone"

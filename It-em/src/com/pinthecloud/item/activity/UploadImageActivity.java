@@ -13,20 +13,14 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.DynamicHeightImageView;
-import com.squareup.picasso.Callback;
 
-public class ImageActivity extends ItActivity {
-
-	public static final String FROM_INTERNET_KEY = "FROM_INTERNET_KEY";
+public class UploadImageActivity extends ItActivity {
 
 	private View mToolbarLayout;
 	private Toolbar mToolbar;
 
 	private PhotoViewAttacher mAttacher;
 	private DynamicHeightImageView mImageView;
-
-	private String mPath;
-	private boolean mFromInternet;
 	private Bitmap mImage;
 
 
@@ -34,17 +28,11 @@ public class ImageActivity extends ItActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.slide_in_pop_up, 0);
-		setContentView(R.layout.activity_image);
-
-		mPath = getIntent().getStringExtra(Item.INTENT_KEY);
-		mFromInternet = getIntent().getBooleanExtra(FROM_INTERNET_KEY, false);
+		setContentView(R.layout.activity_upload_image);
 
 		setToolbar();
 		setComponent();
-
-		if(!mFromInternet){
-			getImage();
-		}
+		getImage();
 	}
 
 
@@ -60,12 +48,7 @@ public class ImageActivity extends ItActivity {
 	public void onStop() {
 		super.onStop();
 		mGaHelper.reportActivityStop(mThisActivity);
-
-		if(mFromInternet){
-			mImageView.setImageBitmap(null);
-		} else {
-			ViewUtil.recycleImageView(mImageView);	
-		}
+		ViewUtil.recycleImageView(mImageView);
 	}
 
 
@@ -104,30 +87,8 @@ public class ImageActivity extends ItActivity {
 
 
 	private void setComponent(){
-		mImageView = (DynamicHeightImageView)findViewById(R.id.image);
+		mImageView = (DynamicHeightImageView)findViewById(R.id.upload_image);
 		mAttacher = new PhotoViewAttacher(mImageView);
-	}
-
-
-	private void setImageView(){
-		boolean fromInternet = getIntent().getBooleanExtra(FROM_INTERNET_KEY, false);
-		if(fromInternet){
-			mApp.getPicasso()
-			.load(mPath)
-			.into(mImageView, new Callback(){
-
-				@Override
-				public void onError() {
-				}
-				@Override
-				public void onSuccess() {
-					mAttacher.update();
-				}
-			});
-		} else {
-			mImageView.setImageBitmap(mImage);
-			mAttacher.update();
-		}
 	}
 
 
@@ -136,7 +97,8 @@ public class ImageActivity extends ItActivity {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
-				return ImageUtil.refineItemImage(mPath, ImageUtil.ITEM_IMAGE_WIDTH, true);
+				String path = getIntent().getStringExtra(Item.INTENT_KEY);
+				return ImageUtil.refineItemImage(path, ImageUtil.ITEM_IMAGE_WIDTH, true);
 			}
 
 			@Override
@@ -145,5 +107,11 @@ public class ImageActivity extends ItActivity {
 				setImageView();
 			};
 		}).execute();
+	}
+
+
+	private void setImageView(){
+		mImageView.setImageBitmap(mImage);
+		mAttacher.update();
 	}
 }

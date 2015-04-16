@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pinthecloud.item.ItApplication;
@@ -43,7 +44,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 	private boolean isDoingLike = false;
 
 
-	public HomeItemListAdapter(ItActivity activity, ItFragment frag, List<Item> itemList) {
+	public HomeItemListAdapter(ItActivity activity, ItFragment frag, int gridColumnNum, List<Item> itemList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mFrag = frag;
@@ -52,7 +53,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		int width = ViewUtil.getDeviceWidth(activity);
 		int height = ViewUtil.getDeviceHeight(activity);
 		int hiddenHeight = ViewUtil.getActionBarHeight(activity)*3 + ViewUtil.getStatusBarHeight(activity);
-		this.MAX_HEIGHT_RATIO = (double)(2*(height-hiddenHeight))/width;
+		this.MAX_HEIGHT_RATIO = (double)(gridColumnNum*(height-hiddenHeight))/width;
 	}
 
 
@@ -66,7 +67,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public TextView content;
 		public TextView likeNumber;
 		public TextView replyNumber;
-		public Button likeButton;
+		public ImageButton likeButton;
 		public Button productTag;
 
 		public CircleImageView profileImage;
@@ -83,7 +84,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			this.content = (TextView)view.findViewById(R.id.row_home_item_content);
 			this.likeNumber = (TextView)view.findViewById(R.id.row_home_item_like_number);
 			this.replyNumber = (TextView)view.findViewById(R.id.row_home_item_reply_number);
-			this.likeButton = (Button)view.findViewById(R.id.row_home_item_like_button);
+			this.likeButton = (ImageButton)view.findViewById(R.id.row_home_item_like_button);
 			this.productTag = (Button)view.findViewById(R.id.row_home_item_product_tag);
 
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_profile_image);
@@ -152,38 +153,40 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				final int currentLikeNum = Integer.parseInt(holder.likeNumber.getText().toString());
 				setLikeButton(holder, currentLikeNum, isDoLike);
 
-				if(!isDoingLike){
-					isDoingLike = true;
+				if(isDoingLike){
+					return;
+				}
 
-					if(isDoLike) {
-						mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.LIKE, GAHelper.HOME);
+				isDoingLike = true;
 
-						// Do like it
-						ItUser user = mApp.getObjectPrefHelper().get(ItUser.class);
-						LikeIt like = new LikeIt(user.getNickName(), user.getId(), item.getId());
-						ItNotification noti = new ItNotification(user.getNickName(), user.getId(), item.getId(),
-								item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
-								item.getImageNumber(), item.getMainImageWidth(), item.getMainImageHeight());
-						mApp.getAimHelper().addUnique(like, noti, new EntityCallback<LikeIt>() {
+				if(isDoLike) {
+					mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.LIKE, GAHelper.HOME);
 
-							@Override
-							public void onCompleted(LikeIt entity) {
-								doLike(holder, item, entity.getId(), currentLikeNum, isDoLike);
-							}
-						});
-					} else {
-						mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.LIKE_CANCEL, GAHelper.HOME);
+					// Do like it
+					ItUser user = mApp.getObjectPrefHelper().get(ItUser.class);
+					LikeIt like = new LikeIt(user.getNickName(), user.getId(), item.getId());
+					ItNotification noti = new ItNotification(user.getNickName(), user.getId(), item.getId(),
+							item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
+							item.getImageNumber(), item.getMainImageWidth(), item.getMainImageHeight());
+					mApp.getAimHelper().addUnique(like, noti, new EntityCallback<LikeIt>() {
 
-						// Cancel like it
-						LikeIt like = new LikeIt(item.getPrevLikeId());
-						mApp.getAimHelper().del(like, new EntityCallback<Boolean>() {
+						@Override
+						public void onCompleted(LikeIt entity) {
+							doLike(holder, item, entity.getId(), currentLikeNum, isDoLike);
+						}
+					});
+				} else {
+					mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.LIKE_CANCEL, GAHelper.HOME);
 
-							@Override
-							public void onCompleted(Boolean entity) {
-								doLike(holder, item, null, currentLikeNum, isDoLike);
-							}
-						});
-					}
+					// Cancel like it
+					LikeIt like = new LikeIt(item.getPrevLikeId());
+					mApp.getAimHelper().del(like, new EntityCallback<Boolean>() {
+
+						@Override
+						public void onCompleted(Boolean entity) {
+							doLike(holder, item, null, currentLikeNum, isDoLike);
+						}
+					});
 				}
 			}
 		});
@@ -194,7 +197,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			public void onClick(View v) {
 				mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.VIEW_PRODUCT_TAG, GAHelper.HOME);
 
-				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(item, null);
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(item);
 				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});

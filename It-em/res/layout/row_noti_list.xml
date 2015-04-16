@@ -83,8 +83,8 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/row_noti_image"
-        android:layout_width="@dimen/noti_item_image_width"
-        android:layout_height="@dimen/noti_item_image_width"
+        android:layout_width="@dimen/item_thumbnail_image_width"
+        android:layout_height="@dimen/item_thumbnail_image_width"
         android:layout_marginLeft="@dimen/key_line_first"
         android:layout_marginStart="@dimen/key_line_first"
         app:riv_corner_radius="@dimen/content_margin"

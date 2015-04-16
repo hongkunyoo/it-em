@@ -32,16 +32,14 @@ public class ProductTagDialog extends ItDialogFragment {
 	private RecyclerView mListView;
 	private ProductTagListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
-	private List<ProductTag> mOriginTagList;
 	private List<ProductTag> mTagList;
 	private Item mItem;
 
 
-	public static ProductTagDialog newInstance(Item item, ArrayList<ProductTag> tagList) {
+	public static ProductTagDialog newInstance(Item item) {
 		ProductTagDialog dialog = new ProductTagDialog();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(Item.INTENT_KEY, item);
-		bundle.putParcelableArrayList(ProductTag.INTENT_KEY, tagList);
 		dialog.setArguments(bundle);
 		return dialog;
 	}
@@ -51,7 +49,6 @@ public class ProductTagDialog extends ItDialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mItem = getArguments().getParcelable(Item.INTENT_KEY);
-		mOriginTagList = getArguments().getParcelableArrayList(ProductTag.INTENT_KEY);
 	}
 
 
@@ -64,10 +61,7 @@ public class ProductTagDialog extends ItDialogFragment {
 		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setList();
-
-		if(mTagList.size() < 1){
-			updateList();
-		}
+		updateList();
 
 		return view;
 	}
@@ -87,12 +81,7 @@ public class ProductTagDialog extends ItDialogFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		if(mOriginTagList == null){
-			mTagList = new ArrayList<ProductTag>();
-		} else {
-			mTagList = getProductTagList(mOriginTagList);
-		}
-
+		mTagList = new ArrayList<ProductTag>();
 		mListAdapter = new ProductTagListAdapter(mActivity, mThisFragment, mTagList);
 		mListView.setAdapter(mListAdapter);
 
@@ -116,26 +105,23 @@ public class ProductTagDialog extends ItDialogFragment {
 
 	private void updateList() {
 		mProgressBar.setVisibility(View.VISIBLE);
-		mListView.setVisibility(View.INVISIBLE);
+		mListView.setVisibility(View.GONE);
 
 		mAimHelper.list(ProductTag.class, mItem.getId(), new ListCallback<ProductTag>() {
 
 			@Override
 			public void onCompleted(List<ProductTag> list, int count) {
-				if(isAdded()){
-					mProgressBar.setVisibility(View.GONE);
-
-					if(count > 0){
-						mListView.setVisibility(View.VISIBLE);
-
-						mTagList.clear();
-						mListAdapter.addAll(getProductTagList(list));
-
-						ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
-					} else {
-						mListEmptyView.setVisibility(View.VISIBLE);
-					}
+				if(!isAdded()){
+					return;
 				}
+
+				mProgressBar.setVisibility(View.GONE);
+				
+				mTagList.clear();
+				mListAdapter.addAll(getProductTagList(list));
+
+				ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
+				showList(count);
 			}
 		});
 	}
@@ -154,14 +140,27 @@ public class ProductTagDialog extends ItDialogFragment {
 			}
 		});
 
-		tagList.add(0, new ProductTag(tagList.get(0).getCategory()));
-		for(int i=1 ; i<tagList.size()-1 ; i++){
-			if(tagList.get(i).getCategory() != tagList.get(i+1).getCategory()){
-				tagList.add(i+1, new ProductTag(tagList.get(i+1).getCategory()));
+		List<Integer> categoryList = new ArrayList<Integer>();
+		for(int i=0 ; i<tagList.size() ; i++){
+			ProductTag tag = tagList.get(i);
+			if(!categoryList.contains(tag.getCategory())){
+				categoryList.add(tag.getCategory());
+				tagList.add(i, new ProductTag(tag.getCategory()));
 				i++;
 			}
 		}
 
 		return tagList;
+	}
+	
+	
+	private void showList(int count){
+		if(count > 0){
+			mListEmptyView.setVisibility(View.GONE);
+			mListView.setVisibility(View.VISIBLE);
+		} else {
+			mListEmptyView.setVisibility(View.VISIBLE);
+			mListView.setVisibility(View.GONE);
+		}
 	}
 }

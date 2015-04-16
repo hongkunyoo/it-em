@@ -70,30 +70,34 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.dialog_reply, container, false);
-		
+
 		mGaHelper.sendScreen(mThisFragment);
 		findComponent(view);
 		setComponent();
 		setButton();
 		setList();
 		updateList();
-		
+
 		return view;
 	}
-	
-	
+
+
 	@Override
 	public void deleteReply(final Reply reply){
 		mApp.getAimHelper().del(reply, new EntityCallback<Boolean>() {
 
 			@Override
-			public void onCompleted(Boolean entity) {
+			public void onCompleted(Boolean result) {
+				if(!isAdded()){
+					return;
+				}
+
 				mListAdapter.remove(reply);
 				mItem.setReplyCount(mItem.getReplyCount()-1);
-				
+
 				setTitle(mItem.getReplyCount());
+				showList(mItem.getReplyCount());
 				ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
-				showReplyList(mItem.getReplyCount());
 			}
 		});
 	}
@@ -135,8 +139,12 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 			public void onClick(View v) {
 				String content = mInputText.getText().toString().trim();
 				Reply reply = new Reply(content, mUser.getNickName(), mUser.getId(), mItem.getId());
+				ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
+						mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
+						mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
+				submitReply(reply, noti);
+				
 				mInputText.setText("");
-				submitReply(reply);
 			}
 		});
 	}
@@ -164,26 +172,27 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 			@Override
 			public void onCompleted(List<Reply> list, int count) {
-				if(isAdded()){
-					mProgressBar.setVisibility(View.GONE);
-					mListLayout.setVisibility(View.VISIBLE);
-
-					mReplyList.clear();
-					mListAdapter.addAll(list);
-					
-					ViewUtil.setListHeightBasedOnChildren(mListView, count);
-					
-					mItem.setReplyCount(count);
-					showReplyList(mItem.getReplyCount());
-					setTitle(mItem.getReplyCount());
+				if(!isAdded()){
+					return;
 				}
+
+				mProgressBar.setVisibility(View.GONE);
+				mListLayout.setVisibility(View.VISIBLE);
+
+				mReplyList.clear();
+				mListAdapter.addAll(list);
+
+				mItem.setReplyCount(count);
+				setTitle(mItem.getReplyCount());
+				showList(mItem.getReplyCount());
+				ViewUtil.setListHeightBasedOnChildren(mListView, count);
 			}
 		});
 	}
 
 
-	private void showReplyList(int replyCount){
-		if(replyCount > 0){
+	private void showList(int count){
+		if(count > 0){
 			mListEmptyView.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
 		} else {
@@ -193,22 +202,22 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 	}
 
 
-	private void submitReply(final Reply reply){
+	private void submitReply(final Reply reply, ItNotification noti){
 		mListAdapter.add(mReplyList.size(), reply);
+		showList(mItem.getReplyCount()+1);
 		ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
-		showReplyList(mItem.getReplyCount()+1);
-
-		ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
-				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
-				mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
+		
 		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
 
 			@Override
-			public void onCompleted(Reply entity) {
+			public void onCompleted(Reply addedReply) {
+				if(!isAdded()){
+					return;
+				}
+
 				mItem.setReplyCount(mItem.getReplyCount()+1);
 				setTitle(mItem.getReplyCount());
-
-				mListAdapter.replace(mReplyList.indexOf(reply), entity);
+				mListAdapter.replace(mReplyList.indexOf(reply), addedReply);
 			}
 		});
 	}

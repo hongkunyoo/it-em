@@ -96,7 +96,12 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ImageActivity"
+            android:name=".activity.UploadImageActivity"
+            android:label="@string/none"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ItemImageActivity"
             android:label="@string/none"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

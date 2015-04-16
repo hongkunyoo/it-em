@@ -15,7 +15,7 @@ import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
-import com.pinthecloud.item.activity.ImageActivity;
+import com.pinthecloud.item.activity.UploadImageActivity;
 import com.pinthecloud.item.fragment.GalleryFolderFragment;
 import com.pinthecloud.item.fragment.ItFragment;
 import com.pinthecloud.item.fragment.UploadFragment;
@@ -98,9 +98,8 @@ public class UploadImageGridAdapter extends RecyclerView.Adapter<UploadImageGrid
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mActivity, ImageActivity.class);
+				Intent intent = new Intent(mActivity, UploadImageActivity.class);
 				intent.putExtra(Item.INTENT_KEY, path);
-				intent.putExtra(ImageActivity.FROM_INTERNET_KEY, false);
 				mActivity.startActivity(intent);
 			}
 		});

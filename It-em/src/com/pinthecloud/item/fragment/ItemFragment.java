@@ -9,33 +9,37 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.pinthecloud.item.R;
+import com.pinthecloud.item.activity.ItemImageActivity;
 import com.pinthecloud.item.activity.MainActivity;
 import com.pinthecloud.item.activity.UserPageActivity;
-import com.pinthecloud.item.adapter.ItemImagePagerAdapter;
 import com.pinthecloud.item.adapter.ReplyListAdapter;
 import com.pinthecloud.item.dialog.ItAlertDialog;
+import com.pinthecloud.item.dialog.ItAlertListDialog;
 import com.pinthecloud.item.dialog.ItDialogFragment;
 import com.pinthecloud.item.dialog.LikeDialog;
 import com.pinthecloud.item.dialog.ProductTagDialog;
@@ -54,30 +58,21 @@ import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.TextUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
-import com.pinthecloud.item.view.HeightBasedOnChildrenViewPager;
+import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.pinthecloud.item.view.NotifyingScrollView;
 import com.pinthecloud.item.view.NotifyingScrollView.OnScrollChangedListener;
 
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private NotifyingScrollView mScrollView;
-	private HeightBasedOnChildrenViewPager mImagePager;
-	private ItemImagePagerAdapter mImagePagerAdapter;
-	private TextView mImageNumber;
+	private DynamicHeightImageView mItemImage;
+	private HorizontalScrollView mItemImagesScrollView;
+	private LinearLayout mItemImagesLayout;
 
 	private ProgressBar mProgressBar;
 	private View mItemLayout;
 	private TextView mContent;
-	private TextView mDate;
-
-	private Button mLikeButton;
-	private View mLikeNumberLayout;
-	private TextView mLikeNumber;
-
-	private View mProductTagLayout;
-	private TextView mProductTagEmptyView;
-	private View mProductTagTextLayout;
-	private TextView mProductTagText;
+	private TextView mUploadDate;
 
 	private TextView mReplyTitle;
 	private TextView mReplyListEmptyView;
@@ -85,7 +80,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private ReplyListAdapter mReplyListAdapter;
 	private LinearLayoutManager mReplyListLayoutManager;
 	private List<Reply> mReplyList;
-
 	private EditText mReplyInputText;
 	private Button mReplyInputSubmit;
 
@@ -93,6 +87,21 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mUserNickName;
 	private TextView mUserDescription;
 	private TextView mUserWebsite;
+
+	private View mToolbarItemLayout;
+	private ImageButton mLikeButton;
+	private View mLikeNumberLayout;
+	private TextView mLikeNumber;
+	private ImageButton mMoreButton;
+	private Button mProductTagButton;
+
+	private int mMaxToolbarItemBottomScrollHeight;
+	private View mToolbarItemBottomLayout;
+	private ImageButton mLikeBottomButton;
+	private View mLikeNumberBottomLayout;
+	private TextView mLikeNumberBottom;
+	private ImageButton mMoreBottomButton;
+	private Button mProductTagBottomButton;
 
 	private ItUser mUser;
 	private Item mItem;
@@ -123,12 +132,10 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		View view = inflater.inflate(R.layout.fragment_item, container, false);
 
 		mGaHelper.sendScreen(mThisFragment);
-		setHasOptionsMenu(true);
-
 		findComponent(view);
 		setComponent();
-		setImagePager();
 		setButton();
+		setToolbarItemButton();
 		setScroll();
 		setReplyList();
 
@@ -141,52 +148,17 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onStart() {
 		super.onStart();
-		setProfileImage();
+		setImage();
+		setItemImagesView();
 	}
 
 
 	@Override
 	public void onStop() {
 		super.onStop();
+		mItemImage.setImageBitmap(null);
 		mProfileImage.setImageBitmap(null);
-	}
-
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.item, menu);
-	}
-
-
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		super.onPrepareOptionsMenu(menu);
-		MenuItem deleteMenuItem = menu.findItem(R.id.item_menu_delete);
-		deleteMenuItem.setVisible(mItem.checkMine() || mApp.isAdmin());
-	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem menu) {
-		switch (menu.getItemId()) {
-		case R.id.item_menu_delete:
-			mApp.showProgressDialog(mActivity);
-			mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
-
-				@Override
-				public void onCompleted(Boolean entity) {
-					mApp.dismissProgressDialog();
-					Toast.makeText(mActivity, getResources().getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
-
-					Intent intent = new Intent(mActivity, MainActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(intent);
-				}
-			});
-			break;
-		}
-		return super.onOptionsItemSelected(menu);
+		mItemImagesLayout.removeAllViews();
 	}
 
 
@@ -204,8 +176,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				mItem.setReplyCount(mItem.getReplyCount()-1);
 
 				setReplyTitle(mItem.getReplyCount());
-				ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
 				mReplyListEmptyView.setVisibility(mItem.getReplyCount() > 0 ? View.GONE : View.VISIBLE);
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
 			}
 		});
 	}
@@ -213,23 +185,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void findComponent(View view){
 		mScrollView = (NotifyingScrollView)view.findViewById(R.id.item_frag_scroll_view);
-
-		mImagePager = (HeightBasedOnChildrenViewPager)view.findViewById(R.id.item_frag_image_pager);
-		mImageNumber = (TextView)view.findViewById(R.id.item_frag_image_number);
+		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_image);
+		mItemImagesScrollView = (HorizontalScrollView)view.findViewById(R.id.item_frag_images_scroll_view);
+		mItemImagesLayout = (LinearLayout)view.findViewById(R.id.item_frag_images_layout);
 
 		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
 		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
-		mDate = (TextView)view.findViewById(R.id.item_frag_date);
-
-		mLikeButton = (Button)view.findViewById(R.id.item_frag_like_button);
-		mLikeNumberLayout = view.findViewById(R.id.item_frag_like_number_layout);
-		mLikeNumber = (TextView)view.findViewById(R.id.item_frag_like_number);
-
-		mProductTagLayout = view.findViewById(R.id.item_frag_product_tag_layout);
-		mProductTagEmptyView = (TextView)view.findViewById(R.id.item_frag_product_tag_empty_view);
-		mProductTagTextLayout = view.findViewById(R.id.item_frag_product_tag_text_layout);
-		mProductTagText = (TextView)view.findViewById(R.id.item_frag_product_tag_text);
+		mUploadDate = (TextView)view.findViewById(R.id.item_frag_upload_date);
 
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
@@ -241,14 +204,26 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mUserNickName = (TextView)view.findViewById(R.id.item_frag_user_nick_name);
 		mUserDescription = (TextView)view.findViewById(R.id.item_frag_user_description);
 		mUserWebsite = (TextView)view.findViewById(R.id.item_frag_user_website);
+
+		mToolbarItemLayout = view.findViewById(R.id.toolbar_item_layout);
+		mLikeButton = (ImageButton)mToolbarItemLayout.findViewById(R.id.toolbar_item_like_button);
+		mLikeNumberLayout = mToolbarItemLayout.findViewById(R.id.toolbar_item_like_number_layout);
+		mLikeNumber = (TextView)mToolbarItemLayout.findViewById(R.id.toolbar_item_like_number);
+		mMoreButton = (ImageButton)mToolbarItemLayout.findViewById(R.id.toolbar_item_more);
+		mProductTagButton = (Button)mToolbarItemLayout.findViewById(R.id.toolbar_item_product_tag);
+
+		mToolbarItemBottomLayout = view.findViewById(R.id.toolbar_item_bottom_layout);
+		mLikeBottomButton = (ImageButton)mToolbarItemBottomLayout.findViewById(R.id.toolbar_item_like_button);
+		mLikeNumberBottomLayout = mToolbarItemBottomLayout.findViewById(R.id.toolbar_item_like_number_layout);
+		mLikeNumberBottom = (TextView)mToolbarItemBottomLayout.findViewById(R.id.toolbar_item_like_number);
+		mMoreBottomButton = (ImageButton)mToolbarItemBottomLayout.findViewById(R.id.toolbar_item_more);
+		mProductTagBottomButton = (Button)mToolbarItemBottomLayout.findViewById(R.id.toolbar_item_product_tag);
 	}
 
 
 	private void setComponent(){
-		mImageNumber.setText("1/" + mItem.getImageNumber());
-		mImageNumber.setVisibility(mItem.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
-
 		mUserNickName.setText(mItem.getWhoMade());
+		showMoreButton();
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
@@ -267,63 +242,19 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setImagePager(){
-		mImagePagerAdapter = new ItemImagePagerAdapter(mActivity, mItem);
-		mImagePager.setOffscreenPageLimit(mImagePagerAdapter.getCount());
-		mImagePager.setAdapter(mImagePagerAdapter);
-		mImagePager.setOnPageChangeListener(new OnPageChangeListener() {
-
-			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			}
-			@Override
-			public void onPageSelected(int position) {
-				mImageNumber.setText((position+1) + "/" + mItem.getImageNumber());
-			}
-			@Override
-			public void onPageScrollStateChanged(int state) {
-			}
-		});
-	}
-
-
 	private void setButton(){
-		mLikeButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				onClickLikeButton();
-			}
-		});
-
-		mLikeNumber.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ItDialogFragment likeItDialog = LikeDialog.newInstance(mItem);
-				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
-			}
-		});
-
-		mProductTagLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_PRODUCT_TAG, GAHelper.ITEM);
-
-				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem, (ArrayList<ProductTag>)mItem.getProductTagList());
-				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
-			}
-		});
-
 		mReplyInputSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				String content = mReplyInputText.getText().toString().trim();
 				Reply reply = new Reply(content, mUser.getNickName(), mUser.getId(), mItem.getId());
+				ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
+						mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
+						mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
+				submitReply(reply, noti);
+
 				mReplyInputText.setText("");
-				submitReply(reply);
 			}
 		});
 
@@ -360,6 +291,125 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
+	private void setToolbarItemButton(){
+		mLikeButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				onClickLikeButton();
+			}
+		});
+
+		mLikeBottomButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				onClickLikeButton();
+			}
+		});
+
+		mLikeNumberLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment likeItDialog = LikeDialog.newInstance(mItem);
+				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		mLikeNumberBottomLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ItDialogFragment likeItDialog = LikeDialog.newInstance(mItem);
+				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		mMoreButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String[] itemList = mActivity.getResources().getStringArray(R.array.more_array);
+				DialogCallback[] callbacks = getDialogCallbacks(itemList);
+
+				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+				listDialog.setCallbacks(callbacks);
+				listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		mMoreBottomButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String[] itemList = mActivity.getResources().getStringArray(R.array.more_array);
+				DialogCallback[] callbacks = getDialogCallbacks(itemList);
+
+				ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);
+				listDialog.setCallbacks(callbacks);
+				listDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		mProductTagButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_PRODUCT_TAG, GAHelper.ITEM);
+
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem);
+				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+
+		mProductTagBottomButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_PRODUCT_TAG, GAHelper.ITEM);
+
+				ItDialogFragment productTagDialog = ProductTagDialog.newInstance(mItem);
+				productTagDialog.show(mThisFragment.getFragmentManager(), ItDialogFragment.INTENT_KEY);
+			}
+		});
+	}
+
+
+	private DialogCallback[] getDialogCallbacks(String[] itemList){
+		DialogCallback[] callbacks = new DialogCallback[itemList.length];
+		callbacks[0] = new DialogCallback() {
+
+			@Override
+			public void doPositive(Bundle bundle) {
+				mApp.showProgressDialog(mActivity);
+				mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
+
+					@Override
+					public void onCompleted(Boolean entity) {
+						mApp.dismissProgressDialog();
+						Toast.makeText(mActivity, getResources().getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
+
+						Intent intent = new Intent(mActivity, MainActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+						mActivity.finish();
+					}
+				});
+			}
+			@Override
+			public void doNeutral(Bundle bundle) {
+				// Do nothing
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
+				// Do nothing
+			}
+		};
+		return callbacks;
+	}
+
+
 	private void gotoUserPage(){
 		mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.VIEW_UPLOADER, GAHelper.ITEM);
 
@@ -385,6 +435,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				} else { // Scroll Down, Toolbar Up
 					toolbarLayout.scrollTo(0, Math.min(toolbarLayout.getScrollY()+diff, actionBarHeight));
 				}
+
+				// Toolbar item bottom scroll
+				mToolbarItemBottomLayout.setVisibility(t < mMaxToolbarItemBottomScrollHeight ? View.VISIBLE : View.GONE);
 			}
 		});
 
@@ -423,7 +476,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void updateItemFrag(){
 		mProgressBar.setVisibility(View.VISIBLE);
 		mItemLayout.setVisibility(View.GONE);
-		mProductTagLayout.setVisibility(View.GONE);
+		mToolbarItemBottomLayout.setVisibility(View.GONE);
 
 		mAimHelper.getItem(mItem, mUser.getId(), new EntityCallback<Item>() {
 
@@ -436,11 +489,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				if(item != null){
 					mProgressBar.setVisibility(View.GONE);
 					mItemLayout.setVisibility(View.VISIBLE);
-					mProductTagLayout.setVisibility(View.VISIBLE);
 
 					mItem = item;
 					setItemComponent();
-					setProductTagFrag();
 					setReplyFrag();
 				} else {
 					String message = getResources().getString(R.string.not_exist_item);
@@ -469,18 +520,100 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setItemComponent(){
 		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
-
 		String elapsedTime = mItem.getCreateDateTime().getElapsedTimeString(mActivity);
 		String uploadedOn = String.format(Locale.US, mActivity.getResources().getString(R.string.uploaded_on), elapsedTime);
-		mDate.setText(uploadedOn);
+		mUploadDate.setText(uploadedOn);
+		setProfile();
 
 		setLikeNumber(mItem.getLikeItCount());
 		mLikeButton.setActivated(mItem.getPrevLikeId() != null);
+		mLikeBottomButton.setActivated(mItem.getPrevLikeId() != null);
+		mProductTagButton.setActivated(mItem.isHasProductTag());
+		mProductTagBottomButton.setActivated(mItem.isHasProductTag());
 
-		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
-		mUserDescription.setVisibility(!mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.VISIBLE : View.GONE);
-		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
-		mUserWebsite.setVisibility(!mItem.getWhoMadeUser().getWebPage().equals("") ? View.VISIBLE : View.GONE);
+		mToolbarItemBottomLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mToolbarItemBottomLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				} else {
+					mToolbarItemBottomLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+
+				int deviceHeight = ViewUtil.getDeviceHeight(mActivity) - ViewUtil.getStatusBarHeight(mActivity);
+				mMaxToolbarItemBottomScrollHeight = mItemImage.getBottom() + mItemImagesScrollView.getHeight()
+						+ mToolbarItemLayout.getBottom() - deviceHeight;
+				showToolbarItemBottomLayout();
+			}
+		});
+	}
+
+
+	private void setReplyFrag(){
+		mReplyList.clear();
+		mReplyListAdapter.addAll(mItem.getReplyList());
+
+		final int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
+		mReplyListAdapter.setHasPrevious(mItem.getReplyCount() > displayReplyNum ? true : false);
+		mReplyListEmptyView.setVisibility(mItem.getReplyCount() > 0 ? View.GONE : View.VISIBLE);
+		setReplyTitle(mItem.getReplyCount());
+
+		mReplyListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+					mReplyListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				} else {
+					mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+
+				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
+			}
+		});
+	}
+
+
+	private void setReplyTitle(int replyCount){
+		String title = getResources().getString(R.string.comments) + (replyCount > 0 ? replyCount : "");
+		mReplyTitle.setText(title);
+	}
+
+
+	private void submitReply(final Reply reply, ItNotification noti){
+		mReplyListAdapter.add(mReplyList.size(), reply);
+		mReplyListEmptyView.setVisibility(mItem.getReplyCount()+1 > 0 ? View.GONE : View.VISIBLE);
+		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
+
+		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
+
+			@Override
+			public void onCompleted(Reply addedReply) {
+				if(!isAdded()){
+					return;
+				}
+
+				mItem.setReplyCount(mItem.getReplyCount()+1);
+				setReplyTitle(mItem.getReplyCount());
+				mReplyListAdapter.replace(mReplyList.indexOf(reply), addedReply);
+			}
+		});
+	}
+
+
+	private void showToolbarItemBottomLayout(){
+		if(mMaxToolbarItemBottomScrollHeight > 0){
+			mToolbarItemBottomLayout.setVisibility(View.VISIBLE);
+			Animation anim = AnimationUtils.loadAnimation(mActivity, R.anim.slide_in_up_slow);
+			mToolbarItemBottomLayout.startAnimation(anim);
+		} else {
+			mToolbarItemBottomLayout.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -536,51 +669,35 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setLikeButton(int currentLikeNum, boolean isDoLike){
 		setLikeNumber(isDoLike ? currentLikeNum+1 : currentLikeNum-1);
 		mLikeButton.setActivated(isDoLike);
+		mLikeBottomButton.setActivated(isDoLike);
 	}
 
 
 	private void setLikeNumber(int likeNumber){
 		mLikeNumberLayout.setVisibility(likeNumber > 0 ? View.VISIBLE : View.GONE);
+		mLikeNumberBottomLayout.setVisibility(likeNumber > 0 ? View.VISIBLE : View.GONE);
 		mLikeNumber.setText(""+likeNumber);
+		mLikeNumberBottom.setText(""+likeNumber);
 	}
 
 
-	private void submitReply(final Reply reply){
-		mReplyListAdapter.add(mReplyList.size(), reply);
-		ViewUtil.setListHeightBasedOnChildren(mReplyListView, mReplyListAdapter.getItemCount());
-		mReplyListEmptyView.setVisibility(mItem.getReplyCount()+1 > 0 ? View.GONE : View.VISIBLE);
-
-		ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
-				mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
-				mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
-		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
-
-			@Override
-			public void onCompleted(Reply entity) {
-				mItem.setReplyCount(mItem.getReplyCount()+1);
-				setReplyTitle(mItem.getReplyCount());
-
-				mReplyListAdapter.replace(mReplyList.indexOf(reply), entity);
-			}
-		});
-	}
-
-
-	private void setReplyTitle(int replyCount){
-		String title = getResources().getString(R.string.comments);
-		if(replyCount != 0){
-			title = title + " " + replyCount;
+	private void showMoreButton(){
+		if(mItem.checkMine() || mApp.isAdmin()){
+			mMoreButton.setVisibility(View.VISIBLE);
+			mMoreBottomButton.setVisibility(View.VISIBLE);
+		} else {
+			mMoreButton.setVisibility(View.GONE);
+			mMoreBottomButton.setVisibility(View.GONE);
 		}
-		mReplyTitle.setText(title);
 	}
 
 
-	private String getProductTagCategoryText(List<ProductTag> list){
+	private String getProductTagCategoryText(List<ProductTag> tagList){
 		String categoryString = "";
-		List<String> categoryList = new ArrayList<String>();
-		for(ProductTag tag : list){
-			if(!categoryList.contains(tag.categoryString(mActivity))){
-				categoryList.add(tag.categoryString(mActivity));
+		List<Integer> categoryList = new ArrayList<Integer>();
+		for(ProductTag tag : tagList){
+			if(!categoryList.contains(tag.getCategory())){
+				categoryList.add(tag.getCategory());
 				categoryString = categoryString + (categoryList.size()==1 ? "" : ", ") + tag.categoryString(mActivity);
 			}
 		}
@@ -588,66 +705,71 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setProductTagFrag(){
-		if(mItem.isHasProductTag()){
-			mProductTagEmptyView.setVisibility(View.GONE);
-			mProductTagTextLayout.setVisibility(View.VISIBLE);
+	private void setProfile(){
+		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
+		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
 
-			mProductTagLayout.setEnabled(true);
-			mProductTagLayout.setActivated(true);
-			mProductTagText.setText(getProductTagCategoryText(mItem.getProductTagList()));
-		} else {
-			mProductTagEmptyView.setVisibility(View.VISIBLE);
-			mProductTagTextLayout.setVisibility(View.GONE);
-
-			mProductTagLayout.setEnabled(false);
-			mProductTagLayout.setActivated(false);
-			mProductTagText.setText("");
-		}
+		mUserDescription.setVisibility(mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.GONE : View.VISIBLE);
+		mUserWebsite.setVisibility(mItem.getWhoMadeUser().getWebPage().equals("") ? View.GONE : View.VISIBLE);
 	}
 
 
-	private void setReplyFrag(){
-		// Add replys
-		mReplyList.clear();
-		mReplyListAdapter.addAll(mItem.getReplyList());
+	private void setImage(){
+		mItemImage.setHeightRatio((double)mItem.getCoverImageHeight()/mItem.getCoverImageWidth());
+		mApp.getPicasso()
+		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+		.placeholder(R.drawable.feed_loading_default_img)
+		.into(mItemImage);
 
-		// Set see previous row
-		final int displayReplyNum = getResources().getInteger(R.integer.item_display_reply_num);
-		if(mItem.getReplyCount() > displayReplyNum){
-			mReplyListAdapter.setHasPrevious(true);
-		} else {
-			mReplyListAdapter.setHasPrevious(false);
-		}
-
-		// Set reply list height for scrollview
-		mReplyListView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-			@SuppressLint("NewApi")
-			@SuppressWarnings("deprecation")
-			@Override
-			public void onGlobalLayout() {
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-					mReplyListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-				} else {
-					mReplyListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-				}
-
-				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
-			}
-		});
-
-		// Set reply list fragment
-		mReplyListEmptyView.setVisibility(mItem.getReplyCount() > 0 ? View.GONE : View.VISIBLE);
-		setReplyTitle(mItem.getReplyCount());
-	}
-
-
-	private void setProfileImage(){
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);
+	}
+
+
+	private void setItemImagesView(){
+		mItemImagesScrollView.setVisibility(mItem.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
+		for(int i=1 ; i<mItem.getImageNumber() ; i++){
+			ImageView image = getNewItemImage();
+			setItemImageButton(image, i);
+			mItemImagesLayout.addView(image);
+
+			String imageId = mItem.getId() + "_" + i;
+			mApp.getPicasso()
+			.load(BlobStorageHelper.getItemImgUrl(imageId))
+			.placeholder(R.drawable.feed_loading_default_img)
+			.fit()
+			.into(image);
+		}
+	}
+
+
+	private ImageView getNewItemImage(){
+		int width = getResources().getDimensionPixelSize(R.dimen.item_thumbnail_image_width);
+		int margin = getResources().getDimensionPixelSize(R.dimen.content_margin);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
+		layoutParams.setMargins(0, 0, margin, 0);
+
+		RoundedImageView image = new RoundedImageView(mActivity);
+		image.setLayoutParams(layoutParams);
+		image.setCornerRadius(R.dimen.content_margin);
+		image.setSquare(true);
+		return image;
+	}
+
+
+	private void setItemImageButton(ImageView image, final int index){
+		image.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, ItemImageActivity.class);
+				intent.putExtra(Item.INTENT_KEY, mItem);
+				intent.putExtra(ItemImageActivity.POSITION_KEY, index);
+				startActivity(intent);
+			}
+		});
 	}
 }

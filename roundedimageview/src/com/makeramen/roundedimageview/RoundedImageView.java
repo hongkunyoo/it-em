@@ -360,6 +360,14 @@ public class RoundedImageView extends ImageView {
 		updateBackgroundDrawableAttrs(false);
 		invalidate();
 	}
+	
+	public boolean isSquare() {
+		return isSquare;
+	}
+
+	public void setSquare(boolean square) {
+		isSquare = square;
+	}
 
 	public Shader.TileMode getTileModeX() {
 		return tileModeX;

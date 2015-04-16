@@ -130,11 +130,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	@Override
 	public int getItemCount() {
-		if(mHasPrevious){
-			return mReplyList.size()+1;
-		} else{
-			return mReplyList.size();
-		}
+		return mHasPrevious ? mReplyList.size()+1 : mReplyList.size();
 	}
 
 
@@ -194,7 +190,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			@Override
 			public boolean onLongClick(View v) {
 				if(reply.checkMine() || mApp.isAdmin()){
-					String[] itemList = mActivity.getResources().getStringArray(R.array.reply_long_click_array);
+					String[] itemList = mActivity.getResources().getStringArray(R.array.more_array);
 					DialogCallback[] callbacks = getDialogCallbacks(itemList, reply);
 
 					ItAlertListDialog listDialog = ItAlertListDialog.newInstance(itemList);

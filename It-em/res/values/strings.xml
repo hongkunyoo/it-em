@@ -29,6 +29,7 @@
     <string name="never_see">Never see again</string>
 
     <!-- Item -->
+    <string name="more">More</string>
     <string name="like">Like</string>
     <string name="uploaded_on">Uploaded on %1$s</string>
     <string name="uploaded_by">Uploaded by</string>
@@ -42,7 +43,7 @@
     <string name="submit">SUBMIT</string>
     <string name="write_reply">Wirte a comment</string>
     <string name="previous_reply">View all comments</string>
-    <string name="first_reply">Be first of comments</string>
+    <string name="empty_reply">Comment is empty. Be first of comments.</string>
 
     <!-- Like -->
     <string name="like_user">Users who like this item</string>
@@ -69,7 +70,7 @@
 
     <!-- Gallery -->
     <string name="select_album">Select Album</string>
-    <string name="empty_gallery">Gallery is empty</string>
+    <string name="empty_gallery">Gallery is empty.</string>
     <string name="gallery">Gallery</string>
 
     <!-- Profile Settings -->
@@ -125,7 +126,7 @@
     <!-- Product Tag -->
     <string name="product_tag">Product Label</string>
     <string name="price_kor">%1$swon</string>
-    <string name="empty_product_tag">You cannot get this item yet</string>
+    <string name="empty_product_tag">You cannot get this item yet.</string>
     <string name="get_product">GET</string>
 
     <!-- ItDateTime -->

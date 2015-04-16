@@ -30,14 +30,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <com.pinthecloud.item.view.DynamicHeightImageView
-                android:id="@+id/image"
+            <com.pinthecloud.item.view.HeightBasedOnChildrenViewPager
+                android:id="@+id/item_image_pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
+                android:layout_centerInParent="true" />
         </RelativeLayout>
     </ScrollView>
+
+    <com.pinthecloud.item.view.ItTextView
+        android:id="@+id/item_image_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/key_line_first"
+        android:shadowColor="@color/black_pressed"
+        android:shadowDx="@integer/shadow"
+        android:shadowDy="@integer/shadow"
+        android:shadowRadius="@integer/shadow"
+        android:textColor="@color/item_image_number"
+        android:textStyle="bold"
+        app:textType="body" />
 
 </RelativeLayout>

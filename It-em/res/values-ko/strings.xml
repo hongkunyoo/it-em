@@ -31,7 +31,7 @@
     <string name="comments">댓글</string>
     <string name="write_reply">댓글 달기</string>
     <string name="previous_reply">모든 댓글 보기</string>
-    <string name="first_reply">첫 댓글을 남겨주세요.</string>
+    <string name="empty_reply">댓글이 없습니다. 첫 댓글을 남겨보세요.</string>
 
     <!-- Like -->
     <string name="like_user">이 아이템을 좋아하는 유저</string>
@@ -40,8 +40,8 @@
     <string name="not_exist_user">없는 유저입니다.</string>
 
     <!-- My Item -->
-    <string name="empty_my_item">업로드한 아이템이 없어요.\n자신만의 데일리룩을 공유해보세요!</string>
-    <string name="empty_like_item">좋아하는 아이템이 없어요.\n멋진 아이템에 좋아요를 눌러보세요!</string>
+    <string name="empty_my_item">업로드한 아이템이 없습니다.\n자신만의 데일리룩을 공유해보세요!</string>
+    <string name="empty_like_item">좋아하는 아이템이 없습니다.\n멋진 아이템에 좋아요를 눌러보세요!</string>
 
     <!-- Product Tag -->
     <string name="product_tag">상품라벨</string>
@@ -62,7 +62,7 @@
 
     <!-- Gallery -->
     <string name="select_album">앨범 선택</string>
-    <string name="empty_gallery">갤러리가 비어있어요</string>
+    <string name="empty_gallery">갤러리가 비어있어요.</string>
 
     <!-- Profile Settings -->
     <string name="profile_settings">프로필 설정</string>
