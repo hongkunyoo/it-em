@@ -39,7 +39,6 @@ public class GalleryFolderFragment extends ItFragment {
 
 		mGaHelper.sendScreen(mThisFragment);
 		setHasOptionsMenu(true);
-
 		setActionBar();
 		findComponent(view);
 		setList();

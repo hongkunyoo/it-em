@@ -390,20 +390,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void doPositive(Bundle bundle) {
-				mApp.showProgressDialog(mActivity);
-				mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						mApp.dismissProgressDialog();
-						Toast.makeText(mActivity, getResources().getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
-
-						Intent intent = new Intent(mActivity, MainActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-						mActivity.finish();
-					}
-				});
+				deleteItem();
 			}
 			@Override
 			public void doNeutral(Bundle bundle) {
@@ -415,6 +402,24 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		};
 		return callbacks;
+	}
+
+
+	private void deleteItem(){
+		mApp.showProgressDialog(mActivity);
+		mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
+
+			@Override
+			public void onCompleted(Boolean entity) {
+				mApp.dismissProgressDialog();
+				Toast.makeText(mActivity, getResources().getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
+
+				Intent intent = new Intent(mActivity, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				mActivity.finish();
+			}
+		});
 	}
 
 
@@ -739,9 +744,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setProfile(){
 		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
-		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
-
 		mUserDescription.setVisibility(mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.GONE : View.VISIBLE);
+		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
 		mUserWebsite.setVisibility(mItem.getWhoMadeUser().getWebPage().equals("") ? View.GONE : View.VISIBLE);
 	}
 
@@ -770,7 +774,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			String imageId = mItem.getId() + "_" + i;
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(imageId))
+			.load(BlobStorageHelper.getItemImgUrl(imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.fit()
 			.into(image);

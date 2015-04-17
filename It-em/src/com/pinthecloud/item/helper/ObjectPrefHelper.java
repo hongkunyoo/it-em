@@ -23,19 +23,20 @@ public class ObjectPrefHelper {
 	}
 
 	public <E> E get(Class<E> clazz) {
-		E obj = null;
 		try {
-			obj = clazz.newInstance();
+			E obj = clazz.newInstance();
 			Method[] methods = clazz.getMethods();
 			for (Method method : methods) {
 				if (!isSetter(method)) continue;
 				Class<?> paramClazz = method.getParameterTypes()[0];
 				invokeSetMethod(obj, method, mPrefHelper.get(clazz.getName()+removePrefix(method.getName()), paramClazz));
 			}
+			return obj;
 		} catch (InstantiationException e) {
+			return null;
 		} catch (IllegalAccessException e) {
+			return null;
 		}
-		return obj;
 	}
 
 	public <E> void remove(Class<E> clazz) {
@@ -47,41 +48,40 @@ public class ObjectPrefHelper {
 	}
 
 	private Object invokeGetMethod(Object obj, Method method) {
-		Object object = null;
 		try {
-			object = method.invoke(obj);
+			return method.invoke(obj);
 		} catch (IllegalAccessException e) {
+			return null;
 		} catch (IllegalArgumentException e) {
+			return null;
 		} catch (InvocationTargetException e) {
+			return null;
 		}
-		return object;
 	}
 
 	private void invokeSetMethod(Object obj, Method method, Object arg) {
 		try {
 			method.invoke(obj, arg);
 		} catch (IllegalAccessException e) {
+			return;
 		} catch (IllegalArgumentException e) {
+			return;
 		} catch (InvocationTargetException e) {
+			return;
 		}
 	}
 
 	private boolean isGetter(Method method) {
 		if (method.getName().equals("getClass")) return false;
-		if (!(method.getName().startsWith("get") || method.getName().startsWith("is")))
-			return false;
-		if (method.getParameterTypes().length != 0)
-			return false;
-		if (void.class.equals(method.getReturnType()))
-			return false;
+		if (!(method.getName().startsWith("get") || method.getName().startsWith("is"))) return false;
+		if (method.getParameterTypes().length != 0) return false;
+		if (void.class.equals(method.getReturnType())) return false;
 		return true;
 	}
 
 	private boolean isSetter(Method method) {
-		if (!method.getName().startsWith("set"))
-			return false;
-		if (method.getParameterTypes().length != 1)
-			return false;
+		if (!method.getName().startsWith("set")) return false;
+		if (method.getParameterTypes().length != 1) return false;
 		return true;
 	}
 

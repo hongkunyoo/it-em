@@ -128,8 +128,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/home_item_like_button"
-                    android:contentDescription="@string/like" />
+                    android:contentDescription="@string/like"
+                    android:src="@drawable/home_item_like_button" />
 
                 <Button
                     android:id="@+id/row_home_item_product_tag"
@@ -151,7 +151,8 @@
                     android:paddingStart="@dimen/content_margin"
                     android:text="@string/get_product"
                     android:textColor="@color/home_item_tag_text"
-                    android:textSize="@dimen/font_small" />
+                    android:textSize="@dimen/font_small"
+                    android:textStyle="bold" />
             </RelativeLayout>
         </LinearLayout>
 

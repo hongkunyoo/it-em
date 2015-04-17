@@ -126,7 +126,7 @@ public class ItIntentService extends IntentService {
 				try {
 					return mApp.getPicasso().load(url).get();
 				} catch (IOException e) {
-					return null;
+					return BitmapFactory.decodeResource(getResources(), R.drawable.launcher);
 				}
 			}
 			@Override
@@ -156,7 +156,7 @@ public class ItIntentService extends IntentService {
 			mBuilder.setVibrate(new long[] {225, 225, 225, 225});
 		}
 		mBuilder.setLights(Color.YELLOW, 500, 1500);
-		
+
 		return mBuilder.build();
 	}
 

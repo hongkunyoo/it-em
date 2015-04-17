@@ -347,8 +347,9 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
-				AsyncChainer.waitChain(mImagePathList.size()+2);
-
+				int jobCount = mImagePathList.size()*2 + 1;
+				AsyncChainer.waitChain(jobCount);
+				
 				for(int i=0 ; i<mImagePathList.size() ; i++){
 					uploadItemImage(obj, item, mImagePathList.get(i), imageList.get(i), i);
 				}
@@ -373,6 +374,7 @@ public class UploadFragment extends ItFragment {
 	private Item getItem(List<Bitmap> imageList){
 		int coverWidth = imageList.get(0).getWidth();
 		int coverHeight = imageList.get(0).getHeight();
+		
 		int mainWidth = 0;
 		int mainHeight = 0;
 		double maxHeightRatio = 0;
@@ -431,55 +433,65 @@ public class UploadFragment extends ItFragment {
 
 	private void uploadItemImage(final Object obj, final Item item, String imagePath, Bitmap imageBitmap, int index){
 		String imageId = index == 0 ? item.getId() : item.getId() + "_" + index;
+		uploadImage(obj, imageId, imageBitmap);
+		uploadThumbnailImage(obj, imageId, imagePath);
+		if(index == 0){
+			uploadPreviewImage(obj, imageId, imagePath);
+		}
+	}
+
+
+	private void uploadImage(final Object obj, String imageId, Bitmap imageBitmap){
 		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId, imageBitmap,
 				new EntityCallback<String>() {
 
 			@Override
 			public void onCompleted(String entity) {
-				AsyncChainer.notifyNext(obj, item);
+				AsyncChainer.notifyNext(obj);
 			}
 		});
-
-		if(index == 0){
-			uploadCoverImage(obj, item, imagePath);
-		}
 	}
-
-
-	private void uploadCoverImage(final Object obj, final Item item, final String imagePath){
-		(new AsyncTask<Void,Void,List<Bitmap>>(){
+	
+	
+	private void uploadThumbnailImage(final Object obj, final String imageId, final String imagePath){
+		(new AsyncTask<Void,Void,Bitmap>(){
 
 			@Override
-			protected List<Bitmap> doInBackground(Void... params) {
-				Bitmap previewImage = ImageUtil.refineItemImage(imagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH, true);
-				Bitmap thumbnailImage = ImageUtil.refineSquareImage(imagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE, true);
-
-				List<Bitmap> imageList = new ArrayList<Bitmap>();
-				imageList.add(previewImage);
-				imageList.add(thumbnailImage);
-				return imageList;
+			protected Bitmap doInBackground(Void... params) {
+				return ImageUtil.refineSquareImage(imagePath, ImageUtil.ITEM_THUMBNAIL_IMAGE_SIZE, true);
 			}
 
 			@Override
-			protected void onPostExecute(List<Bitmap> imageList) {
-				Bitmap previewImage = imageList.get(0);
-				Bitmap thumbnailImage = imageList.get(1);
-
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
-						previewImage, new EntityCallback<String>() {
-
-					@Override
-					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(obj, item);
-					}
-				});
-
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
+			protected void onPostExecute(Bitmap thumbnailImage) {
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
 						thumbnailImage, new EntityCallback<String>() {
 
 					@Override
 					public void onCompleted(String entity) {
-						AsyncChainer.notifyNext(obj, item);
+						AsyncChainer.notifyNext(obj);
+					}
+				});
+			};
+		}).execute();
+	}
+	
+	
+	private void uploadPreviewImage(final Object obj, final String imageId, final String imagePath){
+		(new AsyncTask<Void,Void,Bitmap>(){
+
+			@Override
+			protected Bitmap doInBackground(Void... params) {
+				return ImageUtil.refineItemImage(imagePath, ImageUtil.ITEM_PREVIEW_IMAGE_WIDTH, true);
+			}
+
+			@Override
+			protected void onPostExecute(Bitmap previewImage) {
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+						previewImage, new EntityCallback<String>() {
+
+					@Override
+					public void onCompleted(String entity) {
+						AsyncChainer.notifyNext(obj);
 					}
 				});
 			};

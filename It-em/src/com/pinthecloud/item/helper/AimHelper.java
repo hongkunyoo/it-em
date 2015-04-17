@@ -338,11 +338,10 @@ public class AimHelper {
 
 			@Override
 			public void doNext(final Object obj, Object... params) {
-				AsyncChainer.waitChain(item.getImageNumber()+3);
+				AsyncChainer.waitChain(1 + item.getImageNumber()*2 + 1);
 
 				JsonObject jo = new JsonObject();
 				jo.add("item", item.toJson());
-
 				mClient.invokeApi(AIM_DELETE_ITEM, jo, new ApiJsonOperationCallback() {
 
 					@Override
@@ -366,7 +365,7 @@ public class AimHelper {
 			@Override
 			public void doNext(Object obj, Object... params) {
 				boolean result = (Boolean)params[0];
-				callback.onCompleted(result);	
+				callback.onCompleted(result);
 			}
 		});
 	}
@@ -374,7 +373,8 @@ public class AimHelper {
 
 	private void deleteItemImage(final Object obj, Item item, int index){
 		String imageId = index == 0 ? item.getId() : item.getId() + "_" + index;
-		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId, new EntityCallback<Boolean>() {
+		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId,
+				new EntityCallback<Boolean>() {
 
 			@Override
 			public void onCompleted(Boolean entity) {
@@ -382,20 +382,22 @@ public class AimHelper {
 			}
 		});
 
+		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
+				new EntityCallback<Boolean>() {
+
+			@Override
+			public void onCompleted(Boolean entity) {
+				AsyncChainer.notifyNext(obj, entity);
+			}
+		});
+		
 		if(index == 0){
-			mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
+			mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+					new EntityCallback<Boolean>() {
 
 				@Override
 				public void onCompleted(Boolean entity) {
 					AsyncChainer.notifyNext(obj, entity);	
-				}
-			});
-			
-			mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX, new EntityCallback<Boolean>() {
-
-				@Override
-				public void onCompleted(Boolean entity) {
-					AsyncChainer.notifyNext(obj, entity);
 				}
 			});
 		}

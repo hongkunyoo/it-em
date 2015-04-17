@@ -68,13 +68,13 @@ public class BlobStorageHelper {
 	}
 
 
-	private boolean isExistSync(String containerName, String id) {
+	private boolean isExistSync(String containerName, String imageId) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		boolean result = true;
 		try {
 			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(id);
+			blob = container.getBlockBlobReference(imageId);
 			result = blob.exists();
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("isExistSync", ItException.TYPE.INTERNAL_ERROR));
@@ -85,14 +85,13 @@ public class BlobStorageHelper {
 	}
 
 
-	private String uploadBitmapSync(String containerName, String id, Bitmap bitmap) {
+	private String uploadBitmapSync(String containerName, String imageId, Bitmap bitmap) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
 			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(id);
+			blob = container.getBlockBlobReference(imageId);
 
-			// Compress Bitmap
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
 
@@ -108,17 +107,17 @@ public class BlobStorageHelper {
 		} catch (IOException e) {
 			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		}
-		return id;
+		return imageId;
 	}
 
 
-	private Bitmap downloadBitmapSync(String containerName, String id) {
+	private Bitmap downloadBitmapSync(String containerName, String imageId) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		Bitmap bm = null;
 		try {
 			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(id);
+			blob = container.getBlockBlobReference(imageId);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			blob.download(baos);
 			bm = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
@@ -131,12 +130,12 @@ public class BlobStorageHelper {
 	}
 
 
-	private String downloadToFileSync(Context context, String containerName, String id, String path) {
+	private String downloadToFileSync(Context context, String containerName, String imageId, String path) {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
 			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(id);
+			blob = container.getBlockBlobReference(imageId);
 			blob.downloadToFile(context.getFilesDir() + "/" + path);
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
@@ -149,23 +148,21 @@ public class BlobStorageHelper {
 	}
 
 
-	private boolean deleteBitmapSync(String containerName, String id) {
+	private boolean deleteBitmapSync(String containerName, String imageId) throws StorageException {
 		CloudBlobContainer container = null;
 		CloudBlockBlob blob = null;
 		try {
 			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(id);
+			blob = container.getBlockBlobReference(imageId);
 			blob.delete();
 		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.INTERNAL_ERROR));
-		} catch (StorageException e) {
 			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		}
 		return true;
 	}
 
 
-	public void isExistAsync(final String containerName, String id, final EntityCallback<Boolean> callback) {
+	public void isExistAsync(final String containerName, String imageId, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("isExistAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -175,8 +172,8 @@ public class BlobStorageHelper {
 
 			@Override
 			protected Boolean doInBackground(String... params) {
-				String id = params[0];
-				return isExistSync(containerName, id);
+				String imageId = params[0];
+				return isExistSync(containerName, imageId);
 			}
 
 			@Override
@@ -184,11 +181,11 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(id);
+		}).execute(imageId);
 	}
-	
-	
-	public void uploadBitmapAsync(final String containerName, String id, final Bitmap bitmap, final EntityCallback<String> callback) {
+
+
+	public void uploadBitmapAsync(final String containerName, String imageId, final Bitmap bitmap, final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -198,8 +195,8 @@ public class BlobStorageHelper {
 
 			@Override
 			protected String doInBackground(String... params) {
-				String id = params[0];
-				return uploadBitmapSync(containerName, id, bitmap);
+				String imageId = params[0];
+				return uploadBitmapSync(containerName, imageId, bitmap);
 			}
 
 			@Override
@@ -207,11 +204,11 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(id);
+		}).execute(imageId);
 	}
 
 
-	public void downloadBitmapAsync(final String containerName, String id, final EntityCallback<Bitmap> callback) {
+	public void downloadBitmapAsync(final String containerName, String imageId, final EntityCallback<Bitmap> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("downloadBitmapAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -221,8 +218,8 @@ public class BlobStorageHelper {
 
 			@Override
 			protected Bitmap doInBackground(String... params) {
-				String id = params[0];
-				return downloadBitmapSync(containerName, id);
+				String imageId = params[0];
+				return downloadBitmapSync(containerName, imageId);
 			}
 
 			@Override
@@ -230,11 +227,12 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(id);
+		}).execute(imageId);
 	}
 
 
-	public void downloadToFileAsync(final Context context, final String containerName, String id, final String path, final EntityCallback<String> callback) {
+	public void downloadToFileAsync(final Context context, final String containerName, String imageId, final String path,
+			final EntityCallback<String> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("downloadToFileAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -244,8 +242,8 @@ public class BlobStorageHelper {
 
 			@Override
 			protected String doInBackground(String... params) {
-				String id = params[0];
-				return downloadToFileSync(context, containerName, id, path);
+				String imageId = params[0];
+				return downloadToFileSync(context, containerName, imageId, path);
 			}
 
 			@Override
@@ -253,11 +251,11 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(id);
+		}).execute(imageId);
 	}
 
 
-	public void deleteBitmapAsync(final String containerName, String id, final EntityCallback<Boolean> callback) {
+	public void deleteBitmapAsync(final String containerName, String imageId, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("deleteBitmapAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -267,8 +265,12 @@ public class BlobStorageHelper {
 
 			@Override
 			protected Boolean doInBackground(String... params) {
-				String id = params[0];
-				return deleteBitmapSync(containerName, id);
+				try {
+					String imageId = params[0];
+					return deleteBitmapSync(containerName, imageId);
+				} catch (StorageException e) {
+					return true;
+				}
 			}
 
 			@Override
@@ -276,6 +278,6 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(id);
+		}).execute(imageId);
 	}
 }

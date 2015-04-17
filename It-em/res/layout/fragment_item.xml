@@ -108,6 +108,7 @@
                         android:id="@+id/item_frag_product_tag_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/detail_label_text_bg"
                         android:gravity="center"
                         android:textColor="@color/gray_super_dark"
                         app:textType="caption" />
@@ -206,7 +207,7 @@
 
         <include
             android:layout_width="match_parent"
-            android:layout_height="@dimen/row_height"
+            android:layout_height="?attr/actionBarSize"
             layout="@layout/toolbar_item" />
     </LinearLayout>
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res/com.pinthecloud.item"
     android:id="@+id/toolbar_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/row_height"
+    android:layout_height="?attr/actionBarSize"
     android:background="@android:color/white"
     android:paddingEnd="@dimen/key_line_first"
     android:paddingLeft="@dimen/key_line_first"
@@ -63,9 +63,11 @@
             android:id="@+id/toolbar_item_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin"
             android:background="@android:color/transparent"
             android:contentDescription="@string/more"
-            android:src="@drawable/appbar_more_ic" />
+            android:src="@drawable/toolbar_item_more_button" />
 
         <Button
             android:id="@+id/toolbar_item_product_tag"
@@ -84,7 +86,8 @@
             android:paddingStart="@dimen/content_margin"
             android:text="@string/get_product"
             android:textColor="@color/home_item_tag_text"
-            android:textSize="@dimen/font_micro" />
+            android:textSize="@dimen/font_micro"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>
