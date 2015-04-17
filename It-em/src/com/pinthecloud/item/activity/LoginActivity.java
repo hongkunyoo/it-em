@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -266,13 +267,11 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
-				Bitmap profileImage = null;
 				try {
-					profileImage = mApp.getPicasso().load(url).get();
+					return mApp.getPicasso().load(url).get();
 				} catch (IOException e) {
-					EventBus.getDefault().post(new ItException("getProfileImageFromFacebook", ItException.TYPE.INTERNAL_ERROR));
+					return BitmapFactory.decodeResource(getResources(), R.drawable.launcher);
 				}
-				return profileImage;
 			}
 
 			@Override
@@ -290,7 +289,7 @@ public class LoginActivity extends ItActivity {
 			protected List<Bitmap> doInBackground(Void... params) {
 				Bitmap profileImage = ImageUtil.refineSquareImage(originProfileImage, ImageUtil.PROFILE_IMAGE_SIZE, false);
 				Bitmap profileThumbnailImage = ImageUtil.refineSquareImage(originProfileImage, ImageUtil.PROFILE_THUMBNAIL_IMAGE_SIZE, false);
-				
+
 				List<Bitmap> profileImageList = new ArrayList<Bitmap>();
 				profileImageList.add(profileImage);
 				profileImageList.add(profileThumbnailImage);
@@ -303,8 +302,8 @@ public class LoginActivity extends ItActivity {
 			};
 		}).execute();
 	}
-	
-	
+
+
 	private void uploadProfileImage(final ItUser user, final List<Bitmap> profileImageList){
 		AsyncChainer.asyncChain(mThisActivity, new Chainable(){
 

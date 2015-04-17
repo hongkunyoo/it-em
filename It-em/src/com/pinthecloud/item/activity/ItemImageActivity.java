@@ -5,11 +5,13 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.ItemImagePagerAdapter;
 import com.pinthecloud.item.model.Item;
+import com.pinthecloud.item.view.DynamicHeightImageView;
 import com.pinthecloud.item.view.HeightBasedOnChildrenViewPager;
 
 public class ItemImageActivity extends ItActivity {
@@ -23,6 +25,10 @@ public class ItemImageActivity extends ItActivity {
 	private ItemImagePagerAdapter mImagePagerAdapter;
 	private TextView mImageNumber;
 
+	private Item mItem; 
+	private int mPosition;
+	private boolean[] mUpdatedList;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,8 @@ public class ItemImageActivity extends ItActivity {
 		overridePendingTransition(R.anim.slide_in_pop_up, 0);
 		setContentView(R.layout.activity_item_image);
 
+		mItem = getIntent().getParcelableExtra(Item.INTENT_KEY);
+		mPosition = getIntent().getIntExtra(POSITION_KEY, 0);
 		setToolbar();
 		findComponent();
 		setComponent();
@@ -91,27 +99,31 @@ public class ItemImageActivity extends ItActivity {
 
 
 	private void setComponent(){
-		final Item item = getIntent().getParcelableExtra(Item.INTENT_KEY);
-		int position = getIntent().getIntExtra(POSITION_KEY, 0);
-		
-		mImagePagerAdapter = new ItemImagePagerAdapter(mThisActivity, item);
+		mImagePagerAdapter = new ItemImagePagerAdapter(mThisActivity, mItem);
 		mImagePager.setOffscreenPageLimit(mImagePagerAdapter.getCount());
 		mImagePager.setAdapter(mImagePagerAdapter);
-		mImagePager.setCurrentItem(position);
+		mImagePager.setCurrentItem(mPosition);
+
+		mImageNumber.setText((mPosition+1) + "/" + mItem.getImageNumber());
+		
+		mUpdatedList = new boolean[mImagePagerAdapter.getCount()];
 		mImagePager.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+				if(!mUpdatedList[position]){
+					mUpdatedList[position] = true;
+					ImageView imageView = (DynamicHeightImageView)mImagePager.findViewWithTag(position);
+					mImagePagerAdapter.setImageView(imageView, position);
+				}
 			}
 			@Override
 			public void onPageSelected(int position) {
-				mImageNumber.setText((position+1) + "/" + item.getImageNumber());
+				mImageNumber.setText((position+1) + "/" + mImagePagerAdapter.getCount());
 			}
 			@Override
 			public void onPageScrollStateChanged(int state) {
 			}
 		});
-		
-		mImageNumber.setText((position+1) + "/" + item.getImageNumber());
 	}
 }

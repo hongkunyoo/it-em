@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.pinthecloud.item.ItApplication;
@@ -47,7 +48,7 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 		imageView.setAdjustViewBounds(true);
 		imageView.setScaleType(ScaleType.FIT_CENTER);
 		imageView.setHeightRatio((double)mItem.getMainImageHeight()/mItem.getMainImageWidth());
-		setImageView(imageView, position);
+		imageView.setTag(position);
 
 		((ViewPager)container).addView(imageView);
 		return imageView;
@@ -56,7 +57,7 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		DynamicHeightImageView imageView = (DynamicHeightImageView)object;
+		ImageView imageView = (DynamicHeightImageView)object;
 		imageView.setImageBitmap(null);
 		((ViewPager)container).removeView(imageView);
 	}
@@ -68,7 +69,7 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 	}
 
 
-	private void setImageView(final DynamicHeightImageView imageView, int position){
+	public void setImageView(final ImageView imageView, int position){
 		String imageId = position == 0 ? mItem.getId() : mItem.getId() + "_" + position;
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(imageId))
