@@ -110,7 +110,7 @@ public class NotiFragment extends MainTabFragment {
 				// Add more items when grid reaches bottom
 				int position = mListLayoutManager.findLastVisibleItemPosition();
 				int totalItemCount = mListLayoutManager.getItemCount();
-				if (position >= totalItemCount-2 && !mIsAdding) {
+				if (position >= totalItemCount-4 && !mIsAdding) {
 					addNextItem();
 				}
 			}

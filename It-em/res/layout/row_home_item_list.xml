@@ -47,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/white"
             android:orientation="vertical"
             android:visibility="gone" >
 
@@ -152,8 +151,7 @@
                     android:paddingStart="@dimen/content_margin"
                     android:text="@string/get_product"
                     android:textColor="@color/home_item_tag_text"
-                    android:textSize="@dimen/font_small"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/font_small" />
             </RelativeLayout>
         </LinearLayout>
 

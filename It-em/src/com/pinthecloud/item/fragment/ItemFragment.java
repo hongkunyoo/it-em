@@ -27,7 +27,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,14 +64,25 @@ import com.pinthecloud.item.view.NotifyingScrollView.OnScrollChangedListener;
 public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private NotifyingScrollView mScrollView;
+	private View mItemLayout;
+
 	private DynamicHeightImageView mItemImage;
 	private HorizontalScrollView mItemImagesScrollView;
 	private LinearLayout mItemImagesLayout;
-
-	private ProgressBar mProgressBar;
-	private View mItemLayout;
 	private TextView mContent;
 	private TextView mUploadDate;
+
+	private View mProgressBarLayout;
+	private View mItemUpdatedLayout;
+
+	private View mToolbarItemLayout;
+	private ImageButton mLikeButton;
+	private View mLikeNumberLayout;
+	private TextView mLikeNumber;
+	private ImageButton mMoreButton;
+	private Button mProductTagButton;
+	private View mProductTagCategoryLayout;
+	private TextView mProductTagCategory;
 
 	private TextView mReplyTitle;
 	private TextView mReplyListEmptyView;
@@ -87,13 +97,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private TextView mUserNickName;
 	private TextView mUserDescription;
 	private TextView mUserWebsite;
-
-	private View mToolbarItemLayout;
-	private ImageButton mLikeButton;
-	private View mLikeNumberLayout;
-	private TextView mLikeNumber;
-	private ImageButton mMoreButton;
-	private Button mProductTagButton;
 
 	private int mMaxToolbarItemBottomScrollHeight;
 	private View mToolbarItemBottomLayout;
@@ -185,14 +188,25 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void findComponent(View view){
 		mScrollView = (NotifyingScrollView)view.findViewById(R.id.item_frag_scroll_view);
+		mItemLayout = view.findViewById(R.id.item_frag_layout);
+
 		mItemImage = (DynamicHeightImageView)view.findViewById(R.id.item_frag_image);
 		mItemImagesScrollView = (HorizontalScrollView)view.findViewById(R.id.item_frag_images_scroll_view);
 		mItemImagesLayout = (LinearLayout)view.findViewById(R.id.item_frag_images_layout);
-
-		mProgressBar = (ProgressBar)view.findViewById(R.id.custom_progress_bar);
-		mItemLayout = view.findViewById(R.id.item_frag_item_layout);
 		mContent = (TextView)view.findViewById(R.id.item_frag_content);
 		mUploadDate = (TextView)view.findViewById(R.id.item_frag_upload_date);
+
+		mProgressBarLayout = view.findViewById(R.id.item_frag_progress_bar_layout);
+		mItemUpdatedLayout = view.findViewById(R.id.item_frag_item_updated_layout);
+
+		mToolbarItemLayout = view.findViewById(R.id.toolbar_item_layout);
+		mLikeButton = (ImageButton)mToolbarItemLayout.findViewById(R.id.toolbar_item_like_button);
+		mLikeNumberLayout = mToolbarItemLayout.findViewById(R.id.toolbar_item_like_number_layout);
+		mLikeNumber = (TextView)mToolbarItemLayout.findViewById(R.id.toolbar_item_like_number);
+		mMoreButton = (ImageButton)mToolbarItemLayout.findViewById(R.id.toolbar_item_more);
+		mProductTagButton = (Button)mToolbarItemLayout.findViewById(R.id.toolbar_item_product_tag);
+		mProductTagCategoryLayout = view.findViewById(R.id.item_frag_product_tag_category_layout);
+		mProductTagCategory = (TextView)view.findViewById(R.id.item_frag_product_tag_category);
 
 		mReplyTitle = (TextView)view.findViewById(R.id.reply_frag_title);
 		mReplyListEmptyView = (TextView)view.findViewById(R.id.reply_frag_list_empty_view);
@@ -205,13 +219,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		mUserDescription = (TextView)view.findViewById(R.id.item_frag_user_description);
 		mUserWebsite = (TextView)view.findViewById(R.id.item_frag_user_website);
 
-		mToolbarItemLayout = view.findViewById(R.id.toolbar_item_layout);
-		mLikeButton = (ImageButton)mToolbarItemLayout.findViewById(R.id.toolbar_item_like_button);
-		mLikeNumberLayout = mToolbarItemLayout.findViewById(R.id.toolbar_item_like_number_layout);
-		mLikeNumber = (TextView)mToolbarItemLayout.findViewById(R.id.toolbar_item_like_number);
-		mMoreButton = (ImageButton)mToolbarItemLayout.findViewById(R.id.toolbar_item_more);
-		mProductTagButton = (Button)mToolbarItemLayout.findViewById(R.id.toolbar_item_product_tag);
-
 		mToolbarItemBottomLayout = view.findViewById(R.id.toolbar_item_bottom_layout);
 		mLikeBottomButton = (ImageButton)mToolbarItemBottomLayout.findViewById(R.id.toolbar_item_like_button);
 		mLikeNumberBottomLayout = mToolbarItemBottomLayout.findViewById(R.id.toolbar_item_like_number_layout);
@@ -222,8 +229,9 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setComponent(){
-		mUserNickName.setText(mItem.getWhoMade());
+		setContent();
 		showMoreButton();
+		mUserNickName.setText(mItem.getWhoMade());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
@@ -441,16 +449,16 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			}
 		});
 
-		mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		mItemLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-					mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+					mItemLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 				} else {
-					mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+					mItemLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				}
 
 				mScrollView.scrollTo(0, ViewUtil.getActionBarHeight(mActivity));
@@ -474,8 +482,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void updateItemFrag(){
-		mProgressBar.setVisibility(View.VISIBLE);
-		mItemLayout.setVisibility(View.GONE);
+		mProgressBarLayout.setVisibility(View.VISIBLE);
+		mItemUpdatedLayout.setVisibility(View.GONE);
 		mToolbarItemBottomLayout.setVisibility(View.GONE);
 
 		mAimHelper.getItem(mItem, mUser.getId(), new EntityCallback<Item>() {
@@ -487,12 +495,13 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				}
 
 				if(item != null){
-					mProgressBar.setVisibility(View.GONE);
-					mItemLayout.setVisibility(View.VISIBLE);
+					mProgressBarLayout.setVisibility(View.GONE);
+					mItemUpdatedLayout.setVisibility(View.VISIBLE);
 
 					mItem = item;
 					setItemComponent();
 					setReplyFrag();
+					setProductTagCategory();
 				} else {
 					String message = getResources().getString(R.string.not_exist_item);
 					ItAlertDialog notExistItemDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
@@ -519,36 +528,41 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setItemComponent(){
-		mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));
-		String elapsedTime = mItem.getCreateDateTime().getElapsedTimeString(mActivity);
-		String uploadedOn = String.format(Locale.US, mActivity.getResources().getString(R.string.uploaded_on), elapsedTime);
-		mUploadDate.setText(uploadedOn);
+		setContent();
+		setLikeNumber(mItem.getLikeItCount());
+		activateToolbarItemComponent();
 		setProfile();
 
-		setLikeNumber(mItem.getLikeItCount());
-		mLikeButton.setActivated(mItem.getPrevLikeId() != null);
-		mLikeBottomButton.setActivated(mItem.getPrevLikeId() != null);
-		mProductTagButton.setActivated(mItem.isHasProductTag());
-		mProductTagBottomButton.setActivated(mItem.isHasProductTag());
-
-		mToolbarItemBottomLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		mToolbarItemLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-					mToolbarItemBottomLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+					mToolbarItemLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 				} else {
-					mToolbarItemBottomLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+					mToolbarItemLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				}
 
 				int deviceHeight = ViewUtil.getDeviceHeight(mActivity) - ViewUtil.getStatusBarHeight(mActivity);
-				mMaxToolbarItemBottomScrollHeight = mItemImage.getBottom() + mItemImagesScrollView.getHeight()
-						+ mToolbarItemLayout.getBottom() - deviceHeight;
+				mMaxToolbarItemBottomScrollHeight = mItemLayout.getBottom() + mToolbarItemLayout.getHeight() - deviceHeight;
 				showToolbarItemBottomLayout();
 			}
 		});
+	}
+
+
+	private void setContent(){
+		if(mItem.getContent() != null){
+			mContent.setText(TextUtil.getBody(mActivity, mItem.getContent()));	
+		}
+
+		if(mItem.getRawCreateDateTime() != null){
+			String elapsedTime = mItem.getCreateDateTime().getElapsedTimeString(mActivity);
+			String uploadedOn = String.format(Locale.US, mActivity.getResources().getString(R.string.uploaded_on), elapsedTime);
+			mUploadDate.setText(uploadedOn);	
+		}
 	}
 
 
@@ -576,6 +590,16 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				ViewUtil.setListHeightBasedOnChildren(mReplyListView, Math.min(mItem.getReplyCount(), displayReplyNum+1));
 			}
 		});
+	}
+
+
+	private void setProductTagCategory(){
+		if(mItem.isHasProductTag()){
+			mProductTagCategoryLayout.setVisibility(View.VISIBLE);
+			mProductTagCategory.setText(getProductTagCategoryString(mItem.getProductTagList()));
+		} else {
+			mProductTagCategoryLayout.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -607,13 +631,21 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void showToolbarItemBottomLayout(){
-		if(mMaxToolbarItemBottomScrollHeight > 0){
+		if(mMaxToolbarItemBottomScrollHeight - mScrollView.getScrollY() > 0){
 			mToolbarItemBottomLayout.setVisibility(View.VISIBLE);
 			Animation anim = AnimationUtils.loadAnimation(mActivity, R.anim.slide_in_up_slow);
 			mToolbarItemBottomLayout.startAnimation(anim);
 		} else {
 			mToolbarItemBottomLayout.setVisibility(View.GONE);
 		}
+	}
+
+
+	private void activateToolbarItemComponent(){
+		mLikeButton.setActivated(mItem.getPrevLikeId() != null);
+		mLikeBottomButton.setActivated(mItem.getPrevLikeId() != null);
+		mProductTagButton.setActivated(mItem.isHasProductTag());
+		mProductTagBottomButton.setActivated(mItem.isHasProductTag());
 	}
 
 
@@ -692,7 +724,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private String getProductTagCategoryText(List<ProductTag> tagList){
+	private String getProductTagCategoryString(List<ProductTag> tagList){
 		String categoryString = "";
 		List<Integer> categoryList = new ArrayList<Integer>();
 		for(ProductTag tag : tagList){

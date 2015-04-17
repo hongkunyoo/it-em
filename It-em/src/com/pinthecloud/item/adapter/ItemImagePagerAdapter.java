@@ -1,5 +1,6 @@
 package com.pinthecloud.item.adapter;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -8,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView.ScaleType;
 
 import com.pinthecloud.item.ItApplication;
-import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.view.DynamicHeightImageView;
+import com.squareup.picasso.Callback;
 
 public class ItemImagePagerAdapter extends PagerAdapter {
 
@@ -44,12 +45,9 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, int position) {
 		DynamicHeightImageView imageView = new DynamicHeightImageView(mActivity);
 		imageView.setAdjustViewBounds(true);
-		imageView.setScaleType(ScaleType.CENTER_CROP);
+		imageView.setScaleType(ScaleType.FIT_CENTER);
 		imageView.setHeightRatio((double)mItem.getMainImageHeight()/mItem.getMainImageWidth());
-		imageView.setImageResource(R.drawable.feed_loading_default_img);
-
-		String imageId = position == 0 ? mItem.getId() : mItem.getId() + "_" + position;
-		setImageView(imageView, imageId);
+		setImageView(imageView, position);
 
 		((ViewPager)container).addView(imageView);
 		return imageView;
@@ -70,10 +68,20 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 	}
 
 
-	private void setImageView(final DynamicHeightImageView imageView, String imageId){
+	private void setImageView(final DynamicHeightImageView imageView, int position){
+		String imageId = position == 0 ? mItem.getId() : mItem.getId() + "_" + position;
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImgUrl(imageId))
-		.placeholder(R.drawable.feed_loading_default_img)
-		.into(imageView);
+		.into(imageView, new Callback(){
+
+			@Override
+			public void onError() {
+			}
+			@Override
+			public void onSuccess() {
+				PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+				attacher.update();
+			}
+		});
 	}
 }

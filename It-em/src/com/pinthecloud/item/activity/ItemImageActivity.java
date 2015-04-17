@@ -28,7 +28,7 @@ public class ItemImageActivity extends ItActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.slide_in_pop_up, 0);
-		setContentView(R.layout.activity_upload_image);
+		setContentView(R.layout.activity_item_image);
 
 		setToolbar();
 		findComponent();

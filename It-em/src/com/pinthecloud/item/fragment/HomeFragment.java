@@ -68,7 +68,7 @@ public class HomeFragment extends MainTabFragment {
 		findComponent(view);
 		setComponent();
 		setRefreshLayout();
-		setList();
+		setGrid();
 		setScroll();
 
 		return view;
@@ -144,7 +144,7 @@ public class HomeFragment extends MainTabFragment {
 	}
 
 
-	private void setList(){
+	private void setGrid(){
 		mGridView.setHasFixedSize(true);
 
 		int gridColumnNum = getResources().getInteger(R.integer.home_item_grid_column_num);
@@ -161,24 +161,26 @@ public class HomeFragment extends MainTabFragment {
 	private void setScroll(){
 		int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
 		final int maxUploadScrollY = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
+		final int addUnit = mGridLayoutManager.getSpanCount()*2;
+		
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 
-				// Add more items when grid reaches bottom
-				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
-				int totalItemCount = mGridLayoutManager.getItemCount();
-				if (positions[positions.length-1] >= totalItemCount-3 && !mIsAdding) {
-					addNextItem();
-				}
-
 				// Scroll upload button
 				if(dy <= 0){ // Scroll Up, Upload button Up
 					mUploadLayout.scrollTo(0, Math.min(mUploadLayout.getScrollY()-dy, 0));
 				} else { // Scroll down, Upload button Down
 					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxUploadScrollY));
+				}
+				
+				// Add more items when grid reaches bottom
+				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
+				int totalItemCount = mGridLayoutManager.getItemCount();
+				if (positions[positions.length-1] >= totalItemCount-addUnit && !mIsAdding) {
+					addNextItem();
 				}
 			}
 		});

@@ -105,7 +105,7 @@ public class ProductTagDialog extends ItDialogFragment {
 
 	private void updateList() {
 		mProgressBar.setVisibility(View.VISIBLE);
-		mListView.setVisibility(View.GONE);
+		mListView.setVisibility(View.INVISIBLE);
 
 		mAimHelper.list(ProductTag.class, mItem.getId(), new ListCallback<ProductTag>() {
 
@@ -120,8 +120,8 @@ public class ProductTagDialog extends ItDialogFragment {
 				mTagList.clear();
 				mListAdapter.addAll(getProductTagList(list));
 
-				ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
 				showList(count);
+				ViewUtil.setListHeightBasedOnChildren(mListView, mTagList.size());
 			}
 		});
 	}
