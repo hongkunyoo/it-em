@@ -29,18 +29,21 @@
                     android:layout_marginTop="?attr/actionBarSize"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop" />
+                <include layout="@layout/custom_line" />
 
                 <HorizontalScrollView
                     android:id="@+id/item_frag_images_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/item_images_scroll_height"
+                    android:paddingLeft="@dimen/content_big_margin"
+                    android:paddingRight="@dimen/content_big_margin"
                     android:background="@android:color/white" >
 
                     <LinearLayout
                         android:id="@+id/item_frag_images_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
+                        android:layout_gravity="start"
                         android:gravity="center_vertical"
                         android:orientation="horizontal" />
                 </HorizontalScrollView>
