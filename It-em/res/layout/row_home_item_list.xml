@@ -159,6 +159,7 @@
         <include layout="@layout/custom_line" />
 
         <LinearLayout
+            android:id="@+id/row_home_item_profile_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/row_height"
             android:gravity="center_vertical"

@@ -1,21 +1,14 @@
 package com.pinthecloud.item.activity;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.provider.Settings.Secure;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -46,7 +39,7 @@ public class SplashActivity extends ItActivity {
 		if(mApp.isAdmin()){
 			Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_LONG).show();;
 		}
-
+		
 		// Remove noti
 		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
@@ -67,13 +60,7 @@ public class SplashActivity extends ItActivity {
 			return;
 		}
 
-		// Run item
-		if(mPrefHelper.getInt(ItConstant.MAX_TEXTURE_SIZE_KEY) == PrefHelper.DEFAULT_INT){
-			FrameLayout layout = (FrameLayout) findViewById(R.id.splash_surface_layout);
-			layout.addView(new GetMaxTextureSizeSurfaceView(mThisActivity));
-		} else {
-			runItem();
-		}
+		runItem();
 	}
 
 
@@ -162,13 +149,13 @@ public class SplashActivity extends ItActivity {
 
 
 	private void gotoNextActivity() {
-		new Handler(Looper.getMainLooper()).postDelayed(new Runnable(){
+		new Handler().postDelayed(new Runnable(){
 
 			@Override
 			public void run() {
 				ItUser user = mObjectPrefHelper.get(ItUser.class);
 				Intent intent = new Intent();
-				
+
 				if (!user.checkLoggedIn()){
 					// New User
 					intent.setClass(mThisActivity, LoginActivity.class);
@@ -176,7 +163,7 @@ public class SplashActivity extends ItActivity {
 					// Has Loggined
 					intent.setClass(mThisActivity, MainActivity.class);
 				}
-				
+
 				startActivity(intent);
 				finish();
 			}
@@ -207,34 +194,5 @@ public class SplashActivity extends ItActivity {
 		mObjectPrefHelper.put(deviceInfo);
 
 		runItem();
-	}
-
-
-	private class GetMaxTextureSizeSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
-
-		public GetMaxTextureSizeSurfaceView(Context context) {
-			super(context);
-			setRenderer(this);
-		}
-
-		@Override
-		public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-			setMaxTextureSize();
-			runItem();
-		}
-
-		@Override
-		public void onSurfaceChanged(GL10 gl, int width, int height) {
-		}
-
-		@Override
-		public void onDrawFrame(GL10 gl) {
-		}
-
-		private void setMaxTextureSize(){
-			int[] maxTextureSize = new int[1];
-			GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0);
-			mPrefHelper.put(ItConstant.MAX_TEXTURE_SIZE_KEY, maxTextureSize[0]);
-		}
 	}
 }

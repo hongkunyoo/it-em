@@ -94,7 +94,7 @@ public class ItIntentService extends IntentService {
 
 				// Alert noti
 				Bitmap largeIcon = (Bitmap)params[0];
-				Notification notification = getNotification(itNoti.getWhoMade(), itNoti.notiContent(), pendingIntent, largeIcon);
+				Notification notification = getNotification(itNoti.getWhoMade(), itNoti.makeMessage(), pendingIntent, largeIcon);
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.notify(NOTIFICATION_ID, notification);
 				EventBus.getDefault().post(new NotificationEvent(itNoti));

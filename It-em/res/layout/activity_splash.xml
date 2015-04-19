@@ -12,9 +12,4 @@
         android:paddingBottom="@dimen/key_line_second"
         android:src="@drawable/splash_logo" />
 
-    <FrameLayout
-        android:id="@+id/splash_surface_layout"
-        android:layout_width="@dimen/line_width"
-        android:layout_height="@dimen/line_width" />
-
 </RelativeLayout>

@@ -37,10 +37,10 @@
             android:orientation="vertical" >
 
             <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/row_noti_receive"
+                android:id="@+id/row_noti_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/brand_text_color"
+                android:textColor="@color/brand_text_color_light"
                 app:textType="body" />
 
             <LinearLayout
@@ -58,26 +58,15 @@
                     android:contentDescription="@string/image" />
 
                 <com.pinthecloud.item.view.ItTextView
-                    android:id="@+id/row_noti_content"
+                    android:id="@+id/row_noti_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/key_line_first"
-                    android:layout_marginRight="@dimen/key_line_first"
-                    android:ellipsize="end"
-                    android:maxLines="1"
+                    android:drawableLeft="@drawable/general_time_ic"
+                    android:drawableStart="@drawable/general_time_ic"
+                    android:gravity="center_vertical"
                     android:textColor="@color/gray_dark"
                     app:textType="caption" />
             </LinearLayout>
-
-            <com.pinthecloud.item.view.ItTextView
-                android:id="@+id/row_noti_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/general_time_ic"
-                android:drawableStart="@drawable/general_time_ic"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray_dark"
-                app:textType="caption" />
         </LinearLayout>
     </RelativeLayout>
 

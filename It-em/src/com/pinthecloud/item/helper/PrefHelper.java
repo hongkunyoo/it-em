@@ -74,7 +74,6 @@ public class PrefHelper {
 
 	public void clear(){
 		int developMode = getInt(ItConstant.DEVELOP_MODE_KEY);
-		int maxTextureSize = getInt(ItConstant.MAX_TEXTURE_SIZE_KEY);
 		float version = getFloat(ItConstant.APP_VERSION_KEY);
 
 		Editor editor = mPref.edit();
@@ -82,7 +81,6 @@ public class PrefHelper {
 		editor.commit();
 
 		put(ItConstant.DEVELOP_MODE_KEY, developMode);
-		put(ItConstant.MAX_TEXTURE_SIZE_KEY, maxTextureSize);
 		put(ItConstant.APP_VERSION_KEY, version);
 	}
 }
