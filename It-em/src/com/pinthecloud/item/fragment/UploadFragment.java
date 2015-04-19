@@ -47,7 +47,7 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.TextUtil;
+import com.pinthecloud.item.util.SpanUtil;
 import com.pinthecloud.item.util.ViewUtil;
 
 public class UploadFragment extends ItFragment {
@@ -327,7 +327,7 @@ public class UploadFragment extends ItFragment {
 
 	private void uploadItem(final List<Bitmap> imageList){
 		final Item item = getItem(imageList);
-		final List<HashTag> tagList = getTagList(item.getContent());
+		final List<HashTag> tagList = getHashTagList(item.getContent());
 
 		AsyncChainer.asyncChain(mThisFragment, new Chainable(){
 
@@ -387,16 +387,16 @@ public class UploadFragment extends ItFragment {
 			}
 		}
 
-		ItUser myItUser = mObjectPrefHelper.get(ItUser.class);
+		ItUser myUser = mObjectPrefHelper.get(ItUser.class);
 		String content = mContent.getText().toString() + (mBrandList.size()>0 ? "\n\n" : "") + getBrandContent(mBrandList);
-		return new Item(content, myItUser.getNickName(), myItUser.getId(), mImagePathList.size(),
+		return new Item(content, myUser.getNickName(), myUser.getId(), mImagePathList.size(),
 				coverWidth, coverHeight, mainWidth, mainHeight);
 	}
 
 
-	private List<HashTag> getTagList(String content){
+	private List<HashTag> getHashTagList(String content){
 		List<HashTag> tagList = new ArrayList<HashTag>();
-		List<String> hashTags = TextUtil.getSpanBodyList(content);
+		List<String> hashTags = SpanUtil.getSpanList(content, '#');
 		for(String hashTag : hashTags){
 			tagList.add(new HashTag(hashTag));
 		}

@@ -94,10 +94,11 @@
     <string name="bank_account_edited">은행 계좌가 수정되었습니다.</string>
 
     <!-- Notification -->
-    <string name="noti_general_content">%1$s님이 %2$s%3$s.</string>
-    <string name="noti_product_tag_content">%1$s%2$s.</string>
-    <string name="my_item">내 아이템</string>
-    <string name="of_item">%1$s님의 아이템</string>
+    <string name="noti_general_message">%1$s님이 %2$s 아이템%3$s.</string>
+    <string name="noti_product_tag_message">%1$s 아이템%2$s.</string>
+    <string name="your">회원님의</string>
+    <string name="of">님의</string>
+    <string name="item">item</string>
     <string name="noti_like">을 좋아합니다</string>
     <string name="noti_reply">에 댓글을 달았습니다</string>
     <string name="noti_product_tag">에 상품라벨이 달렸습니다</string>

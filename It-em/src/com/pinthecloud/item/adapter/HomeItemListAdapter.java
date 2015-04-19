@@ -70,6 +70,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		public ImageButton likeButton;
 		public Button productTag;
 
+		public View profileLayout;
 		public CircleImageView profileImage;
 		public TextView nickName;
 
@@ -87,6 +88,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 			this.likeButton = (ImageButton)view.findViewById(R.id.row_home_item_like_button);
 			this.productTag = (Button)view.findViewById(R.id.row_home_item_product_tag);
 
+			this.profileLayout = view.findViewById(R.id.row_home_item_profile_layout);
 			this.profileImage = (CircleImageView)view.findViewById(R.id.row_home_item_profile_image);
 			this.nickName = (TextView)view.findViewById(R.id.row_home_item_nick_name);
 		}
@@ -105,7 +107,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		Item item = mItemList.get(position);
 		setComponent(holder, item);
 		setButton(holder, item);
-		setProfileButton(holder, item);
 		setImageView(holder, item);
 	}
 
@@ -201,19 +202,8 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
-	}
-
-
-	private void setProfileButton(ViewHolder holder, final Item item){
-		holder.profileImage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				gotoUserPage(item);
-			}
-		});
-
-		holder.nickName.setOnClickListener(new OnClickListener() {
+		
+		holder.profileLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

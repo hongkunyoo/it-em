@@ -11,6 +11,7 @@ import android.view.View.MeasureSpec;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
+import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 
 public class ViewUtil {
@@ -40,12 +41,17 @@ public class ViewUtil {
 		recyclerView.getLayoutParams().height = totalHeight;
 		recyclerView.requestLayout();
 	}
+
+	public static int getStatusBarHeight(Context context) {
+		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		return context.getResources().getDimensionPixelSize(resourceId);
+	}
 	
 	public static int getActionBarHeight(Context context) {
 		TypedValue tv = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-        return TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
-    }
+		context.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true);
+		return TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+	}
 
 	public static int getDeviceWidth(ItActivity activity){
 		DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -59,12 +65,7 @@ public class ViewUtil {
 		activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		return displayMetrics.heightPixels;
 	}
-
-
-	public static int getStatusBarHeight(Context context) {
-		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-		return context.getResources().getDimensionPixelSize(resourceId);
-	}
+	
 
 	public static void recycleImageView(ImageView imageView){
 		Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();

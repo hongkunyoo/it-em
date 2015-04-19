@@ -169,7 +169,7 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 			mGridEmptyImage.setImageResource(R.drawable.mypage_item_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_my_item));
 		} else if(mPosition == LIKE) {
-			mGridEmptyImage.setImageResource(R.drawable.mypage_it_empty_ic);
+			mGridEmptyImage.setImageResource(R.drawable.mypage_like_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_like_item));
 		}
 	}

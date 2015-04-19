@@ -84,35 +84,43 @@ public class ItNotification extends AbstractItemModel<ItNotification> {
 	public void setMainImageHeight(int mainImageHeight) {
 		this.mainImageHeight = mainImageHeight;
 	}
-	
-	public String notiContent(){
+
+	public String makeMessage(){
 		ItApplication app = ItApplication.getInstance();
-		ItUser myItUser = app.getObjectPrefHelper().get(ItUser.class);
-
-		String refWhoMade = "";
-		if(getRefWhoMadeId().equals(myItUser.getId())){
-			refWhoMade = app.getResources().getString(R.string.my_item);
-		} else {
-			refWhoMade = String.format(Locale.US, app.getResources().getString(R.string.of_item), getRefWhoMade());
-		}
-
-		String type = "";
-		if(getType().equals(ItNotification.TYPE.LikeIt.toString())){
-			type = app.getResources().getString(R.string.noti_like);
-		} else if(getType().equals(ItNotification.TYPE.Reply.toString())){
-			type = app.getResources().getString(R.string.noti_reply);
-		} else if(getType().equals(ItNotification.TYPE.ProductTag.toString())){
-			type = app.getResources().getString(R.string.noti_product_tag);
-		}
-
-		String content = "";
+		String whoMadeString = getWhoMade();
+		String refWhoMadeString = refWhoMadeString();
+		String typeString = typeString();
+		
 		if(getType().equals(ItNotification.TYPE.ProductTag.toString())){
-			content = String.format(Locale.US, app.getResources().getString(R.string.noti_product_tag_content), refWhoMade, type);
+			return String.format(Locale.US, app.getResources().getString(R.string.noti_product_tag_message),
+					refWhoMadeString, typeString);
 		} else {
-			content = String.format(Locale.US, app.getResources().getString(R.string.noti_general_content), getWhoMade(), refWhoMade, type);
+			return String.format(Locale.US, app.getResources().getString(R.string.noti_general_message),
+					whoMadeString, refWhoMadeString, typeString);
 		}
+	}
 
-		return content;
+	private String refWhoMadeString(){
+		ItApplication app = ItApplication.getInstance();
+		ItUser myUser = app.getObjectPrefHelper().get(ItUser.class);
+		if(getRefWhoMadeId().equals(myUser.getId())){
+			return app.getResources().getString(R.string.your);
+		} else {
+			return getRefWhoMade() + app.getResources().getString(R.string.of);
+		}
+	}
+
+	private String typeString(){
+		ItApplication app = ItApplication.getInstance();
+		if(getType().equals(ItNotification.TYPE.LikeIt.toString())){
+			return app.getResources().getString(R.string.noti_like);
+		} else if(getType().equals(ItNotification.TYPE.Reply.toString())){
+			return app.getResources().getString(R.string.noti_reply);
+		} else if(getType().equals(ItNotification.TYPE.ProductTag.toString())){
+			return app.getResources().getString(R.string.noti_product_tag);
+		} else {
+			return "";
+		}
 	}
 
 	public Item makeItem(){

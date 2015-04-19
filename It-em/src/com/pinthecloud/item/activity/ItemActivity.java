@@ -1,7 +1,5 @@
 package com.pinthecloud.item.activity;
 
-import java.util.Locale;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -51,7 +49,7 @@ public class ItemActivity extends ItActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		String title = String.format(Locale.US, getResources().getString(R.string.of_item), mItem.getWhoMade());
+		String title = mItem.getWhoMade() + getResources().getString(R.string.of) + " " + getResources().getString(R.string.item);
 		actionBar.setTitle(title);
 		
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

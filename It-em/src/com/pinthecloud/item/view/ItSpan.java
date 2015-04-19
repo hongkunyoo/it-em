@@ -7,18 +7,24 @@ import android.view.View;
 
 import com.pinthecloud.item.R;
 
-public class HashTagSpan extends ClickableSpan {
+public class ItSpan extends ClickableSpan {
 
 	private Context mContext;
+	private char mType;
 
-	public HashTagSpan(Context context) {
+	public ItSpan(Context context, char type) {
 		super();
 		this.mContext = context;
+		this.mType = type;
 	}
 
 	@Override
 	public void updateDrawState(TextPaint ds) {
-		ds.setColor(mContext.getResources().getColor(R.color.accent_color));
+		switch(mType){
+		case '#':
+			ds.setColor(mContext.getResources().getColor(R.color.accent_color));
+			break;
+		}
 	}
 
 	@Override

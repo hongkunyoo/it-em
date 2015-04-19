@@ -104,10 +104,11 @@
     <string name="bank_account_edited">Bank Account is edited.</string>
 
     <!-- Notification -->
-    <string name="noti_general_content">%1$s %3$s %2$s.</string>
-    <string name="noti_product_tag_content">%2$s %1$s.</string>
-    <string name="my_item">my item</string>
-    <string name="of_item">%1$s\'s item</string>
+    <string name="noti_general_message">%1$s %3$s %2$s item.</string>
+    <string name="noti_product_tag_message">%2$s %1$s item.</string>
+    <string name="your">your</string>
+    <string name="of">\'s</string>
+    <string name="item">item</string>
     <string name="noti_like">likes</string>
     <string name="noti_reply">comments on</string>
     <string name="noti_product_tag">Product label is put on</string>

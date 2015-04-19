@@ -42,7 +42,7 @@ public class MainActivity extends ItActivity {
 		if(mViewPager.getCurrentItem() != home){
 			mViewPager.setCurrentItem(home);
 		} else {
-			super.onBackPressed();	
+			super.onBackPressed();
 		}
 	}
 

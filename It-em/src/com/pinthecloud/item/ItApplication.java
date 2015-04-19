@@ -33,8 +33,8 @@ customReportContent = {ReportField.APP_VERSION_NAME, ReportField.ANDROID_VERSION
 public class ItApplication extends Application {
 
 	// Admin
-	public static final int TEST_MODE = 0;
-	public static final int REAL_MODE = 1;
+	public static final int REAL_MODE = 0;
+	public static final int TEST_MODE = 1;
 	private ArrayList<String> adminList;
 
 	// Windows Azure Mobile Service Keys
@@ -101,10 +101,10 @@ public class ItApplication extends Application {
 				// Do nothing
 			}
 
-			// Default is TEST (int 0)
+			// Default is REAL (int 1)
 			if(isAdmin()){
 				int mode = getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY);
-				mClient = (mode == TEST_MODE ? testClient : realClient);
+				mClient = (mode == REAL_MODE ? realClient : testClient);
 			} else {
 				mClient = realClient;
 			}
@@ -151,14 +151,19 @@ public class ItApplication extends Application {
 	}
 
 	public void showProgressDialog(Context context){
-		progressDialog = new ProgressDialog(context);
-		progressDialog.setCancelable(false);
-		progressDialog.show();
-		progressDialog.setContentView(R.layout.custom_progress_dialog);
+		if(progressDialog == null){
+			progressDialog = new ProgressDialog(context);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
+			progressDialog.setContentView(R.layout.custom_progress_dialog);
+		}
 	}
 
 	public void dismissProgressDialog(){
-		progressDialog.dismiss();
+		if(progressDialog != null){
+			progressDialog.dismiss();
+			progressDialog = null;
+		}
 	}
 
 	public boolean isAdmin() {
@@ -184,7 +189,7 @@ public class ItApplication extends Application {
 
 	public void switchClient(int developMode, final EntityCallback<Boolean> callback) {
 		getPrefHelper().put(ItConstant.DEVELOP_MODE_KEY, developMode);
-		mClient = (developMode == TEST_MODE ? testClient : realClient);
+		mClient = (developMode == REAL_MODE ? realClient : testClient);
 
 		getAimHelper().setMobileClient(mClient);
 		getUserHelper().setMobileClient(mClient);
