@@ -238,7 +238,7 @@ public class LoginActivity extends ItActivity {
 					@Override
 					public void onCompleted(Boolean entity) {
 						if(entity){
-							goToNextActivity();
+							gotoNextActivity();
 						} else {
 							getProfileImageFromService(user, imageUrl);
 						}
@@ -336,13 +336,13 @@ public class LoginActivity extends ItActivity {
 
 			@Override
 			public void doNext(Object obj, Object... params) {
-				goToNextActivity();
+				gotoNextActivity();
 			}
 		});
 	}
 
 
-	private void goToNextActivity(){
+	private void gotoNextActivity(){
 		mApp.dismissProgressDialog();
 		Intent intent = new Intent(mThisActivity, MainActivity.class);
 		startActivity(intent);

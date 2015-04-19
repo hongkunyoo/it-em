@@ -59,7 +59,10 @@ public class SettingsFragment extends ItFragment {
 		findComponent(view);
 		setComponent();
 		setButton();
-		setAdminComponent(view);
+		
+		if (mApp.isAdmin()){
+			setAdminComponent(view);
+		}
 
 		return view;
 	}
@@ -194,8 +197,6 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void setAdminComponent(View view) {
-		if (!mApp.isAdmin()) return;
-
 		RadioGroup rg = new RadioGroup(mActivity);
 		RadioButton real = new RadioButton(mActivity);
 		RadioButton test = new RadioButton(mActivity);
@@ -210,21 +211,13 @@ public class SettingsFragment extends ItFragment {
 
 		rg.addView(real);
 		rg.addView(test);
-
 		mLayout.addView(rg);
 
 		real.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.REAL_MODE, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						switchClientCallback();
-					}
-				});
+				switchClient(ItApplication.REAL_MODE);
 			}
 		});
 
@@ -232,24 +225,25 @@ public class SettingsFragment extends ItFragment {
 
 			@Override
 			public void onClick(View v) {
-				mApp.showProgressDialog(mActivity);
-				mApp.switchClient(ItApplication.TEST_MODE, new EntityCallback<Boolean>() {
-
-					@Override
-					public void onCompleted(Boolean entity) {
-						switchClientCallback();
-					}
-				});
+				switchClient(ItApplication.TEST_MODE);
 			}
 		});
 	}
 
 
-	private void switchClientCallback(){
-		mApp.dismissProgressDialog();
-		Intent intent = new Intent(mActivity, MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
+	private void switchClient(int developMode){
+		mApp.showProgressDialog(mActivity);
+		mApp.switchClient(developMode, new EntityCallback<Boolean>() {
+
+			@Override
+			public void onCompleted(Boolean entity) {
+				mApp.dismissProgressDialog();
+				Intent intent = new Intent(mActivity, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				mActivity.finish();
+			}
+		});
 	}
 
 

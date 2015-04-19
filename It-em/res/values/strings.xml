@@ -21,7 +21,7 @@
 
     <!-- Login -->
     <string name="facebook_login">Sign in with facebook</string>
-    <string name="kakao_login">Sign in with kakao</string>
+    <string name="kakao_login">Sign in with kakaotalk</string>
 
     <!-- Home -->
     <string name="unfold">Unfold</string>
