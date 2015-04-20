@@ -1,5 +1,7 @@
 package com.pinthecloud.item.fragment;
 
+import java.net.HttpURLConnection;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -275,16 +277,25 @@ public class SettingsFragment extends ItFragment {
 
 	private void logout(){
 		ItDevice device = mObjectPrefHelper.get(ItDevice.class);
-		mDeviceHelper.del(device, new EntityCallback<Boolean>() {
+		mDeviceHelper.del(device, new EntityCallback<Integer>() {
 
 			@Override
-			public void onCompleted(Boolean entity) {
-				mApp.dismissProgressDialog();
-				removePreference();
+			public void onCompleted(Integer statusCode) {
+				if(!isAdded()){
+					return;
+				}
 
-				Intent intent = new Intent(mActivity, LoginActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
+				mApp.dismissProgressDialog();
+				if(statusCode == HttpURLConnection.HTTP_OK || statusCode == HttpURLConnection.HTTP_NOT_FOUND){
+					removePreference();
+					
+					Intent intent = new Intent(mActivity, LoginActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
+					mActivity.finish();
+				} else {
+					EventBus.getDefault().post(new ItException("logout", ItException.TYPE.INTERNAL_ERROR));
+				}
 			}
 		});
 	}

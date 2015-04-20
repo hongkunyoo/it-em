@@ -408,10 +408,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void deleteItem(){
 		mApp.showProgressDialog(mActivity);
-		mAimHelper.delItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
+		mAimHelper.deleteItem(mThisFragment, mItem, new EntityCallback<Boolean>() {
 
 			@Override
-			public void onCompleted(Boolean entity) {
+			public void onCompleted(Boolean result) {
+				if(!isAdded()){
+					return;
+				}
+
 				mApp.dismissProgressDialog();
 				Toast.makeText(mActivity, getResources().getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
 
@@ -768,7 +772,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setItemImagesView(){
 		mItemImagesScrollView.setVisibility(mItem.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
-		
+
 		for(int i=1 ; i<mItem.getImageNumber() ; i++){
 			ImageView image = getItemImageView();
 			setItemImageButton(image, i);
@@ -782,14 +786,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			.into(image);
 		}
 	}
-	
-	
+
+
 	private ImageView getItemImageView(){
 		int width = getResources().getDimensionPixelSize(R.dimen.item_thumbnail_image_width);
 		int margin = getResources().getDimensionPixelSize(R.dimen.content_margin);
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
 		layoutParams.setMargins(0, 0, margin, 0);
-		
+
 		RoundedImageView image = new RoundedImageView(mActivity);
 		image.setLayoutParams(layoutParams);
 		image.setCornerRadius(R.dimen.content_margin);

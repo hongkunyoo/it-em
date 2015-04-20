@@ -115,7 +115,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 			}
 		});
 		
-		holder.itemImage.setOnClickListener(new OnClickListener() {
+		holder.view.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

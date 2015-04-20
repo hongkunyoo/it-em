@@ -63,9 +63,9 @@ public class DeviceHelper {
 			}
 		});
 	}
-	
-	
-	public void del(ItDevice device, final EntityCallback<Boolean> callback) {
+
+
+	public void del(ItDevice device, final EntityCallback<Integer> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("del", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -73,13 +73,10 @@ public class DeviceHelper {
 
 		deviceTable.delete(device, new TableDeleteCallback() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onCompleted(Exception exception, ServiceFilterResponse response) {
-				if (exception == null) {
-					callback.onCompleted(true);
-				} else {
-					EventBus.getDefault().post(new ItException("del", ItException.TYPE.INTERNAL_ERROR, exception));
-				}
+				callback.onCompleted(response.getStatus().getStatusCode());
 			}
 		});
 	}
@@ -96,11 +93,13 @@ public class DeviceHelper {
 			@Override
 			protected String doInBackground(GoogleCloudMessaging... params) {
 				GoogleCloudMessaging gcm = params[0];
+				String regId = null;
 				try {
-					return gcm.register(mApp.getResources().getString(R.string.gcm_sender_id));
+					regId = gcm.register(mApp.getResources().getString(R.string.gcm_sender_id));
 				} catch (IOException e) {
-					return null;
+					EventBus.getDefault().post(new ItException("getRegistrationIdAsync", ItException.TYPE.INTERNAL_ERROR));
 				}
+				return regId;
 			}
 
 			@Override

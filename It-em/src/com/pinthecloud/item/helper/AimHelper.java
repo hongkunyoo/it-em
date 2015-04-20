@@ -1,5 +1,6 @@
 package com.pinthecloud.item.helper;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -328,7 +329,7 @@ public class AimHelper {
 	}
 
 
-	public void delItem(ItFragment frag, final Item item, final EntityCallback<Boolean> callback) {
+	public void deleteItem(ItFragment frag, final Item item, final EntityCallback<Boolean> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.NETWORK_UNAVAILABLE));
 			return;
@@ -342,15 +343,18 @@ public class AimHelper {
 
 				JsonObject jo = new JsonObject();
 				jo.add("item", item.toJson());
+				
 				mClient.invokeApi(AIM_DELETE_ITEM, jo, new ApiJsonOperationCallback() {
 
+					@SuppressWarnings("deprecation")
 					@Override
 					public void onCompleted(JsonElement _json, Exception exception,
 							ServiceFilterResponse response) {
-						if (exception == null) {
-							AsyncChainer.notifyNext(obj, _json.getAsBoolean());
+						int statusCode = response.getStatus().getStatusCode();
+						if(statusCode == HttpURLConnection.HTTP_OK || statusCode == HttpURLConnection.HTTP_NOT_FOUND){
+							AsyncChainer.notifyNext(obj, true);
 						} else {
-							EventBus.getDefault().post(new ItException("delItem", ItException.TYPE.INTERNAL_ERROR, response));
+							EventBus.getDefault().post(new ItException("deleteItem", ItException.TYPE.INTERNAL_ERROR, exception));
 						}
 					}
 				});
@@ -390,14 +394,14 @@ public class AimHelper {
 				AsyncChainer.notifyNext(obj, entity);
 			}
 		});
-		
+
 		if(index == 0){
 			mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
 					new EntityCallback<Boolean>() {
 
 				@Override
 				public void onCompleted(Boolean entity) {
-					AsyncChainer.notifyNext(obj, entity);	
+					AsyncChainer.notifyNext(obj, entity);
 				}
 			});
 		}
