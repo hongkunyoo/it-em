@@ -768,6 +768,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setItemImagesView(){
 		mItemImagesScrollView.setVisibility(mItem.getImageNumber() > 1 ? View.VISIBLE : View.GONE);
+		
 		for(int i=1 ; i<mItem.getImageNumber() ; i++){
 			ImageView image = getItemImageView();
 			setItemImageButton(image, i);

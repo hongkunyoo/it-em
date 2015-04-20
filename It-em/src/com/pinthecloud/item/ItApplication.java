@@ -3,6 +3,7 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -69,7 +70,7 @@ public class ItApplication extends Application {
 		super.onCreate();
 		app = this;
 
-		//		ACRA.init(app);
+		ACRA.init(app);
 		com.kakao.Session.initialize(this, AuthType.KAKAO_TALK);
 
 		mClient = getMobileClient();
@@ -174,13 +175,13 @@ public class ItApplication extends Application {
 			adminList = new ArrayList<String>(){
 				private static final long serialVersionUID = 1L;
 				{
-					add("873390002701821"); // SeungMin - Facebook
-					add("13276876"); // Seungmin - Kakao
-					add("834118693318943"); // ChaeSoo - Facebook
-					add("677830442331776"); // HongKun - Facebook
-					add("13108175"); // HongKun - Kakao
-					add("756536111102631"); // HwaJeong - Facebook
-					add("1536364146612739"); // Item@pinthecloud.com - Facebook
+					add("873390002701821"); // Seungmin - Facebook
+					add("20175962"); // Seungmin - Kakao
+					add("834118693318943"); // Chaesoo - Facebook
+					add("677830442331776"); // Hongkun - Facebook
+					add("13108175"); // Hongkun - Kakao
+					add("756536111102631"); // Hwajeong - Facebook
+					add("1536364146612739"); // item@pinthecloud.com - Facebook
 				}
 			};
 		}

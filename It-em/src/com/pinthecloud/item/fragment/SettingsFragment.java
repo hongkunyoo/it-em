@@ -59,7 +59,7 @@ public class SettingsFragment extends ItFragment {
 		findComponent(view);
 		setComponent();
 		setButton();
-		
+
 		if (mApp.isAdmin()){
 			setAdminComponent(view);
 		}

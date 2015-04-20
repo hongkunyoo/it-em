@@ -68,4 +68,13 @@ public class UserManagement {
 		final String url = HttpRequestTask.createBaseURL(ServerProtocol.API_AUTHORITY, ServerProtocol.USER_LOGOUT_PATH);
 		APIHttpRequestTask.requestPost(responseHandler, Map.class, url, null);
 	}
+
+	/**
+	 * Unlink 요청
+	 * @param responseHandler unlink 요청 결과에 대한 handler
+	 */
+	public static void requestUnlink(final UnlinkResponseCallback responseHandler) {
+		final String url = HttpRequestTask.createBaseURL(ServerProtocol.API_AUTHORITY, ServerProtocol.USER_UNLINK_PATH);
+		APIHttpRequestTask.requestPost(responseHandler, Map.class, url, null);
+	}
 }
