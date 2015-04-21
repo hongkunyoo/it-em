@@ -97,8 +97,6 @@ public class LoginActivity extends ItActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		// Facebook
 		mFacebookUiHelper.onResume();
 		AppEventsLogger.activateApp(mThisActivity);
 	}

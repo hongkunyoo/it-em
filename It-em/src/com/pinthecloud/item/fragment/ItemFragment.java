@@ -614,7 +614,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setReplyTitle(int replyCount){
-		String title = getResources().getString(R.string.comments) + (replyCount > 0 ? replyCount : "");
+		String title = getResources().getString(R.string.comments) + (replyCount > 0 ? " " + replyCount : "");
 		mReplyTitle.setText(title);
 	}
 

@@ -110,7 +110,7 @@ public class UserHelper {
 					if(entity.size() == 0){
 						callback.onCompleted(null);	
 					} else {
-						callback.onCompleted(entity.get(0));	
+						callback.onCompleted(entity.get(0));
 					}
 				} else {
 					EventBus.getDefault().post(new ItException("get", ItException.TYPE.INTERNAL_ERROR, exception));	

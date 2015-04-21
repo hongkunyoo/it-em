@@ -1,7 +1,6 @@
 package com.pinthecloud.item.helper;
 
 import java.io.IOException;
-import java.util.List;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,7 +10,6 @@ import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.TableDeleteCallback;
-import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.event.ItException;
@@ -37,31 +35,6 @@ public class DeviceHelper {
 	public void setMobileClient(MobileServiceClient client) {
 		this.mClient = client;
 		this.deviceTable = mClient.getTable(ItDevice.class);
-	}
-
-
-	public void getByMobileId(String mobileId, final EntityCallback<ItDevice> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("getByMobileId", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		deviceTable.where().field("mobileId").eq(mobileId).execute(new TableQueryCallback<ItDevice>() {
-
-			@Override
-			public void onCompleted(List<ItDevice> entity, int count, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					if(entity.size() == 0){
-						callback.onCompleted(null);
-					} else {
-						callback.onCompleted(entity.get(0));
-					}
-				} else {
-					EventBus.getDefault().post(new ItException("getByMobileId", ItException.TYPE.INTERNAL_ERROR, exception));
-				}
-			}
-		});
 	}
 
 

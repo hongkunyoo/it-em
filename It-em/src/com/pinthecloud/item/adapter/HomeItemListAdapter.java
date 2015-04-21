@@ -202,7 +202,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				productTagDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
-		
+
 		holder.profileLayout.setOnClickListener(new OnClickListener() {
 
 			@Override

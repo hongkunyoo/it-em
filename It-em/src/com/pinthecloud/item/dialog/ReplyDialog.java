@@ -143,7 +143,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 						mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
 						mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
 				submitReply(reply, noti);
-				
+
 				mInputText.setText("");
 			}
 		});
@@ -206,7 +206,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 		mListAdapter.add(mReplyList.size(), reply);
 		showList(mItem.getReplyCount()+1);
 		ViewUtil.setListHeightBasedOnChildren(mListView, mListAdapter.getItemCount());
-		
+
 		mAimHelper.add(reply, noti, new EntityCallback<Reply>() {
 
 			@Override
@@ -224,10 +224,7 @@ public class ReplyDialog extends ItDialogFragment implements ReplyCallback {
 
 
 	private void setTitle(int replyCount){
-		String title = getResources().getString(R.string.comments);
-		if(replyCount != 0){
-			title = title + " " + replyCount;
-		}
+		String title = getResources().getString(R.string.comments) + (replyCount > 0 ? " " + replyCount : "");
 		mTitle.setText(title);
 	}
 }

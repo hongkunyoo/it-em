@@ -1,6 +1,5 @@
 package com.pinthecloud.item.helper;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -341,18 +340,13 @@ public class AimHelper {
 			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(1 + item.getImageNumber()*2 + 1);
 
-				JsonObject jo = new JsonObject();
-				jo.add("item", item.toJson());
-				
-				mClient.invokeApi(AIM_DELETE_ITEM, jo, new ApiJsonOperationCallback() {
+				mClient.invokeApi(AIM_DELETE_ITEM, item.toJson(), new ApiJsonOperationCallback() {
 
-					@SuppressWarnings("deprecation")
 					@Override
 					public void onCompleted(JsonElement _json, Exception exception,
 							ServiceFilterResponse response) {
-						int statusCode = response.getStatus().getStatusCode();
-						if(statusCode == HttpURLConnection.HTTP_OK || statusCode == HttpURLConnection.HTTP_NOT_FOUND){
-							AsyncChainer.notifyNext(obj, true);
+						if(exception == null){
+							AsyncChainer.notifyNext(obj, _json.getAsBoolean());
 						} else {
 							EventBus.getDefault().post(new ItException("deleteItem", ItException.TYPE.INTERNAL_ERROR, exception));
 						}
