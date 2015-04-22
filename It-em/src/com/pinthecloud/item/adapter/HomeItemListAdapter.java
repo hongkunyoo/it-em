@@ -159,7 +159,6 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 				}
 
 				isDoingLike = true;
-
 				if(isDoLike) {
 					mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.LIKE, GAHelper.HOME);
 

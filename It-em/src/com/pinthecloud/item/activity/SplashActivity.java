@@ -39,7 +39,7 @@ public class SplashActivity extends ItActivity {
 		if(mApp.isAdmin()){
 			Toast.makeText(mThisActivity, "Debugging : " + ItApplication.isDebugging(), Toast.LENGTH_LONG).show();;
 		}
-		
+
 		// Remove noti
 		NotificationManager notificationManger = (NotificationManager) mThisActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.cancel(ItIntentService.NOTIFICATION_ID);
@@ -51,10 +51,10 @@ public class SplashActivity extends ItActivity {
 		}
 
 		// Check update
-		float lastVersion = mPrefHelper.getFloat(ItConstant.APP_VERSION_KEY);
+		float lastVersion = mPrefHelper.getFloat(ItConstant.MANDATORY_APP_VERSION_KEY);
 		float clientVersion = getClientAppVersion();
 		if(lastVersion < clientVersion){
-			mPrefHelper.put(ItConstant.APP_VERSION_KEY, clientVersion);
+			mPrefHelper.put(ItConstant.MANDATORY_APP_VERSION_KEY, clientVersion);
 		} else if(lastVersion > clientVersion) {
 			updateApp();
 			return;

@@ -375,8 +375,8 @@ public class AimHelper {
 				new EntityCallback<Boolean>() {
 
 			@Override
-			public void onCompleted(Boolean entity) {
-				AsyncChainer.notifyNext(obj, entity);
+			public void onCompleted(Boolean result) {
+				AsyncChainer.notifyNext(obj, result);
 			}
 		});
 
@@ -384,8 +384,8 @@ public class AimHelper {
 				new EntityCallback<Boolean>() {
 
 			@Override
-			public void onCompleted(Boolean entity) {
-				AsyncChainer.notifyNext(obj, entity);
+			public void onCompleted(Boolean result) {
+				AsyncChainer.notifyNext(obj, result);
 			}
 		});
 
@@ -394,8 +394,8 @@ public class AimHelper {
 					new EntityCallback<Boolean>() {
 
 				@Override
-				public void onCompleted(Boolean entity) {
-					AsyncChainer.notifyNext(obj, entity);
+				public void onCompleted(Boolean result) {
+					AsyncChainer.notifyNext(obj, result);
 				}
 			});
 		}

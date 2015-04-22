@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-import com.pinthecloud.item.ItConstant;
-
 public class PrefHelper {
 
 	public static final String DEFAULT_STRING = "";
@@ -70,17 +68,5 @@ public class PrefHelper {
 		Editor editor = mPref.edit();
 		editor.remove(key);
 		editor.commit();
-	}
-
-	public void clear(){
-		int developMode = getInt(ItConstant.DEVELOP_MODE_KEY);
-		float version = getFloat(ItConstant.APP_VERSION_KEY);
-
-		Editor editor = mPref.edit();
-		editor.clear();
-		editor.commit();
-
-		put(ItConstant.DEVELOP_MODE_KEY, developMode);
-		put(ItConstant.APP_VERSION_KEY, version);
 	}
 }

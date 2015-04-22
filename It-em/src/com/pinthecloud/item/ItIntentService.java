@@ -20,9 +20,9 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.google.gson.Gson;
 import com.pinthecloud.item.activity.ItemActivity;
-import com.pinthecloud.item.event.AppVersion;
 import com.pinthecloud.item.event.NotificationEvent;
 import com.pinthecloud.item.helper.BlobStorageHelper;
+import com.pinthecloud.item.model.AppVersion;
 import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
@@ -62,9 +62,9 @@ public class ItIntentService extends IntentService {
 			return;
 		}
 
-		AppVersion version = new Gson().fromJson(message, AppVersion.class);
-		if(version.getVersion() != 0){
-			updateApp(version);
+		AppVersion mandatoryAppVersion = new Gson().fromJson(message, AppVersion.class);
+		if(mandatoryAppVersion.getVersion() > 0){
+			updateApp(mandatoryAppVersion);
 			return;
 		}
 	}
@@ -161,8 +161,7 @@ public class ItIntentService extends IntentService {
 	}
 
 
-	private void updateApp(AppVersion version){
-		mApp.getPrefHelper().put(ItConstant.APP_VERSION_KEY, version.getVersion());
-		mApp.getPrefHelper().clear();
+	private void updateApp(AppVersion mandatoryAppVersion){
+		mApp.getPrefHelper().put(ItConstant.MANDATORY_APP_VERSION_KEY, mandatoryAppVersion.getVersion());
 	}
 }

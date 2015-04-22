@@ -83,10 +83,10 @@ public class UserHelper {
 		userTable.insert(user, new TableOperationCallback<ItUser>() {
 
 			@Override
-			public void onCompleted(ItUser entity, Exception exception,
+			public void onCompleted(ItUser user, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(entity);
+					callback.onCompleted(user);
 				} else {
 					EventBus.getDefault().post(new ItException("add", ItException.TYPE.INTERNAL_ERROR, exception));
 				}
@@ -104,13 +104,13 @@ public class UserHelper {
 		userTable.where().field("id").eq(id).execute(new TableQueryCallback<ItUser>() {
 
 			@Override
-			public void onCompleted(List<ItUser> entity, int count, Exception exception,
+			public void onCompleted(List<ItUser> userList, int count, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					if(entity.size() == 0){
+					if(userList.size() == 0){
 						callback.onCompleted(null);	
 					} else {
-						callback.onCompleted(entity.get(0));
+						callback.onCompleted(userList.get(0));
 					}
 				} else {
 					EventBus.getDefault().post(new ItException("get", ItException.TYPE.INTERNAL_ERROR, exception));	
@@ -129,10 +129,10 @@ public class UserHelper {
 		userTable.update(user, new TableOperationCallback<ItUser>() {
 
 			@Override
-			public void onCompleted(ItUser entity, Exception exception,
+			public void onCompleted(ItUser user, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					callback.onCompleted(entity);
+					callback.onCompleted(user);
 				} else {
 					EventBus.getDefault().post(new ItException("update", ItException.TYPE.INTERNAL_ERROR, exception));
 				}
