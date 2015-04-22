@@ -33,9 +33,9 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 	private static final String POSITION_KEY = "POSITION_KEY";
 	private static final String HEADER_HEIGHT_KEY = "HEADER_HEIGHT_KEY";
 	private static final String TAB_HEIGHT_KEY = "TAB_HEIGHT_KEY";
-	
+
 	private final int MY_ITEM = 0;
-	private final int LIKE = 1;
+	private final int LIKE_ITEM = 1;
 
 	private View mLayout;
 	private SwipeRefreshLayout mRefresh;
@@ -54,6 +54,9 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 	private int mPosition;
 	private int mHeaderHeight;
 	private int mTabHeight;
+
+	private boolean mIsAdding = false;
+	private int page = 0;
 
 	private UserPageScrollTabHolder mScrollTabHolder;
 
@@ -105,13 +108,13 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 
 		return view;
 	}
-	
-	
+
+
 	@Override
 	public void adjustScroll(final int scrollHeight) {
 		if (scrollHeight - mTabHeight != 0 || mGridLayoutManager.findFirstVisibleItemPosition() < mGridLayoutManager.getSpanCount()) {
 			mGridLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.getSpanCount(), scrollHeight);
-			onScrollTabHolder();
+			scrollTabHolder();
 		}
 	}
 
@@ -168,7 +171,7 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 		if(mPosition == MY_ITEM){
 			mGridEmptyImage.setImageResource(R.drawable.mypage_item_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_my_item));
-		} else if(mPosition == LIKE) {
+		} else if(mPosition == LIKE_ITEM) {
 			mGridEmptyImage.setImageResource(R.drawable.mypage_like_empty_ic);
 			mGridEmptyText.setText(getResources().getString(R.string.empty_like_item));
 		}
@@ -190,12 +193,21 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 
 
 	private void setScroll(){
+		final int addUnit = mGridLayoutManager.getSpanCount()*2;
 		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-				onScrollTabHolder();
+				scrollTabHolder();
+
+				// Add more items when grid reaches bottom
+				int position = mGridLayoutManager.findLastVisibleItemPosition();
+				int totalItemCount = mGridLayoutManager.getItemCount();
+
+				if (position >= totalItemCount-addUnit && !mIsAdding) {
+					addNextItem();
+				}
 			}
 		});
 	}
@@ -214,41 +226,42 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 
 
 	private void updateGrid(boolean refresh) {
+		page = 0;
 		if(mPosition == MY_ITEM){
 			updateMyItemGrid(refresh);
-		} else if(mPosition == LIKE) {
-			updateItItemGrid(refresh);
+		} else if(mPosition == LIKE_ITEM) {
+			updateLikeItemGrid(refresh);
 		}
 	}
 
 
 	private void updateMyItemGrid(final boolean refresh){
-		mAimHelper.listMyItem(mUser.getId(), new ListCallback<Item>() {
+		mAimHelper.listMyItem(page, mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				if(isAdded()){
-					setGridItem(list, count, refresh);
+					setUpdatedGrid(list, count, refresh);
 				}
 			}
 		});
 	}
 
 
-	private void updateItItemGrid(final boolean refresh){
-		mAimHelper.listItItem(mUser.getId(), new ListCallback<Item>() {
+	private void updateLikeItemGrid(final boolean refresh){
+		mAimHelper.listLikeItem(page, mUser.getId(), new ListCallback<Item>() {
 
 			@Override
 			public void onCompleted(List<Item> list, int count) {
 				if(isAdded()){
-					setGridItem(list, count, refresh);
+					setUpdatedGrid(list, count, refresh);
 				}
 			}
 		});
 	}
 
 
-	private void setGridItem(List<Item> list, int count, boolean refresh){
+	private void setUpdatedGrid(List<Item> list, int count, boolean refresh){
 		if(refresh){
 			mRefresh.setRefreshing(false);
 		} else {
@@ -261,14 +274,56 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 		mGridView.scrollToPosition(0);
 
 		if(mScrollTabHolder != null){
-			mScrollTabHolder.updateTabNumber(mPosition, mItemList.size());	
+			mScrollTabHolder.updateTabNumber(mPosition, count);
 		}
-
 		mGridEmptyLayout.setVisibility(count > 0 ? View.GONE : View.VISIBLE);
 	}
 
 
-	private void onScrollTabHolder(){
+	private void addNextItem() {
+		mIsAdding = true;
+		if(mPosition == MY_ITEM){
+			addMyItemGrid();
+		} else if(mPosition == LIKE_ITEM) {
+			addLikeItemGrid();
+		}
+	}
+
+
+	private void addMyItemGrid(){
+		mAimHelper.listMyItem(++page, mUser.getId(), new ListCallback<Item>() {
+
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				if(isAdded()){
+					setAddedGrid(list);
+				}
+			}
+		});
+	}
+
+
+	private void addLikeItemGrid(){
+		mAimHelper.listLikeItem(++page, mUser.getId(), new ListCallback<Item>() {
+
+			@Override
+			public void onCompleted(List<Item> list, int count) {
+				if(isAdded()){
+					setAddedGrid(list);
+				}
+			}
+		});
+
+	}
+
+
+	private void setAddedGrid(List<Item> list){
+		mIsAdding = false;
+		mGridAdapter.addAll(list);
+	}
+
+
+	private void scrollTabHolder(){
 		if (mScrollTabHolder != null){
 			mScrollTabHolder.onScroll(mGridView, mGridLayoutManager, mPosition);
 		}

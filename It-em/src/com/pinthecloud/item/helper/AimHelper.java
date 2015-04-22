@@ -36,8 +36,8 @@ public class AimHelper {
 	private final String AIM_GET_ITEM = "aim_get_item";
 	private final String AIM_LIST = "aim_list";
 	private final String AIM_LIST_ITEM = "aim_list_item";
-	private final String AIM_LIST_IT_ITEM = "aim_list_it_item";
 	private final String AIM_LIST_MY_ITEM = "aim_list_my_item";
+	private final String AIM_LIST_LIKE_ITEM = "aim_list_like_item";
 	private final String AIM_LIST_MY_NOTI = "aim_list_my_noti";
 
 	private ItApplication mApp;
@@ -201,58 +201,6 @@ public class AimHelper {
 	}
 
 
-	public void listMyItem(String userId, final ListCallback<Item> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		JsonObject jo = new JsonObject();
-		jo.addProperty("userId", userId);
-
-		mClient.invokeApi(AIM_LIST_MY_ITEM, jo, new ApiJsonOperationCallback() {
-
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					JsonElement json = _json.getAsJsonArray();
-					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
-					callback.onCompleted(list, list.size());
-				} else {
-					EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.INTERNAL_ERROR, response));
-				}
-			}
-		});
-	}
-
-
-	public void listItItem(String userId, final ListCallback<Item> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("listItItem", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		JsonObject jo = new JsonObject();
-		jo.addProperty("userId", userId);
-
-		mClient.invokeApi(AIM_LIST_IT_ITEM, jo, new ApiJsonOperationCallback() {
-
-			@Override
-			public void onCompleted(JsonElement _json, Exception exception,
-					ServiceFilterResponse response) {
-				if (exception == null) {
-					JsonElement json = _json.getAsJsonArray();
-					List<Item> list = new Gson().fromJson(json, new TypeToken<List<Item>>(){}.getType());
-					callback.onCompleted(list, list.size());
-				} else {
-					EventBus.getDefault().post(new ItException("listItItem", ItException.TYPE.INTERNAL_ERROR, response));
-				}
-			}
-		});
-	}
-
-
 	public<E extends AbstractItemModel<E>> void listItem(int page, String userId, final ListCallback<Item> callback) {
 		if(!mApp.isOnline()){
 			EventBus.getDefault().post(new ItException("listItem", ItException.TYPE.NETWORK_UNAVAILABLE));
@@ -274,6 +222,64 @@ public class AimHelper {
 					callback.onCompleted(list, list.size());
 				} else {
 					EventBus.getDefault().post(new ItException("listItem", ItException.TYPE.INTERNAL_ERROR, response));
+				}
+			}
+		});
+	}
+
+
+	public void listMyItem(int page, String userId, final ListCallback<Item> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		JsonObject jo = new JsonObject();
+		jo.addProperty("page", page);
+		jo.addProperty("userId", userId);
+
+		mClient.invokeApi(AIM_LIST_MY_ITEM, jo, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					JsonObject json = _json.getAsJsonObject();
+					JsonElement itemsJson = new Gson().fromJson(json.get("items"), JsonArray.class);
+					List<Item> list = new Gson().fromJson(itemsJson, new TypeToken<List<Item>>(){}.getType());
+					int count = new Gson().fromJson(json.get("count"), Integer.class);
+					callback.onCompleted(list, count);
+				} else {
+					EventBus.getDefault().post(new ItException("listMyItem", ItException.TYPE.INTERNAL_ERROR, response));
+				}
+			}
+		});
+	}
+
+
+	public void listLikeItem(int page, String userId, final ListCallback<Item> callback) {
+		if(!mApp.isOnline()){
+			EventBus.getDefault().post(new ItException("listItItem", ItException.TYPE.NETWORK_UNAVAILABLE));
+			return;
+		}
+
+		JsonObject jo = new JsonObject();
+		jo.addProperty("page", page);
+		jo.addProperty("userId", userId);
+
+		mClient.invokeApi(AIM_LIST_LIKE_ITEM, jo, new ApiJsonOperationCallback() {
+
+			@Override
+			public void onCompleted(JsonElement _json, Exception exception,
+					ServiceFilterResponse response) {
+				if (exception == null) {
+					JsonObject json = _json.getAsJsonObject();
+					JsonElement itemsJson = new Gson().fromJson(json.get("items"), JsonArray.class);
+					List<Item> list = new Gson().fromJson(itemsJson, new TypeToken<List<Item>>(){}.getType());
+					int count = new Gson().fromJson(json.get("count"), Integer.class);
+					callback.onCompleted(list, count);
+				} else {
+					EventBus.getDefault().post(new ItException("listItItem", ItException.TYPE.INTERNAL_ERROR, response));
 				}
 			}
 		});
