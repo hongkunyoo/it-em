@@ -81,7 +81,7 @@ public class ItIntentService extends IntentService {
 					Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.noti_label_img);
 					AsyncChainer.notifyNext(obj, largeIcon);
 				} else {
-					getLargeIcon(obj, BlobStorageHelper.getUserProfileImgUrl(itNoti.getWhoMadeId()));
+					getLargeIcon(obj, BlobStorageHelper.getUserProfileUrl(itNoti.getWhoMadeId()));
 				}
 			}
 		}, new Chainable(){

@@ -40,8 +40,8 @@ public class ItApplication extends Application {
 	// Windows Azure Mobile Service Keys
 	private final String AZURE_REAL_URL = "https://it-em.azure-mobile.net/";
 	private final String AZURE_REAL_KEY = "TnmDvNkgfghvrcXjoQhRjEdcyFCEzd99";
-	private final String AZURE_TEST_URL = "https://it-em-test.azure-mobile.net/";
-	private final String AZURE_TEST_KEY = "jidjLSdrpbivsOXwsQStSSHGIKxhKa66";
+	private final String AZURE_TEST_URL = "https://ptc-item-test.azure-mobile.net/";
+	private final String AZURE_TEST_KEY = "GDjfJuqepoEfWkCTEqOcnGMfXPwIHk67";
 
 	// Mobile Service
 	private MobileServiceClient mClient;
@@ -70,7 +70,7 @@ public class ItApplication extends Application {
 		app = this;
 
 		//		ACRA.init(app);
-		com.kakao.Session.initialize(this, AuthType.KAKAO_TALK);
+		com.kakao.Session.initialize(app, AuthType.KAKAO_TALK);
 
 		mClient = getMobileClient();
 		gaHelper = getGaHelper();
@@ -92,19 +92,18 @@ public class ItApplication extends Application {
 				realClient = new MobileServiceClient(
 						AZURE_REAL_URL,
 						AZURE_REAL_KEY,
-						this);
+						app);
 				testClient = new MobileServiceClient(
 						AZURE_TEST_URL,
 						AZURE_TEST_KEY,
-						this);
+						app);
 			} catch (MalformedURLException e) {
 				// Do nothing
 			}
 
 			// Default is REAL (int 1)
 			if(isAdmin()){
-				int mode = getPrefHelper().getInt(ItConstant.DEVELOP_MODE_KEY);
-				mClient = (mode == REAL_MODE ? realClient : testClient);
+				mClient = (isDebugging() ? testClient : realClient);
 			} else {
 				mClient = realClient;
 			}

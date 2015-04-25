@@ -128,12 +128,12 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 
 
 	private void setImage(ViewHolder holder, final ItNotification noti){
-		if(noti.getType().equals(ItNotification.TYPE.LikeIt.toString())){
+		if(noti.getType().equals(ItNotification.TYPE.ItLike.toString())){
 			holder.receiveImage.setVisibility(View.VISIBLE);
 			holder.receiveImage.setImageResource(R.drawable.noti_like_ic);
 
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+			.load(BlobStorageHelper.getUserProfileUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 			.placeholder(R.drawable.profile_default_img)
 			.fit()
 			.into(holder.profileImage);
@@ -142,7 +142,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 			holder.receiveImage.setImageResource(R.drawable.noti_comment_ic);
 
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getUserProfileImgUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+			.load(BlobStorageHelper.getUserProfileUrl(noti.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 			.placeholder(R.drawable.profile_default_img)
 			.fit()
 			.into(holder.profileImage);
@@ -152,7 +152,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 		}
 
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getItemImgUrl(noti.getRefId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getItemImageUrl(noti.getRefId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.feed_loading_default_img)
 		.fit()
 		.into(holder.itemImage);

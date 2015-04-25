@@ -16,7 +16,7 @@ import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
 import com.pinthecloud.item.model.ItUser;
-import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.model.ItLike;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 
@@ -24,10 +24,10 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 
 	private ItApplication mApp;
 	private ItActivity mActivity;
-	private List<LikeIt> mLikeList;
+	private List<ItLike> mLikeList;
 
 
-	public LikeListAdapter(ItActivity activity, List<LikeIt> likeList) {
+	public LikeListAdapter(ItActivity activity, List<ItLike> likeList) {
 		this.mApp = ItApplication.getInstance();
 		this.mActivity = activity;
 		this.mLikeList = likeList;
@@ -57,7 +57,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		LikeIt like = mLikeList.get(position);
+		ItLike like = mLikeList.get(position);
 		setText(holder, like);
 		setButton(holder, like);
 		setImageView(holder, like);
@@ -70,12 +70,12 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 	}
 
 
-	private void setText(ViewHolder holder, final LikeIt like){
+	private void setText(ViewHolder holder, final ItLike like){
 		holder.nickName.setText(like.getWhoMade());
 	}
 
 
-	private void setButton(ViewHolder holder, final LikeIt like){
+	private void setButton(ViewHolder holder, final ItLike like){
 		holder.profileImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -94,16 +94,16 @@ public class LikeListAdapter extends RecyclerView.Adapter<LikeListAdapter.ViewHo
 	}
 
 
-	private void setImageView(ViewHolder holder, final LikeIt like){
+	private void setImageView(ViewHolder holder, final ItLike like){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(like.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileUrl(like.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(holder.profileImage);
 	}
 
 
-	public void addAll(List<LikeIt> likeList) {
+	public void addAll(List<ItLike> likeList) {
 		mLikeList.addAll(likeList);
 		notifyDataSetChanged();
 	}

@@ -231,7 +231,7 @@ public class LoginActivity extends ItActivity {
 			@Override
 			public void doNext(Object obj, Object... params) {
 				final ItUser user = mObjectPrefHelper.get(ItUser.class);
-				mBlobStorageHelper.isExistAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId(), new EntityCallback<Boolean>() {
+				mBlobStorageHelper.isExistAsync(BlobStorageHelper.getUserProfileContainer(), user.getId(), new EntityCallback<Boolean>() {
 
 					@Override
 					public void onCompleted(Boolean entity) {
@@ -312,7 +312,7 @@ public class LoginActivity extends ItActivity {
 				Bitmap profileImage = profileImageList.get(0);
 				Bitmap profileThumbnailImage = profileImageList.get(1);
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.getUserProfileContainer(), user.getId(), 
 						profileImage, new EntityCallback<String>() {
 
 					@Override
@@ -321,7 +321,7 @@ public class LoginActivity extends ItActivity {
 					}
 				});
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, user.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.getUserProfileContainer(), user.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX, 
 						profileThumbnailImage, new EntityCallback<String>() {
 
 					@Override

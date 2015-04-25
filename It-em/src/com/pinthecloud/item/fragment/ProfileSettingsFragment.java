@@ -236,7 +236,7 @@ public class ProfileSettingsFragment extends ItFragment {
 
 	private void setProfileImage(){
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mUser.getId()))
+		.load(BlobStorageHelper.getUserProfileUrl(mUser.getId()))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);
@@ -428,20 +428,20 @@ public class ProfileSettingsFragment extends ItFragment {
 			public void doNext(final Object obj, Object... params) {
 				AsyncChainer.waitChain(2);
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mUser.getId(), 
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.getUserProfileContainer(), mUser.getId(), 
 						profileImageBitmap, new EntityCallback<String>() {
 
 					@Override
-					public void onCompleted(String entity) {
+					public void onCompleted(String imageId) {
 						AsyncChainer.notifyNext(obj);
 					}
 				});
 
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_USER_PROFILE, mUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.getUserProfileContainer(), mUser.getId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX,
 						profileThumbnailImageBitmap, new EntityCallback<String>() {
 
 					@Override
-					public void onCompleted(String entity) {
+					public void onCompleted(String imageId) {
 						AsyncChainer.notifyNext(obj);
 					}
 				});

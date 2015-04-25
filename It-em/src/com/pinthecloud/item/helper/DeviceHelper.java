@@ -1,6 +1,7 @@
 package com.pinthecloud.item.helper;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -49,7 +50,11 @@ public class DeviceHelper {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onCompleted(Exception exception, ServiceFilterResponse response) {
-				callback.onCompleted(response.getStatus().getStatusCode());
+				if (exception == null) {
+					callback.onCompleted(HttpURLConnection.HTTP_OK);
+				} else {
+					callback.onCompleted(response.getStatus().getStatusCode());
+				}
 			}
 		});
 	}

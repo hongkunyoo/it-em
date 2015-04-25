@@ -13,7 +13,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 
 	private int replyCount;
 	private List<Reply> replyList;
-	private int likeItCount;
+	private int likeCount;
 	private String prevLikeId;
 	private boolean hasProductTag;
 	private List<ProductTag> productTagList;
@@ -59,11 +59,11 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 	public void setReplyList(List<Reply> replyList) {
 		this.replyList = replyList;
 	}
-	public int getLikeItCount() {
-		return likeItCount;
+	public int getLikeCount() {
+		return likeCount;
 	}
-	public void setLikeItCount(int likeCount) {
-		this.likeItCount = likeCount;
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
 	}
 	public boolean isHasProductTag() {
 		return hasProductTag;
@@ -128,7 +128,7 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setRefId(item.getRefId());
 		this.setReplyCount(item.getReplyCount());
 		this.setReplyList(item.getReplyList());
-		this.setLikeItCount(item.getLikeItCount());
+		this.setLikeCount(item.getLikeCount());
 		this.setHasProductTag(item.isHasProductTag());
 		this.setProductTagList(item.getProductTagList());
 		this.setImageNumber(item.getImageNumber());

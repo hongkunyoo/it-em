@@ -1,5 +1,6 @@
 package com.pinthecloud.item.helper;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -157,7 +158,11 @@ public class UserHelper {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onCompleted(JsonElement _json, Exception exception, ServiceFilterResponse response) {
-				callback.onCompleted(response.getStatus().getStatusCode());
+				if(exception == null){
+					callback.onCompleted(HttpURLConnection.HTTP_OK);
+				} else {
+					callback.onCompleted(response.getStatus().getStatusCode());
+				}
 			}
 		});
 	}

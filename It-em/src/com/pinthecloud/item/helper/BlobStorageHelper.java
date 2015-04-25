@@ -25,56 +25,61 @@ import de.greenrobot.event.EventBus;
 public class BlobStorageHelper {
 
 	private static final String storageConnectionString = 
-			"DefaultEndpointsProtocol=http;AccountName=athere;AccountKey=ldhgydlWndSIl7XfiaAQ+sibsNtVZ1Psebba1RpBKxMbyFVYUCMvvuQir0Ty7f0+8TnNLfFKc9yFlYpP6ZSuQQ==";
-	public static final String CONTAINER_USER_PROFILE = "item-user-profile";
-	public static final String CONTAINER_ITEM_IMAGE = "item-image-container";
+			"DefaultEndpointsProtocol=http;AccountName=item;AccountKey=vMwuKvYYKUsKSM1MTSzf2qU5MOAHbblHqmxQwFDb3I0maFcYEOZ3F14XzmGN76kpDFJKAu1iu+UT0KTtyAeuNw==";
+	public static final String CONTAINER_REAL_ITEM_IMAGE = "item-image";
+	public static final String CONTAINER_REAL_USER_PROFILE = "item-user-profile";
+	public static final String CONTAINER_TEST_ITEM_IMAGE = "item-test-image";
+	public static final String CONTAINER_TEST_USER_PROFILE = "item-test-user-profile";
 
 	private ItApplication mApp;
-	private CloudBlobClient blobClient;
+	private CloudBlobClient mBlobClient;
 
 
 	public BlobStorageHelper(ItApplication app) {
 		this.mApp = app;
 
-		CloudStorageAccount account = null;
 		try {
-			account = CloudStorageAccount.parse(storageConnectionString);
+			CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
+			this.mBlobClient = account.createCloudBlobClient();
 		} catch (InvalidKeyException e) {
 			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.INTERNAL_ERROR));
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.INTERNAL_ERROR));
 		}
-		this.blobClient = account.createCloudBlobClient();
 	}
 
 
 	public static String getHostUrl() {
-		return "https://athere.blob.core.windows.net/";
+		return "https://item.blob.core.windows.net/";
 	}
 	public static String getHostUrl(String uri) {
 		return getHostUrl() + uri + "/";
 	}
+	public static String getItemImageContainer() {
+		return ItApplication.isDebugging() ? CONTAINER_TEST_ITEM_IMAGE : CONTAINER_REAL_ITEM_IMAGE;
+	}
+	public static String getUserProfileContainer() {
+		return ItApplication.isDebugging() ? CONTAINER_TEST_USER_PROFILE : CONTAINER_REAL_USER_PROFILE;
+	}
+	public static String getItemImageHostUrl() {
+		return getHostUrl(getItemImageContainer());
+	}
+	public static String getItemImageUrl(String id) {
+		return getItemImageHostUrl() + id;
+	}
 	public static String getUserProfileHostUrl() {
-		return getHostUrl(CONTAINER_USER_PROFILE);
+		return getHostUrl(getUserProfileContainer());
 	}
-	public static String getUserProfileImgUrl(String id) {
+	public static String getUserProfileUrl(String id) {
 		return getUserProfileHostUrl() + id;
-	}
-	public static String getItemImgHostUrl() {
-		return getHostUrl(CONTAINER_ITEM_IMAGE);
-	}
-	public static String getItemImgUrl(String id) {
-		return getItemImgHostUrl() + id;
 	}
 
 
 	private boolean isExistSync(String containerName, String imageId) {
-		CloudBlobContainer container = null;
-		CloudBlockBlob blob = null;
-		boolean result = true;
+		boolean result = false;
 		try {
-			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(imageId);
+			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
+			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
 			result = blob.exists();
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("isExistSync", ItException.TYPE.INTERNAL_ERROR));
@@ -86,19 +91,16 @@ public class BlobStorageHelper {
 
 
 	private String uploadBitmapSync(String containerName, String imageId, Bitmap bitmap) {
-		CloudBlobContainer container = null;
-		CloudBlockBlob blob = null;
 		try {
-			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(imageId);
-
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
 
-			// Add header for picasso
-			blob.getProperties().setCacheControl("only-if-cached, max-age=" + Integer.MAX_VALUE);
-
+			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
+			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
+			blob.getProperties().setContentType("image/jpeg");
+			blob.getProperties().setCacheControl("only-if-cached, max-age=" + Integer.MAX_VALUE);	// Add for picasso
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
+
 			baos.close();
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("uploadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
@@ -112,30 +114,26 @@ public class BlobStorageHelper {
 
 
 	private Bitmap downloadBitmapSync(String containerName, String imageId) {
-		CloudBlobContainer container = null;
-		CloudBlockBlob blob = null;
-		Bitmap bm = null;
+		Bitmap bitmap = null;
 		try {
-			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(imageId);
+			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
+			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			blob.download(baos);
-			bm = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
+			bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		} catch (StorageException e) {
 			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
 		}
-		return bm;
+		return bitmap;
 	}
 
 
 	private String downloadToFileSync(Context context, String containerName, String imageId, String path) {
-		CloudBlobContainer container = null;
-		CloudBlockBlob blob = null;
 		try {
-			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(imageId);
+			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
+			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
 			blob.downloadToFile(context.getFilesDir() + "/" + path);
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
@@ -149,11 +147,9 @@ public class BlobStorageHelper {
 
 
 	private boolean deleteBitmapSync(String containerName, String imageId) throws StorageException {
-		CloudBlobContainer container = null;
-		CloudBlockBlob blob = null;
 		try {
-			container = blobClient.getContainerReference(containerName);
-			blob = container.getBlockBlobReference(imageId);
+			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
+			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
 			blob.delete();
 		} catch (URISyntaxException e) {
 			EventBus.getDefault().post(new ItException("deleteBitmapSync", ItException.TYPE.INTERNAL_ERROR));

@@ -72,7 +72,7 @@ public class ItemImagePagerAdapter extends PagerAdapter {
 	public void setImageView(final ImageView imageView, int position){
 		String imageId = position == 0 ? mItem.getId() : mItem.getId() + "_" + position;
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getItemImgUrl(imageId))
+		.load(BlobStorageHelper.getItemImageUrl(imageId))
 		.into(imageView, new Callback(){
 
 			@Override

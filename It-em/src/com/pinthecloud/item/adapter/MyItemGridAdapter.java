@@ -132,7 +132,7 @@ public class MyItemGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	private void setNormalImageView(NormalViewHolder holder, Item item) {
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getItemImageUrl(item.getId()+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.feed_loading_default_img)
 		.fit()
 		.into(holder.itemImage);

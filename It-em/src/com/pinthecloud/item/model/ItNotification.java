@@ -8,7 +8,7 @@ import com.pinthecloud.item.R;
 public class ItNotification extends AbstractItemModel<ItNotification> {
 
 	public static enum TYPE {
-		LikeIt,
+		ItLike,
 		Reply,
 		ProductTag
 	}
@@ -112,7 +112,7 @@ public class ItNotification extends AbstractItemModel<ItNotification> {
 
 	private String typeString(){
 		ItApplication app = ItApplication.getInstance();
-		if(getType().equals(ItNotification.TYPE.LikeIt.toString())){
+		if(getType().equals(ItNotification.TYPE.ItLike.toString())){
 			return app.getResources().getString(R.string.noti_like);
 		} else if(getType().equals(ItNotification.TYPE.Reply.toString())){
 			return app.getResources().getString(R.string.noti_reply);

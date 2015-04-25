@@ -349,7 +349,7 @@ public class UploadFragment extends ItFragment {
 			public void doNext(final Object obj, Object... params) {
 				int jobCount = mImagePathList.size()*2 + 1;
 				AsyncChainer.waitChain(jobCount);
-				
+
 				for(int i=0 ; i<mImagePathList.size() ; i++){
 					uploadItemImage(obj, item, mImagePathList.get(i), imageList.get(i), i);
 				}
@@ -374,7 +374,7 @@ public class UploadFragment extends ItFragment {
 	private Item getItem(List<Bitmap> imageList){
 		int coverWidth = imageList.get(0).getWidth();
 		int coverHeight = imageList.get(0).getHeight();
-		
+
 		int mainWidth = 0;
 		int mainHeight = 0;
 		double maxHeightRatio = 0;
@@ -442,17 +442,17 @@ public class UploadFragment extends ItFragment {
 
 
 	private void uploadImage(final Object obj, String imageId, Bitmap imageBitmap){
-		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId, imageBitmap,
+		mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.getItemImageContainer(), imageId, imageBitmap,
 				new EntityCallback<String>() {
 
 			@Override
-			public void onCompleted(String entity) {
+			public void onCompleted(String imageId) {
 				AsyncChainer.notifyNext(obj);
 			}
 		});
 	}
-	
-	
+
+
 	private void uploadThumbnailImage(final Object obj, final String imageId, final String imagePath){
 		(new AsyncTask<Void,Void,Bitmap>(){
 
@@ -463,19 +463,19 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			protected void onPostExecute(Bitmap thumbnailImage) {
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.getItemImageContainer(), imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
 						thumbnailImage, new EntityCallback<String>() {
 
 					@Override
-					public void onCompleted(String entity) {
+					public void onCompleted(String imageId) {
 						AsyncChainer.notifyNext(obj);
 					}
 				});
 			};
 		}).execute();
 	}
-	
-	
+
+
 	private void uploadPreviewImage(final Object obj, final String imageId, final String imagePath){
 		(new AsyncTask<Void,Void,Bitmap>(){
 
@@ -486,11 +486,11 @@ public class UploadFragment extends ItFragment {
 
 			@Override
 			protected void onPostExecute(Bitmap previewImage) {
-				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+				mBlobStorageHelper.uploadBitmapAsync(BlobStorageHelper.getItemImageContainer(), imageId+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
 						previewImage, new EntityCallback<String>() {
 
 					@Override
-					public void onCompleted(String entity) {
+					public void onCompleted(String imageId) {
 						AsyncChainer.notifyNext(obj);
 					}
 				});

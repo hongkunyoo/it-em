@@ -50,7 +50,7 @@ import com.pinthecloud.item.interfaces.ReplyCallback;
 import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.model.ItLike;
 import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ImageUtil;
@@ -321,8 +321,8 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			@Override
 			public void onClick(View v) {
-				ItDialogFragment likeItDialog = LikeDialog.newInstance(mItem);
-				likeItDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
+				ItDialogFragment likeDialog = LikeDialog.newInstance(mItem);
+				likeDialog.show(mActivity.getSupportFragmentManager(), ItDialogFragment.INTENT_KEY);
 			}
 		});
 
@@ -539,7 +539,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 	private void setItemComponent(){
 		setContent();
-		setLikeNumber(mItem.getLikeItCount());
+		setLikeNumber(mItem.getLikeCount());
 		activateToolbarItemComponent();
 		setProfile();
 
@@ -673,14 +673,14 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.LIKE, GAHelper.ITEM);
 
 			// Do Like
-			LikeIt like = new LikeIt(mUser.getNickName(), mUser.getId(), mItem.getId());
+			ItLike like = new ItLike(mUser.getNickName(), mUser.getId(), mItem.getId());
 			ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
-					mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
+					mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.ItLike,
 					mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
-			mAimHelper.addUnique(like, noti, new EntityCallback<LikeIt>() {
+			mAimHelper.addUnique(like, noti, new EntityCallback<ItLike>() {
 
 				@Override
-				public void onCompleted(LikeIt entity) {
+				public void onCompleted(ItLike entity) {
 					doLike(mItem, entity.getId(), currentLikeNum, isDoLike);
 				}
 			});
@@ -688,7 +688,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			mGaHelper.sendEvent(mThisFragment.getClass().getSimpleName(), GAHelper.LIKE_CANCEL, GAHelper.ITEM);
 
 			// Cancel Like
-			LikeIt like = new LikeIt(mItem.getPrevLikeId());
+			ItLike like = new ItLike(mItem.getPrevLikeId());
 			mAimHelper.del(like, new EntityCallback<Boolean>() {
 
 				@Override
@@ -704,7 +704,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 		isDoingLike = false;
 		setLikeButton(currentLikeNum, isDoLike);
 		item.setPrevLikeId(likeId);
-		item.setLikeItCount(isDoLike ? currentLikeNum+1 : currentLikeNum-1);
+		item.setLikeCount(isDoLike ? currentLikeNum+1 : currentLikeNum-1);
 	}
 
 
@@ -758,12 +758,12 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setImage(){
 		mItemImage.setHeightRatio((double)mItem.getCoverImageHeight()/mItem.getCoverImageWidth());
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getItemImgUrl(mItem.getId()))
+		.load(BlobStorageHelper.getItemImageUrl(mItem.getId()))
 		.placeholder(R.drawable.feed_loading_default_img)
 		.into(mItemImage);
 
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileUrl(mItem.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(mProfileImage);
@@ -780,7 +780,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 			String imageId = mItem.getId() + "_" + i;
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
+			.load(BlobStorageHelper.getItemImageUrl(imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.fit()
 			.into(image);

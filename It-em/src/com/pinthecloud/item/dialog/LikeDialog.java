@@ -16,7 +16,7 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.LikeListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.model.ItLike;
 import com.pinthecloud.item.util.ViewUtil;
 
 public class LikeDialog extends ItDialogFragment {
@@ -25,7 +25,7 @@ public class LikeDialog extends ItDialogFragment {
 	private RecyclerView mListView;
 	private LikeListAdapter mListAdapter;
 	private LinearLayoutManager mListLayoutManager;
-	private List<LikeIt> mLikeList;
+	private List<ItLike> mLikeList;
 
 	private Item mItem;
 
@@ -74,7 +74,7 @@ public class LikeDialog extends ItDialogFragment {
 		mListView.setLayoutManager(mListLayoutManager);
 		mListView.setItemAnimator(new DefaultItemAnimator());
 
-		mLikeList = new ArrayList<LikeIt>();
+		mLikeList = new ArrayList<ItLike>();
 		mListAdapter = new LikeListAdapter(mActivity, mLikeList);
 		mListView.setAdapter(mListAdapter);
 	}
@@ -84,10 +84,10 @@ public class LikeDialog extends ItDialogFragment {
 		mProgressBar.setVisibility(View.VISIBLE);
 		mListView.setVisibility(View.GONE);
 
-		mAimHelper.list(LikeIt.class, mItem.getId(), new ListCallback<LikeIt>() {
+		mAimHelper.list(ItLike.class, mItem.getId(), new ListCallback<ItLike>() {
 
 			@Override
-			public void onCompleted(List<LikeIt> list, int count) {
+			public void onCompleted(List<ItLike> list, int count) {
 				if(!isAdded()){
 					return;
 				}
@@ -98,7 +98,7 @@ public class LikeDialog extends ItDialogFragment {
 				mLikeList.clear();
 				mListAdapter.addAll(list);
 
-				mItem.setLikeItCount(count);
+				mItem.setLikeCount(count);
 				ViewUtil.setListHeightBasedOnChildren(mListView, count);
 			}
 		});

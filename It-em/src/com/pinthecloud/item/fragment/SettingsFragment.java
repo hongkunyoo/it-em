@@ -288,7 +288,7 @@ public class SettingsFragment extends ItFragment {
 				mApp.dismissProgressDialog();
 				if(statusCode == HttpURLConnection.HTTP_OK || statusCode == HttpURLConnection.HTTP_NOT_FOUND){
 					removePreference();
-					
+
 					Intent intent = new Intent(mActivity, LoginActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);

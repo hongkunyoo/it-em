@@ -26,7 +26,7 @@ import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.model.LikeIt;
+import com.pinthecloud.item.model.ItLike;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.util.ViewUtil;
 import com.pinthecloud.item.view.CircleImageView;
@@ -124,7 +124,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		holder.nickName.setText(item.getWhoMade());
 		holder.content.setText(item.getContent());
 
-		setLikeNumber(holder, item.getLikeItCount());
+		setLikeNumber(holder, item.getLikeCount());
 		holder.replyNumber.setVisibility(item.getReplyCount() > 0 ? View.VISIBLE : View.GONE);
 		holder.replyNumber.setText(""+item.getReplyCount());
 
@@ -164,14 +164,14 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 
 					// Do like it
 					ItUser user = mApp.getObjectPrefHelper().get(ItUser.class);
-					LikeIt like = new LikeIt(user.getNickName(), user.getId(), item.getId());
+					ItLike like = new ItLike(user.getNickName(), user.getId(), item.getId());
 					ItNotification noti = new ItNotification(user.getNickName(), user.getId(), item.getId(),
-							item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.LikeIt,
+							item.getWhoMade(), item.getWhoMadeId(), "", ItNotification.TYPE.ItLike,
 							item.getImageNumber(), item.getMainImageWidth(), item.getMainImageHeight());
-					mApp.getAimHelper().addUnique(like, noti, new EntityCallback<LikeIt>() {
+					mApp.getAimHelper().addUnique(like, noti, new EntityCallback<ItLike>() {
 
 						@Override
-						public void onCompleted(LikeIt entity) {
+						public void onCompleted(ItLike entity) {
 							doLike(holder, item, entity.getId(), currentLikeNum, isDoLike);
 						}
 					});
@@ -179,7 +179,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 					mApp.getGaHelper().sendEvent(mFrag.getClass().getSimpleName(), GAHelper.LIKE_CANCEL, GAHelper.HOME);
 
 					// Cancel like it
-					LikeIt like = new LikeIt(item.getPrevLikeId());
+					ItLike like = new ItLike(item.getPrevLikeId());
 					mApp.getAimHelper().del(like, new EntityCallback<Boolean>() {
 
 						@Override
@@ -229,13 +229,13 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		int radius = mActivity.getResources().getDimensionPixelSize(R.dimen.content_margin);
 		if(heightRatio <= MAX_HEIGHT_RATIO){
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
+			.load(BlobStorageHelper.getItemImageUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.transform(new RoundedTopCornerTransformation(radius, 0))
 			.into(holder.itemImage);
 		} else {
 			mApp.getPicasso()
-			.load(BlobStorageHelper.getItemImgUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
+			.load(BlobStorageHelper.getItemImageUrl(item.getId()+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX))
 			.placeholder(R.drawable.feed_loading_default_img)
 			.transform(new RoundedTopCornerTransformation(radius, 0))
 			.resize(item.getCoverImageWidth(), (int) (item.getCoverImageWidth()*MAX_HEIGHT_RATIO)).centerCrop()
@@ -243,7 +243,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		}
 
 		mApp.getPicasso()
-		.load(BlobStorageHelper.getUserProfileImgUrl(item.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
+		.load(BlobStorageHelper.getUserProfileUrl(item.getWhoMadeId()+ImageUtil.PROFILE_THUMBNAIL_IMAGE_POSTFIX))
 		.placeholder(R.drawable.profile_default_img)
 		.fit()
 		.into(holder.profileImage);
@@ -254,7 +254,7 @@ public class HomeItemListAdapter extends RecyclerView.Adapter<HomeItemListAdapte
 		isDoingLike = false;
 		setLikeButton(holder, currentLikeNum, isDoLike);
 		item.setPrevLikeId(likeId);
-		item.setLikeItCount(isDoLike ? currentLikeNum+1 : currentLikeNum-1);
+		item.setLikeCount(isDoLike ? currentLikeNum+1 : currentLikeNum-1);
 	}
 
 

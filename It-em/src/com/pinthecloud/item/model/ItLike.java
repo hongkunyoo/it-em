@@ -1,15 +1,15 @@
 package com.pinthecloud.item.model;
 
-public class LikeIt extends AbstractItemModel<LikeIt>{
+public class ItLike extends AbstractItemModel<ItLike>{
 
-	public LikeIt() {
+	public ItLike() {
 		super();
 	}
-	public LikeIt(String id) {
+	public ItLike(String id) {
 		super();
 		this.setId(id);
 	}
-	public LikeIt(String whoMade, String whoMadeId, String refId) {
+	public ItLike(String whoMade, String whoMadeId, String refId) {
 		super();
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);

@@ -100,9 +100,7 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					if(callback != null){
-						callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
-					}
+					callback.onCompleted((E)new Gson().fromJson(_json, obj.getClass()));	
 				} else {
 					EventBus.getDefault().post(new ItException("addUnique", ItException.TYPE.INTERNAL_ERROR, response));
 				}
@@ -377,7 +375,7 @@ public class AimHelper {
 
 	private void deleteItemImage(final Object obj, Item item, int index){
 		String imageId = index == 0 ? item.getId() : item.getId() + "_" + index;
-		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId,
+		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.getItemImageContainer(), imageId,
 				new EntityCallback<Boolean>() {
 
 			@Override
@@ -386,7 +384,7 @@ public class AimHelper {
 			}
 		});
 
-		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
+		mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.getItemImageContainer(), imageId+ImageUtil.ITEM_THUMBNAIL_IMAGE_POSTFIX,
 				new EntityCallback<Boolean>() {
 
 			@Override
@@ -396,7 +394,7 @@ public class AimHelper {
 		});
 
 		if(index == 0){
-			mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.CONTAINER_ITEM_IMAGE, imageId+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
+			mBlobStorageHelper.deleteBitmapAsync(BlobStorageHelper.getItemImageContainer(), imageId+ImageUtil.ITEM_PREVIEW_IMAGE_POSTFIX,
 					new EntityCallback<Boolean>() {
 
 				@Override
