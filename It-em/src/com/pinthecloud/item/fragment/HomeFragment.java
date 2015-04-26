@@ -162,8 +162,8 @@ public class HomeFragment extends MainTabFragment {
 		int uploadButtonHeight = BitmapFactory.decodeResource(getResources(), R.drawable.feed_upload_btn).getHeight();
 		final int maxUploadScrollY = uploadButtonHeight + getResources().getDimensionPixelSize(R.dimen.key_line_first);
 		final int addUnit = mGridLayoutManager.getSpanCount()*2;
-		
-		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+		mGridView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -175,7 +175,7 @@ public class HomeFragment extends MainTabFragment {
 				} else { // Scroll down, Upload button Down
 					mUploadLayout.scrollTo(0, Math.max(mUploadLayout.getScrollY()-dy, -maxUploadScrollY));
 				}
-				
+
 				// Add more items when grid reaches bottom
 				int[] positions = mGridLayoutManager.findLastVisibleItemPositions(null);
 				int totalItemCount = mGridLayoutManager.getItemCount();

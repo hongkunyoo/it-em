@@ -266,9 +266,12 @@ public class LoginActivity extends ItActivity {
 			@Override
 			protected Bitmap doInBackground(Void... params) {
 				try {
-					return mApp.getPicasso().load(url).get();
+					if(url == null) throw new IOException();
+					Bitmap profileImage = mApp.getPicasso().load(url).get();
+					if(profileImage == null) throw new IOException();
+					return profileImage;
 				} catch (IOException e) {
-					return BitmapFactory.decodeResource(getResources(), R.drawable.launcher);
+					return BitmapFactory.decodeResource(getResources(), R.drawable.profile_default_img);
 				}
 			}
 

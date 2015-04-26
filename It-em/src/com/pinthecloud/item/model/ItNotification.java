@@ -18,14 +18,14 @@ public class ItNotification extends AbstractItemModel<ItNotification> {
 	private String type;
 	private String typeRefId;
 	private int imageNumber;
-	private int mainImageWidth;
-	private int mainImageHeight;
+	private int imageWidth;
+	private int imageHeight;
 
 	public ItNotification() {
 		super();
 	}
 	public ItNotification(String whoMade, String whoMadeId, String refId, String refWhoMade, String refWhoMadeId,
-			String content, TYPE type, int imageNumber, int mainImageWidth, int mainImageHeight) {
+			String content, TYPE type, int imageNumber, int imageWidth, int imageHeight) {
 		super();
 		this.setWhoMade(whoMade);
 		this.setWhoMadeId(whoMadeId);
@@ -35,8 +35,8 @@ public class ItNotification extends AbstractItemModel<ItNotification> {
 		this.setContent(content);
 		this.setType(type.toString());
 		this.setImageNumber(imageNumber);
-		this.setMainImageWidth(mainImageWidth);
-		this.setMainImageHeight(mainImageHeight);
+		this.setImageWidth(imageWidth);
+		this.setImageHeight(imageHeight);
 	}
 
 	public String getRefWhoMade() {
@@ -72,19 +72,19 @@ public class ItNotification extends AbstractItemModel<ItNotification> {
 	public void setImageNumber(int imageNumber) {
 		this.imageNumber = imageNumber;
 	}
-	public int getMainImageWidth() {
-		return mainImageWidth;
+	public int getImageWidth() {
+		return imageWidth;
 	}
-	public void setMainImageWidth(int mainImageWidth) {
-		this.mainImageWidth = mainImageWidth;
+	public void setImageWidth(int imageWidth) {
+		this.imageWidth = imageWidth;
 	}
-	public int getMainImageHeight() {
-		return mainImageHeight;
+	public int getImageHeight() {
+		return imageHeight;
 	}
-	public void setMainImageHeight(int mainImageHeight) {
-		this.mainImageHeight = mainImageHeight;
+	public void setImageHeight(int imageHeight) {
+		this.imageHeight = imageHeight;
 	}
-
+	
 	public String makeMessage(){
 		ItApplication app = ItApplication.getInstance();
 		String whoMadeString = getWhoMade();
@@ -124,13 +124,6 @@ public class ItNotification extends AbstractItemModel<ItNotification> {
 	}
 
 	public Item makeItem(){
-		Item item = new Item();
-		item.setId(refId);
-		item.setWhoMade(refWhoMade);
-		item.setWhoMadeId(refWhoMadeId);
-		item.setImageNumber(imageNumber);
-		item.setMainImageWidth(mainImageWidth);
-		item.setMainImageHeight(mainImageHeight);
-		return item;
+		return new Item(refId, refWhoMade, refWhoMadeId, imageNumber, imageWidth, imageHeight);
 	}
 }

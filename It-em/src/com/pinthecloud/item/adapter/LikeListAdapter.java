@@ -15,8 +15,8 @@ import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.ItActivity;
 import com.pinthecloud.item.activity.UserPageActivity;
 import com.pinthecloud.item.helper.BlobStorageHelper;
-import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.ItLike;
+import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.util.ImageUtil;
 import com.pinthecloud.item.view.CircleImageView;
 

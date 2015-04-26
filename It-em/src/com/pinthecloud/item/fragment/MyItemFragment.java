@@ -194,7 +194,7 @@ public class MyItemFragment extends ItFragment implements UserPageScrollTabHolde
 
 	private void setScroll(){
 		final int addUnit = mGridLayoutManager.getSpanCount()*2;
-		mGridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+		mGridView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

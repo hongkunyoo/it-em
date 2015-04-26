@@ -183,6 +183,13 @@ public class FileUtil {
 	}
 
 
+	public static void clearCache(){
+		ItApplication app = ItApplication.getInstance();
+		PicassoTool.clearCache(app.getPicasso());
+		deleteDirectoryTree(app.getCacheDir());
+	}
+	
+	
 	public static void deleteDirectoryTree(File fileOrDirectory) {
 		if (fileOrDirectory.isDirectory()) {
 			for (File child : fileOrDirectory.listFiles()) {
@@ -190,12 +197,5 @@ public class FileUtil {
 			}
 		}
 		fileOrDirectory.delete();
-	}
-
-
-	public static void clearCache(){
-		ItApplication app = ItApplication.getInstance();
-		PicassoTool.clearCache(app.getPicasso());
-		deleteDirectoryTree(app.getCacheDir());
 	}
 }

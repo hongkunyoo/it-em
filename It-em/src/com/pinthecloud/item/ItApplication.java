@@ -38,8 +38,8 @@ public class ItApplication extends Application {
 	private ArrayList<String> adminList;
 
 	// Windows Azure Mobile Service Keys
-	private final String AZURE_REAL_URL = "https://it-em.azure-mobile.net/";
-	private final String AZURE_REAL_KEY = "TnmDvNkgfghvrcXjoQhRjEdcyFCEzd99";
+	private final String AZURE_REAL_URL = "https://ptc-item.azure-mobile.net/";
+	private final String AZURE_REAL_KEY = "jThOaSNNMAcOhFJZmkRQSWLtgbZjzF34";
 	private final String AZURE_TEST_URL = "https://ptc-item-test.azure-mobile.net/";
 	private final String AZURE_TEST_KEY = "GDjfJuqepoEfWkCTEqOcnGMfXPwIHk67";
 
@@ -101,7 +101,7 @@ public class ItApplication extends Application {
 				// Do nothing
 			}
 
-			// Default is REAL (int 1)
+			// Default is REAL (int 0)
 			if(isAdmin()){
 				mClient = (isDebugging() ? testClient : realClient);
 			} else {

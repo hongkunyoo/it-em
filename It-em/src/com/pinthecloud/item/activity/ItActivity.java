@@ -3,7 +3,7 @@ package com.pinthecloud.item.activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -24,7 +24,7 @@ import com.pinthecloud.item.interfaces.DialogCallback;
 
 import de.greenrobot.event.EventBus;
 
-public abstract class ItActivity extends ActionBarActivity {
+public abstract class ItActivity extends AppCompatActivity {
 
 	protected ItApplication mApp;
 	protected ItActivity mThisActivity;

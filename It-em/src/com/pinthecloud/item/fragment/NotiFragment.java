@@ -101,7 +101,7 @@ public class NotiFragment extends MainTabFragment {
 
 
 	private void setScroll(){
-		mListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+		mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

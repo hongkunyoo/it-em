@@ -47,10 +47,10 @@ import com.pinthecloud.item.helper.GAHelper;
 import com.pinthecloud.item.interfaces.DialogCallback;
 import com.pinthecloud.item.interfaces.EntityCallback;
 import com.pinthecloud.item.interfaces.ReplyCallback;
+import com.pinthecloud.item.model.ItLike;
 import com.pinthecloud.item.model.ItNotification;
 import com.pinthecloud.item.model.ItUser;
 import com.pinthecloud.item.model.Item;
-import com.pinthecloud.item.model.ItLike;
 import com.pinthecloud.item.model.ProductTag;
 import com.pinthecloud.item.model.Reply;
 import com.pinthecloud.item.util.ImageUtil;
@@ -152,7 +152,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	@Override
 	public void onStart() {
 		super.onStart();
-		setImage();
+		setImageView();
 		setItemImagesView();
 	}
 
@@ -232,7 +232,6 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	private void setComponent(){
 		setContent();
 		showMoreButton();
-		mUserNickName.setText(mItem.getWhoMade());
 
 		mReplyInputText.addTextChangedListener(new TextWatcher() {
 
@@ -458,7 +457,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				mToolbarItemBottomLayout.setVisibility(t < mMaxToolbarItemBottomScrollHeight ? View.VISIBLE : View.GONE);
 			}
 		});
-
+		
 		mItemLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
 			@SuppressLint("NewApi")
@@ -505,35 +504,45 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				}
 
 				if(item != null){
-					mProgressBarLayout.setVisibility(View.GONE);
-					mItemUpdatedLayout.setVisibility(View.VISIBLE);
+					if(item.getWhoMadeUser() != null){
+						mProgressBarLayout.setVisibility(View.GONE);
+						mItemUpdatedLayout.setVisibility(View.VISIBLE);
 
-					mItem = item;
-					setItemComponent();
-					setReplyFrag();
-					setProductTagCategory();
+						mItem = item;
+						setItemComponent();
+						setReplyFrag();
+						setProductTagCategory();
+					} else {
+						String message = getResources().getString(R.string.not_exist_user);
+						showNotExistDialog(message);
+					}
 				} else {
 					String message = getResources().getString(R.string.not_exist_item);
-					ItAlertDialog notExistItemDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
-					notExistItemDialog.setCallback(new DialogCallback() {
-
-						@Override
-						public void doPositive(Bundle bundle) {
-							mActivity.finish();
-						}
-						@Override
-						public void doNeutral(Bundle bundle) {
-							// Do nothing
-						}
-						@Override
-						public void doNegative(Bundle bundle) {
-							// Do nothing
-						}
-					});
-					notExistItemDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
+					showNotExistDialog(message);
 				}
 			}
 		});
+	}
+
+
+	private void showNotExistDialog(String message){
+		ItAlertDialog notExistDialog = ItAlertDialog.newInstance(message, null, null, null, false, false);
+		notExistDialog.setCallback(new DialogCallback() {
+
+			@Override
+			public void doPositive(Bundle bundle) {
+				mActivity.finish();
+			}
+			@Override
+			public void doNeutral(Bundle bundle) {
+				// Do nothing
+			}
+			@Override
+			public void doNegative(Bundle bundle) {
+				// Do nothing
+			}
+		});
+		notExistDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);
 	}
 
 
@@ -748,6 +757,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 
 
 	private void setProfile(){
+		mUserNickName.setText(mItem.getWhoMade());
 		mUserDescription.setText(mItem.getWhoMadeUser().getSelfIntro());
 		mUserDescription.setVisibility(mItem.getWhoMadeUser().getSelfIntro().equals("") ? View.GONE : View.VISIBLE);
 		mUserWebsite.setText(mItem.getWhoMadeUser().getWebPage());
@@ -755,7 +765,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 	}
 
 
-	private void setImage(){
+	private void setImageView(){
 		mItemImage.setHeightRatio((double)mItem.getCoverImageHeight()/mItem.getCoverImageWidth());
 		mApp.getPicasso()
 		.load(BlobStorageHelper.getItemImageUrl(mItem.getId()))

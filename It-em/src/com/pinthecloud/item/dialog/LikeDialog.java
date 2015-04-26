@@ -15,8 +15,8 @@ import android.widget.ProgressBar;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.adapter.LikeListAdapter;
 import com.pinthecloud.item.interfaces.ListCallback;
-import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.model.ItLike;
+import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.ViewUtil;
 
 public class LikeDialog extends ItDialogFragment {

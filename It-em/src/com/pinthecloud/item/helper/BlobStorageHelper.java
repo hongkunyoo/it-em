@@ -42,9 +42,9 @@ public class BlobStorageHelper {
 			CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
 			this.mBlobClient = account.createCloudBlobClient();
 		} catch (InvalidKeyException e) {
-			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.INTERNAL_ERROR));
+			// Do nothing
 		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("BlobStorageHelper", ItException.TYPE.INTERNAL_ERROR));
+			// Do nothing
 		}
 	}
 
@@ -98,7 +98,6 @@ public class BlobStorageHelper {
 			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
 			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
 			blob.getProperties().setContentType("image/jpeg");
-			blob.getProperties().setCacheControl("only-if-cached, max-age=" + Integer.MAX_VALUE);	// Add for picasso
 			blob.upload(new ByteArrayInputStream(baos.toByteArray()), baos.size());
 
 			baos.close();

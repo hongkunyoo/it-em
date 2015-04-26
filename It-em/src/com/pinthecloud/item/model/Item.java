@@ -39,6 +39,15 @@ public class Item extends AbstractItemModel<Item> implements Parcelable {
 		this.setMainImageWidth(mainImageWidth);
 		this.setMainImageHeight(mainImageHeight);
 	}
+	public Item(String id, String whoMade, String whoMadeId, int imageNumber, int coverImageWidth, int coverImageHeight) {
+		super();
+		this.setId(id);
+		this.setWhoMade(whoMade);
+		this.setWhoMadeId(whoMadeId);
+		this.setImageNumber(imageNumber);
+		this.setCoverImageWidth(coverImageWidth);
+		this.setCoverImageHeight(coverImageHeight);
+	}
 
 	@Override
 	public String getRefId() {
