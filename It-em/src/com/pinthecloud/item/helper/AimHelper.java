@@ -23,7 +23,6 @@ import com.pinthecloud.item.model.Item;
 import com.pinthecloud.item.util.AsyncChainer;
 import com.pinthecloud.item.util.AsyncChainer.Chainable;
 import com.pinthecloud.item.util.ImageUtil;
-import com.pinthecloud.item.util.ItLog;
 
 import de.greenrobot.event.EventBus;
 
@@ -243,7 +242,6 @@ public class AimHelper {
 			public void onCompleted(JsonElement _json, Exception exception,
 					ServiceFilterResponse response) {
 				if (exception == null) {
-					ItLog.log(_json);
 					JsonObject json = _json.getAsJsonObject();
 					JsonElement itemsJson = new Gson().fromJson(json.get("items"), JsonArray.class);
 					List<Item> list = new Gson().fromJson(itemsJson, new TypeToken<List<Item>>(){}.getType());

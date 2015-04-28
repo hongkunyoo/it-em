@@ -3,6 +3,7 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.facebook.FacebookSdk;
 import com.kakao.AuthType;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.pinthecloud.item.helper.AimHelper;
@@ -64,24 +66,14 @@ public class ItApplication extends Application {
 	private DeviceHelper deviceHelper;
 	private BlobStorageHelper blobStorageHelper;
 
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-
-		//		ACRA.init(app);
-		com.kakao.Session.initialize(app, AuthType.KAKAO_TALK);
-
-		mClient = getMobileClient();
-		gaHelper = getGaHelper();
-		picasso = getPicasso();
-		prefHelper = getPrefHelper();
-		objectPrefHelper = getObjectPrefHelper();
-		aimHelper = getAimHelper();
-		userHelper = getUserHelper();
-		deviceHelper = getDeviceHelper();
-		blobStorageHelper = getBlobStorageHelper();
+		init();
 	}
+
 
 	public static ItApplication getInstance(){
 		return app;
@@ -141,6 +133,23 @@ public class ItApplication extends Application {
 	public BlobStorageHelper getBlobStorageHelper() {
 		if(blobStorageHelper == null) blobStorageHelper = new BlobStorageHelper(app);
 		return blobStorageHelper;
+	}
+
+
+	private void init(){
+		ACRA.init(app);
+		FacebookSdk.sdkInitialize(app);
+		com.kakao.Session.initialize(app, AuthType.KAKAO_TALK);
+
+		mClient = getMobileClient();
+		gaHelper = getGaHelper();
+		picasso = getPicasso();
+		prefHelper = getPrefHelper();
+		objectPrefHelper = getObjectPrefHelper();
+		aimHelper = getAimHelper();
+		userHelper = getUserHelper();
+		deviceHelper = getDeviceHelper();
+		blobStorageHelper = getBlobStorageHelper();
 	}
 
 	public boolean isOnline(){

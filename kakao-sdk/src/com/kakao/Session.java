@@ -58,7 +58,6 @@ import com.kakao.rest.APIHttpRequestTask;
  *
  * @author MJ
  */
-@SuppressWarnings("deprecation")
 public class Session implements Authorizer.OnAuthorizationListener {
 	private static Session currentSession;
 	public static final String REDIRECT_URL_PREFIX = "kakao";
@@ -755,10 +754,6 @@ public class Session implements Authorizer.OnAuthorizationListener {
 
 		private boolean isOpened() {
 			return this == SessionState.OPENED;
-		}
-
-		private boolean isOpening() {
-			return this == SessionState.OPENING;
 		}
 	}
 

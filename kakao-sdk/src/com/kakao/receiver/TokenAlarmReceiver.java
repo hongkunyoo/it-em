@@ -17,7 +17,6 @@
  */
 package com.kakao.receiver;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,9 +37,7 @@ public class TokenAlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    @SuppressLint("NewApi")
-	@SuppressWarnings("deprecation")
-	private boolean isApplicationActive(Context context) {
+    private boolean isApplicationActive(Context context) {
         try {
             final PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 

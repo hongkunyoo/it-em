@@ -17,7 +17,7 @@
  */
 package com.kakao;
 
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,101 +25,100 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * API 요청에 대한 오류 결과 객체
  * @author MJ
  */
-@SuppressWarnings("deprecation")
 public class APIErrorResult {
-	/**
-	 * 에러를 일으킨 요청 URL
-	 */
-	private String requestURL;
+    /**
+     * 에러를 일으킨 요청 URL
+     */
+    private String requestURL;
 
-	private int httpStauts = HttpStatus.SC_INTERNAL_SERVER_ERROR;
+    private int httpStauts = HttpURLConnection.HTTP_INTERNAL_ERROR;
 
-	// {@link com.kakao.helper.ServerProtocol.ERROR_CODE_KEY}와 같은 변수 이름 유지. for jackson parsing
-	/**
-	 * 숫자로 구성된 에러 코드
-	 */
-	@JsonProperty("code")
-	protected int errorCode;
+    // {@link com.kakao.helper.ServerProtocol.ERROR_CODE_KEY}와 같은 변수 이름 유지. for jackson parsing
+    /**
+     * 숫자로 구성된 에러 코드
+     */
+    @JsonProperty("code")
+    protected int errorCode;
 
-	//{@link com.kakao.helper.ServerProtocol.ERROR_MSG_KEY}와 같은 변수 이름 유지. for jackson parsing
-	/**
-	 *  String으로 구성된 상세한 에러 메시지
-	 */
-	@JsonProperty("msg")
-	protected String errorMessage;
+    //{@link com.kakao.helper.ServerProtocol.ERROR_MSG_KEY}와 같은 변수 이름 유지. for jackson parsing
+    /**
+     *  String으로 구성된 상세한 에러 메시지
+     */
+    @JsonProperty("msg")
+    protected String errorMessage;
 
-	// for jackson
-	public APIErrorResult() {}
+    // for jackson
+    public APIErrorResult() {}
 
-	public APIErrorResult(final String errorMessage){
-		this(null, errorMessage);
-	}
+    public APIErrorResult(final String errorMessage){
+        this(null, errorMessage);
+    }
 
-	public APIErrorResult(final String requestURL, final String errorMessage) {
-		this.requestURL = requestURL;
-		this.errorCode = ErrorCode.CLIENT_ERROR_CODE.getErrorCode();
-		this.errorMessage = errorMessage;
-	}
+    public APIErrorResult(final String requestURL, final String errorMessage) {
+        this.requestURL = requestURL;
+        this.errorCode = ErrorCode.CLIENT_ERROR_CODE.getErrorCode();
+        this.errorMessage = errorMessage;
+    }
 
-	/**
-	 * 에러를 일으킨 요청 URL을 넘겨준다.
-	 * @return 요청 URL
-	 */
-	public String getRequestURL() {
-		return requestURL;
-	}
+    /**
+     * 에러를 일으킨 요청 URL을 넘겨준다.
+     * @return 요청 URL
+     */
+    public String getRequestURL() {
+        return requestURL;
+    }
 
-	/**
-	 * 에러를 일으킨 요청 URL을 설정 한다.
-	 * @param requestURL 요청 URL
-	 */
-	public void setRequestURL(String requestURL) {
-		this.requestURL = requestURL;
-	}
+    /**
+     * 에러를 일으킨 요청 URL을 설정 한다.
+     * @param requestURL 요청 URL
+     */
+    public void setRequestURL(String requestURL) {
+        this.requestURL = requestURL;
+    }
 
-	/**
-	 * 숫자로 구성된 에러 코드
-	 * @return 에러 코드
-	 */
-	public int getErrorCodeInt() {
-		return errorCode;
-	}
+    /**
+     * 숫자로 구성된 에러 코드
+     * @return 에러 코드
+     */
+    public int getErrorCodeInt() {
+        return errorCode;
+    }
 
-	/**
-	 * Enum 에러 코드
-	 * @return {@link ErrorCode} 중 하나
-	 */
-	public ErrorCode getErrorCode() {
-		return ErrorCode.valueOf(errorCode);
-	}
+    /**
+     * Enum 에러 코드
+     * @return {@link ErrorCode} 중 하나
+     */
+    public ErrorCode getErrorCode() {
+        return ErrorCode.valueOf(errorCode);
+    }
 
-	/**
-	 * String으로 구성된 상세한 에러 메시지
-	 * @return 에러 메시지
-	 */
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+    /**
+     * String으로 구성된 상세한 에러 메시지
+     * @return 에러 메시지
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-	public int getHttpStauts() {
-		return httpStauts;
-	}
+    public int getHttpStauts() {
+        return httpStauts;
+    }
 
-	public void setHttpStauts(int httpStauts) {
-		this.httpStauts = httpStauts;
-	}
+    public void setHttpStauts(int httpStauts) {
+        this.httpStauts = httpStauts;
+    }
 
-	/**
-	 * 결과 객체를 String으로 표현
-	 * @return 요청 URL, 에러 코드, 에러 메시지를 포함한 string
-	 */
-	@Override
-	public String toString() {
-		final StringBuilder sb = new StringBuilder("APIErrorResult{");
-		sb.append("requestURL='").append(requestURL).append('\'');
-		sb.append(", errorCode=").append(errorCode);
-		sb.append(", errorMessage='").append(errorMessage).append('\'');
-		sb.append('}');
-		return sb.toString();
-	}
+    /**
+     * 결과 객체를 String으로 표현
+     * @return 요청 URL, 에러 코드, 에러 메시지를 포함한 string
+     */
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("APIErrorResult{");
+        sb.append("requestURL='").append(requestURL).append('\'');
+        sb.append(", errorCode=").append(errorCode);
+        sb.append(", errorMessage='").append(errorMessage).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
