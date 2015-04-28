@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import com.pinthecloud.item.ItConstant;
 import com.pinthecloud.item.R;
 import com.pinthecloud.item.activity.MileageActivity;
 import com.pinthecloud.item.activity.UploadActivity;
@@ -87,7 +86,7 @@ public class HomeFragment extends MainTabFragment {
 				mGridView.smoothScrollToPosition(0);
 
 				// Show mileage guide dialog
-				boolean mileageGuideRead = mPrefHelper.getBoolean(ItConstant.MILEAGE_GUIDE_READ_KEY);
+				boolean mileageGuideRead = mPrefHelper.getBoolean(ItUser.MILEAGE_GUIDE_READ_KEY);
 				String bankAccountNumber = mUser.getBankAccountNumber();
 				String bankAccountName = mUser.getBankAccountName();
 				if(!mileageGuideRead && (bankAccountNumber.equals("") || bankAccountName.equals(""))){
@@ -245,7 +244,7 @@ public class HomeFragment extends MainTabFragment {
 			}
 			@Override
 			public void doNegative(Bundle bundle) {
-				mPrefHelper.put(ItConstant.MILEAGE_GUIDE_READ_KEY, true);
+				mPrefHelper.put(ItUser.MILEAGE_GUIDE_READ_KEY, true);
 			}
 		});
 		mileageDialog.show(getFragmentManager(), ItDialogFragment.INTENT_KEY);

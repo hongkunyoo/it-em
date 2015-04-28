@@ -18,11 +18,10 @@
 package com.kakao.authorization.accesstoken;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.http.HttpStatus;
 
 import android.os.Bundle;
 
@@ -44,101 +43,101 @@ import com.ning.http.client.Response;
  */
 public class GetterAccessToken extends Authorizer {
 
-    private final AccessTokenRequest accessTokenRequest;
+	private final AccessTokenRequest accessTokenRequest;
 
-    public GetterAccessToken(final AccessTokenRequest accessTokenRequest) {
-        this.accessTokenRequest = accessTokenRequest;
-    }
+	public GetterAccessToken(final AccessTokenRequest accessTokenRequest) {
+		this.accessTokenRequest = accessTokenRequest;
+	}
 
-    public void requestAccessToken() {
-        final boolean permission = checkInternetPermission();
-        if (!permission) {
-            return;
-        }
+	public void requestAccessToken() {
+		final boolean permission = checkInternetPermission();
+		if (!permission) {
+			return;
+		}
 
-        final BoundRequestBuilder requestBuilder = makeAccessTokenRequest();
-        final Request httpRequest = requestBuilder.build();
-        HttpTaskManager.execute(new HttpRequestTask<Map>(httpRequest, new AccessTokenCallback(httpRequest, new HttpResponseHandler<Map>() {
-            @Override
-            protected void onHttpSuccess(final Map resultObj) { // 200인 경우
-                final AccessToken accessToken = AccessToken.createFromResponse(resultObj);
-                if(accessToken == null)
-                    doneOnOAuthError("AccessToken is null.");
-                else
-                    done(AuthorizationResult.createSuccessAccessTokenResult(accessToken));
-            }
+		final BoundRequestBuilder requestBuilder = makeAccessTokenRequest();
+		final Request httpRequest = requestBuilder.build();
+		HttpTaskManager.execute(new HttpRequestTask<Map>(httpRequest, new AccessTokenCallback(httpRequest, new HttpResponseHandler<Map>() {
+			@Override
+			protected void onHttpSuccess(final Map resultObj) { // 200인 경우
+				final AccessToken accessToken = AccessToken.createFromResponse(resultObj);
+				if(accessToken == null)
+					doneOnOAuthError("AccessToken is null.");
+				else
+					done(AuthorizationResult.createSuccessAccessTokenResult(accessToken));
+			}
 
-            @Override
-            protected void onHttpSessionClosedFailure(final APIErrorResult errorResult) {
-                // API call인 경우 session 만료로 발생하므로 oauth 요청시는 발생하지 않음.
-            }
+			@Override
+			protected void onHttpSessionClosedFailure(final APIErrorResult errorResult) {
+				// API call인 경우 session 만료로 발생하므로 oauth 요청시는 발생하지 않음.
+			}
 
-            @Override
-            protected void onHttpFailure(final APIErrorResult errorResult) { // 200 제외
-                switch (errorResult.getHttpStauts()) {
-                    case HttpStatus.SC_BAD_REQUEST :
-                    case HttpStatus.SC_UNAUTHORIZED :
-                        doneOnOAuthError(errorResult.toString());
-                        break;
-                    default:
-                        done(AuthorizationResult.createAccessTokenErrorResult(errorResult.toString()));
-                        break;
-                }
-            }
-        })));
-    }
+			@Override
+			protected void onHttpFailure(final APIErrorResult errorResult) { // 200 제외
+				switch (errorResult.getHttpStauts()) {
+				case HttpURLConnection.HTTP_BAD_REQUEST :
+				case HttpURLConnection.HTTP_UNAUTHORIZED :
+					doneOnOAuthError(errorResult.toString());
+					break;
+				default:
+					done(AuthorizationResult.createAccessTokenErrorResult(errorResult.toString()));
+					break;
+				}
+			}
+		})));
+	}
 
-    public AccessTokenRequest getRequest() {
-        return accessTokenRequest;
-    }
+	public AccessTokenRequest getRequest() {
+		return accessTokenRequest;
+	}
 
-    private class AccessTokenCallback extends KakaoAsyncHandler<Map> {
+	private class AccessTokenCallback extends KakaoAsyncHandler<Map> {
 
-        public AccessTokenCallback(final Request request, final HttpResponseHandler<Map> httpResponseHandler) {
-            super(request, httpResponseHandler, Map.class);
-        }
+		public AccessTokenCallback(final Request request, final HttpResponseHandler<Map> httpResponseHandler) {
+			super(request, httpResponseHandler, Map.class);
+		}
 
-        @Override
-        protected Void handleFailureHttpStatus(final Response response, final URI requestUri, final int httpStatusCode) throws IOException {
-            if (checkResponseBody(response)) {
-                return null;
-            }
-            sendError(response, response.getResponseBody());
-            return null;
-        }
-    }
+		@Override
+		protected Void handleFailureHttpStatus(final Response response, final URI requestUri, final int httpStatusCode) throws IOException {
+			if (checkResponseBody(response)) {
+				return null;
+			}
+			sendError(response, response.getResponseBody());
+			return null;
+		}
+	}
 
-    protected void doneOnOAuthError(final String errorMessage) {
-        Logger.getInstance().d("GetterAccessToken: " + errorMessage);
-        done(AuthorizationResult.createAccessTokenOAuthErrorResult(errorMessage));
-    }
+	protected void doneOnOAuthError(final String errorMessage) {
+		Logger.getInstance().d("GetterAccessToken: " + errorMessage);
+		done(AuthorizationResult.createAccessTokenOAuthErrorResult(errorMessage));
+	}
 
-    private BoundRequestBuilder makeAccessTokenRequest() {
-        final BoundRequestBuilder requestBuilder = HttpRequestTask.ASYNC_HTTP_CLIENT.preparePost(
-            HttpRequestTask.createBaseURL(ServerProtocol.AUTH_AUTHORITY, ServerProtocol.ACCESS_TOKEN_PATH));
-        final Entry<String,String> entry = HttpRequestTask.KA_HEADER.entrySet().iterator().next();
-        requestBuilder.addHeader(entry.getKey(), entry.getValue());
+	private BoundRequestBuilder makeAccessTokenRequest() {
+		final BoundRequestBuilder requestBuilder = HttpRequestTask.ASYNC_HTTP_CLIENT.preparePost(
+				HttpRequestTask.createBaseURL(ServerProtocol.AUTH_AUTHORITY, ServerProtocol.ACCESS_TOKEN_PATH));
+		final Entry<String,String> entry = HttpRequestTask.KA_HEADER.entrySet().iterator().next();
+		requestBuilder.addHeader(entry.getKey(), entry.getValue());
 
-        if (accessTokenRequest.isAccessTokenRequestWithAuthCode()) {
-            requestBuilder.addQueryParameter(ServerProtocol.GRANT_TYPE_KEY, ServerProtocol.GRANT_TYPE_AUTHORIZATION_CODE);
-            requestBuilder.addQueryParameter(ServerProtocol.CODE_KEY, accessTokenRequest.getAuthorizationCode());
-            requestBuilder.addQueryParameter(ServerProtocol.REDIRECT_URI_KEY, accessTokenRequest.getRedirectURI());
-        } else { //if(request.isAccessTokenRequestWithRefreshToken()) {
-            requestBuilder.addQueryParameter(ServerProtocol.GRANT_TYPE_KEY, ServerProtocol.REFRESH_TOKEN_KEY);
-            requestBuilder.addQueryParameter(ServerProtocol.REFRESH_TOKEN_KEY, accessTokenRequest.getRefreshToken());
-        }
-        requestBuilder.addQueryParameter(ServerProtocol.CLIENT_ID_KEY, accessTokenRequest.getAppKey());
-        requestBuilder.addQueryParameter(ServerProtocol.ANDROID_KEY_HASH, accessTokenRequest.getKeyHash());
+		if (accessTokenRequest.isAccessTokenRequestWithAuthCode()) {
+			requestBuilder.addQueryParameter(ServerProtocol.GRANT_TYPE_KEY, ServerProtocol.GRANT_TYPE_AUTHORIZATION_CODE);
+			requestBuilder.addQueryParameter(ServerProtocol.CODE_KEY, accessTokenRequest.getAuthorizationCode());
+			requestBuilder.addQueryParameter(ServerProtocol.REDIRECT_URI_KEY, accessTokenRequest.getRedirectURI());
+		} else { //if(request.isAccessTokenRequestWithRefreshToken()) {
+			requestBuilder.addQueryParameter(ServerProtocol.GRANT_TYPE_KEY, ServerProtocol.REFRESH_TOKEN_KEY);
+			requestBuilder.addQueryParameter(ServerProtocol.REFRESH_TOKEN_KEY, accessTokenRequest.getRefreshToken());
+		}
+		requestBuilder.addQueryParameter(ServerProtocol.CLIENT_ID_KEY, accessTokenRequest.getAppKey());
+		requestBuilder.addQueryParameter(ServerProtocol.ANDROID_KEY_HASH, accessTokenRequest.getKeyHash());
 
-        final Bundle extraParams = accessTokenRequest.getExtras();
-        if (extraParams != null && !extraParams.isEmpty()) {
-            for (String key : extraParams.keySet()) {
-                String value = extraParams.getString(key);
-                if (value != null) {
-                    requestBuilder.addQueryParameter(key, value);
-                }
-            }
-        }
-        return requestBuilder;
-    }
+		final Bundle extraParams = accessTokenRequest.getExtras();
+		if (extraParams != null && !extraParams.isEmpty()) {
+			for (String key : extraParams.keySet()) {
+				String value = extraParams.getString(key);
+				if (value != null) {
+					requestBuilder.addQueryParameter(key, value);
+				}
+			}
+		}
+		return requestBuilder;
+	}
 }

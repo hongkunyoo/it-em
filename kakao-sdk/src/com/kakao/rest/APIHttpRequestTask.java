@@ -18,12 +18,11 @@
 package com.kakao.rest;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-
-import org.apache.http.HttpStatus;
 
 import android.os.Bundle;
 import android.os.Message;
@@ -48,7 +47,6 @@ import com.ning.http.client.Response;
  * @param <T> : 요청이 성공한 경우 return 객체 type. httpResponseHandler<T>, Class<T>
  * @author MJ
  */
-@SuppressWarnings("deprecation")
 public class APIHttpRequestTask<T> extends HttpRequestTask<T> implements SessionCallback {
 	private final HttpResponseHandler<T> httpResponseHandler;
 
@@ -129,12 +127,12 @@ public class APIHttpRequestTask<T> extends HttpRequestTask<T> implements Session
 
 		protected Void handleFailureHttpStatus(final Response response, final URI requestUri, final int httpStatusCode) throws IOException {
 			switch (httpStatusCode) {
-			case HttpStatus.SC_UNAUTHORIZED:
+			case HttpURLConnection.HTTP_UNAUTHORIZED:
 				requestAccessTokenWithRefreshToken(new APIHttpRequestTask<T>(request, new TokenRefreshAsyncHandler<T>(request, httpResponseHandler, returnType), httpResponseHandler));
 				return null;
-			case HttpStatus.SC_BAD_REQUEST:
-			case HttpStatus.SC_FORBIDDEN:
-			case HttpStatus.SC_INTERNAL_SERVER_ERROR:
+			case HttpURLConnection.HTTP_BAD_REQUEST:
+			case HttpURLConnection.HTTP_FORBIDDEN:
+			case HttpURLConnection.HTTP_INTERNAL_ERROR:
 				sendError(response, requestUri, httpStatusCode, ERROR);
 				return null;
 			default:
@@ -161,8 +159,8 @@ public class APIHttpRequestTask<T> extends HttpRequestTask<T> implements Session
 
 		protected Void handleFailureHttpStatus(final Response response, final URI requestUri, final int httpStatusCode) throws IOException {
 			switch (httpStatusCode) {
-			case HttpStatus.SC_BAD_REQUEST:
-			case HttpStatus.SC_UNAUTHORIZED:
+			case HttpURLConnection.HTTP_BAD_REQUEST:
+			case HttpURLConnection.HTTP_UNAUTHORIZED:
 				Session.getCurrentSession().invalidateAccessToken();
 				sendError(response, requestUri, httpStatusCode, NEED_TO_LOGIN);
 				return null;

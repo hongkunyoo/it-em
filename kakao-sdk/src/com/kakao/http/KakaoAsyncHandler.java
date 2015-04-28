@@ -18,9 +18,8 @@
 package com.kakao.http;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
-
-import org.apache.http.HttpStatus;
 
 import android.os.Message;
 
@@ -36,7 +35,6 @@ import com.ning.http.client.Response;
  * @param <T> : 요청이 성공한 경우 HttpResponseHandler<T>가 받게되는 return type
  * @author MJ
  */
-@SuppressWarnings("deprecation")
 public abstract class KakaoAsyncHandler<T> extends AsyncCompletionHandler<Void> {
 	protected final HttpResponseHandler<T> httpResponseHandler;
 	protected final Request request;
@@ -58,7 +56,7 @@ public abstract class KakaoAsyncHandler<T> extends AsyncCompletionHandler<Void> 
 			}
 
 			final int httpStatusCode = response.getStatusCode();
-			if (httpStatusCode != HttpStatus.SC_OK) {
+			if (httpStatusCode != HttpURLConnection.HTTP_OK) {
 				return handleFailureHttpStatus(response, requestUri, httpStatusCode);
 			} else {
 				if(returnType.equals(Void.class)){

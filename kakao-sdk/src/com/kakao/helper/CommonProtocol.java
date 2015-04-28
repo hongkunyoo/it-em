@@ -23,7 +23,7 @@ package com.kakao.helper;
 public final class CommonProtocol {
     public static final String APP_KEY_PROPERTY = "com.kakao.sdk.AppKey";
 
-    public static final String SDK_VERSION = "1.0.51";
+    public static final String SDK_VERSION = "1.0.52";
     public static final String OS_ANDROID = "android";
     public static final String URL_SCHEME = "https";
 

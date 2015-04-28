@@ -5,20 +5,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
 
-import com.facebook.AppEventsLogger;
-import com.facebook.Session.StatusCallback;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.kakao.APIErrorResult;
 import com.kakao.MeResponseCallback;
 import com.kakao.SessionCallback;
@@ -40,10 +46,9 @@ import de.greenrobot.event.EventBus;
 
 public class LoginActivity extends ItActivity {
 
-	private com.facebook.widget.LoginButton mFacebookButton;
-	private UiLifecycleHelper mFacebookUiHelper;
+	private Button mFacebookButton;
+	private CallbackManager mFacebookCallbackManager;
 
-	private com.kakao.widget.LoginButton mKakaoButton;
 	private com.kakao.Session mKakaoSession;
 	private SessionCallback mKakaoSessionCallback;
 
@@ -55,19 +60,29 @@ public class LoginActivity extends ItActivity {
 		setContentView(R.layout.activity_login);
 
 		// Facebook
-		mFacebookUiHelper = new UiLifecycleHelper(mThisActivity, new StatusCallback() {
+		mFacebookCallbackManager = CallbackManager.Factory.create();
+		LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
 
 			@Override
-			public void call(com.facebook.Session session, SessionState state, Exception exception) {
+			public void onSuccess(LoginResult loginResult) {
+				facebookLogin(loginResult);
+			}
+			@Override
+			public void onCancel() {
+				// Do nothing
+			}
+			@Override
+			public void onError(FacebookException exception) {
+				Toast.makeText(mThisActivity, getResources().getString(R.string.error_message), Toast.LENGTH_LONG).show();
 			}
 		});
-		mFacebookUiHelper.onCreate(savedInstanceState);
 
 		// Kakao
 		mKakaoSessionCallback = new SessionCallback() {
 
 			@Override
 			public void onSessionOpening() {
+				// Do nothing
 			}
 			@Override
 			public void onSessionOpened() {
@@ -75,6 +90,7 @@ public class LoginActivity extends ItActivity {
 			}
 			@Override
 			public void onSessionClosed(KakaoException exception) {
+				Toast.makeText(mThisActivity, getResources().getString(R.string.error_message), Toast.LENGTH_LONG).show();
 			}
 		};
 
@@ -88,17 +104,19 @@ public class LoginActivity extends ItActivity {
 
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		mGaHelper.reportActivityStart(mThisActivity);
+	protected void onResume() {
+		super.onResume();
+
+		if(!mKakaoSession.isClosed() && mKakaoSession.isOpenable()) {
+			mKakaoSession.implicitOpen();
+		}
 	}
 
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		mFacebookUiHelper.onResume();
-		AppEventsLogger.activateApp(mThisActivity);
+	protected void onStart() {
+		super.onStart();
+		mGaHelper.reportActivityStart(mThisActivity);
 	}
 
 
@@ -109,15 +127,7 @@ public class LoginActivity extends ItActivity {
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
-		mFacebookUiHelper.onActivityResult(requestCode, resultCode, data);
-	}
-
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		mFacebookUiHelper.onPause();
-		AppEventsLogger.deactivateApp(mThisActivity);
+		mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
 	}
 
 
@@ -131,15 +141,7 @@ public class LoginActivity extends ItActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		mFacebookUiHelper.onDestroy();
 		mKakaoSession.removeCallback(mKakaoSessionCallback);
-	}
-
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		mFacebookUiHelper.onSaveInstanceState(outState);
 	}
 
 
@@ -150,42 +152,42 @@ public class LoginActivity extends ItActivity {
 
 
 	private void findComponent(){
-		mFacebookButton = (com.facebook.widget.LoginButton)findViewById(R.id.login_facebook);
-		mKakaoButton = (com.kakao.widget.LoginButton)findViewById(R.id.login_kakao);
+		mFacebookButton = (Button)findViewById(R.id.login_facebook);
 	}
 
 
 	private void setButton(){
-		mFacebookButton.setReadPermissions(Arrays.asList("public_profile"));
-		mFacebookButton.setBackgroundResource(R.drawable.signin_button);
-		mFacebookButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-		mFacebookButton.setTypeface(mFacebookButton.getTypeface(), Typeface.BOLD);
-		mFacebookButton.setText(getResources().getString(R.string.facebook_login));
-		mFacebookButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
-		mFacebookButton.setTextColor(getResources().getColor(R.color.brand_color));
-		mFacebookButton.setUserInfoChangedCallback(new com.facebook.widget.LoginButton.UserInfoChangedCallback() {
+		mFacebookButton.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onUserInfoFetched(GraphUser user) {
-				com.facebook.Session session = com.facebook.Session.getActiveSession();
-				if (session != null && session.isOpened() || user != null) {
-					facebookLogin(user);
+			public void onClick(View v) {
+				LoginManager.getInstance().logInWithReadPermissions(mThisActivity, Arrays.asList("public_profile"));
+			}
+		});
+	}
+
+
+	private void facebookLogin(LoginResult loginResult){
+		GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+				new GraphRequest.GraphJSONObjectCallback() {
+
+			@Override
+			public void onCompleted(JSONObject object, GraphResponse response) {
+				try {
+					String id = object.getString("id");
+					String firstName = object.getString("first_name");
+					ItUser user = new ItUser(id, ItUser.PLATFORM.FACEBOOK, firstName.replace(" ", "_"), ItUser.TYPE.VIEWER);
+					itemLogin(user, "https://graph.facebook.com/"+user.getItUserId()+"/picture?type=large");
+				} catch (JSONException e) {
+					// Do nothing
 				}
 			}
 		});
 
-		mKakaoButton.setBackgroundResource(R.drawable.signin_button);
-		mKakaoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-		mKakaoButton.setTypeface(mKakaoButton.getTypeface(), Typeface.BOLD);
-		mKakaoButton.setText(getResources().getString(R.string.kakao_login));
-		mKakaoButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.font_medium));
-		mKakaoButton.setTextColor(getResources().getColor(R.color.brand_color));
-	}
-
-
-	private void facebookLogin(final GraphUser facebookUser){
-		ItUser user = new ItUser(facebookUser.getId(), ItUser.PLATFORM.FACEBOOK, facebookUser.getFirstName().replace(" ", "_"), ItUser.TYPE.VIEWER);
-		itemLogin(user, "https://graph.facebook.com/"+user.getItUserId()+"/picture?type=large");
+		Bundle parameters = new Bundle();
+		parameters.putString("fields", "id, first_name");
+		request.setParameters(parameters);
+		request.executeAsync();
 	}
 
 

@@ -24,15 +24,22 @@
             android:id="@+id/login_kakao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/signin_button"
+            android:text="@string/kakao_login"
+            android:textColor="@color/brand_text_color"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold"
             android:layout_marginBottom="@dimen/key_line_first" />
 
-        <com.facebook.widget.LoginButton
-            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+        <Button
             android:id="@+id/login_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            facebook:login_text="@string/facebook_login"
-            facebook:logout_text="@string/facebook_login" />
+            android:background="@drawable/signin_button"
+            android:text="@string/facebook_login"
+            android:textColor="@color/brand_text_color"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.facebook.login.LoginManager;
 import com.kakao.APIErrorResult;
 import com.kakao.LogoutResponseCallback;
 import com.kakao.UserManagement;
@@ -250,12 +251,7 @@ public class SettingsFragment extends ItFragment {
 
 
 	private void facebookLogout(){
-		com.facebook.Session session = com.facebook.Session.getActiveSession();
-		if (session == null) {
-			session = new com.facebook.Session(mActivity);
-			com.facebook.Session.setActiveSession(session);
-		}
-		session.closeAndClearTokenInformation();
+		LoginManager.getInstance().logOut();
 		logout();
 	}
 
@@ -304,5 +300,6 @@ public class SettingsFragment extends ItFragment {
 	private void removePreference(){
 		mObjectPrefHelper.remove(ItUser.class);
 		mPrefHelper.remove(ItUser.NOTIFICATION_NUMBER_KEY);
+		mPrefHelper.remove(ItUser.MILEAGE_GUIDE_READ_KEY);
 	}
 }

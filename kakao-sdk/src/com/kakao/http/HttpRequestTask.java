@@ -90,7 +90,6 @@ public class HttpRequestTask<T> implements Runnable {
     }
 
     private static AsyncHttpClient newAsyncHttpClient() {
-//        return new AsyncHttpClient(new GrizzlyAsyncHttpProvider(asyncHttpClientConfig), asyncHttpClientConfig);
         return new AsyncHttpClient(new SimpleAsyncHttpProvider(asyncHttpClientConfig), asyncHttpClientConfig);
     }
 
