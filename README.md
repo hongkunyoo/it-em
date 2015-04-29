@@ -1,5 +1,4 @@
-it:em
+IT:EM
 =====
 
-it:em-android project
-
+IT:EM Android Project
