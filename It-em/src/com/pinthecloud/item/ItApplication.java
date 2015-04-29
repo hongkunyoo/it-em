@@ -3,7 +3,6 @@ package com.pinthecloud.item;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -137,7 +136,7 @@ public class ItApplication extends Application {
 
 
 	private void init(){
-		ACRA.init(app);
+		//		ACRA.init(app);
 		FacebookSdk.sdkInitialize(app);
 		com.kakao.Session.initialize(app, AuthType.KAKAO_TALK);
 
