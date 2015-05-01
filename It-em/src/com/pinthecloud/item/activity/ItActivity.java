@@ -28,7 +28,7 @@ public abstract class ItActivity extends AppCompatActivity {
 
 	protected ItApplication mApp;
 	protected ItActivity mThisActivity;
-
+	
 	protected PrefHelper mPrefHelper;
 	protected ObjectPrefHelper mObjectPrefHelper;
 	protected AimHelper mAimHelper;

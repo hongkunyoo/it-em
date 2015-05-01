@@ -90,6 +90,7 @@ public class HttpRequestTask<T> implements Runnable {
     }
 
     private static AsyncHttpClient newAsyncHttpClient() {
+//        return new AsyncHttpClient(new GrizzlyAsyncHttpProvider(asyncHttpClientConfig), asyncHttpClientConfig);
         return new AsyncHttpClient(new SimpleAsyncHttpProvider(asyncHttpClientConfig), asyncHttpClientConfig);
     }
 
@@ -108,6 +109,10 @@ public class HttpRequestTask<T> implements Runnable {
         configBuilder.setIdleConnectionInPoolTimeoutInMs(DEFAULT_IDLE_CONNECTION_POOL_IN_MS);
         configBuilder.setExecutorService(HttpTaskManager.getHttpExecutor());
         return configBuilder.build();
+    }
+
+    private static void destroy() {
+        ASYNC_HTTP_CLIENT.close();
     }
 
 

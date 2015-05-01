@@ -20,8 +20,6 @@
 -->
 
 <resources>
-    <string name="com_facebook_like_button_not_liked">Like</string>
-    <string name="com_facebook_like_button_liked">Liked</string>
     <string name="com_facebook_loginview_log_out_button">Log out</string>
     <string name="com_facebook_loginview_log_in_button">Log in</string>
     <string name="com_facebook_loginview_log_in_button_long">Log in with Facebook</string>
@@ -34,6 +32,4 @@
     <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
     <string name="com_facebook_tooltip_default">New! You\'re in control - choose what info you want to share with apps.</string>
     <string name="com_facebook_image_download_unknown_error">Unexpected error while downloading an image.</string>
-    <string name="com_facebook_share_button_text">Share</string>
-    <string name="com_facebook_send_button_text">Send</string>
 </resources>
