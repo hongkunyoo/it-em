@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.CookieSyncManager;
-
 import com.kakao.authorization.AuthorizationResult;
 import com.kakao.exception.KakaoException;
 import com.kakao.helper.Logger;

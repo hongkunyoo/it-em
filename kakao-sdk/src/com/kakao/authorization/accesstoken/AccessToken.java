@@ -42,6 +42,7 @@ public class AccessToken implements Parcelable{
 
     private static final Date MIN_DATE = new Date(Long.MIN_VALUE);
     private static final Date MAX_DATE = new Date(Long.MAX_VALUE);
+    private static final Date DEFAULT_EXPIRATION_TIME = MAX_DATE;
     private static final Date ALREADY_EXPIRED_EXPIRATION_TIME = MIN_DATE;
 
     private String accessTokenString;

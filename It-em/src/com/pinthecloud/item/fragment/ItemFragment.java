@@ -259,7 +259,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 				Reply reply = new Reply(content, mUser.getNickName(), mUser.getId(), mItem.getId());
 				ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
 						mItem.getWhoMade(), mItem.getWhoMadeId(), reply.getContent(), ItNotification.TYPE.Reply,
-						mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
+						mItem.getImageNumber(), mItem.getCoverImageWidth(), mItem.getCoverImageHeight());
 				submitReply(reply, noti);
 
 				mReplyInputText.setText("");
@@ -685,7 +685,7 @@ public class ItemFragment extends ItFragment implements ReplyCallback {
 			ItLike like = new ItLike(mUser.getNickName(), mUser.getId(), mItem.getId());
 			ItNotification noti = new ItNotification(mUser.getNickName(), mUser.getId(), mItem.getId(),
 					mItem.getWhoMade(), mItem.getWhoMadeId(), "", ItNotification.TYPE.ItLike,
-					mItem.getImageNumber(), mItem.getMainImageWidth(), mItem.getMainImageHeight());
+					mItem.getImageNumber(), mItem.getCoverImageWidth(), mItem.getCoverImageHeight());
 			mAimHelper.addUnique(like, noti, new EntityCallback<ItLike>() {
 
 				@Override

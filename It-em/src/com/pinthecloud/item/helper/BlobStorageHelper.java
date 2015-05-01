@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -19,6 +17,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.pinthecloud.item.ItApplication;
 import com.pinthecloud.item.event.ItException;
 import com.pinthecloud.item.interfaces.EntityCallback;
+import com.pinthecloud.item.util.ImageUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -65,13 +64,13 @@ public class BlobStorageHelper {
 		return getHostUrl(getItemImageContainer());
 	}
 	public static String getItemImageUrl(String id) {
-		return getItemImageHostUrl() + id;
+		return getItemImageHostUrl() + id + ImageUtil.JPG;
 	}
 	public static String getUserProfileHostUrl() {
 		return getHostUrl(getUserProfileContainer());
 	}
 	public static String getUserProfileUrl(String id) {
-		return getUserProfileHostUrl() + id;
+		return getUserProfileHostUrl() + id + ImageUtil.JPG;
 	}
 
 
@@ -112,39 +111,6 @@ public class BlobStorageHelper {
 	}
 
 
-	private Bitmap downloadBitmapSync(String containerName, String imageId) {
-		Bitmap bitmap = null;
-		try {
-			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
-			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			blob.download(baos);
-			bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
-		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
-		} catch (StorageException e) {
-			EventBus.getDefault().post(new ItException("downloadBitmapSync", ItException.TYPE.INTERNAL_ERROR));
-		}
-		return bitmap;
-	}
-
-
-	private String downloadToFileSync(Context context, String containerName, String imageId, String path) {
-		try {
-			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
-			CloudBlockBlob blob = container.getBlockBlobReference(imageId);
-			blob.downloadToFile(context.getFilesDir() + "/" + path);
-		} catch (URISyntaxException e) {
-			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
-		} catch (StorageException e) {
-			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
-		} catch (IOException e) {
-			EventBus.getDefault().post(new ItException("downloadToFileSync", ItException.TYPE.INTERNAL_ERROR));
-		}
-		return context.getFilesDir() + "/" + path;
-	}
-
-
 	private boolean deleteBitmapSync(String containerName, String imageId) throws StorageException {
 		try {
 			CloudBlobContainer container = mBlobClient.getContainerReference(containerName);
@@ -176,7 +142,7 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(imageId);
+		}).execute(imageId + ImageUtil.JPG);
 	}
 
 
@@ -199,54 +165,7 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(imageId);
-	}
-
-
-	public void downloadBitmapAsync(final String containerName, String imageId, final EntityCallback<Bitmap> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("downloadBitmapAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		(new AsyncTask<String, Void, Bitmap>() {
-
-			@Override
-			protected Bitmap doInBackground(String... params) {
-				String imageId = params[0];
-				return downloadBitmapSync(containerName, imageId);
-			}
-
-			@Override
-			protected void onPostExecute(Bitmap result) {
-				super.onPostExecute(result);
-				callback.onCompleted(result);
-			}
-		}).execute(imageId);
-	}
-
-
-	public void downloadToFileAsync(final Context context, final String containerName, String imageId, final String path,
-			final EntityCallback<String> callback) {
-		if(!mApp.isOnline()){
-			EventBus.getDefault().post(new ItException("downloadToFileAsync", ItException.TYPE.NETWORK_UNAVAILABLE));
-			return;
-		}
-
-		(new AsyncTask<String, Void, String>() {
-
-			@Override
-			protected String doInBackground(String... params) {
-				String imageId = params[0];
-				return downloadToFileSync(context, containerName, imageId, path);
-			}
-
-			@Override
-			protected void onPostExecute(String result) {
-				super.onPostExecute(result);
-				callback.onCompleted(result);
-			}
-		}).execute(imageId);
+		}).execute(imageId + ImageUtil.JPG);
 	}
 
 
@@ -273,6 +192,6 @@ public class BlobStorageHelper {
 				super.onPostExecute(result);
 				callback.onCompleted(result);
 			}
-		}).execute(imageId);
+		}).execute(imageId + ImageUtil.JPG);
 	}
 }
